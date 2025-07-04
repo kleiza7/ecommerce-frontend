@@ -1,10 +1,16 @@
-import { useState } from 'react';
-import './App.css';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import ProductsPage from './pages/ProductsPage/ProductsPage';
+import AppHeader from './components/AppHeader';
 
-function App() {
-  const [count, setCount] = useState(0);
-
-  return <h1 className="text-3xl text-red-500 font-bold underline">Hello world!</h1>;
-}
+const App = () => {
+  return (
+    <BrowserRouter>
+      <AppHeader />
+      <Routes>
+        <Route path="/" element={<ProductsPage />} />
+      </Routes>
+    </BrowserRouter>
+  );
+};
 
 export default App;
