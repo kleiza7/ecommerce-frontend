@@ -1,20 +1,18 @@
 import { create } from 'zustand';
-import type { Product } from '../api/models/Product.model';
-
-const PRODUCTS: Product[] = [];
+import type { ReqProductsGetAllResponse } from '../api/responses/ReqProductsGetAllResponse.model';
 
 type ProductStoreState = {
-  products: Product[];
+  products: ReqProductsGetAllResponse;
 };
 
 type ProductStoreActions = {
-  setProducts: (products: Product[]) => void;
-  addProduct: (product: Product) => void;
+  setProducts: (products: ReqProductsGetAllResponse) => void;
+  addProduct: (product: ReqProductsGetAllResponse[number]) => void;
   removeProduct: (id: number) => void;
 };
 
 export const useProductStore = create<ProductStoreState & ProductStoreActions>((set) => ({
-  products: PRODUCTS,
+  products: [],
   setProducts: (products) => set({ products }),
   addProduct: (product) =>
     set((state) => ({

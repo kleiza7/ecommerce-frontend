@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import type { Product } from '../../../api/models/Product.model';
 import { useCartStore } from '../../../stores/CartStore';
+import type { ReqProductsGetAllResponse } from '../../../api/responses/ReqProductsGetAllResponse.model';
 
-const ProductCard = ({ product }: { product: Product }) => {
+const ProductCard = ({ product }: { product: ReqProductsGetAllResponse[number] }) => {
   const navigate = useNavigate();
   const addProductToCart = useCartStore((state) => state.addProductToCart);
 
@@ -11,7 +11,7 @@ const ProductCard = ({ product }: { product: Product }) => {
   };
 
   return (
-    <button
+    <div
       className="h-[300px] overflow-hidden border rounded-md flex flex-col"
       onClick={() => goToProductDetailPage(product.id)}
     >
@@ -22,12 +22,15 @@ const ProductCard = ({ product }: { product: Product }) => {
         <span className="text-s14-l20 text-textPrimary">{product.price.toFixed(2)} TL</span>
         <button
           className="bg-orange-500 rounded-md text-white"
-          onClick={() => addProductToCart(product.id)}
+          onClick={(e) => {
+            e.stopPropagation();
+            addProductToCart(product.id);
+          }}
         >
           Sepete Ekle
         </button>
       </div>
-    </button>
+    </div>
   );
 };
 

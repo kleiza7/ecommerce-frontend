@@ -1,18 +1,16 @@
 import { useEffect } from 'react';
 import { useProductStore } from '../../stores/ProductStore';
 import ProductCard from './components/ProductCard';
-import { reqGetAllProducts } from '../../api/controllers/Product.controller';
+import { reqProductsGetAll } from '../../api/controllers/Product.controller';
 
 const ProductsPage = () => {
-  const { products, setProducts } = useProductStore((state) => ({
-    products: state.products,
-    setProducts: state.setProducts,
-  }));
+  const products = useProductStore((state) => state.products);
+  const setProducts = useProductStore((state) => state.setProducts);
 
   useEffect(() => {
     const getAllProducts = async () => {
       try {
-        const response = await reqGetAllProducts();
+        const response = await reqProductsGetAll();
 
         setProducts(response.data);
       } catch (error) {
@@ -21,7 +19,7 @@ const ProductsPage = () => {
     };
 
     getAllProducts();
-  }, []);
+  }, [setProducts]);
 
   return (
     <div className="flex-1 p-6 overflow-y-auto grid grid-cols-4 gap-4">
