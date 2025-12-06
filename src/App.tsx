@@ -1,9 +1,9 @@
 function App() {
   return (
     <>
-      <span className="text-6xl underline first-line:not-[2]: font-bold">
-        Selam
-      </span>
+      <div className="asdasd flex justify-between rounded-md bg-red-500 p-6 text-sm">
+        selamss
+      </div>
     </>
   );
 }
