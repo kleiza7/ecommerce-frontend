@@ -10,6 +10,6 @@ export const useCategoriesGetChildren = (id: number) => {
       return res.data;
     },
     enabled: !!id,
-    staleTime: 1000 * 60 * 5, // category tree çok sabit → 5 dk ideal
+    staleTime: 1000 * 60 * 5,
   });
 };

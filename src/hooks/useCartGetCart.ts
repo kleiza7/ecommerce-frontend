@@ -9,6 +9,6 @@ export const useCartGetCart = () => {
       const res = await reqCartGetCart();
       return res.data;
     },
-    staleTime: 1000 * 60 * 1, // cart sürekli değişir → 1 dk mantıklı
+    staleTime: 1000 * 60 * 1,
   });
 };

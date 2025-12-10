@@ -9,6 +9,6 @@ export const useCategoriesGetAll = () => {
       const res = await reqCategoriesGetAll();
       return res.data;
     },
-    staleTime: 1000 * 60 * 5, // Kategoriler çok değişmez → 5 dk mantıklı
+    staleTime: 1000 * 60 * 5,
   });
 };

@@ -10,6 +10,6 @@ export const useCategoriesGetById = (id: number) => {
       return res.data;
     },
     enabled: !!id,
-    staleTime: 1000 * 60 * 5, // Kategori detail sabittir → 5 dk ideal
+    staleTime: 1000 * 60 * 5,
   });
 };

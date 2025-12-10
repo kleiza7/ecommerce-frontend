@@ -10,6 +10,6 @@ export const useProductsGetById = (id: number) => {
       return res.data;
     },
     enabled: !!id,
-    staleTime: 30 * 1000, // ürün detail sık değişebilir (stok/fiyat) → 30 saniye ideal
+    staleTime: 30 * 1000,
   });
 };
