@@ -45,7 +45,7 @@ const ToastProvider = ({ children }: { children: ReactNode }) => {
     return () => {
       window.removeEventListener(
         EVENT_TYPE.SHOW_TOAST,
-        handler as EventListener
+        handler as EventListener,
       );
     };
   }, []);
@@ -63,17 +63,14 @@ const ToastProvider = ({ children }: { children: ReactNode }) => {
             key={toast.id}
             defaultOpen={true}
             duration={5000}
-            className={`
-              px-4 py-3 rounded-sm shadow-md 
-              ${bgClass}
-            `}
+            className={`rounded-sm px-4 py-3 shadow-md ${bgClass} `}
           >
             <Toast.Title className="font-semibold">
               {toast.title || autoTitle}
             </Toast.Title>
 
             {toast.description && (
-              <Toast.Description className="text-sm mt-1 opacity-90">
+              <Toast.Description className="mt-1 text-sm opacity-90">
                 {toast.description}
               </Toast.Description>
             )}
@@ -81,7 +78,7 @@ const ToastProvider = ({ children }: { children: ReactNode }) => {
         );
       })}
 
-      <Toast.Viewport className="fixed bottom-5 right-5 flex flex-col gap-3 w-[300px]" />
+      <Toast.Viewport className="fixed right-5 bottom-5 flex w-[300px] flex-col gap-3" />
     </Toast.Provider>
   );
 };
