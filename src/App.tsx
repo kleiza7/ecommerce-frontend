@@ -1,11 +1,8 @@
-function App() {
-  return (
-    <>
-      <div className="asdasd flex justify-between rounded-md bg-red-500 p-6 text-sm">
-        selamss
-      </div>
-    </>
-  );
-}
+import { RouterProvider } from "react-router-dom";
+import router from "./routes";
+
+const App = () => {
+  return <RouterProvider router={router} />;
+};
 
 export default App;
