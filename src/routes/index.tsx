@@ -3,7 +3,7 @@ import RootLayout from "../components/RootLayout";
 import AuthPage from "../pages/AuthPage";
 import CartPage from "../pages/CartPage";
 import ProductDetailPage from "../pages/ProductDetailPage";
-import ProductsPage from "../pages/ProductsPage";
+import ProductsPage from "../pages/ProductsPage/ProductsPage";
 
 const router = createBrowserRouter([
   {
