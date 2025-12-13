@@ -53,17 +53,35 @@ export const reqProductsUpdate = (
 ) => {
   const formData = new FormData();
 
-  formData.append("name", payload.name);
-  formData.append("description", payload.description);
-  formData.append("price", String(payload.price));
-  formData.append("brandId", String(payload.brandId));
-  formData.append("categoryId", String(payload.categoryId));
+  if (payload.name !== undefined) {
+    formData.append("name", payload.name);
+  }
 
-  formData.append("deletedImageIds", JSON.stringify(payload.deletedImageIds));
+  if (payload.description !== undefined) {
+    formData.append("description", payload.description);
+  }
 
-  payload.newAddedImages.forEach((file) => {
-    formData.append("newAddedImages", file);
-  });
+  if (payload.price !== undefined) {
+    formData.append("price", String(payload.price));
+  }
+
+  if (payload.brandId !== undefined) {
+    formData.append("brandId", String(payload.brandId));
+  }
+
+  if (payload.categoryId !== undefined) {
+    formData.append("categoryId", String(payload.categoryId));
+  }
+
+  if (payload.newAddedImages?.length) {
+    payload.newAddedImages.forEach((file) => {
+      formData.append("newAddedImages", file);
+    });
+  }
+
+  if (payload.deletedImageIds?.length) {
+    formData.append("deletedImageIds", JSON.stringify(payload.deletedImageIds));
+  }
 
   return axiosInstance.put<ReqProductsUpdateResponse>(
     `${PATH_NAME}/update/${id}`,

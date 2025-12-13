@@ -1,3 +1,3 @@
 import type { Brand } from "../models/Brand.model";
 
-export type ReqBrandsUpdatePayload = Omit<Brand, "id" | "slug">;
+export type ReqBrandsUpdatePayload = Partial<Omit<Brand, "id" | "slug">>;

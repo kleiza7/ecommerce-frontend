@@ -1,3 +1,3 @@
 import type { Category } from "../models/Category.model";
 
-export type ReqCategoriesUpdatePayload = Omit<Category, "id" | "slug">;
+export type ReqCategoriesUpdatePayload = Partial<Omit<Category, "id" | "slug">>;
