@@ -1,3 +1,5 @@
+import type { ProductImage } from "./ProductImage.model";
+
 export type Product = {
   id: number;
   name: string;
@@ -5,4 +7,5 @@ export type Product = {
   price: number;
   brandId: number;
   categoryId: number;
+  images: ProductImage[];
 };

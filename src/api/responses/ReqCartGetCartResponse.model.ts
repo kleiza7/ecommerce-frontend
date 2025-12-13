@@ -3,6 +3,6 @@ import type { Product } from "../models/Product.model";
 
 export type ReqCartGetCartResponse = {
   items: (CartItem & {
-    product: Product;
+    product: Omit<Product, "images">;
   })[];
 };

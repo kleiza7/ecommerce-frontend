@@ -1,18 +1,39 @@
-import type { Product } from "../../../../../api/models/Product.model";
-// TODO: remove this image
-import iphoneImage from "./iphone.jpg";
+import { useState } from "react";
+import type { ReqProductsListResponse } from "../../../../../api/responses/ReqProductsListResponse.model";
 
-const ProductCard = ({ product }: { product: Product }) => {
+const ProductCard = ({
+  product,
+}: {
+  product: ReqProductsListResponse["items"][number];
+}) => {
+  const [hoverIndex, setHoverIndex] = useState(0);
+
+  const images = product.images ?? [];
+  const zoneCount = images.length || 1;
+
+  const activeImage = images[hoverIndex]?.thumbUrl || "";
+
   return (
-    <div className="flex h-[500px] w-full flex-col overflow-hidden rounded-xl border bg-white shadow-sm">
-      {/* IMAGE */}
-      <div className="h-[360px] w-full bg-gray-100">
+    <div className="group flex h-[500px] w-full flex-col overflow-hidden rounded-xl border bg-white shadow-sm">
+      {/* IMAGE AREA */}
+      <div className="relative h-[360px] w-full overflow-hidden bg-gray-100">
+        {/* MAIN IMAGE */}
         <img
-          // TODO: fix this
-          src={iphoneImage}
+          src={activeImage}
           alt={product.name}
-          className="h-full w-full object-cover"
+          className="h-full w-full object-cover transition-all duration-300"
         />
+
+        {/* HOVER ZONES */}
+        <div className="absolute inset-0 flex">
+          {Array.from({ length: zoneCount }).map((_, i) => (
+            <div
+              key={i}
+              className="h-full flex-1"
+              onMouseEnter={() => setHoverIndex(i)}
+            />
+          ))}
+        </div>
       </div>
 
       {/* CONTENT */}
@@ -27,7 +48,6 @@ const ProductCard = ({ product }: { product: Product }) => {
 
         <div className="mt-auto">
           <p className="text-orange text-lg font-bold">
-            {/* TODO: add currency */}
             {product.price.toFixed(2)} TL
           </p>
         </div>
