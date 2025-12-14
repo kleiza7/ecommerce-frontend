@@ -1,19 +1,18 @@
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { AUTH_PAGE_MODE } from "../../shared/enums/AuthPageMode.enum";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 
 const AuthPage = () => {
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const mode =
     searchParams.get("mode") === AUTH_PAGE_MODE.REGISTER
       ? AUTH_PAGE_MODE.REGISTER
       : AUTH_PAGE_MODE.LOGIN;
 
-  const goToAuthPage = (mode: AUTH_PAGE_MODE) => {
-    navigate(`/auth?mode=${mode}`);
+  const changeMode = (nextMode: AUTH_PAGE_MODE) => {
+    setSearchParams({ mode: nextMode });
   };
 
   return (
@@ -28,7 +27,7 @@ const AuthPage = () => {
         <div className="bg-gray-2 flex rounded-lg p-1">
           <button
             type="button"
-            onClick={() => goToAuthPage(AUTH_PAGE_MODE.LOGIN)}
+            onClick={() => changeMode(AUTH_PAGE_MODE.LOGIN)}
             className={`text-s14-l20 h-9 flex-1 rounded-md transition-colors ${
               mode === AUTH_PAGE_MODE.LOGIN
                 ? "text-orange bg-white shadow"
@@ -40,7 +39,7 @@ const AuthPage = () => {
 
           <button
             type="button"
-            onClick={() => goToAuthPage(AUTH_PAGE_MODE.REGISTER)}
+            onClick={() => changeMode(AUTH_PAGE_MODE.REGISTER)}
             className={`text-s14-l20 h-9 flex-1 rounded-md transition-colors ${
               mode === AUTH_PAGE_MODE.REGISTER
                 ? "text-orange bg-white shadow"
@@ -51,7 +50,11 @@ const AuthPage = () => {
           </button>
         </div>
 
-        {mode === AUTH_PAGE_MODE.LOGIN ? <LoginForm /> : <RegisterForm />}
+        {mode === AUTH_PAGE_MODE.LOGIN ? (
+          <LoginForm />
+        ) : (
+          <RegisterForm changeMode={changeMode} />
+        )}
       </div>
     </div>
   );
