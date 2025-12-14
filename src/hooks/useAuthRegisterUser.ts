@@ -5,23 +5,27 @@ import type { ReqAuthRegisterUserResponse } from "../api/responses/ReqAuthRegist
 import { TOAST_TYPE } from "../shared/enums/ToastType.enum";
 import { showToast } from "../shared/utils/Toast.util";
 
-export const useAuthRegisterUser = () => {
+export const useAuthRegisterUser = (
+  onSuccessCallback?: (data: ReqAuthRegisterUserResponse) => void,
+) => {
   return useMutation<
     ReqAuthRegisterUserResponse,
     Error,
     ReqAuthRegisterUserPayload
   >({
     mutationFn: async (payload) => {
-      const res = await reqAuthRegisterUser(payload);
-      return res.data;
+      const response = await reqAuthRegisterUser(payload);
+      return response.data;
     },
 
-    onSuccess: () => {
+    onSuccess: (data) => {
       showToast({
         title: "Registered successfully",
         description: "Your account has been created.",
         type: TOAST_TYPE.SUCCESS,
       });
+
+      onSuccessCallback?.(data);
     },
 
     onError: () => {
