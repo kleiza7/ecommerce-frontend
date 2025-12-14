@@ -28,10 +28,59 @@ body {
   --text-s14-l20: 14px;
   --text-s14-l20--line-height: 20px;
 
+  --text-s22-l28: 22px;
+  --text-s22-l28--line-height: 28px;
+
   --text-s48-l56: 48px;
   --text-s48-l56--line-height: 56px;
 
   --color-text-primary: #333333;
   --color-orange: #f27a1a;
   --color-orange-dark: #b84f0a;
+  --color-error-primary: #fb2c36;
+  --color-gray-1: #f2f2f2;
+  --color-gray-2: #e6e6e6;
+
+  --animate-popover-in: popover-in 150ms ease-out;
+  --animate-popover-out: popover-out 120ms ease-in;
+}
+
+@keyframes popover-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes popover-out {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+@layer utilities {
+  .slide-in-from-top-2 {
+    transform: translateY(-8px);
+  }
+
+  .slide-in-from-bottom-2 {
+    transform: translateY(8px);
+  }
+
+  .slide-in-from-left-2 {
+    transform: translateX(-8px);
+  }
+
+  .slide-in-from-right-2 {
+    transform: translateX(8px);
+  }
 }
