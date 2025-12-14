@@ -1,5 +1,4 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { useAuthRegisterUser } from "../../../hooks/useAuthRegisterUser";
 import GenericFormInput from "../../../shared/components/GenericFormInput";
 import InputErrorLabel from "../../../shared/components/InputErrorLabel";
@@ -16,9 +15,11 @@ type RegisterFormValues = {
   password: string;
 };
 
-const RegisterForm = () => {
-  const navigate = useNavigate();
-
+const RegisterForm = ({
+  changeMode,
+}: {
+  changeMode: (nextMode: AUTH_PAGE_MODE) => void;
+}) => {
   const {
     control,
     handleSubmit,
@@ -33,7 +34,7 @@ const RegisterForm = () => {
   });
 
   const { mutate: registerUser, isPending } = useAuthRegisterUser(() => {
-    navigate(`/auth?mode=${AUTH_PAGE_MODE.LOGIN}`);
+    changeMode(AUTH_PAGE_MODE.LOGIN);
   });
 
   const onSubmit: SubmitHandler<RegisterFormValues> = (values) => {
