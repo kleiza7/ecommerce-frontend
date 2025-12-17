@@ -4,7 +4,11 @@ import Lightbox from "yet-another-react-lightbox";
 import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
 import "yet-another-react-lightbox/styles.css";
+
+import { useCartActions } from "../hooks/useCartActions";
 import { useProductsGetById } from "../hooks/useProductsGetById";
+import GenericTooltip from "../shared/components/GenericTooltip";
+import { useCartStore } from "../stores/CartStore";
 
 const ProductDetailPage = () => {
   const { id } = useParams();
@@ -12,28 +16,36 @@ const ProductDetailPage = () => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
   const { data, isLoading } = useProductsGetById(Number(id));
+  const { addToCart, isLoading: isCartLoading } = useCartActions();
 
-  // TODO: fix this loading state, add skeleton
+  const cartItems = useCartStore((state) => state.items);
+
   if (isLoading || !data) return <div className="p-6">Loading...</div>;
 
   const images = data.images;
+
+  // 🧠 cart içindeki mevcut quantity
+  const cartItem = cartItems.find((i) => i.productId === data.id);
+  const cartQuantity = cartItem?.quantity ?? 0;
+
+  // 🚫 stok kontrolü
+  const isOutOfStock = cartQuantity >= data.stockCount;
 
   return (
     <div className="flex gap-8 p-6">
       {/* LEFT IMAGE SECTION */}
       <div className="flex flex-col gap-4">
-        {/* MAIN IMAGE WRAPPER */}
+        {/* MAIN IMAGE */}
         <div
           className="relative h-[500px] w-[400px] cursor-pointer overflow-hidden rounded-xl border"
           onClick={() => setLightboxOpen(true)}
         >
           <img
             src={images[activeIndex].largeUrl}
-            alt="product"
+            alt={data.name}
             className="h-full w-full object-cover"
           />
 
-          {/* LEFT ARROW */}
           {activeIndex > 0 && (
             <button
               onClick={(e) => {
@@ -46,7 +58,6 @@ const ProductDetailPage = () => {
             </button>
           )}
 
-          {/* RIGHT ARROW */}
           {activeIndex < images.length - 1 && (
             <button
               onClick={(e) => {
@@ -86,7 +97,6 @@ const ProductDetailPage = () => {
         <p className="text-text-primary">{data.description}</p>
 
         <p className="text-orange text-3xl font-bold">
-          {/* TODO: currency ekle */}
           {data.price.toFixed(2)} TL
         </p>
 
@@ -94,9 +104,26 @@ const ProductDetailPage = () => {
           <button className="border-orange text-orange hover:bg-orange rounded-lg border-2 px-6 py-3 transition hover:text-white">
             Buy Now
           </button>
-          <button className="bg-orange hover:bg-orange-dark rounded-lg px-6 py-3 text-white transition">
-            Add to Cart
-          </button>
+
+          <GenericTooltip
+            content={
+              isOutOfStock
+                ? "You have reached the maximum available stock for this product."
+                : ""
+            }
+          >
+            <button
+              disabled={isCartLoading || isOutOfStock}
+              onClick={() => addToCart(data)}
+              className={`rounded-lg px-6 py-3 text-white transition ${
+                isCartLoading || isOutOfStock
+                  ? "bg-orange/50 cursor-not-allowed"
+                  : "bg-orange hover:bg-orange-dark"
+              }`}
+            >
+              {"Add to Cart"}
+            </button>
+          </GenericTooltip>
         </div>
       </div>
 

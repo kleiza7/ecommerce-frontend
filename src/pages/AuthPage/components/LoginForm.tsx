@@ -1,14 +1,21 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useAuthLogin } from "../../../hooks/useAuthLogin";
+import { useCartMerge } from "../../../hooks/useCartMerge";
 import GenericFormInput from "../../../shared/components/GenericFormInput";
 import InputErrorLabel from "../../../shared/components/InputErrorLabel";
 import InputLabel from "../../../shared/components/InputLabel";
 import {
+  clearGuestCart,
+  getGuestCart,
+} from "../../../shared/utils/GuestCart.util";
+import { useCartStore } from "../../../stores/CartStore";
+import { useUserStore } from "../../../stores/UserStore";
+
+import {
   EMAIL_REGEX,
   PASSWORD_REGEX,
 } from "../../../shared/constants/Form.constants";
-import { useUserStore } from "../../../stores/UserStore";
 
 type LoginFormValues = {
   email: string;
@@ -18,6 +25,7 @@ type LoginFormValues = {
 const LoginForm = () => {
   const navigate = useNavigate();
   const loginUser = useUserStore((state) => state.login);
+  const setItems = useCartStore((state) => state.setItems);
 
   const {
     control,
@@ -28,8 +36,25 @@ const LoginForm = () => {
     defaultValues: { email: "", password: "" },
   });
 
+  const cartMergeMutation = useCartMerge((data) => {
+    setItems(data.items);
+    clearGuestCart();
+  });
+
   const { mutate: login, isPending } = useAuthLogin((data) => {
     loginUser(data.user, data.accessToken);
+
+    const guestCart = getGuestCart();
+
+    if (guestCart.items.length > 0) {
+      cartMergeMutation.mutate({
+        items: guestCart.items.map((item) => ({
+          productId: item.productId,
+          quantity: item.quantity,
+        })),
+      });
+    }
+
     navigate("/dashboard", { replace: true });
   });
 
@@ -72,6 +97,7 @@ const LoginForm = () => {
 
         <div className="relative flex flex-col">
           <InputLabel label="Password" hasAsterisk />
+
           <GenericFormInput
             field="password"
             control={control}
@@ -87,6 +113,7 @@ const LoginForm = () => {
               },
             }}
           />
+
           <InputErrorLabel message={errors.password?.message} />
         </div>
       </div>

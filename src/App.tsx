@@ -2,22 +2,28 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { RouterProvider } from "react-router-dom";
 import ToastProvider from "./components/ToastProvider";
+import TooltipProvider from "./components/TooltipProvider";
+import { useCartHydrate } from "./hooks/useCartHydrate";
 import { queryClient } from "./lib/ReactQuery";
 import router from "./routes";
 import { useUserStore } from "./stores/UserStore";
 
 const App = () => {
-  const hydrate = useUserStore((state) => state.hydrate);
+  const hydrateUser = useUserStore((state) => state.hydrate);
+
+  useCartHydrate();
 
   useEffect(() => {
-    hydrate();
-  }, [hydrate]);
+    hydrateUser();
+  }, [hydrateUser]);
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ToastProvider>
-        <RouterProvider router={router} />
-      </ToastProvider>
+      <TooltipProvider>
+        <ToastProvider>
+          <RouterProvider router={router} />
+        </ToastProvider>
+      </TooltipProvider>
     </QueryClientProvider>
   );
 };

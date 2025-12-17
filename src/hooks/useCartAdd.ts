@@ -5,19 +5,23 @@ import type { ReqCartAddResponse } from "../api/responses/ReqCartAddResponse.mod
 import { TOAST_TYPE } from "../shared/enums/ToastType.enum";
 import { showToast } from "../shared/utils/Toast.util";
 
-export const useCartAdd = () => {
+export const useCartAdd = (
+  onSuccessCallback?: (data: ReqCartAddResponse) => void,
+) => {
   return useMutation<ReqCartAddResponse, Error, ReqCartAddPayload>({
     mutationFn: async (payload) => {
       const res = await reqCartAdd(payload);
       return res.data;
     },
 
-    onSuccess: () => {
+    onSuccess: (data) => {
       showToast({
         title: "Added to cart",
         description: "The item has been successfully added to your cart.",
         type: TOAST_TYPE.SUCCESS,
       });
+
+      onSuccessCallback?.(data);
     },
 
     onError: () => {

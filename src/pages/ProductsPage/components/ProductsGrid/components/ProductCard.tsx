@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import type { ReqProductsListResponse } from "../../../../../api/responses/ReqProductsListResponse.model";
 
 const ProductCard = ({
@@ -6,6 +7,7 @@ const ProductCard = ({
 }: {
   product: ReqProductsListResponse["items"][number];
 }) => {
+  const navigate = useNavigate();
   const [hoverIndex, setHoverIndex] = useState(0);
 
   const images = product.images ?? [];
@@ -13,8 +15,15 @@ const ProductCard = ({
 
   const activeImage = images[hoverIndex]?.thumbUrl || "";
 
+  const handleNavigate = () => {
+    navigate(`/product-detail/${product.id}`);
+  };
+
   return (
-    <div className="group flex h-[500px] w-full flex-col overflow-hidden rounded-xl border bg-white shadow-sm">
+    <div
+      onClick={handleNavigate}
+      className="group flex h-[500px] w-full cursor-pointer flex-col overflow-hidden rounded-xl border bg-white shadow-sm transition-shadow hover:shadow-md"
+    >
       {/* IMAGE AREA */}
       <div className="relative h-[360px] w-full overflow-hidden bg-gray-100">
         {/* MAIN IMAGE */}

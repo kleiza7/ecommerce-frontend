@@ -1,9 +1,11 @@
 import { useNavigate } from "react-router-dom";
+
 import { LogoutIcon, UserIcon } from "../../../assets/icons";
 import {
   GenericPopover,
   GenericPopoverClose,
 } from "../../../shared/components/GenericPopover";
+import { useCartStore } from "../../../stores/CartStore";
 import { useUserStore } from "../../../stores/UserStore";
 
 const UserPopover = () => {
@@ -11,9 +13,13 @@ const UserPopover = () => {
 
   const user = useUserStore((state) => state.user);
   const logout = useUserStore((state) => state.logout);
+  const clearCartStore = useCartStore((state) => state.clearCart);
 
   const handleLogout = () => {
     logout();
+
+    clearCartStore();
+
     navigate("/dashboard", { replace: true });
   };
 

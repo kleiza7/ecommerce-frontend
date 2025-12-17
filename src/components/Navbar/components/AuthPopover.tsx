@@ -21,11 +21,11 @@ const AuthPopover = () => {
       trigger={
         <button
           type="button"
-          className="group text-text-primary flex cursor-pointer items-center gap-x-2 transition-colors duration-200"
+          className="group flex cursor-pointer items-center gap-x-2 transition-colors duration-200"
         >
           <UserIcon className="fill-text-primary group-hover:fill-orange h-5 w-5 transition-colors duration-200" />
 
-          <span className="text-s14-l14 group-hover:text-orange font-semibold transition-colors duration-200">
+          <span className="text-s14-l20 text-text-primary group-hover:text-orange font-semibold transition-colors duration-200">
             Log In
           </span>
         </button>
