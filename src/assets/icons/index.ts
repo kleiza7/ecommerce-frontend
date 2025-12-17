@@ -1,4 +1,15 @@
+import AddIcon from "./add.svg?react";
 import LogoutIcon from "./logout.svg?react";
+import RemoveIcon from "./remove.svg?react";
+import ShoppingCartIcon from "./shopping_cart.svg?react";
+import TrashIcon from "./trash.svg?react";
 import UserIcon from "./user.svg?react";
 
-export { LogoutIcon, UserIcon };
+export {
+  AddIcon,
+  LogoutIcon,
+  RemoveIcon,
+  ShoppingCartIcon,
+  TrashIcon,
+  UserIcon,
+};

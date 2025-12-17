@@ -1,8 +1,3 @@
-import type { CartItem } from "../models/CartItem.model";
-import type { Product } from "../models/Product.model";
+import type { Cart } from "../models/Cart.model";
 
-export type ReqCartGetCartResponse = {
-  items: (CartItem & {
-    product: Omit<Product, "images">;
-  })[];
-};
+export type ReqCartGetCartResponse = Omit<Cart, "id" | "userId">;

@@ -1,8 +1,6 @@
-import type { Product } from "./Product.model";
+import type { Product } from "../../api/models/Product.model";
 
-export type CartItem = {
-  id: number;
-  cartId: number;
+export interface CartItemUI {
   productId: number;
   quantity: number;
   priceSnapshot: number;
@@ -12,4 +10,4 @@ export type CartItem = {
       isPrimary: boolean;
     }[];
   };
-};
+}

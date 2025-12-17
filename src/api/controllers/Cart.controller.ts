@@ -1,9 +1,11 @@
 import axiosInstance from "../../axios";
 import type { ReqCartAddPayload } from "../payloads/ReqCartAddPayload.model";
+import type { ReqCartMergePayload } from "../payloads/ReqCartMergePayload.model";
 import type { ReqCartUpdatePayload } from "../payloads/ReqCartUpdatePayload.model";
 import type { ReqCartAddResponse } from "../responses/ReqCartAddResponse.model";
 import type { ReqCartClearResponse } from "../responses/ReqCartClearResponse.model";
 import type { ReqCartGetCartResponse } from "../responses/ReqCartGetCartResponse.model";
+import type { ReqCartMergeResponse } from "../responses/ReqCartMergeResponse.model";
 import type { ReqCartRemoveResponse } from "../responses/ReqCartRemoveResponse.model";
 import type { ReqCartUpdateResponse } from "../responses/ReqCartUpdateResponse.model";
 
@@ -20,6 +22,13 @@ export const reqCartAdd = (payload: ReqCartAddPayload) => {
 export const reqCartUpdate = (id: number, payload: ReqCartUpdatePayload) => {
   return axiosInstance.put<ReqCartUpdateResponse>(
     `${PATH_NAME}/update/${id}`,
+    payload,
+  );
+};
+
+export const reqCartMerge = (payload: ReqCartMergePayload) => {
+  return axiosInstance.post<ReqCartMergeResponse>(
+    `${PATH_NAME}/merge`,
     payload,
   );
 };

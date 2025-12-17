@@ -5,7 +5,9 @@ import type { ReqCartUpdateResponse } from "../api/responses/ReqCartUpdateRespon
 import { TOAST_TYPE } from "../shared/enums/ToastType.enum";
 import { showToast } from "../shared/utils/Toast.util";
 
-export const useCartUpdate = () => {
+export const useCartUpdate = (
+  onSuccessCallback?: (data: ReqCartUpdateResponse) => void,
+) => {
   return useMutation<
     ReqCartUpdateResponse,
     Error,
@@ -16,12 +18,14 @@ export const useCartUpdate = () => {
       return res.data;
     },
 
-    onSuccess: () => {
+    onSuccess: (data) => {
       showToast({
         title: "Cart updated",
         description: "The item quantity has been successfully updated.",
         type: TOAST_TYPE.SUCCESS,
       });
+
+      onSuccessCallback?.(data);
     },
 
     onError: () => {
