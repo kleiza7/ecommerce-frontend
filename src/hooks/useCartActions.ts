@@ -98,10 +98,10 @@ export const useCartActions = () => {
   /**
    * UPDATE CART ITEM
    */
-  const updateCart = (productId: number, quantity: number) => {
-    if (isAuthenticated) {
+  const updateCart = (productId: number, quantity: number, id?: number) => {
+    if (isAuthenticated && !!id) {
       cartUpdateMutation.mutate(
-        { id: productId, payload: { quantity } },
+        { id, payload: { quantity } },
         {
           onSuccess: (item) => {
             updateItem(item.productId, item.quantity);
@@ -134,9 +134,9 @@ export const useCartActions = () => {
   /**
    * REMOVE FROM CART
    */
-  const removeFromCart = (productId: number) => {
-    if (isAuthenticated) {
-      cartRemoveMutation.mutate(productId, {
+  const removeFromCart = (productId: number, id?: number) => {
+    if (isAuthenticated && !!id) {
+      cartRemoveMutation.mutate(id, {
         onSuccess: () => {
           removeItem(productId);
         },
