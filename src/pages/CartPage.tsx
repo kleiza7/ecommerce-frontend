@@ -62,7 +62,11 @@ const CartPage = () => {
                         <button
                           disabled={isLoading || isMin}
                           onClick={() =>
-                            updateCart(item.productId, item.quantity - 1)
+                            updateCart(
+                              item.productId,
+                              item.quantity - 1,
+                              item.id,
+                            )
                           }
                           className="rounded p-1 hover:bg-gray-100 disabled:opacity-40"
                         >
@@ -84,7 +88,11 @@ const CartPage = () => {
                         <button
                           disabled={isLoading || isMax}
                           onClick={() =>
-                            updateCart(item.productId, item.quantity + 1)
+                            updateCart(
+                              item.productId,
+                              item.quantity + 1,
+                              item.id,
+                            )
                           }
                           className="rounded p-1 hover:bg-gray-100 disabled:opacity-40"
                         >
@@ -104,7 +112,7 @@ const CartPage = () => {
                     <GenericTooltip content="Remove item from cart">
                       <button
                         disabled={isLoading}
-                        onClick={() => removeFromCart(item.productId)}
+                        onClick={() => removeFromCart(item.productId, item.id)}
                         className="shrink-0 rounded p-2 hover:bg-red-50 disabled:opacity-40"
                       >
                         <TrashIcon
