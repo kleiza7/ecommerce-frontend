@@ -1,23 +1,55 @@
+import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import type { ReqProductsListPayload } from "../../../../api/payloads/ReqProductsListPayload.model";
+import type { ReqBrandsGetAllResponse } from "../../../../api/responses/ReqBrandsGetAllResponse.model";
+import type { ReqCategoriesGetAllResponse } from "../../../../api/responses/ReqCategoriesGetAllResponse.model";
 import { useProductsListInfinite } from "../../../../hooks/useProductsListInfinite";
 import InfiniteScrollTrigger from "./components/InfiniteScrollTrigger";
 import ProductCard from "./components/ProductCard";
 
-const ProductsGrid = () => {
+const ProductsGrid = ({
+  categories,
+  brands,
+}: {
+  categories?: ReqCategoriesGetAllResponse;
+  brands?: ReqBrandsGetAllResponse;
+}) => {
   const [params] = useSearchParams();
 
-  const categoryId = params.get("category")
-    ? Number(params.get("category"))
-    : undefined;
+  const categorySlugs = useMemo(
+    () => params.get("categories")?.split(",") ?? [],
+    [params],
+  );
 
-  const brandId = params.get("brand") ? Number(params.get("brand")) : undefined;
+  const brandSlugs = useMemo(
+    () => params.get("brands")?.split(",") ?? [],
+    [params],
+  );
 
-  // WARNING: there is no page because we are using infinite scrolling
+  const categoryIds = useMemo(() => {
+    if (!categories || categorySlugs.length === 0) return undefined;
+
+    const ids = categories
+      .filter((category) => categorySlugs.includes(category.slug))
+      .map((category) => category.id);
+
+    return ids.length > 0 ? ids : undefined;
+  }, [categories, categorySlugs]);
+
+  const brandIds = useMemo(() => {
+    if (!brands || brandSlugs.length === 0) return undefined;
+
+    const ids = brands
+      .filter((brand) => brandSlugs.includes(brand.slug))
+      .map((brand) => brand.id);
+
+    return ids.length > 0 ? ids : undefined;
+  }, [brands, brandSlugs]);
+
   const payload: Omit<ReqProductsListPayload, "page"> = {
     limit: 20,
-    categoryId,
-    brandId,
+    ...(categoryIds && { categoryIds }),
+    ...(brandIds && { brandIds }),
   };
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
@@ -42,7 +74,6 @@ const ProductsGrid = () => {
       />
 
       {isFetchingNextPage && (
-        // TODO: fix this loading spinner
         <div className="py-4 text-center text-sm text-gray-500">Loading...</div>
       )}
     </div>
