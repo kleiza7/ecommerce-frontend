@@ -5,10 +5,8 @@ import ProductsFilterSidebar from "./components/ProductsFilterSidebar";
 import ProductsGrid from "./components/ProductsGrid/ProductsGrid";
 
 const ProductsPage = () => {
-  const { data: categories } = useCategoriesGetAll();
-  const { data: brands } = useBrandsGetAll();
-
-  if (!categories || !brands) return null;
+  const { data: categories = [] } = useCategoriesGetAll();
+  const { data: brands = [] } = useBrandsGetAll();
 
   return (
     <div className="flex h-full w-full flex-col gap-4 p-6">
