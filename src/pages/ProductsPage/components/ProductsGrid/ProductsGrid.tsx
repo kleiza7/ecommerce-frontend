@@ -4,8 +4,18 @@ import type { ReqProductsListPayload } from "../../../../api/payloads/ReqProduct
 import type { ReqBrandsGetAllResponse } from "../../../../api/responses/ReqBrandsGetAllResponse.model";
 import type { ReqCategoriesGetAllResponse } from "../../../../api/responses/ReqCategoriesGetAllResponse.model";
 import { useProductsListInfinite } from "../../../../hooks/useProductsListInfinite";
+import type { CategoryNode } from "../../../../shared/models/CategoryNode.model";
+import {
+  buildCategorySlugMap,
+  buildCategoryTree,
+} from "../../../../shared/utils/CategoryTree.util";
 import InfiniteScrollTrigger from "./components/InfiniteScrollTrigger";
 import ProductCard from "./components/ProductCard";
+
+const collectLeafIds = (node: CategoryNode): number[] => {
+  if (node.children.length === 0) return [node.id];
+  return node.children.flatMap(collectLeafIds);
+};
 
 const ProductsGrid = ({
   categories,
@@ -16,35 +26,41 @@ const ProductsGrid = ({
 }) => {
   const [params] = useSearchParams();
 
-  const categorySlugs = useMemo(
-    () => params.get("categories")?.split(",") ?? [],
-    [params],
-  );
+  /* ---------------- URL PARAMS ---------------- */
 
-  const brandSlugs = useMemo(
-    () => params.get("brands")?.split(",") ?? [],
-    [params],
-  );
+  const selectedCategorySlug = params.get("category");
+
+  const selectedBrandSlugs = useMemo(() => {
+    return params.get("brands")?.split(",") ?? [];
+  }, [params]);
+
+  /* ---------------- CATEGORY IDS ---------------- */
 
   const categoryIds = useMemo(() => {
-    if (!categories || categorySlugs.length === 0) return undefined;
+    if (!categories || !selectedCategorySlug) return undefined;
 
-    const ids = categories
-      .filter((category) => categorySlugs.includes(category.slug))
-      .map((category) => category.id);
+    const tree = buildCategoryTree(categories);
+    const slugMap = buildCategorySlugMap(tree);
 
-    return ids.length > 0 ? ids : undefined;
-  }, [categories, categorySlugs]);
+    const node = slugMap.get(selectedCategorySlug);
+    if (!node) return undefined;
+
+    return collectLeafIds(node);
+  }, [categories, selectedCategorySlug]);
+
+  /* ---------------- BRAND IDS ---------------- */
 
   const brandIds = useMemo(() => {
-    if (!brands || brandSlugs.length === 0) return undefined;
+    if (!brands || selectedBrandSlugs.length === 0) return undefined;
 
     const ids = brands
-      .filter((brand) => brandSlugs.includes(brand.slug))
+      .filter((brand) => selectedBrandSlugs.includes(brand.slug))
       .map((brand) => brand.id);
 
     return ids.length > 0 ? ids : undefined;
-  }, [brands, brandSlugs]);
+  }, [brands, selectedBrandSlugs]);
+
+  /* ---------------- QUERY PAYLOAD ---------------- */
 
   const payload: Omit<ReqProductsListPayload, "page"> = {
     limit: 20,
@@ -56,6 +72,8 @@ const ProductsGrid = ({
     useProductsListInfinite(payload);
 
   const allProducts = data?.pages.flatMap((page) => page.items) ?? [];
+
+  /* ---------------- UI ---------------- */
 
   return (
     <div className="flex flex-col gap-6">

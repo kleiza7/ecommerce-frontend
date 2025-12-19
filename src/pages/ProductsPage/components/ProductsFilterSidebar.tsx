@@ -2,6 +2,11 @@ import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import type { ReqBrandsGetAllResponse } from "../../../api/responses/ReqBrandsGetAllResponse.model";
 import type { ReqCategoriesGetAllResponse } from "../../../api/responses/ReqCategoriesGetAllResponse.model";
+import type { CategoryNode } from "../../../shared/models/CategoryNode.model";
+import {
+  buildCategorySlugMap,
+  buildCategoryTree,
+} from "../../../shared/utils/CategoryTree.util";
 
 const ProductsFilterSidebar = ({
   categories,
@@ -13,58 +18,93 @@ const ProductsFilterSidebar = ({
   const [searchParams, setSearchParams] = useSearchParams();
   const [brandSearch, setBrandSearch] = useState("");
 
-  const selectedCategorySlugs =
-    searchParams.get("categories")?.split(",") ?? [];
+  const selectedCategorySlug = searchParams.get("category");
+
+  const categoryTree = useMemo(
+    () => buildCategoryTree(categories),
+    [categories],
+  );
+
+  const slugMap = useMemo(
+    () => buildCategorySlugMap(categoryTree),
+    [categoryTree],
+  );
+
+  const visibleCategories: CategoryNode[] = useMemo(() => {
+    if (!selectedCategorySlug) return categoryTree;
+
+    const current = slugMap.get(selectedCategorySlug);
+    if (!current) return categoryTree;
+
+    // parent → children
+    if (current.children.length > 0) {
+      return current.children;
+    }
+
+    // leaf → siblings
+    if (current.parentId) {
+      const parent = categories.find((c) => c.id === current.parentId);
+      return parent
+        ? (slugMap.get(parent.slug)?.children ?? categoryTree)
+        : categoryTree;
+    }
+
+    return categoryTree;
+  }, [selectedCategorySlug, categoryTree, slugMap, categories]);
+
+  const onSelectCategory = (slug: string) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("category", slug);
+    params.delete("page");
+    setSearchParams(params);
+  };
+
+  /* ---------------- BRAND ---------------- */
 
   const selectedBrandSlugs = searchParams.get("brands")?.split(",") ?? [];
 
-  const toggleParam = (key: "categories" | "brands", slug: string) => {
-    const current = searchParams.get(key)?.split(",") ?? [];
+  const toggleBrand = (slug: string) => {
+    const next = selectedBrandSlugs.includes(slug)
+      ? selectedBrandSlugs.filter((s) => s !== slug)
+      : [...selectedBrandSlugs, slug];
 
-    const next = current.includes(slug)
-      ? current.filter((s) => s !== slug)
-      : [...current, slug];
-
-    const newParams = new URLSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams);
 
     if (next.length === 0) {
-      newParams.delete(key);
+      params.delete("brands");
     } else {
-      newParams.set(key, next.join(","));
+      params.set("brands", next.join(","));
     }
 
-    newParams.delete("page");
-
-    setSearchParams(newParams);
+    params.delete("page");
+    setSearchParams(params);
   };
 
   const filteredBrands = useMemo(() => {
-    if (!brands) return [];
     return brands.filter((b) =>
       b.name.toLowerCase().includes(brandSearch.toLowerCase()),
     );
   }, [brands, brandSearch]);
 
   return (
-    <aside className="text-text-primary space-y-6">
+    <aside className="text-text-primary space-y-6 text-sm">
       {/* CATEGORIES */}
       <div>
-        <h2 className="mb-3 text-base font-semibold">Categories</h2>
+        <h2 className="mb-3 font-semibold">Categories</h2>
 
         <div className="space-y-2">
-          {categories?.map((category) => (
-            <label
-              key={category.id}
-              className="flex cursor-pointer items-center gap-2 text-sm"
+          {visibleCategories.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => onSelectCategory(cat.slug)}
+              className={`block w-full text-left ${
+                selectedCategorySlug === cat.slug
+                  ? "font-semibold text-orange-600"
+                  : "hover:text-orange-500"
+              }`}
             >
-              <input
-                type="checkbox"
-                checked={selectedCategorySlugs.includes(category.slug)}
-                onChange={() => toggleParam("categories", category.slug)}
-                className="accent-orange"
-              />
-              <span>{category.name}</span>
-            </label>
+              {cat.name}
+            </button>
           ))}
         </div>
       </div>
@@ -73,7 +113,7 @@ const ProductsFilterSidebar = ({
 
       {/* BRANDS */}
       <div>
-        <h2 className="mb-3 text-base font-semibold">Brands</h2>
+        <h2 className="mb-3 font-semibold">Brands</h2>
 
         <input
           type="text"
@@ -87,12 +127,12 @@ const ProductsFilterSidebar = ({
           {filteredBrands.map((brand) => (
             <label
               key={brand.id}
-              className="flex cursor-pointer items-center gap-2 text-sm"
+              className="flex cursor-pointer items-center gap-2"
             >
               <input
                 type="checkbox"
                 checked={selectedBrandSlugs.includes(brand.slug)}
-                onChange={() => toggleParam("brands", brand.slug)}
+                onChange={() => toggleBrand(brand.slug)}
                 className="accent-orange"
               />
               <span>{brand.name}</span>
