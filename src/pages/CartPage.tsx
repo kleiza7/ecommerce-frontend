@@ -4,7 +4,7 @@ import GenericTooltip from "../shared/components/GenericTooltip";
 import { useCartStore } from "../stores/CartStore";
 
 const CartPage = () => {
-  const items = useCartStore((state) => state.items);
+  const cartItems = useCartStore((state) => state.items);
   const totalPrice = useCartStore((state) => state.totalPrice);
 
   const { updateCart, removeFromCart, isLoading } = useCartActions();
@@ -12,23 +12,23 @@ const CartPage = () => {
   return (
     <div className="mx-auto max-w-7xl px-6 py-10">
       <h1 className="mb-8 text-2xl font-semibold">
-        My Cart ({items.length} Product)
+        My Cart ({cartItems.length} Product)
       </h1>
 
       <div className="flex gap-x-8">
         <div className="flex min-w-0 flex-1 flex-col">
           <div className="max-h-[520px] overflow-y-auto pr-2">
-            {items.map((item) => {
+            {cartItems.map((cartItem) => {
               const thumb =
-                item.product.images.find((img) => img.isPrimary)?.thumbUrl ||
-                item.product.images[0]?.thumbUrl;
+                cartItem.product.images.find((img) => img.isPrimary)
+                  ?.thumbUrl || cartItem.product.images[0]?.thumbUrl;
 
-              const isMin = item.quantity <= 1;
-              const isMax = item.quantity >= item.product.stockCount;
+              const isMin = cartItem.quantity <= 1;
+              const isMax = cartItem.quantity >= cartItem.product.stockCount;
 
               return (
                 <div
-                  key={item.productId}
+                  key={cartItem.productId}
                   className="mb-4 rounded-lg border bg-white p-5"
                 >
                   <div className="flex items-center gap-x-6">
@@ -36,17 +36,17 @@ const CartPage = () => {
                       {thumb && (
                         <img
                           src={thumb}
-                          alt={item.product.name}
+                          alt={cartItem.product.name}
                           className="h-full w-full object-cover"
                         />
                       )}
                     </div>
 
                     <div className="flex min-w-0 flex-1 flex-col">
-                      <p className="font-semibold">{item.product.name}</p>
+                      <p className="font-semibold">{cartItem.product.name}</p>
 
                       <p className="mt-1 text-sm text-gray-600">
-                        {item.product.description}
+                        {cartItem.product.description}
                       </p>
                     </div>
 
@@ -58,9 +58,9 @@ const CartPage = () => {
                           disabled={isLoading || isMin}
                           onClick={() =>
                             updateCart(
-                              item.productId,
-                              item.quantity - 1,
-                              item.id,
+                              cartItem.productId,
+                              cartItem.quantity - 1,
+                              cartItem.id,
                             )
                           }
                           className="rounded p-1 hover:bg-gray-100 disabled:opacity-40"
@@ -70,7 +70,7 @@ const CartPage = () => {
                       </GenericTooltip>
 
                       <span className="w-6 text-center text-sm font-medium">
-                        {item.quantity}
+                        {cartItem.quantity}
                       </span>
 
                       <GenericTooltip
@@ -84,9 +84,9 @@ const CartPage = () => {
                           disabled={isLoading || isMax}
                           onClick={() =>
                             updateCart(
-                              item.productId,
-                              item.quantity + 1,
-                              item.id,
+                              cartItem.productId,
+                              cartItem.quantity + 1,
+                              cartItem.id,
                             )
                           }
                           className="rounded p-1 hover:bg-gray-100 disabled:opacity-40"
@@ -98,14 +98,19 @@ const CartPage = () => {
 
                     <div className="shrink-0 text-right">
                       <p className="text-orange font-semibold">
-                        {(item.priceSnapshot * item.quantity).toFixed(2)} TL
+                        {(cartItem.priceSnapshot * cartItem.quantity).toFixed(
+                          2,
+                        )}{" "}
+                        TL
                       </p>
                     </div>
 
                     <GenericTooltip content="Remove item from cart">
                       <button
                         disabled={isLoading}
-                        onClick={() => removeFromCart(item.productId, item.id)}
+                        onClick={() =>
+                          removeFromCart(cartItem.productId, cartItem.id)
+                        }
                         className="shrink-0 rounded p-2 hover:bg-red-50 disabled:opacity-40"
                       >
                         <TrashIcon
@@ -138,7 +143,7 @@ const CartPage = () => {
             </div>
 
             <button
-              disabled={items.length === 0}
+              disabled={cartItems.length === 0}
               className="bg-orange hover:bg-orange-dark disabled:bg-orange/40 w-full rounded py-3 font-semibold text-white transition-colors disabled:cursor-not-allowed"
             >
               Confirm Cart

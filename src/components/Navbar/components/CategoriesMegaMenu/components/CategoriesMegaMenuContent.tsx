@@ -8,11 +8,13 @@ type CategoryNode = {
   children?: CategoryNode[];
 };
 
-type MegaMenuContentProps = {
+type CategoriesMegaMenuContentProps = {
   parents: CategoryNode[];
 };
 
-const MegaMenuContent = ({ parents }: MegaMenuContentProps) => {
+const CategoriesMegaMenuContent = ({
+  parents,
+}: CategoriesMegaMenuContentProps) => {
   const [searchParams] = useSearchParams();
   const activeCategorySlug = searchParams.get("category");
 
@@ -41,9 +43,9 @@ const MegaMenuContent = ({ parents }: MegaMenuContentProps) => {
               <li
                 key={parent.id}
                 onMouseEnter={() => setActiveParent(parent)}
-                className={`cursor-pointer rounded px-3 py-2 text-sm ${
+                className={`text-s14-l20 cursor-pointer rounded px-3 py-2 ${
                   isActive
-                    ? "bg-orange-50 font-semibold text-orange-600"
+                    ? "text-orange bg-orange-50 font-semibold"
                     : "text-gray-700 hover:bg-gray-50"
                 }`}
               >
@@ -67,8 +69,8 @@ const MegaMenuContent = ({ parents }: MegaMenuContentProps) => {
                   to={`/products?category=${child.slug}`}
                   className={`mb-2 block text-sm font-semibold ${
                     isChildActive
-                      ? "text-orange-500"
-                      : "text-gray-900 hover:text-orange-500"
+                      ? "text-orange"
+                      : "hover:text-orange text-gray-900"
                   }`}
                 >
                   {child.label}
@@ -85,7 +87,7 @@ const MegaMenuContent = ({ parents }: MegaMenuContentProps) => {
                             to={`/products?category=${sub.slug}`}
                             className={`text-sm ${
                               isSubActive
-                                ? "text-orange-500"
+                                ? "text-orange"
                                 : "text-gray-600 hover:text-gray-900"
                             }`}
                           >
@@ -105,4 +107,4 @@ const MegaMenuContent = ({ parents }: MegaMenuContentProps) => {
   );
 };
 
-export default MegaMenuContent;
+export default CategoriesMegaMenuContent;

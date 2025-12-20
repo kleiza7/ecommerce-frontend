@@ -56,20 +56,20 @@ const CategoryBreadcrumb = ({ categories }: Props) => {
   return (
     <nav className="flex items-center gap-x-4 px-2 py-1 text-sm text-gray-700">
       <ol className="flex flex-wrap items-center gap-1 font-semibold">
-        {breadcrumb.map((cat, index) => (
-          <li key={cat.id} className="flex items-center gap-1">
+        {breadcrumb.map((item, index) => (
+          <li key={item.id} className="flex items-center gap-1">
             {index !== 0 && <span className="mx-1 font-semibold">›</span>}
 
             <button
               onClick={() => {
                 const next = new URLSearchParams(params);
-                next.set("category", cat.slug);
+                next.set("category", item.slug);
                 next.delete("page");
                 setParams(next);
               }}
-              className="hover:text-orange-600 hover:underline"
+              className="hover:text-orange hover:underline"
             >
-              {cat.name}
+              {item.name}
             </button>
           </li>
         ))}
@@ -77,9 +77,9 @@ const CategoryBreadcrumb = ({ categories }: Props) => {
 
       <button
         onClick={clearCategoryFilters}
-        className="text-xs font-semibold text-orange-600 hover:underline"
+        className="text-orange text-xs font-semibold hover:underline"
       >
-        Filtreyi Temizle
+        Clear Filter
       </button>
     </nav>
   );

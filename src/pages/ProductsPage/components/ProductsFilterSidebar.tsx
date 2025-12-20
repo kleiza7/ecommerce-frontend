@@ -77,8 +77,8 @@ const ProductsFilterSidebar = ({
   };
 
   const filteredBrands = useMemo(() => {
-    return brands.filter((b) =>
-      b.name.toLowerCase().includes(brandSearch.toLowerCase()),
+    return brands.filter((brand) =>
+      brand.name.toLowerCase().includes(brandSearch.toLowerCase()),
     );
   }, [brands, brandSearch]);
 
@@ -88,17 +88,17 @@ const ProductsFilterSidebar = ({
         <h2 className="mb-3 font-semibold">Categories</h2>
 
         <div className="space-y-2">
-          {visibleCategories.map((cat) => (
+          {visibleCategories.map((category) => (
             <button
-              key={cat.id}
-              onClick={() => onSelectCategory(cat.slug)}
+              key={category.id}
+              onClick={() => onSelectCategory(category.slug)}
               className={`block w-full text-left ${
-                selectedCategorySlug === cat.slug
-                  ? "font-semibold text-orange-600"
-                  : "hover:text-orange-500"
+                selectedCategorySlug === category.slug
+                  ? "text-orange font-semibold"
+                  : "hover:text-orange"
               }`}
             >
-              {cat.name}
+              {category.name}
             </button>
           ))}
         </div>

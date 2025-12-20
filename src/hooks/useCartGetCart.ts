@@ -10,7 +10,6 @@ export const useCartGetCart = () => {
       return res.data;
     },
     staleTime: 1000 * 60 * 1,
-    // TODO: bunu araştır
     enabled: false,
   });
 };
