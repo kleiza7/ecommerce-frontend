@@ -30,7 +30,6 @@ const MegaMenuContent = ({ parents }: MegaMenuContentProps) => {
 
   return (
     <div className="flex min-w-[900px]">
-      {/* ================= LEFT: PARENT LIST ================= */}
       <aside className="w-56 border-r pr-4">
         <ul className="space-y-1">
           {parents.map((parent) => {
@@ -55,7 +54,6 @@ const MegaMenuContent = ({ parents }: MegaMenuContentProps) => {
         </ul>
       </aside>
 
-      {/* ================= RIGHT: CHILD + SUB ================= */}
       <section className="flex-1 pl-6">
         <div className="grid grid-cols-3 gap-8">
           {activeParent.children?.map((child) => {
@@ -65,7 +63,6 @@ const MegaMenuContent = ({ parents }: MegaMenuContentProps) => {
 
             return (
               <div key={child.id}>
-                {/* CHILD */}
                 <NavLink
                   to={`/products?category=${child.slug}`}
                   className={`mb-2 block text-sm font-semibold ${
@@ -77,7 +74,6 @@ const MegaMenuContent = ({ parents }: MegaMenuContentProps) => {
                   {child.label}
                 </NavLink>
 
-                {/* SUB */}
                 {child.children && (
                   <ul className="space-y-1">
                     {child.children.map((sub) => {

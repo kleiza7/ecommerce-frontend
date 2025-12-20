@@ -34,9 +34,6 @@ export const useCartActions = () => {
 
   const isAuthenticated = Boolean(user);
 
-  /**
-   * GET CART
-   */
   const getCart = async () => {
     if (isAuthenticated) {
       const result = await cartGetQuery.refetch();
@@ -50,9 +47,6 @@ export const useCartActions = () => {
     setItems(cart.items);
   };
 
-  /**
-   * ADD TO CART
-   */
   const addToCart = (product: Product) => {
     if (isAuthenticated) {
       cartAddMutation.mutate(
@@ -95,9 +89,6 @@ export const useCartActions = () => {
     }
   };
 
-  /**
-   * UPDATE CART ITEM
-   */
   const updateCart = (productId: number, quantity: number, id?: number) => {
     if (isAuthenticated && !!id) {
       cartUpdateMutation.mutate(
@@ -131,9 +122,6 @@ export const useCartActions = () => {
     }
   };
 
-  /**
-   * REMOVE FROM CART
-   */
   const removeFromCart = (productId: number, id?: number) => {
     if (isAuthenticated && !!id) {
       cartRemoveMutation.mutate(id, {
@@ -161,9 +149,6 @@ export const useCartActions = () => {
     }
   };
 
-  /**
-   * CLEAR CART
-   */
   const clearCart = () => {
     if (isAuthenticated) {
       cartClearMutation.mutate(undefined, {

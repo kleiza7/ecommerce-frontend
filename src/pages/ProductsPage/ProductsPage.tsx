@@ -10,7 +10,6 @@ const ProductsPage = () => {
 
   return (
     <div className="flex h-full w-full flex-col gap-4 p-6">
-      {/* ✅ BREADCRUMB – SIDEBAR + GRID ÜSTÜNDE */}
       <CategoryBreadcrumb categories={categories} />
 
       <div className="flex gap-6">

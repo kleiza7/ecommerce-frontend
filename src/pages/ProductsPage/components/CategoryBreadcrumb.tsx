@@ -55,7 +55,6 @@ const CategoryBreadcrumb = ({ categories }: Props) => {
 
   return (
     <nav className="flex items-center gap-x-4 px-2 py-1 text-sm text-gray-700">
-      {/* LEFT – BREADCRUMB */}
       <ol className="flex flex-wrap items-center gap-1 font-semibold">
         {breadcrumb.map((cat, index) => (
           <li key={cat.id} className="flex items-center gap-1">
@@ -76,7 +75,6 @@ const CategoryBreadcrumb = ({ categories }: Props) => {
         ))}
       </ol>
 
-      {/* RIGHT – CLEAR FILTER */}
       <button
         onClick={clearCategoryFilters}
         className="text-xs font-semibold text-orange-600 hover:underline"

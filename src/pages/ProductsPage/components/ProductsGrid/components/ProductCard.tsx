@@ -24,16 +24,13 @@ const ProductCard = ({
       onClick={handleNavigate}
       className="group flex h-[500px] w-full cursor-pointer flex-col overflow-hidden rounded-xl border bg-white shadow-sm transition-shadow hover:shadow-md"
     >
-      {/* IMAGE AREA */}
       <div className="relative h-[360px] w-full overflow-hidden bg-gray-100">
-        {/* MAIN IMAGE */}
         <img
           src={activeImage}
           alt={product.name}
           className="h-full w-full object-cover transition-all duration-300"
         />
 
-        {/* HOVER ZONES */}
         <div className="absolute inset-0 flex">
           {Array.from({ length: zoneCount }).map((_, i) => (
             <div
@@ -45,7 +42,6 @@ const ProductCard = ({
         </div>
       </div>
 
-      {/* CONTENT */}
       <div className="flex flex-1 flex-col p-3">
         <p className="text-text-primary truncate font-semibold">
           {product.name}

@@ -11,13 +11,11 @@ const CartPage = () => {
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-10">
-      {/* PAGE TITLE */}
       <h1 className="mb-8 text-2xl font-semibold">
         My Cart ({items.length} Product)
       </h1>
 
       <div className="flex gap-x-8">
-        {/* LEFT – CART LIST */}
         <div className="flex min-w-0 flex-1 flex-col">
           <div className="max-h-[520px] overflow-y-auto pr-2">
             {items.map((item) => {
@@ -34,7 +32,6 @@ const CartPage = () => {
                   className="mb-4 rounded-lg border bg-white p-5"
                 >
                   <div className="flex items-center gap-x-6">
-                    {/* IMAGE */}
                     <div className="h-28 w-28 shrink-0 overflow-hidden rounded bg-gray-100">
                       {thumb && (
                         <img
@@ -45,7 +42,6 @@ const CartPage = () => {
                       )}
                     </div>
 
-                    {/* INFO */}
                     <div className="flex min-w-0 flex-1 flex-col">
                       <p className="font-semibold">{item.product.name}</p>
 
@@ -54,7 +50,6 @@ const CartPage = () => {
                       </p>
                     </div>
 
-                    {/* QUANTITY */}
                     <div className="flex shrink-0 items-center gap-x-3 rounded-full border px-3 py-1">
                       <GenericTooltip
                         content={isMin ? "Minimum quantity is 1" : ""}
@@ -101,14 +96,12 @@ const CartPage = () => {
                       </GenericTooltip>
                     </div>
 
-                    {/* PRICE */}
                     <div className="shrink-0 text-right">
                       <p className="text-orange font-semibold">
                         {(item.priceSnapshot * item.quantity).toFixed(2)} TL
                       </p>
                     </div>
 
-                    {/* REMOVE */}
                     <GenericTooltip content="Remove item from cart">
                       <button
                         disabled={isLoading}
@@ -128,7 +121,6 @@ const CartPage = () => {
           </div>
         </div>
 
-        {/* RIGHT – SUMMARY */}
         <div className="w-[340px] shrink-0">
           <div className="rounded-lg border bg-white p-6">
             <h2 className="mb-4 text-lg font-semibold">Cart Summary</h2>

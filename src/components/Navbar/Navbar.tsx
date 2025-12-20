@@ -17,9 +17,6 @@ const Navbar = () => {
   const [searchParams] = useSearchParams();
   const activeCategorySlug = searchParams.get("category");
 
-  /**
-   * Flat → Tree (parent → child → sub) + SLUG
-   */
   const parentCategories = categories
     .filter((cat) => cat.parentId === null)
     .map((cat) => ({
@@ -44,7 +41,6 @@ const Navbar = () => {
 
   return (
     <header className="border-gray-1 border-b">
-      {/* ================= TOP BAR ================= */}
       <div className="flex h-[72px] items-center justify-between px-[10%]">
         <NavLink
           to="/dashboard"
@@ -59,10 +55,8 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* ================= BOTTOM BAR ================= */}
       <div className="border-gray-1 border-t px-[10%]">
         <div className="flex h-14 items-center gap-x-6">
-          {/* TÜM KATEGORİLER → MEGA MENU */}
           <GenericNavigationMenu
             trigger={
               <span className="flex items-center gap-2 font-semibold">
@@ -73,7 +67,6 @@ const Navbar = () => {
             content={<MegaMenuContent parents={parentCategories} />}
           />
 
-          {/* SADECE LINK OLAN PARENT’LAR (QUERY PARAM ACTIVE) */}
           {parentCategories.map((parent) => {
             const isActive =
               activeCategorySlug === parent.slug ||

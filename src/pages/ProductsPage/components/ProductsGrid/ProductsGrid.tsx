@@ -26,15 +26,11 @@ const ProductsGrid = ({
 }) => {
   const [params] = useSearchParams();
 
-  /* ---------------- URL PARAMS ---------------- */
-
   const selectedCategorySlug = params.get("category");
 
   const selectedBrandSlugs = useMemo(() => {
     return params.get("brands")?.split(",") ?? [];
   }, [params]);
-
-  /* ---------------- CATEGORY IDS ---------------- */
 
   const categoryIds = useMemo(() => {
     if (!categories || !selectedCategorySlug) return undefined;
@@ -48,8 +44,6 @@ const ProductsGrid = ({
     return collectLeafIds(node);
   }, [categories, selectedCategorySlug]);
 
-  /* ---------------- BRAND IDS ---------------- */
-
   const brandIds = useMemo(() => {
     if (!brands || selectedBrandSlugs.length === 0) return undefined;
 
@@ -59,8 +53,6 @@ const ProductsGrid = ({
 
     return ids.length > 0 ? ids : undefined;
   }, [brands, selectedBrandSlugs]);
-
-  /* ---------------- QUERY PAYLOAD ---------------- */
 
   const payload: Omit<ReqProductsListPayload, "page"> = {
     limit: 20,
@@ -72,8 +64,6 @@ const ProductsGrid = ({
     useProductsListInfinite(payload);
 
   const allProducts = data?.pages.flatMap((page) => page.items) ?? [];
-
-  /* ---------------- UI ---------------- */
 
   return (
     <div className="flex flex-col gap-6">

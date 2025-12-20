@@ -1,9 +1,6 @@
 import { create } from "zustand";
 import type { CartItemUI } from "../shared/models/CartItemUI.model";
 
-/**
- * Utils
- */
 const calculateCartTotals = (items: CartItemUI[]) => {
   const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
 

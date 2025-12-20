@@ -24,18 +24,14 @@ const ProductDetailPage = () => {
 
   const images = data.images;
 
-  // 🧠 cart içindeki mevcut quantity
   const cartItem = cartItems.find((i) => i.productId === data.id);
   const cartQuantity = cartItem?.quantity ?? 0;
 
-  // 🚫 stok kontrolü
   const isOutOfStock = cartQuantity >= data.stockCount;
 
   return (
     <div className="flex gap-8 p-6">
-      {/* LEFT IMAGE SECTION */}
       <div className="flex flex-col gap-4">
-        {/* MAIN IMAGE */}
         <div
           className="relative h-[500px] w-[400px] cursor-pointer overflow-hidden rounded-xl border"
           onClick={() => setLightboxOpen(true)}
@@ -71,7 +67,6 @@ const ProductDetailPage = () => {
           )}
         </div>
 
-        {/* THUMBNAILS */}
         <div className="mt-2 flex gap-3">
           {images.map((img, idx) => (
             <button
@@ -91,7 +86,6 @@ const ProductDetailPage = () => {
         </div>
       </div>
 
-      {/* RIGHT PRODUCT INFO */}
       <div className="flex flex-1 flex-col gap-4">
         <h1 className="text-text-primary text-2xl font-bold">{data.name}</h1>
         <p className="text-text-primary">{data.description}</p>
@@ -121,13 +115,12 @@ const ProductDetailPage = () => {
                   : "bg-orange hover:bg-orange-dark"
               }`}
             >
-              {"Add to Cart"}
+              Add to Cart
             </button>
           </GenericTooltip>
         </div>
       </div>
 
-      {/* FULLSCREEN LIGHTBOX */}
       <Lightbox
         open={lightboxOpen}
         close={() => setLightboxOpen(false)}

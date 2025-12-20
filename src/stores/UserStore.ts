@@ -10,7 +10,7 @@ import {
 export type UserStoreState = {
   user: PublicUser | null;
   accessToken: string | null;
-  isHydrated: boolean; // 🔥
+  isHydrated: boolean;
 };
 
 type UserStoreActions = {
@@ -23,7 +23,7 @@ export const useUserStore = create<UserStoreState & UserStoreActions>(
   (set) => ({
     user: null,
     accessToken: null,
-    isHydrated: false, // 🔥
+    isHydrated: false,
 
     login(user, accessToken) {
       saveAuthToStorage(user, accessToken);
@@ -52,7 +52,7 @@ export const useUserStore = create<UserStoreState & UserStoreActions>(
       set({
         user: user && token ? user : null,
         accessToken: token ?? null,
-        isHydrated: true, // 🔥 KRİTİK
+        isHydrated: true,
       });
     },
   }),

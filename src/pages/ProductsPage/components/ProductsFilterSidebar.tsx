@@ -36,12 +36,10 @@ const ProductsFilterSidebar = ({
     const current = slugMap.get(selectedCategorySlug);
     if (!current) return categoryTree;
 
-    // parent → children
     if (current.children.length > 0) {
       return current.children;
     }
 
-    // leaf → siblings
     if (current.parentId) {
       const parent = categories.find((c) => c.id === current.parentId);
       return parent
@@ -58,8 +56,6 @@ const ProductsFilterSidebar = ({
     params.delete("page");
     setSearchParams(params);
   };
-
-  /* ---------------- BRAND ---------------- */
 
   const selectedBrandSlugs = searchParams.get("brands")?.split(",") ?? [];
 
@@ -88,7 +84,6 @@ const ProductsFilterSidebar = ({
 
   return (
     <aside className="text-text-primary space-y-6 text-sm">
-      {/* CATEGORIES */}
       <div>
         <h2 className="mb-3 font-semibold">Categories</h2>
 
@@ -111,7 +106,6 @@ const ProductsFilterSidebar = ({
 
       <hr />
 
-      {/* BRANDS */}
       <div>
         <h2 className="mb-3 font-semibold">Brands</h2>
 
