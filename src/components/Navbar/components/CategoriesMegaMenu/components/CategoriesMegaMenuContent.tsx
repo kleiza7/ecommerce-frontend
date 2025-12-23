@@ -67,7 +67,7 @@ const CategoriesMegaMenuContent = ({
               <div key={child.id}>
                 <NavLink
                   to={`/products?category=${child.slug}`}
-                  className={`mb-2 block text-sm font-semibold ${
+                  className={`text-s14-l20 mb-2 block font-semibold ${
                     isChildActive
                       ? "text-orange"
                       : "hover:text-orange text-gray-900"
@@ -85,7 +85,7 @@ const CategoriesMegaMenuContent = ({
                         <li key={sub.id}>
                           <NavLink
                             to={`/products?category=${sub.slug}`}
-                            className={`text-sm ${
+                            className={`text-s14-l20 ${
                               isSubActive
                                 ? "text-orange"
                                 : "text-gray-600 hover:text-gray-900"

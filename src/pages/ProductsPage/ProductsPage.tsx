@@ -1,7 +1,7 @@
 import { useBrandsGetAll } from "../../hooks/useBrandsGetAll";
 import { useCategoriesGetAll } from "../../hooks/useCategoriesGetAll";
 import CategoryBreadcrumb from "./components/CategoryBreadcrumb";
-import ProductsFilterSidebar from "./components/ProductsFilterSidebar";
+import ProductsFilterSidebar from "./components/ProductsFilterSidebar/ProductsFilterSidebar";
 import ProductsGrid from "./components/ProductsGrid/ProductsGrid";
 
 const ProductsPage = () => {
@@ -9,7 +9,7 @@ const ProductsPage = () => {
   const { data: brands = [] } = useBrandsGetAll();
 
   return (
-    <div className="flex h-full w-full flex-col gap-4 p-6">
+    <div className="flex h-full w-full flex-col gap-5">
       <CategoryBreadcrumb categories={categories} />
 
       <div className="flex gap-6">

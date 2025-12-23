@@ -70,7 +70,7 @@ const ToastProvider = ({ children }: { children: ReactNode }) => {
             </Toast.Title>
 
             {toast.description && (
-              <Toast.Description className="mt-1 text-sm opacity-90">
+              <Toast.Description className="text-s14-l20 mt-1 opacity-90">
                 {toast.description}
               </Toast.Description>
             )}

@@ -53,7 +53,7 @@ const CategoriesMegaMenu = () => {
           <NavLink
             key={parent.id}
             to={`/products?category=${parent.slug}`}
-            className={`text-sm font-medium ${
+            className={`text-s14-l20 font-medium ${
               isActive ? "text-orange" : "text-gray-700 hover:text-gray-900"
             }`}
           >

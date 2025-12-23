@@ -16,7 +16,7 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="bg-gray-1 flex min-h-screen flex-col items-center py-5">
+    <div className="flex min-h-screen flex-col items-center py-5">
       <div className="mb-6 text-center">
         <p className="text-s22-l28 text-text-primary">Hi,</p>
         <p className="text-s14-l20 text-text-primary mt-1">
@@ -28,7 +28,7 @@ const AuthPage = () => {
           <button
             type="button"
             onClick={() => changeMode(AUTH_PAGE_MODE.LOGIN)}
-            className={`text-s14-l20 h-9 flex-1 rounded-md transition-colors ${
+            className={`text-s14-l20 h-9 flex-1 cursor-pointer rounded-md transition-colors ${
               mode === AUTH_PAGE_MODE.LOGIN
                 ? "text-orange bg-white shadow"
                 : "text-text-primary"
@@ -40,7 +40,7 @@ const AuthPage = () => {
           <button
             type="button"
             onClick={() => changeMode(AUTH_PAGE_MODE.REGISTER)}
-            className={`text-s14-l20 h-9 flex-1 rounded-md transition-colors ${
+            className={`text-s14-l20 h-9 flex-1 cursor-pointer rounded-md transition-colors ${
               mode === AUTH_PAGE_MODE.REGISTER
                 ? "text-orange bg-white shadow"
                 : "text-text-primary"

@@ -23,7 +23,7 @@ const AuthPopover = () => {
           type="button"
           className="group flex cursor-pointer items-center gap-x-2 transition-colors duration-200"
         >
-          <UserIcon className="fill-text-primary group-hover:fill-orange h-5 w-5 transition-colors duration-200" />
+          <UserIcon className="fill-text-primary group-hover:fill-orange h-6 w-6 transition-colors duration-200" />
 
           <span className="text-s14-l20 text-text-primary group-hover:text-orange font-semibold transition-colors duration-200">
             Log In
@@ -36,7 +36,7 @@ const AuthPopover = () => {
           <button
             type="button"
             onClick={() => goToAuthPage(AUTH_PAGE_MODE.LOGIN)}
-            className="bg-orange text-s14-l14 hover:bg-orange/90 h-9 w-full rounded-lg font-semibold text-white transition-colors"
+            className="bg-orange text-s14-l20 hover:bg-orange/90 h-9 w-full cursor-pointer rounded-lg font-semibold text-white transition-colors"
           >
             Log In
           </button>
@@ -45,7 +45,7 @@ const AuthPopover = () => {
           <button
             type="button"
             onClick={() => goToAuthPage(AUTH_PAGE_MODE.REGISTER)}
-            className="border-orange text-orange text-s14-l14 hover:bg-orange/10 h-9 w-full rounded-lg border font-semibold transition-colors"
+            className="border-orange text-orange text-s14-l20 hover:bg-orange/10 h-9 w-full cursor-pointer rounded-lg border font-semibold transition-colors"
           >
             Register
           </button>

@@ -33,7 +33,7 @@ const UserPopover = () => {
           type="button"
           className="group flex cursor-pointer items-center gap-x-2 transition-colors"
         >
-          <UserIcon className="fill-text-primary group-hover:fill-orange h-5 w-5 transition-colors" />
+          <UserIcon className="fill-text-primary group-hover:fill-orange h-6 w-6 transition-colors" />
           <span className="text-s14-l20 text-text-primary group-hover:text-orange font-semibold transition-colors">
             My Account
           </span>
@@ -54,7 +54,7 @@ const UserPopover = () => {
           <button
             type="button"
             onClick={handleLogout}
-            className="text-s14-l20 text-text-primary hover:bg-gray-1 flex items-center gap-x-3 px-4 py-3 transition-colors"
+            className="text-s14-l20 text-text-primary hover:bg-gray-1 flex cursor-pointer items-center gap-x-3 px-4 py-3 transition-colors"
           >
             <LogoutIcon className="fill-text-primary h-4 w-4" />
             <span>Log Out</span>

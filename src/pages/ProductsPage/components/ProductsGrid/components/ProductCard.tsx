@@ -5,7 +5,7 @@ import type { ReqProductsListResponse } from "../../../../../api/responses/ReqPr
 const ProductCard = ({
   product,
 }: {
-  product: ReqProductsListResponse["items"][number];
+  product: ReqProductsListResponse["items"][number] & { brandName: string };
 }) => {
   const navigate = useNavigate();
   const [hoverIndex, setHoverIndex] = useState(0);
@@ -22,7 +22,7 @@ const ProductCard = ({
   return (
     <div
       onClick={handleNavigate}
-      className="group flex h-[500px] w-full cursor-pointer flex-col overflow-hidden rounded-xl border bg-white shadow-sm transition-shadow hover:shadow-md"
+      className="group border-gray-2 flex h-[500px] w-full cursor-pointer flex-col overflow-hidden rounded-xl border bg-white hover:shadow-md"
     >
       <div className="relative h-[360px] w-full overflow-hidden bg-gray-100">
         <img
@@ -43,18 +43,18 @@ const ProductCard = ({
       </div>
 
       <div className="flex flex-1 flex-col p-3">
-        <p className="text-text-primary truncate font-semibold">
-          {product.name}
-        </p>
+        <div className="text-text-primary text-s14-l20 flex flex-wrap gap-1">
+          <span className="font-semibold">{product.brandName}</span>
+          <span>{product.name}</span>
+        </div>
 
-        <p className="text-text-primary mt-1 line-clamp-2 text-sm">
+        <div className="text-text-primary text-s12-l16 mt-1 line-clamp-2">
           {product.description}
-        </p>
+        </div>
 
-        <div className="mt-auto">
-          <p className="text-orange text-lg font-bold">
-            {product.price.toFixed(2)} TL
-          </p>
+        <div className="text-orange text-s16-l24 mt-auto font-bold">
+          {/* TODO: currency */}
+          {product.price.toFixed(2)} TL
         </div>
       </div>
     </div>

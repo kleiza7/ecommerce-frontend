@@ -4,6 +4,7 @@ import type { ReqProductsListPayload } from "../../../../api/payloads/ReqProduct
 import type { ReqBrandsGetAllResponse } from "../../../../api/responses/ReqBrandsGetAllResponse.model";
 import type { ReqCategoriesGetAllResponse } from "../../../../api/responses/ReqCategoriesGetAllResponse.model";
 import { useProductsListInfinite } from "../../../../hooks/useProductsListInfinite";
+import LoadingSpinner from "../../../../shared/components/LoadingSpinner";
 import type { CategoryNode } from "../../../../shared/models/CategoryNode.model";
 import {
   buildCategorySlugMap,
@@ -11,6 +12,7 @@ import {
 } from "../../../../shared/utils/CategoryTree.util";
 import InfiniteScrollTrigger from "./components/InfiniteScrollTrigger";
 import ProductCard from "./components/ProductCard";
+import ProductCardSkeleton from "./components/ProductCardSkeleton";
 
 const collectLeafIds = (node: CategoryNode): number[] => {
   if (node.children.length === 0) return [node.id];
@@ -21,8 +23,8 @@ const ProductsGrid = ({
   categories,
   brands,
 }: {
-  categories?: ReqCategoriesGetAllResponse;
-  brands?: ReqBrandsGetAllResponse;
+  categories: ReqCategoriesGetAllResponse;
+  brands: ReqBrandsGetAllResponse;
 }) => {
   const [params] = useSearchParams();
 
@@ -33,7 +35,7 @@ const ProductsGrid = ({
   }, [params]);
 
   const categoryIds = useMemo(() => {
-    if (!categories || !selectedCategorySlug) return undefined;
+    if (!selectedCategorySlug) return undefined;
 
     const tree = buildCategoryTree(categories);
     const slugMap = buildCategorySlugMap(tree);
@@ -45,7 +47,7 @@ const ProductsGrid = ({
   }, [categories, selectedCategorySlug]);
 
   const brandIds = useMemo(() => {
-    if (!brands || selectedBrandSlugs.length === 0) return undefined;
+    if (selectedBrandSlugs.length === 0) return undefined;
 
     const ids = brands
       .filter((brand) => selectedBrandSlugs.includes(brand.slug))
@@ -60,10 +62,42 @@ const ProductsGrid = ({
     ...(brandIds && { brandIds }),
   };
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useProductsListInfinite(payload);
 
-  const allProducts = data?.pages.flatMap((page) => page.items) ?? [];
+  const brandNameMap = useMemo(() => {
+    const map = new Map<number, string>();
+    for (const brand of brands) {
+      map.set(brand.id, brand.name);
+    }
+    return map;
+  }, [brands]);
+
+  const allProducts =
+    data?.pages.flatMap((page) =>
+      page.items.map((product) => ({
+        ...product,
+        brandName: brandNameMap.get(product.brandId) ?? "",
+      })),
+    ) ?? [];
+
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
+        {Array.from({ length: 20 }).map((_, i) => (
+          <ProductCardSkeleton key={i} />
+        ))}
+      </div>
+    );
+  }
+
+  if (allProducts.length === 0) {
+    return (
+      <div className="flex h-[300px] items-center justify-center">
+        <span className="text-s14-l20 text-gray-500">Hiç ürün bulunamadı</span>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-6">
@@ -82,7 +116,9 @@ const ProductsGrid = ({
       />
 
       {isFetchingNextPage && (
-        <div className="py-4 text-center text-sm text-gray-500">Loading...</div>
+        <div className="flex justify-center py-6">
+          <LoadingSpinner size={28} borderWidth={3} />
+        </div>
       )}
     </div>
   );
