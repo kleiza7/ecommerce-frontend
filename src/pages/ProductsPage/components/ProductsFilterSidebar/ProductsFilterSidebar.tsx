@@ -1,12 +1,14 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import type { ReqBrandsGetAllResponse } from "../../../api/responses/ReqBrandsGetAllResponse.model";
-import type { ReqCategoriesGetAllResponse } from "../../../api/responses/ReqCategoriesGetAllResponse.model";
-import type { CategoryNode } from "../../../shared/models/CategoryNode.model";
+import type { ReqBrandsGetAllResponse } from "../../../../api/responses/ReqBrandsGetAllResponse.model";
+import type { ReqCategoriesGetAllResponse } from "../../../../api/responses/ReqCategoriesGetAllResponse.model";
+import GenericCheckbox from "../../../../shared/components/GenericCheckbox";
+import type { CategoryNode } from "../../../../shared/models/CategoryNode.model";
 import {
   buildCategorySlugMap,
   buildCategoryTree,
-} from "../../../shared/utils/CategoryTree.util";
+} from "../../../../shared/utils/CategoryTree.util";
+import FilterSection from "./components/FilterSection";
 
 const ProductsFilterSidebar = ({
   categories,
@@ -83,16 +85,14 @@ const ProductsFilterSidebar = ({
   }, [brands, brandSearch]);
 
   return (
-    <aside className="text-text-primary space-y-6 text-sm">
-      <div>
-        <h2 className="mb-3 font-semibold">Categories</h2>
-
-        <div className="space-y-2">
+    <aside className="text-text-primary text-s14-l20">
+      <FilterSection title="Category" defaultOpen>
+        <div className="flex flex-col gap-y-2 px-[5px]">
           {visibleCategories.map((category) => (
             <button
               key={category.id}
               onClick={() => onSelectCategory(category.slug)}
-              className={`block w-full text-left ${
+              className={`block w-full cursor-pointer text-left ${
                 selectedCategorySlug === category.slug
                   ? "text-orange font-semibold"
                   : "hover:text-orange"
@@ -102,34 +102,28 @@ const ProductsFilterSidebar = ({
             </button>
           ))}
         </div>
-      </div>
+      </FilterSection>
 
-      <hr />
-
-      <div>
-        <h2 className="mb-3 font-semibold">Brands</h2>
-
+      <FilterSection title="Brand" defaultOpen>
         <input
           type="text"
           placeholder="Marka Ara"
           value={brandSearch}
           onChange={(e) => setBrandSearch(e.target.value)}
-          className="mb-3 w-full rounded border px-3 py-2 text-sm outline-none focus:ring-1"
+          className="text-s12-l16 placeholder:text-gray-2 border-gray-2 text-text-primary mb-2.5 h-8 w-full rounded border px-3 py-2 outline-none"
         />
 
-        <div className="max-h-64 space-y-2 overflow-y-auto pr-1">
+        <div className="max-h-64 space-y-2 overflow-y-auto px-[5px] pr-1">
           {filteredBrands.map((brand) => (
             <label
               key={brand.id}
-              className="flex cursor-pointer items-center gap-2"
+              className="flex cursor-pointer items-center gap-3"
             >
-              <input
-                type="checkbox"
+              <GenericCheckbox
                 checked={selectedBrandSlugs.includes(brand.slug)}
-                onChange={() => toggleBrand(brand.slug)}
-                className="accent-orange"
+                onCheckedChange={() => toggleBrand(brand.slug)}
               />
-              <span>{brand.name}</span>
+              <span className="select-none">{brand.name}</span>
             </label>
           ))}
 
@@ -137,7 +131,7 @@ const ProductsFilterSidebar = ({
             <div className="text-xs text-gray-400">No result found.</div>
           )}
         </div>
-      </div>
+      </FilterSection>
     </aside>
   );
 };

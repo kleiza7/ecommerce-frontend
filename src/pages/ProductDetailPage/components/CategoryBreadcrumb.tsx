@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import { useSearchParams } from "react-router-dom";
-import type { ReqCategoriesGetAllResponse } from "../../../api/responses/ReqCategoriesGetAllResponse.model";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useCategoriesGetAll } from "../../../hooks/useCategoriesGetAll";
 import type { CategoryNode } from "../../../shared/models/CategoryNode.model";
 import {
   buildCategorySlugMap,
@@ -8,10 +8,10 @@ import {
 } from "../../../shared/utils/CategoryTree.util";
 
 type Props = {
-  categories: ReqCategoriesGetAllResponse;
+  categoryId: number;
 };
 
-const buildPath = (
+const buildPathById = (
   node: CategoryNode,
   slugMap: Map<string, CategoryNode>,
 ): CategoryNode[] => {
@@ -28,44 +28,40 @@ const buildPath = (
   return path;
 };
 
-const CategoryBreadcrumb = ({ categories }: Props) => {
-  const [params, setParams] = useSearchParams();
-  const selectedSlug = params.get("category");
+const CategoryBreadcrumb = ({ categoryId }: Props) => {
+  const navigate = useNavigate();
+  const [params] = useSearchParams();
+  const { data: categories, isLoading } = useCategoriesGetAll();
 
   const breadcrumb = useMemo(() => {
-    if (!selectedSlug) return [];
+    if (!categories || !categoryId) return [];
 
     const tree = buildCategoryTree(categories);
     const slugMap = buildCategorySlugMap(tree);
 
-    const node = slugMap.get(selectedSlug);
+    const node = Array.from(slugMap.values()).find((c) => c.id === categoryId);
+
     if (!node) return [];
 
-    return buildPath(node, slugMap);
-  }, [categories, selectedSlug]);
+    return buildPathById(node, slugMap);
+  }, [categories, categoryId]);
 
-  if (breadcrumb.length === 0) return null;
-
-  const clearCategoryFilters = () => {
-    const next = new URLSearchParams(params);
-    next.delete("category");
-    next.delete("page");
-    setParams(next);
-  };
+  if (isLoading || breadcrumb.length === 0) return null;
 
   return (
-    <nav className="text-s14-l20 flex items-center gap-x-4 px-[120px] py-2 text-gray-700">
+    <nav className="text-s14-l20 flex items-center gap-x-4 py-[15px] text-gray-700">
       <ol className="flex flex-wrap items-center gap-1 font-semibold">
         {breadcrumb.map((item, index) => (
           <li key={item.id} className="flex items-center gap-1">
-            {index !== 0 && <span className="mx-1 font-semibold">›</span>}
+            {index !== 0 && <span className="mx-1">›</span>}
 
             <button
               onClick={() => {
                 const next = new URLSearchParams(params);
                 next.set("category", item.slug);
                 next.delete("page");
-                setParams(next);
+
+                navigate(`/products?${next.toString()}`);
               }}
               className="hover:text-orange cursor-pointer hover:underline"
             >
@@ -74,13 +70,6 @@ const CategoryBreadcrumb = ({ categories }: Props) => {
           </li>
         ))}
       </ol>
-
-      <button
-        onClick={clearCategoryFilters}
-        className="text-orange cursor-pointer text-xs font-semibold hover:underline"
-      >
-        Clear Filter
-      </button>
     </nav>
   );
 };

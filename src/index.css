@@ -28,21 +28,37 @@ body {
   --text-s14-l20: 14px;
   --text-s14-l20--line-height: 20px;
 
+  --text-s16-l24: 16px;
+  --text-s16-l24--line-height: 24px;
+
+  --text-s18-l28: 18px;
+  --text-s18-l28--line-height: 28px;
+
+  --text-s20-l28: 20px;
+  --text-s20-l28--line-height: 28px;
+
   --text-s22-l28: 22px;
   --text-s22-l28--line-height: 28px;
+
+  --text-s24-l32: 24px;
+  --text-s24-l32--line-height: 32px;
 
   --text-s48-l56: 48px;
   --text-s48-l56--line-height: 56px;
 
+  /* COLORS */
   --color-text-primary: #333333;
   --color-orange: #f27a1a;
   --color-orange-dark: #b84f0a;
   --color-error-primary: #fb2c36;
+  --color-warning-primary: #f59e0b;
   --color-gray-1: #f2f2f2;
   --color-gray-2: #e6e6e6;
 
+  /* ANIMATIONS */
   --animate-popover-in: popover-in 150ms ease-out;
   --animate-popover-out: popover-out 120ms ease-in;
+  --animate-shimmer: shimmer 1.5s infinite;
 }
 
 @keyframes popover-in {
@@ -67,6 +83,15 @@ body {
   }
 }
 
+@keyframes shimmer {
+  0% {
+    transform: translateX(-150%);
+  }
+  100% {
+    transform: translateX(150%);
+  }
+}
+
 @layer utilities {
   .slide-in-from-top-2 {
     transform: translateY(-8px);
@@ -82,5 +107,9 @@ body {
 
   .slide-in-from-right-2 {
     transform: translateX(8px);
+  }
+
+  .animate-shimmer {
+    animation: shimmer 1.5s ease-in-out infinite;
   }
 }

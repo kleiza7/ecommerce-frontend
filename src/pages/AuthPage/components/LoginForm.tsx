@@ -121,7 +121,7 @@ const LoginForm = () => {
       <button
         type="submit"
         disabled={!isValid || isPending}
-        className={`text-s16-l16 h-12 rounded-lg font-semibold text-white ${
+        className={`text-s16-l16 h-12 cursor-pointer rounded-lg font-semibold text-white ${
           !isValid || isPending
             ? "bg-orange/40 cursor-not-allowed"
             : "bg-orange hover:bg-orange/90"
