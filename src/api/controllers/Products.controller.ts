@@ -24,9 +24,26 @@ export const reqProductsGetById = (id: number) => {
 };
 
 export const reqProductsCreate = (payload: ReqProductsCreatePayload) => {
+  const formData = new FormData();
+
+  formData.append("name", payload.name);
+  formData.append("description", payload.description);
+  formData.append("price", String(payload.price));
+  formData.append("brandId", String(payload.brandId));
+  formData.append("categoryId", String(payload.categoryId));
+
+  payload.images.forEach((file) => {
+    formData.append("images", file);
+  });
+
   return axiosInstance.post<ReqProductsCreateResponse>(
     `${PATH_NAME}/create`,
-    payload,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    },
   );
 };
 
@@ -34,9 +51,46 @@ export const reqProductsUpdate = (
   id: number,
   payload: ReqProductsUpdatePayload,
 ) => {
+  const formData = new FormData();
+
+  if (payload.name !== undefined) {
+    formData.append("name", payload.name);
+  }
+
+  if (payload.description !== undefined) {
+    formData.append("description", payload.description);
+  }
+
+  if (payload.price !== undefined) {
+    formData.append("price", String(payload.price));
+  }
+
+  if (payload.brandId !== undefined) {
+    formData.append("brandId", String(payload.brandId));
+  }
+
+  if (payload.categoryId !== undefined) {
+    formData.append("categoryId", String(payload.categoryId));
+  }
+
+  if (payload.newAddedImages?.length) {
+    payload.newAddedImages.forEach((file) => {
+      formData.append("newAddedImages", file);
+    });
+  }
+
+  if (payload.deletedImageIds?.length) {
+    formData.append("deletedImageIds", JSON.stringify(payload.deletedImageIds));
+  }
+
   return axiosInstance.put<ReqProductsUpdateResponse>(
     `${PATH_NAME}/update/${id}`,
-    payload,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    },
   );
 };
 

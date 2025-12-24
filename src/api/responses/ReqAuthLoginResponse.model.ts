@@ -1,3 +1,6 @@
+import type { PublicUser } from "../models/PublicUser.model";
+
 export type ReqAuthLoginResponse = {
-  token: string;
+  user: PublicUser;
+  accessToken: string;
 };
