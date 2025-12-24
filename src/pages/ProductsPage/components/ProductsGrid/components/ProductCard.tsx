@@ -13,7 +13,7 @@ const ProductCard = ({
   const images = product.images ?? [];
   const zoneCount = images.length || 1;
 
-  const activeImage = images[hoverIndex]?.thumbUrl || "";
+  const activeImage = images[hoverIndex]?.mediumUrl || "";
 
   const handleNavigate = () => {
     navigate(`/product-detail/${product.id}`);
