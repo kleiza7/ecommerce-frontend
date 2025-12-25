@@ -1,50 +1,116 @@
-# 🎨 E-Commerce Frontend
+# 🎨 E-Commerce Frontend (Phase-1)
 
-A modern and scalable **React + TypeScript** frontend built for the E‑Commerce platform.  
-This project is structured to integrate seamlessly with the backend API and provides a foundation for a complete e‑commerce web application.
+**Production App:**  
+https://ecommerce-frontend-seven-orpin.vercel.app/products
+
+Modern, scalable **React + TypeScript** frontend built for a real-world E-Commerce platform.  
+Designed to work seamlessly with the backend API and evolve into a full-featured shopping experience.
 
 Backend repository:  
 ➡️ https://github.com/kleiza7/ecommerce-backend
 
 ---
 
-## ✨ Tech Stack
+## ✨ What Was Built (Phase-1)
 
-- ⚛️ **React** (with functional components & hooks)
-- 🧩 **TypeScript**
-- 🎨 **Tailwind CSS** for utility‑first styling
-- 🖼️ **React SVGR** for converting SVGs into components
-- 🔌 **API layer with fully typed request/response models**
-- 🧱 Vite development environment
-- 🧼 Prettier + Tailwind plugin for clean formatting
+This frontend is **not a UI-only mock**. It is structured to mirror production-grade frontend architecture and real e‑commerce data flow.
 
-The project currently contains initial setup and structure.  
-Future features will be built upon this clean foundation.
+### ✅ Core Highlights
+
+- ⚛️ **React** with functional components & hooks
+- 🧩 **TypeScript-first architecture** (strict typing)
+- 🎨 **Tailwind CSS** (utility-first, scalable styling)
+- 🧱 **Vite** for fast dev & build
+- 🔌 **Fully typed API layer** (request / response models)
+- 🧠 **Separation of concerns** (UI, hooks, state, API)
+- 📦 **Reusable component system**
+- 🧼 **Prettier + Tailwind plugin** for consistent formatting
 
 ---
 
-## 📦 Features (Implemented so far)
+## 🧠 Architecture Overview
 
-### 🎨 Tailwind Setup
-
-- Fully configured Tailwind environment
-- Custom theme extensions ready for UI components
-- Prettier Tailwind plugin for automatic class sorting
-
-### 🖼 React SVGR Integration
-
-- SVG files can be imported as React components
-- Example:
-
-```tsx
-import Logo from "@/assets/logo.svg";
 ```
+UI Components
+     ↓
+Pages
+     ↓
+Hooks (business logic)
+     ↓
+Typed API layer
+     ↓
+Backend API
+```
+
+- UI components are **stateless & reusable**
+- Business logic lives inside hooks
+- API layer is fully typed and centralized
+- Easy to scale, refactor, and test
+
+---
+
+## 🔌 Backend Integration
+
+- Integrated with a **production-ready backend**
+- Supports:
+  - Products
+  - Categories
+  - Brands
+  - Cart
+- Environment-based API URL configuration
+
+---
+
+## 🛒 Cart & Merge Logic
+
+The cart system is designed to behave like **real e‑commerce platforms (e.g. Trendyol)**.
+
+### 🧾 Guest User (Not Logged In)
+
+- Cart data is stored in **localStorage**
+- Users can freely:
+  - Add products
+  - Update quantities
+  - Remove items
+
+### 🔐 After Login
+
+- When a user logs in:
+  1. Local cart is sent to backend
+  2. Backend merges local cart with user’s server-side cart
+  3. Quantity conflicts are resolved deterministically
+  4. Final cart state is returned from backend
+- Local cart is then cleared
+
+This ensures:
+
+- No cart data loss
+- Seamless guest → authenticated transition
+- Consistent cart state across devices
+
+---
+
+## 📦 Features Implemented
+
+### 🛍 Product Listing
+
+- Product grid layout
+- Image rendering:
+  - Local URLs in development
+  - CDN URLs in production
+- Primary image handling
+- Stock & price display
+
+### 🧭 Routing
+
+- Page-based routing
+- Ready for protected routes (auth / seller)
 
 ### 🔌 Typed API Layer
 
-- Centralized API folder
-- Request and response types defined
-- Easy expansion for product, user, cart, and checkout endpoints
+- Centralized API client
+- Strong request/response typing
+- Easy to expand for new endpoints
 
 ---
 
@@ -54,37 +120,43 @@ import Logo from "@/assets/logo.svg";
 src/
  ├── assets/         # Images & SVGs
  ├── components/     # Reusable UI components
- ├── hooks/          # Custom hooks
- ├── lib/            # Typed API functions
- ├── pages/          # Page components
+ ├── hooks/          # Custom hooks (cart, products, logic)
+ ├── lib/            # Typed API client
+ ├── pages/          # Page-level components
+ ├── stores/         # Global state (cart, UI)
  ├── styles/         # Global styles
  ├── main.tsx        # App entry
  └── App.tsx         # Root component
 ```
 
-The structure is intentionally simple but scalable, allowing new modules to be added easily.
+The structure is intentionally **simple but scalable**.
 
 ---
 
 ## ⚙️ Environment Setup
 
-You may create a `.env` file for frontend configuration when needed (API URL, etc.).  
-A typical example:
+Create a `.env` file:
 
 ```ini
-VITE_API_URL="http://localhost:5000/api"
+VITE_API_URL=https://ecommerce-backend-z39w.onrender.com/api
+```
+
+Local example:
+
+```ini
+VITE_API_URL=http://localhost:5000/api
 ```
 
 ---
 
-## 🚀 Running the Project
+## 🚀 Running Locally
 
 ```bash
 npm install
 npm run dev
 ```
 
-Local development server:
+Local server:
 
 ```
 http://localhost:5173
@@ -92,23 +164,30 @@ http://localhost:5173
 
 ---
 
-## 🎯 Vision
+## 🚀 Production
 
-This frontend will evolve into a complete e‑commerce interface including:
-
-- Product browsing and filtering
-- Cart and checkout flows
-- User authentication pages
-- Seller dashboard components
-- Responsive and modern UI
-
-All upcoming features will be built while keeping maximum type‑safety and clean architecture.
+- Built with **Vite**
+- Deployed on **Vercel**
+- Uses backend production API
+- CDN-served images handled automatically
 
 ---
 
-## 🤝 Contributing
+## 📌 Phase-1 Scope (Completed)
 
-Contributions and suggestions are welcome as the project grows.
+✔ Product listing  
+✔ Typed API integration  
+✔ Cart with merge logic  
+✔ Clean architecture  
+✔ Production deployment
+
+**Phase-2** will include:
+
+- Authentication UI
+- Checkout flow
+- Filters & search
+- Seller dashboard
+- UX & performance optimizations
 
 ---
 
