@@ -1,7 +1,7 @@
 # 🎨 E-Commerce Frontend (Phase-1)
 
 **Production App:**  
-https://ecommerce-frontend-seven-orpin.vercel.app/products
+https://ecommerce-frontend-seven-orpin.vercel.app
 
 Modern, scalable **React + TypeScript** frontend built for a real-world E-Commerce platform.  
 Designed to work seamlessly with the backend API and evolve into a full-featured shopping experience.
