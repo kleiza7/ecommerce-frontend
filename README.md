@@ -3,7 +3,7 @@
 **Production App:**  
 https://ecommerce-frontend-seven-orpin.vercel.app/products
 
-Modern, scalable **React + TypeScript** frontend built for a real-world E‑Commerce platform.  
+Modern, scalable **React + TypeScript** frontend built for a real-world E-Commerce platform.  
 Designed to work seamlessly with the backend API and evolve into a full-featured shopping experience.
 
 Backend repository:  
@@ -13,7 +13,7 @@ Backend repository:
 
 ## ✨ What Was Built (Phase-1)
 
-This frontend is **not a UI-only mock**. It is structured to mirror production-grade frontend architecture and data flow.
+This frontend is **not a UI-only mock**. It is structured to mirror production-grade frontend architecture and real e‑commerce data flow.
 
 ### ✅ Core Highlights
 
@@ -35,7 +35,7 @@ UI Components
      ↓
 Pages
      ↓
-Hooks (data / logic)
+Hooks (business logic)
      ↓
 Typed API layer
      ↓
@@ -43,21 +43,50 @@ Backend API
 ```
 
 - UI components are **stateless & reusable**
-- Business logic lives in hooks
+- Business logic lives inside hooks
 - API layer is fully typed and centralized
-- Easy to refactor, test, and scale
+- Easy to scale, refactor, and test
 
 ---
 
 ## 🔌 Backend Integration
 
-- Works with a **production-ready backend**
+- Integrated with a **production-ready backend**
 - Supports:
   - Products
   - Categories
   - Brands
-  - Cart logic
+  - Cart
 - Environment-based API URL configuration
+
+---
+
+## 🛒 Cart & Merge Logic
+
+The cart system is designed to behave like **real e‑commerce platforms (e.g. Trendyol)**.
+
+### 🧾 Guest User (Not Logged In)
+
+- Cart data is stored in **localStorage**
+- Users can freely:
+  - Add products
+  - Update quantities
+  - Remove items
+
+### 🔐 After Login
+
+- When a user logs in:
+  1. Local cart is sent to backend
+  2. Backend merges local cart with user’s server-side cart
+  3. Quantity conflicts are resolved deterministically
+  4. Final cart state is returned from backend
+- Local cart is then cleared
+
+This ensures:
+
+- No cart data loss
+- Seamless guest → authenticated transition
+- Consistent cart state across devices
 
 ---
 
@@ -66,20 +95,22 @@ Backend API
 ### 🛍 Product Listing
 
 - Product grid layout
-- Image rendering (local in dev, CDN in prod)
+- Image rendering:
+  - Local URLs in development
+  - CDN URLs in production
 - Primary image handling
 - Stock & price display
 
 ### 🧭 Routing
 
-- Page-based routing structure
-- Ready for protected routes (auth, seller)
+- Page-based routing
+- Ready for protected routes (auth / seller)
 
 ### 🔌 Typed API Layer
 
-- Centralized API folder
+- Centralized API client
 - Strong request/response typing
-- Scales cleanly as endpoints grow
+- Easy to expand for new endpoints
 
 ---
 
@@ -89,7 +120,7 @@ Backend API
 src/
  ├── assets/         # Images & SVGs
  ├── components/     # Reusable UI components
- ├── hooks/          # Custom hooks (data + logic)
+ ├── hooks/          # Custom hooks (cart, products, logic)
  ├── lib/            # Typed API client
  ├── pages/          # Page-level components
  ├── stores/         # Global state (cart, UI)
@@ -98,7 +129,7 @@ src/
  └── App.tsx         # Root component
 ```
 
-This structure is intentionally **simple but scalable**.
+The structure is intentionally **simple but scalable**.
 
 ---
 
@@ -135,7 +166,7 @@ http://localhost:5173
 
 ## 🚀 Production
 
-- Built with Vite
+- Built with **Vite**
 - Deployed on **Vercel**
 - Uses backend production API
 - CDN-served images handled automatically
@@ -145,18 +176,18 @@ http://localhost:5173
 ## 📌 Phase-1 Scope (Completed)
 
 ✔ Product listing  
-✔ API integration  
-✔ Typed data flow  
+✔ Typed API integration  
+✔ Cart with merge logic  
 ✔ Clean architecture  
 ✔ Production deployment
 
 **Phase-2** will include:
 
 - Authentication UI
-- Cart & checkout flows
+- Checkout flow
 - Filters & search
 - Seller dashboard
-- Responsive UX refinements
+- UX & performance optimizations
 
 ---
 
