@@ -28,6 +28,7 @@ export const reqProductsCreate = (payload: ReqProductsCreatePayload) => {
 
   formData.append("name", payload.name);
   formData.append("description", payload.description);
+  formData.append("stockCount", String(payload.stockCount));
   formData.append("price", String(payload.price));
   formData.append("brandId", String(payload.brandId));
   formData.append("categoryId", String(payload.categoryId));
@@ -47,44 +48,25 @@ export const reqProductsCreate = (payload: ReqProductsCreatePayload) => {
   );
 };
 
-export const reqProductsUpdate = (
-  id: number,
-  payload: ReqProductsUpdatePayload,
-) => {
+export const reqProductsUpdate = (payload: ReqProductsUpdatePayload) => {
   const formData = new FormData();
 
-  if (payload.name !== undefined) {
-    formData.append("name", payload.name);
-  }
+  formData.append("id", String(payload.id));
+  formData.append("name", payload.name);
+  formData.append("description", payload.description);
+  formData.append("stockCount", String(payload.stockCount));
+  formData.append("price", String(payload.price));
+  formData.append("brandId", String(payload.brandId));
+  formData.append("categoryId", String(payload.categoryId));
 
-  if (payload.description !== undefined) {
-    formData.append("description", payload.description);
-  }
+  payload.newAddedImages.forEach((file) => {
+    formData.append("newAddedImages", file);
+  });
 
-  if (payload.price !== undefined) {
-    formData.append("price", String(payload.price));
-  }
-
-  if (payload.brandId !== undefined) {
-    formData.append("brandId", String(payload.brandId));
-  }
-
-  if (payload.categoryId !== undefined) {
-    formData.append("categoryId", String(payload.categoryId));
-  }
-
-  if (payload.newAddedImages?.length) {
-    payload.newAddedImages.forEach((file) => {
-      formData.append("newAddedImages", file);
-    });
-  }
-
-  if (payload.deletedImageIds?.length) {
-    formData.append("deletedImageIds", JSON.stringify(payload.deletedImageIds));
-  }
+  formData.append("deletedImageIds", JSON.stringify(payload.deletedImageIds));
 
   return axiosInstance.put<ReqProductsUpdateResponse>(
-    `${PATH_NAME}/update/${id}`,
+    `${PATH_NAME}/update`,
     formData,
     {
       headers: {

@@ -33,12 +33,9 @@ export const reqCategoriesCreate = (payload: ReqCategoriesCreatePayload) => {
   );
 };
 
-export const reqCategoriesUpdate = (
-  id: number,
-  payload: ReqCategoriesUpdatePayload,
-) => {
+export const reqCategoriesUpdate = (payload: ReqCategoriesUpdatePayload) => {
   return axiosInstance.put<ReqCategoriesUpdateResponse>(
-    `${PATH_NAME}/update/${id}`,
+    `${PATH_NAME}/update`,
     payload,
   );
 };

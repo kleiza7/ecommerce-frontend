@@ -26,12 +26,9 @@ export const reqBrandsCreate = (payload: ReqBrandsCreatePayload) => {
   );
 };
 
-export const reqBrandsUpdate = (
-  id: number,
-  payload: ReqBrandsUpdatePayload,
-) => {
+export const reqBrandsUpdate = (payload: ReqBrandsUpdatePayload) => {
   return axiosInstance.put<ReqBrandsUpdateResponse>(
-    `${PATH_NAME}/update/${id}`,
+    `${PATH_NAME}/update`,
     payload,
   );
 };
