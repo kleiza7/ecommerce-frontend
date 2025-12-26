@@ -19,9 +19,9 @@ export const reqCartAdd = (payload: ReqCartAddPayload) => {
   return axiosInstance.post<ReqCartAddResponse>(`${PATH_NAME}/add`, payload);
 };
 
-export const reqCartUpdate = (id: number, payload: ReqCartUpdatePayload) => {
+export const reqCartUpdate = (payload: ReqCartUpdatePayload) => {
   return axiosInstance.put<ReqCartUpdateResponse>(
-    `${PATH_NAME}/update/${id}`,
+    `${PATH_NAME}/update`,
     payload,
   );
 };
