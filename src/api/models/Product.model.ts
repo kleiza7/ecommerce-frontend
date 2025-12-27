@@ -8,5 +8,6 @@ export type Product = {
   price: number;
   brandId: number;
   categoryId: number;
+  currencyId: number;
   images: ProductImage[];
 };

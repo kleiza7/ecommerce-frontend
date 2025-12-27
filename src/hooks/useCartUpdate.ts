@@ -8,13 +8,9 @@ import { showToast } from "../shared/utils/Toast.util";
 export const useCartUpdate = (
   onSuccessCallback?: (data: ReqCartUpdateResponse) => void,
 ) => {
-  return useMutation<
-    ReqCartUpdateResponse,
-    Error,
-    { id: number; payload: ReqCartUpdatePayload }
-  >({
-    mutationFn: async ({ id, payload }) => {
-      const res = await reqCartUpdate(id, payload);
+  return useMutation<ReqCartUpdateResponse, Error, ReqCartUpdatePayload>({
+    mutationFn: async (payload) => {
+      const res = await reqCartUpdate(payload);
       return res.data;
     },
 

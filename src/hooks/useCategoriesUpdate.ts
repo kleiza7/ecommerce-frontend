@@ -9,10 +9,10 @@ export const useCategoriesUpdate = () => {
   return useMutation<
     ReqCategoriesUpdateResponse,
     Error,
-    { id: number; payload: ReqCategoriesUpdatePayload }
+    ReqCategoriesUpdatePayload
   >({
-    mutationFn: async ({ id, payload }) => {
-      const res = await reqCategoriesUpdate(id, payload);
+    mutationFn: async (payload) => {
+      const res = await reqCategoriesUpdate(payload);
       return res.data;
     },
 
