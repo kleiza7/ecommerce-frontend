@@ -6,13 +6,9 @@ import { TOAST_TYPE } from "../shared/enums/ToastType.enum";
 import { showToast } from "../shared/utils/Toast.util";
 
 export const useBrandsUpdate = () => {
-  return useMutation<
-    ReqBrandsUpdateResponse,
-    Error,
-    { id: number; payload: ReqBrandsUpdatePayload }
-  >({
-    mutationFn: async ({ id, payload }) => {
-      const res = await reqBrandsUpdate(id, payload);
+  return useMutation<ReqBrandsUpdateResponse, Error, ReqBrandsUpdatePayload>({
+    mutationFn: async (payload) => {
+      const res = await reqBrandsUpdate(payload);
       return res.data;
     },
 

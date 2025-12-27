@@ -32,6 +32,7 @@ export const reqProductsCreate = (payload: ReqProductsCreatePayload) => {
   formData.append("price", String(payload.price));
   formData.append("brandId", String(payload.brandId));
   formData.append("categoryId", String(payload.categoryId));
+  formData.append("currencyId", String(payload.currencyId));
 
   payload.images.forEach((file) => {
     formData.append("images", file);
@@ -58,6 +59,7 @@ export const reqProductsUpdate = (payload: ReqProductsUpdatePayload) => {
   formData.append("price", String(payload.price));
   formData.append("brandId", String(payload.brandId));
   formData.append("categoryId", String(payload.categoryId));
+  formData.append("currencyId", String(payload.currencyId));
 
   payload.newAddedImages.forEach((file) => {
     formData.append("newAddedImages", file);

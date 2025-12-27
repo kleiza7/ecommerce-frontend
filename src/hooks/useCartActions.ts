@@ -92,7 +92,10 @@ export const useCartActions = () => {
   const updateCart = (productId: number, quantity: number, id?: number) => {
     if (isAuthenticated && !!id) {
       cartUpdateMutation.mutate(
-        { id, payload: { quantity } },
+        {
+          itemId: id,
+          quantity,
+        },
         {
           onSuccess: (item) => {
             updateItem(item.productId, item.quantity);
