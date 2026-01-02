@@ -1,3 +1,4 @@
+import type { PRODUCT_STATUS } from "../enums/ProductStatus.enum";
 import type { ProductImage } from "./ProductImage.model";
 
 export type Product = {
@@ -9,5 +10,7 @@ export type Product = {
   brandId: number;
   categoryId: number;
   currencyId: number;
+  sellerId: number;
+  status: PRODUCT_STATUS;
   images: ProductImage[];
 };

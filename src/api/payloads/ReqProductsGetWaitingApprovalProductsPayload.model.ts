@@ -1,6 +1,4 @@
-export type ReqProductsListPayload = {
-  page: number;
-  limit: number;
+export type ReqProductsGetWaitingApprovalProductsPayload = {
   brandIds?: number[];
   categoryIds?: number[];
   sellerId?: number;
