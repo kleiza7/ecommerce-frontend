@@ -3,5 +3,5 @@ export type ReqProductsListPayload = {
   limit: number;
   brandIds?: number[];
   categoryIds?: number[];
-  sellerId?: number;
+  sellerIds?: number[];
 };

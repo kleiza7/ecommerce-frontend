@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import type { ReqBrandsGetAllResponse } from "../../../../api/responses/ReqBrandsGetAllResponse.model";
 import type { ReqCategoriesGetAllResponse } from "../../../../api/responses/ReqCategoriesGetAllResponse.model";
+import { useAuthGetAllSellers } from "../../../../hooks/useAuthGetAllSellers";
 import GenericCheckbox from "../../../../shared/components/GenericCheckbox";
 import type { CategoryNode } from "../../../../shared/models/CategoryNode.model";
 import {
@@ -18,7 +19,14 @@ const ProductsFilterSidebar = ({
   brands: ReqBrandsGetAllResponse;
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { data: sellers = [] } = useAuthGetAllSellers();
+
   const [brandSearch, setBrandSearch] = useState("");
+  const [sellerSearch, setSellerSearch] = useState("");
+
+  /* ===========================
+     CATEGORY
+  =========================== */
 
   const selectedCategorySlug = searchParams.get("category");
 
@@ -59,6 +67,10 @@ const ProductsFilterSidebar = ({
     setSearchParams(params);
   };
 
+  /* ===========================
+     BRAND
+  =========================== */
+
   const selectedBrandSlugs = searchParams.get("brands")?.split(",") ?? [];
 
   const toggleBrand = (slug: string) => {
@@ -83,6 +95,40 @@ const ProductsFilterSidebar = ({
       brand.name.toLowerCase().includes(brandSearch.toLowerCase()),
     );
   }, [brands, brandSearch]);
+
+  /* ===========================
+     SELLER
+  =========================== */
+
+  const selectedSellerIds =
+    searchParams.get("sellers")?.split(",").map(Number) ?? [];
+
+  const toggleSeller = (id: number) => {
+    const next = selectedSellerIds.includes(id)
+      ? selectedSellerIds.filter((x) => x !== id)
+      : [...selectedSellerIds, id];
+
+    const params = new URLSearchParams(searchParams);
+
+    if (next.length === 0) {
+      params.delete("sellers");
+    } else {
+      params.set("sellers", next.join(","));
+    }
+
+    params.delete("page");
+    setSearchParams(params);
+  };
+
+  const filteredSellers = useMemo(() => {
+    return sellers.filter((seller) =>
+      seller.name.toLowerCase().includes(sellerSearch.toLowerCase()),
+    );
+  }, [sellers, sellerSearch]);
+
+  /* ===========================
+     RENDER
+  =========================== */
 
   return (
     <aside className="text-text-primary text-s14-l20">
@@ -128,6 +174,35 @@ const ProductsFilterSidebar = ({
           ))}
 
           {filteredBrands.length === 0 && (
+            <div className="text-xs text-gray-400">No result found.</div>
+          )}
+        </div>
+      </FilterSection>
+
+      <FilterSection title="Seller" defaultOpen={false}>
+        <input
+          type="text"
+          placeholder="Satıcı Ara"
+          value={sellerSearch}
+          onChange={(e) => setSellerSearch(e.target.value)}
+          className="text-s12-l16 placeholder:text-gray-2 border-gray-2 text-text-primary mb-2.5 h-8 w-full rounded border px-3 py-2 outline-none"
+        />
+
+        <div className="max-h-64 space-y-2 overflow-y-auto px-[5px] pr-1">
+          {filteredSellers.map((seller) => (
+            <label
+              key={seller.id}
+              className="flex cursor-pointer items-center gap-3"
+            >
+              <GenericCheckbox
+                checked={selectedSellerIds.includes(seller.id)}
+                onCheckedChange={() => toggleSeller(seller.id)}
+              />
+              <span className="select-none">{seller.name}</span>
+            </label>
+          ))}
+
+          {filteredSellers.length === 0 && (
             <div className="text-xs text-gray-400">No result found.</div>
           )}
         </div>
