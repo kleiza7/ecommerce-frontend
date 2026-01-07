@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { reqProductsCreate } from "../api/controllers/Products.controller";
 import type { ReqProductsCreatePayload } from "../api/payloads/ReqProductsCreatePayload.model";
 import type { ReqProductsCreateResponse } from "../api/responses/ReqProductsCreateResponse.model";
@@ -7,6 +7,8 @@ import { TOAST_TYPE } from "../shared/enums/ToastType.enum";
 import { showToast } from "../shared/utils/Toast.util";
 
 export const useProductsCreate = () => {
+  const queryClient = useQueryClient();
+
   return useMutation<
     ReqProductsCreateResponse,
     Error,
@@ -32,6 +34,10 @@ export const useProductsCreate = () => {
     },
 
     onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ["products"],
+      });
+
       window.dispatchEvent(
         new CustomEvent<
           WindowEventMap[typeof EVENT_TYPE.PRODUCT_CREATED]["detail"]

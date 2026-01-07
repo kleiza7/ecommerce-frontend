@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { reqProductsApprove } from "../api/controllers/Products.controller";
 import type { ReqProductsApproveResponse } from "../api/responses/ReqProductsApproveResponse.model";
 import { EVENT_TYPE } from "../shared/enums/EventType.enum";
@@ -6,6 +6,8 @@ import { TOAST_TYPE } from "../shared/enums/ToastType.enum";
 import { showToast } from "../shared/utils/Toast.util";
 
 export const useProductsApprove = () => {
+  const queryClient = useQueryClient();
+
   return useMutation<ReqProductsApproveResponse, Error, number>({
     mutationFn: async (id) => {
       const res = await reqProductsApprove(id);
@@ -13,6 +15,10 @@ export const useProductsApprove = () => {
     },
 
     onSuccess: (_, productId) => {
+      queryClient.invalidateQueries({
+        queryKey: ["products"],
+      });
+
       window.dispatchEvent(
         new CustomEvent<
           WindowEventMap[typeof EVENT_TYPE.PRODUCT_APPROVED]["detail"]
