@@ -1,7 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import ProtectedRoute from "../components/ProtectedRoute";
 import RootLayout from "../components/RootLayout";
-import AdminProductsPage from "../pages/AdminProductsPage";
+import AdminProductsPage from "../pages/AdminProductsPage/AdminProductsPage";
 import AuthPage from "../pages/AuthPage/AuthPage";
 import CartPage from "../pages/CartPage/CartPage";
 import DashboardPage from "../pages/DashboardPage";
