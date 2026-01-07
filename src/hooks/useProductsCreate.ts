@@ -5,7 +5,6 @@ import type { ReqProductsCreateResponse } from "../api/responses/ReqProductsCrea
 import { EVENT_TYPE } from "../shared/enums/EventType.enum";
 import { TOAST_TYPE } from "../shared/enums/ToastType.enum";
 import { showToast } from "../shared/utils/Toast.util";
-import type { WindowEventMap } from "../vite-env";
 
 export const useProductsCreate = () => {
   return useMutation<

@@ -5,6 +5,7 @@ import type {
 } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import type { ReqProductsGetWaitingApprovalProductsResponse } from "../../api/responses/ReqProductsGetWaitingApprovalProductsResponse.model";
 import { useAuthGetAllSellers } from "../../hooks/useAuthGetAllSellers";
 import { useBrandsGetAll } from "../../hooks/useBrandsGetAll";
 import { useCategoriesGetAll } from "../../hooks/useCategoriesGetAll";
@@ -15,9 +16,11 @@ import { EVENT_TYPE } from "../../shared/enums/EventType.enum";
 import ProductApprovalDialog from "./components/ProductApprovalDialog/ProductApprovalDialog";
 
 const AdminProductsPage = () => {
-  const { data, isLoading, refetch } = useProductsGetWaitingApprovalProducts(
-    {},
-  );
+  const {
+    data: products = [],
+    isLoading,
+    refetch,
+  } = useProductsGetWaitingApprovalProducts();
   const { data: categories = [] } = useCategoriesGetAll();
   const { data: brands = [] } = useBrandsGetAll();
   const { data: sellers = [] } = useAuthGetAllSellers();
@@ -28,6 +31,8 @@ const AdminProductsPage = () => {
   const [selectedProductId, setSelectedProductId] = useState<number | null>(
     null,
   );
+
+  const totalCount = products.length;
 
   const brandMap = useMemo(() => {
     const map = new Map<number, string>();
@@ -53,17 +58,21 @@ const AdminProductsPage = () => {
     return map;
   }, [currencies]);
 
-  const columnDefs = useMemo<ColDef[]>(
+  const columnDefs = useMemo<
+    ColDef<ReqProductsGetWaitingApprovalProductsResponse[number]>[]
+  >(
     () => [
       {
         headerName: "Preview",
         width: 80,
         sortable: false,
         filter: false,
-        cellRenderer: (params: ICellRendererParams) => {
-          const primaryImage = params.data?.images?.find(
-            (img) => img.isPrimary,
-          );
+        cellRenderer: (
+          params: ICellRendererParams<
+            ReqProductsGetWaitingApprovalProductsResponse[number]
+          >,
+        ) => {
+          const primaryImage = params.data?.images.find((img) => img.isPrimary);
 
           if (!primaryImage?.mediumUrl) return null;
 
@@ -82,22 +91,23 @@ const AdminProductsPage = () => {
       },
       {
         headerName: "Seller",
-        valueGetter: (params) => sellerMap.get(params.data?.sellerId) ?? "-",
+        valueGetter: (params) =>
+          sellerMap.get(params.data?.sellerId ?? 0) ?? "-",
       },
       {
         headerName: "Brand",
-        valueGetter: (params) => brandMap.get(params.data?.brandId) ?? "-",
+        valueGetter: (params) => brandMap.get(params.data?.brandId ?? 0) ?? "-",
       },
       {
         headerName: "Category",
         valueGetter: (params) =>
-          categoryMap.get(params.data?.categoryId) ?? "-",
+          categoryMap.get(params.data?.categoryId ?? 0) ?? "-",
       },
       {
         headerName: "Price",
         valueGetter: (params) => {
           const price = params.data?.price;
-          const code = currencyMap.get(params.data?.currencyId) ?? "";
+          const code = currencyMap.get(params.data?.currencyId ?? 0) ?? "";
           return price != null ? `${price.toFixed(2)} ${code}` : "-";
         },
       },
@@ -109,18 +119,24 @@ const AdminProductsPage = () => {
     [brandMap, categoryMap, currencyMap, sellerMap],
   );
 
-  const onRowDoubleClicked = useCallback((event: RowDoubleClickedEvent) => {
-    if (!event.data?.id) return;
+  const onRowDoubleClicked = useCallback(
+    (
+      event: RowDoubleClickedEvent<
+        ReqProductsGetWaitingApprovalProductsResponse[number]
+      >,
+    ) => {
+      if (!event.data?.id) return;
 
-    setSelectedProductId(event.data.id);
-    setIsProductApprovalDialogOpen(true);
-  }, []);
+      setSelectedProductId(event.data.id);
+      setIsProductApprovalDialogOpen(true);
+    },
+    [],
+  );
 
   useEffect(() => {
     const onProductApproved = () => {
       refetch();
     };
-
     const onProductRejected = () => {
       refetch();
     };
@@ -144,21 +160,19 @@ const AdminProductsPage = () => {
     return <LoadingSpinner size={56} borderWidth={3} />;
   }
 
-  const totalCount = data?.items?.length ?? 0;
-
   return (
     <>
       <div className="flex h-full w-full flex-col gap-5 py-4">
         <div className="flex items-center justify-between">
           <span className="text-s28-l36 text-text-primary font-semibold">
-            My Waiting Approvals ({totalCount} Product)
+            My Waiting Approvals ({totalCount})
           </span>
         </div>
 
         <div className="ag-theme-alpine flex-1">
-          <AgGridReact
+          <AgGridReact<ReqProductsGetWaitingApprovalProductsResponse[number]>
             theme="legacy"
-            rowData={data?.items ?? []}
+            rowData={products}
             columnDefs={columnDefs}
             suppressCellFocus
             animateRows

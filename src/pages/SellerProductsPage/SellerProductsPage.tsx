@@ -6,6 +6,7 @@ import type {
 import { AgGridReact } from "ag-grid-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { PRODUCT_STATUS } from "../../api/enums/ProductStatus.enum";
+import type { ReqProductsGetProductsBySellerResponse } from "../../api/responses/ReqProductsGetProductsBySellerResponse.model";
 import { useBrandsGetAll } from "../../hooks/useBrandsGetAll";
 import { useCategoriesGetAll } from "../../hooks/useCategoriesGetAll";
 import { useCurrenciesGetAll } from "../../hooks/useCurrenciesGetAll";
@@ -16,15 +17,18 @@ import NewProductDialog from "./components/NewProductDialog/NewProductDialog";
 import UpdateProductDialog from "./components/UpdateProductDialog/UpdateProductDialog";
 
 const PRODUCT_STATUS_TEXT_PAIRS: Record<PRODUCT_STATUS, string> = {
-  [PRODUCT_STATUS.WAITING_FOR_APPROVE]: "Waiting For Approve",
   [PRODUCT_STATUS.APPROVED]: "Approved",
+  [PRODUCT_STATUS.WAITING_FOR_APPROVE]: "Waiting For Approve",
   [PRODUCT_STATUS.NOT_APPROVED]: "Not Approved",
   [PRODUCT_STATUS.DELETED]: "Deleted",
 };
 
 const SellerProductsPage = () => {
-  const { data, isLoading, refetch } = useProductsGetProductsBySeller({});
-
+  const {
+    data: products = [],
+    isLoading,
+    refetch,
+  } = useProductsGetProductsBySeller();
   const { data: categories = [] } = useCategoriesGetAll();
   const { data: brands = [] } = useBrandsGetAll();
   const { data: currencies = [] } = useCurrenciesGetAll();
@@ -35,6 +39,23 @@ const SellerProductsPage = () => {
   const [selectedProductId, setSelectedProductId] = useState<number | null>(
     null,
   );
+
+  const totalCount = products.length;
+
+  const statusCounts = useMemo(() => {
+    return products.reduce<Record<PRODUCT_STATUS, number>>(
+      (acc, product) => {
+        acc[product.status] += 1;
+        return acc;
+      },
+      {
+        [PRODUCT_STATUS.APPROVED]: 0,
+        [PRODUCT_STATUS.WAITING_FOR_APPROVE]: 0,
+        [PRODUCT_STATUS.NOT_APPROVED]: 0,
+        [PRODUCT_STATUS.DELETED]: 0,
+      },
+    );
+  }, [products]);
 
   const brandMap = useMemo(() => {
     const map = new Map<number, string>();
@@ -54,17 +75,21 @@ const SellerProductsPage = () => {
     return map;
   }, [currencies]);
 
-  const columnDefs = useMemo<ColDef[]>(
+  const columnDefs = useMemo<
+    ColDef<ReqProductsGetProductsBySellerResponse[number]>[]
+  >(
     () => [
       {
         headerName: "Preview",
         width: 80,
         sortable: false,
         filter: false,
-        cellRenderer: (params: ICellRendererParams) => {
-          const primaryImage = params.data?.images?.find(
-            (img) => img.isPrimary,
-          );
+        cellRenderer: (
+          params: ICellRendererParams<
+            ReqProductsGetProductsBySellerResponse[number]
+          >,
+        ) => {
+          const primaryImage = params.data?.images.find((img) => img.isPrimary);
 
           if (!primaryImage?.mediumUrl) return null;
 
@@ -83,18 +108,18 @@ const SellerProductsPage = () => {
       },
       {
         headerName: "Brand",
-        valueGetter: (params) => brandMap.get(params.data?.brandId) ?? "-",
+        valueGetter: (params) => brandMap.get(params.data?.brandId ?? 0) ?? "-",
       },
       {
         headerName: "Category",
         valueGetter: (params) =>
-          categoryMap.get(params.data?.categoryId) ?? "-",
+          categoryMap.get(params.data?.categoryId ?? 0) ?? "-",
       },
       {
         headerName: "Price",
         valueGetter: (params) => {
           const price = params.data?.price;
-          const code = currencyMap.get(params.data?.currencyId) ?? "";
+          const code = currencyMap.get(params.data?.currencyId ?? 0) ?? "";
           return price != null ? `${price.toFixed(2)} ${code}` : "-";
         },
       },
@@ -112,18 +137,24 @@ const SellerProductsPage = () => {
     [brandMap, categoryMap, currencyMap],
   );
 
-  const onRowDoubleClicked = useCallback((event: RowDoubleClickedEvent) => {
-    if (!event.data?.id) return;
+  const onRowDoubleClicked = useCallback(
+    (
+      event: RowDoubleClickedEvent<
+        ReqProductsGetProductsBySellerResponse[number]
+      >,
+    ) => {
+      if (!event.data?.id) return;
 
-    setSelectedProductId(event.data.id);
-    setIsUpdateProductDialogOpen(true);
-  }, []);
+      setSelectedProductId(event.data.id);
+      setIsUpdateProductDialogOpen(true);
+    },
+    [],
+  );
 
   useEffect(() => {
     const onProductCreated = () => {
       refetch();
     };
-
     const onProductUpdated = () => {
       refetch();
     };
@@ -141,15 +172,34 @@ const SellerProductsPage = () => {
     return <LoadingSpinner size={56} borderWidth={3} />;
   }
 
-  const totalCount = data?.items?.length ?? 0;
-
   return (
     <>
       <div className="flex h-full w-full flex-col gap-5 py-4">
         <div className="flex items-center justify-between">
-          <span className="text-s28-l36 text-text-primary font-semibold">
-            My Products ({totalCount} Product)
-          </span>
+          <div className="flex items-center gap-6">
+            <span className="text-s28-l36 text-text-primary font-semibold">
+              My Products ({totalCount})
+            </span>
+
+            <div className="text-s20-l28 flex items-center gap-4 text-gray-600">
+              <span>
+                {PRODUCT_STATUS_TEXT_PAIRS[PRODUCT_STATUS.APPROVED]} (
+                {statusCounts[PRODUCT_STATUS.APPROVED]})
+              </span>
+              <span>
+                {PRODUCT_STATUS_TEXT_PAIRS[PRODUCT_STATUS.WAITING_FOR_APPROVE]}{" "}
+                ({statusCounts[PRODUCT_STATUS.WAITING_FOR_APPROVE]})
+              </span>
+              <span>
+                {PRODUCT_STATUS_TEXT_PAIRS[PRODUCT_STATUS.NOT_APPROVED]} (
+                {statusCounts[PRODUCT_STATUS.NOT_APPROVED]})
+              </span>
+              <span>
+                {PRODUCT_STATUS_TEXT_PAIRS[PRODUCT_STATUS.DELETED]} (
+                {statusCounts[PRODUCT_STATUS.DELETED]})
+              </span>
+            </div>
+          </div>
 
           <button
             type="button"
@@ -161,9 +211,9 @@ const SellerProductsPage = () => {
         </div>
 
         <div className="ag-theme-alpine flex-1">
-          <AgGridReact
+          <AgGridReact<ReqProductsGetProductsBySellerResponse[number]>
             theme="legacy"
-            rowData={data?.items ?? []}
+            rowData={products}
             columnDefs={columnDefs}
             suppressCellFocus
             animateRows

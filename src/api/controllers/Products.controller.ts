@@ -1,6 +1,4 @@
 import axiosInstance from "../../axios";
-import type { ReqProductsGetProductsBySellerPayload } from "../payloads/ReqProductsGetProductsBySellerPayload.model";
-import type { ReqProductsGetWaitingApprovalProductsPayload } from "../payloads/ReqProductsGetWaitingApprovalProductsPayload.model";
 import type { ReqProductsListPayload } from "../payloads/ReqProductsListPayload.model";
 import type { ReqProductsApproveResponse } from "../responses/ReqProductsApproveResponse.model";
 import type { ReqProductsCreateResponse } from "../responses/ReqProductsCreateResponse.model";
@@ -21,21 +19,15 @@ export const reqProductsList = (payload: ReqProductsListPayload) => {
   );
 };
 
-export const reqProductsGetProductsBySeller = (
-  payload: ReqProductsGetProductsBySellerPayload,
-) => {
-  return axiosInstance.post<ReqProductsGetProductsBySellerResponse>(
+export const reqProductsGetProductsBySeller = () => {
+  return axiosInstance.get<ReqProductsGetProductsBySellerResponse>(
     `${PATH_NAME}/get-products-by-seller`,
-    payload,
   );
 };
 
-export const reqProductsGetWaitingApprovalProducts = (
-  payload: ReqProductsGetWaitingApprovalProductsPayload,
-) => {
-  return axiosInstance.post<ReqProductsGetWaitingApprovalProductsResponse>(
+export const reqProductsGetWaitingApprovalProducts = () => {
+  return axiosInstance.get<ReqProductsGetWaitingApprovalProductsResponse>(
     `${PATH_NAME}/get-waiting-approval-products`,
-    payload,
   );
 };
 
