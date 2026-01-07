@@ -1,12 +1,15 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import type { ReqBrandsGetAllResponse } from "../../../../../api/responses/ReqBrandsGetAllResponse.model";
 import type { ReqCategoriesGetAllResponse } from "../../../../../api/responses/ReqCategoriesGetAllResponse.model";
 import type { ReqCurrenciesGetAllResponse } from "../../../../../api/responses/ReqCurrenciesGetAllResponse.model";
+import type { ReqProductsGetByIdResponse } from "../../../../../api/responses/ReqProductsGetByIdResponse.model";
 import { AddIcon, CloseIcon } from "../../../../../assets/icons";
 import { useBrandsGetAll } from "../../../../../hooks/useBrandsGetAll";
+import { useCategoriesGetAll } from "../../../../../hooks/useCategoriesGetAll";
 import { useCurrenciesGetAll } from "../../../../../hooks/useCurrenciesGetAll";
-import { useProductsCreate } from "../../../../../hooks/useProductsCreate";
+import { useProductsGetById } from "../../../../../hooks/useProductsGetById";
+import { useProductsUpdate } from "../../../../../hooks/useProductsUpdate";
 import CategorySelectionDialog from "../../../../../shared/components/CategorySelectionDialog/CategorySelectionDialog";
 import {
   GenericDialogClose,
@@ -18,7 +21,7 @@ import GenericSelect from "../../../../../shared/components/GenericSelect";
 import InputErrorLabel from "../../../../../shared/components/InputErrorLabel";
 import InputLabel from "../../../../../shared/components/InputLabel";
 
-type ProductCreateFormType = {
+type UpdateProductFormType = {
   name: string;
   description: string;
   stockCount: number;
@@ -31,30 +34,58 @@ type ProductCreateFormType = {
 
 const ACCEPTED_FILE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
-const NewProductForm = ({ close }: { close: () => void }) => {
+const urlToFile = async (url: string, name: string) => {
+  const res = await fetch(url);
+  const blob = await res.blob();
+  return new File([blob], name, { type: blob.type });
+};
+
+const UpdateProductForm = ({
+  productId,
+  close,
+}: {
+  productId: number;
+  close: () => void;
+}) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const productRef = useRef<ReqProductsGetByIdResponse | null>(null);
 
   const { data: brands = [] } = useBrandsGetAll();
+  const { data: categories = [] } = useCategoriesGetAll();
   const { data: currencies = [] } = useCurrenciesGetAll();
-  const { mutate: createProduct, isPending } = useProductsCreate();
+  const { data: product, isLoading } = useProductsGetById(productId);
+
+  const { mutate: updateProduct, isPending } = useProductsUpdate();
 
   const {
     control,
     handleSubmit,
+    reset,
     formState: { isValid, errors },
-  } = useForm<ProductCreateFormType>({
+  } = useForm<UpdateProductFormType>({
     mode: "onChange",
-    defaultValues: {
-      images: [],
-    },
+    defaultValues: { images: [] },
   });
 
   const [isCategorySelectionDialogOpen, setIsCategorySelectionDialogOpen] =
     useState(false);
 
-  const onSubmit: SubmitHandler<ProductCreateFormType> = (values) => {
-    createProduct(
+  const onSubmit: SubmitHandler<UpdateProductFormType> = (values) => {
+    const originalImages = productRef.current?.images ?? [];
+
+    const deletedImageIds = originalImages
+      .filter(
+        (img) => !values.images.some((file) => file.name === img.originalUrl),
+      )
+      .map((img) => img.id);
+
+    const newAddedImages = values.images.filter(
+      (file) => !originalImages.some((img) => img.originalUrl === file.name),
+    );
+
+    updateProduct(
       {
+        id: productId,
         name: values.name,
         description: values.description,
         stockCount: values.stockCount,
@@ -62,7 +93,8 @@ const NewProductForm = ({ close }: { close: () => void }) => {
         brandId: values.brand.id,
         categoryId: values.category.id,
         currencyId: values.currency.id,
-        images: values.images,
+        newAddedImages,
+        deletedImageIds,
       },
       {
         onSuccess: () => {
@@ -72,15 +104,54 @@ const NewProductForm = ({ close }: { close: () => void }) => {
     );
   };
 
+  useEffect(() => {
+    if (
+      !product ||
+      !brands.length ||
+      !categories.length ||
+      !currencies.length
+    ) {
+      return;
+    }
+
+    productRef.current = product;
+
+    const initializeForm = async () => {
+      const imageFiles = await Promise.all(
+        product.images.map((img) =>
+          urlToFile(img.originalUrl, img.originalUrl),
+        ),
+      );
+
+      reset({
+        name: product.name,
+        description: product.description,
+        stockCount: product.stockCount,
+        price: product.price,
+        brand: brands.find((b) => b.id === product.brandId)!,
+        category: categories.find((c) => c.id === product.categoryId)!,
+        currency: currencies.find((c) => c.id === product.currencyId)!,
+        images: imageFiles,
+      });
+    };
+
+    initializeForm();
+  }, [product, brands, categories, currencies, reset]);
+
+  if (isLoading || !product) return null;
+
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleSubmit(onSubmit)(e);
+      }}
       className="relative flex flex-col gap-y-6"
     >
       <div className="flex flex-col gap-y-1">
-        <GenericDialogTitle>Add New Product</GenericDialogTitle>
+        <GenericDialogTitle>Update Product</GenericDialogTitle>
         <span className="text-s14-l20 text-gray-500">
-          Please fill in the details to create a new product.
+          Update the product details.
         </span>
       </div>
 
@@ -116,7 +187,6 @@ const NewProductForm = ({ close }: { close: () => void }) => {
             rules={{ required: "Brand is required!" }}
             render={({ field }) => (
               <GenericSelect
-                placeholder="Select brand"
                 value={field.value}
                 options={brands.map((brand) => ({
                   label: brand.name,
@@ -209,7 +279,6 @@ const NewProductForm = ({ close }: { close: () => void }) => {
               rules={{ required: "Currency is required!" }}
               render={({ field }) => (
                 <GenericSelect
-                  placeholder="Select currency"
                   value={field.value}
                   options={currencies.map((currency) => ({
                     label: currency.code,
@@ -226,7 +295,6 @@ const NewProductForm = ({ close }: { close: () => void }) => {
 
         <div className="relative flex flex-col">
           <InputLabel label="Images" hasAsterisk />
-
           <Controller
             name="images"
             control={control}
@@ -316,11 +384,11 @@ const NewProductForm = ({ close }: { close: () => void }) => {
               : "bg-orange hover:bg-orange/90"
           }`}
         >
-          Create
+          Update
         </button>
       </div>
     </form>
   );
 };
 
-export default NewProductForm;
+export default UpdateProductForm;

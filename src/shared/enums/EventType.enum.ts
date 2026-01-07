@@ -1,5 +1,7 @@
 export const EVENT_TYPE = {
   SHOW_TOAST: "SHOW_TOAST",
+  PRODUCT_CREATED: "PRODUCT_CREATED",
+  PRODUCT_UPDATED: "PRODUCT_UPDATED",
 } as const;
 
 export type EVENT_TYPE = (typeof EVENT_TYPE)[keyof typeof EVENT_TYPE];

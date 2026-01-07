@@ -2,8 +2,10 @@ import { useMutation } from "@tanstack/react-query";
 import { reqProductsUpdate } from "../api/controllers/Products.controller";
 import type { ReqProductsUpdatePayload } from "../api/payloads/ReqProductsUpdatePayload.model";
 import type { ReqProductsUpdateResponse } from "../api/responses/ReqProductsUpdateResponse.model";
+import { EVENT_TYPE } from "../shared/enums/EventType.enum";
 import { TOAST_TYPE } from "../shared/enums/ToastType.enum";
 import { showToast } from "../shared/utils/Toast.util";
+import type { WindowEventMap } from "../vite-env";
 
 export const useProductsUpdate = () => {
   return useMutation<
@@ -36,7 +38,15 @@ export const useProductsUpdate = () => {
       return res.data;
     },
 
-    onSuccess: () => {
+    onSuccess: (data) => {
+      window.dispatchEvent(
+        new CustomEvent<
+          WindowEventMap[typeof EVENT_TYPE.PRODUCT_UPDATED]["detail"]
+        >(EVENT_TYPE.PRODUCT_UPDATED, {
+          detail: data,
+        }),
+      );
+
       showToast({
         title: "Product updated",
         description: "The product has been successfully updated.",

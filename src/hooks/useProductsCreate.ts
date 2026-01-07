@@ -2,8 +2,10 @@ import { useMutation } from "@tanstack/react-query";
 import { reqProductsCreate } from "../api/controllers/Products.controller";
 import type { ReqProductsCreatePayload } from "../api/payloads/ReqProductsCreatePayload.model";
 import type { ReqProductsCreateResponse } from "../api/responses/ReqProductsCreateResponse.model";
+import { EVENT_TYPE } from "../shared/enums/EventType.enum";
 import { TOAST_TYPE } from "../shared/enums/ToastType.enum";
 import { showToast } from "../shared/utils/Toast.util";
+import type { WindowEventMap } from "../vite-env";
 
 export const useProductsCreate = () => {
   return useMutation<
@@ -30,7 +32,15 @@ export const useProductsCreate = () => {
       return res.data;
     },
 
-    onSuccess: () => {
+    onSuccess: (data) => {
+      window.dispatchEvent(
+        new CustomEvent<
+          WindowEventMap[typeof EVENT_TYPE.PRODUCT_CREATED]["detail"]
+        >(EVENT_TYPE.PRODUCT_CREATED, {
+          detail: data,
+        }),
+      );
+
       showToast({
         title: "Product created",
         description: "The product has been successfully added.",

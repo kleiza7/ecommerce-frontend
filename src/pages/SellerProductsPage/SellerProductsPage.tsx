@@ -1,13 +1,19 @@
-import type { ColDef, ICellRendererParams } from "ag-grid-community";
+import type {
+  ColDef,
+  ICellRendererParams,
+  RowDoubleClickedEvent,
+} from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { PRODUCT_STATUS } from "../../api/enums/ProductStatus.enum";
 import { useBrandsGetAll } from "../../hooks/useBrandsGetAll";
 import { useCategoriesGetAll } from "../../hooks/useCategoriesGetAll";
 import { useCurrenciesGetAll } from "../../hooks/useCurrenciesGetAll";
 import { useProductsGetProductsBySeller } from "../../hooks/useProductsGetProductsBySeller";
 import LoadingSpinner from "../../shared/components/LoadingSpinner";
+import { EVENT_TYPE } from "../../shared/enums/EventType.enum";
 import NewProductDialog from "./components/NewProductDialog/NewProductDialog";
+import UpdateProductDialog from "./components/UpdateProductDialog/UpdateProductDialog";
 
 const PRODUCT_STATUS_TEXT_PAIRS: Record<PRODUCT_STATUS, string> = {
   [PRODUCT_STATUS.WAITING_FOR_APPROVE]: "Waiting For Approve",
@@ -17,12 +23,18 @@ const PRODUCT_STATUS_TEXT_PAIRS: Record<PRODUCT_STATUS, string> = {
 };
 
 const SellerProductsPage = () => {
-  const { data, isLoading } = useProductsGetProductsBySeller({});
+  const { data, isLoading, refetch } = useProductsGetProductsBySeller({});
+
   const { data: categories = [] } = useCategoriesGetAll();
   const { data: brands = [] } = useBrandsGetAll();
   const { data: currencies = [] } = useCurrenciesGetAll();
 
   const [isNewProductDialogOpen, setIsNewProductDialogOpen] = useState(false);
+  const [isUpdateProductDialogOpen, setIsUpdateProductDialogOpen] =
+    useState(false);
+  const [selectedProductId, setSelectedProductId] = useState<number | null>(
+    null,
+  );
 
   const brandMap = useMemo(() => {
     const map = new Map<number, string>();
@@ -100,6 +112,31 @@ const SellerProductsPage = () => {
     [brandMap, categoryMap, currencyMap],
   );
 
+  const onRowDoubleClicked = useCallback((event: RowDoubleClickedEvent) => {
+    if (!event.data?.id) return;
+
+    setSelectedProductId(event.data.id);
+    setIsUpdateProductDialogOpen(true);
+  }, []);
+
+  useEffect(() => {
+    const onProductCreated = () => {
+      refetch();
+    };
+
+    const onProductUpdated = () => {
+      refetch();
+    };
+
+    window.addEventListener(EVENT_TYPE.PRODUCT_CREATED, onProductCreated);
+    window.addEventListener(EVENT_TYPE.PRODUCT_UPDATED, onProductUpdated);
+
+    return () => {
+      window.removeEventListener(EVENT_TYPE.PRODUCT_CREATED, onProductCreated);
+      window.removeEventListener(EVENT_TYPE.PRODUCT_UPDATED, onProductUpdated);
+    };
+  }, [refetch]);
+
   if (isLoading) {
     return <LoadingSpinner size={56} borderWidth={3} />;
   }
@@ -117,7 +154,7 @@ const SellerProductsPage = () => {
           <button
             type="button"
             onClick={() => setIsNewProductDialogOpen(true)}
-            className={`bg-orange hover:bg-orange-dark text-s14-l20 cursor-pointer rounded-lg px-6 py-2 font-medium text-white transition`}
+            className="bg-orange hover:bg-orange-dark text-s14-l20 rounded-lg px-6 py-2 font-medium text-white transition"
           >
             New Product
           </button>
@@ -130,6 +167,7 @@ const SellerProductsPage = () => {
             columnDefs={columnDefs}
             suppressCellFocus
             animateRows
+            onRowDoubleClicked={onRowDoubleClicked}
             defaultColDef={{
               flex: 1,
               minWidth: 140,
@@ -145,6 +183,14 @@ const SellerProductsPage = () => {
         open={isNewProductDialogOpen}
         setOpen={setIsNewProductDialogOpen}
       />
+
+      {selectedProductId && (
+        <UpdateProductDialog
+          open={isUpdateProductDialogOpen}
+          setOpen={setIsUpdateProductDialogOpen}
+          productId={selectedProductId}
+        />
+      )}
     </>
   );
 };
