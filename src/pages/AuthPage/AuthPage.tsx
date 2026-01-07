@@ -16,7 +16,7 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center py-5">
+    <div className="flex flex-col items-center py-5">
       <div className="mb-6 text-center">
         <p className="text-s22-l28 text-text-primary">Hi,</p>
         <p className="text-s14-l20 text-text-primary mt-1">

@@ -7,7 +7,7 @@ import CartPage from "../pages/CartPage/CartPage";
 import DashboardPage from "../pages/DashboardPage";
 import ProductDetailPage from "../pages/ProductDetailPage/ProductDetailPage";
 import ProductsPage from "../pages/ProductsPage/ProductsPage";
-import SellerProductsPage from "../pages/SellerProductsPage";
+import SellerProductsPage from "../pages/SellerProductsPage/SellerProductsPage";
 import { USER_DOMAIN } from "../shared/enums/UserDomain.enum";
 
 const router = createBrowserRouter([

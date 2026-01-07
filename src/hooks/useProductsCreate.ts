@@ -12,7 +12,21 @@ export const useProductsCreate = () => {
     ReqProductsCreatePayload
   >({
     mutationFn: async (payload) => {
-      const res = await reqProductsCreate(payload);
+      const formData = new FormData();
+
+      formData.append("name", payload.name);
+      formData.append("description", payload.description);
+      formData.append("stockCount", String(payload.stockCount));
+      formData.append("price", String(payload.price));
+      formData.append("brandId", String(payload.brandId));
+      formData.append("categoryId", String(payload.categoryId));
+      formData.append("currencyId", String(payload.currencyId));
+
+      payload.images.forEach((file) => {
+        formData.append("images", file);
+      });
+
+      const res = await reqProductsCreate(formData);
       return res.data;
     },
 

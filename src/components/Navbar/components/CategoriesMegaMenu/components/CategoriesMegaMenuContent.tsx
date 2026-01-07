@@ -8,13 +8,11 @@ type CategoryNode = {
   children?: CategoryNode[];
 };
 
-type CategoriesMegaMenuContentProps = {
-  parents: CategoryNode[];
-};
-
 const CategoriesMegaMenuContent = ({
   parents,
-}: CategoriesMegaMenuContentProps) => {
+}: {
+  parents: CategoryNode[];
+}) => {
   const [searchParams] = useSearchParams();
   const activeCategorySlug = searchParams.get("category");
 

@@ -1,9 +1,7 @@
 import axiosInstance from "../../axios";
-import type { ReqProductsCreatePayload } from "../payloads/ReqProductsCreatePayload.model";
 import type { ReqProductsGetProductsBySellerPayload } from "../payloads/ReqProductsGetProductsBySellerPayload.model";
 import type { ReqProductsGetWaitingApprovalProductsPayload } from "../payloads/ReqProductsGetWaitingApprovalProductsPayload.model";
 import type { ReqProductsListPayload } from "../payloads/ReqProductsListPayload.model";
-import type { ReqProductsUpdatePayload } from "../payloads/ReqProductsUpdatePayload.model";
 import type { ReqProductsApproveResponse } from "../responses/ReqProductsApproveResponse.model";
 import type { ReqProductsCreateResponse } from "../responses/ReqProductsCreateResponse.model";
 import type { ReqProductsDeleteResponse } from "../responses/ReqProductsDeleteResponse.model";
@@ -47,24 +45,10 @@ export const reqProductsGetById = (id: number) => {
   );
 };
 
-export const reqProductsCreate = (payload: ReqProductsCreatePayload) => {
-  const formData = new FormData();
-
-  formData.append("name", payload.name);
-  formData.append("description", payload.description);
-  formData.append("stockCount", String(payload.stockCount));
-  formData.append("price", String(payload.price));
-  formData.append("brandId", String(payload.brandId));
-  formData.append("categoryId", String(payload.categoryId));
-  formData.append("currencyId", String(payload.currencyId));
-
-  payload.images.forEach((file) => {
-    formData.append("images", file);
-  });
-
+export const reqProductsCreate = (payload: FormData) => {
   return axiosInstance.post<ReqProductsCreateResponse>(
     `${PATH_NAME}/create`,
-    formData,
+    payload,
     {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -73,27 +57,10 @@ export const reqProductsCreate = (payload: ReqProductsCreatePayload) => {
   );
 };
 
-export const reqProductsUpdate = (payload: ReqProductsUpdatePayload) => {
-  const formData = new FormData();
-
-  formData.append("id", String(payload.id));
-  formData.append("name", payload.name);
-  formData.append("description", payload.description);
-  formData.append("stockCount", String(payload.stockCount));
-  formData.append("price", String(payload.price));
-  formData.append("brandId", String(payload.brandId));
-  formData.append("categoryId", String(payload.categoryId));
-  formData.append("currencyId", String(payload.currencyId));
-
-  payload.newAddedImages.forEach((file) => {
-    formData.append("newAddedImages", file);
-  });
-
-  formData.append("deletedImageIds", JSON.stringify(payload.deletedImageIds));
-
+export const reqProductsUpdate = (payload: FormData) => {
   return axiosInstance.put<ReqProductsUpdateResponse>(
     `${PATH_NAME}/update`,
-    formData,
+    payload,
     {
       headers: {
         "Content-Type": "multipart/form-data",

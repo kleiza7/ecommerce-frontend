@@ -12,7 +12,27 @@ export const useProductsUpdate = () => {
     ReqProductsUpdatePayload
   >({
     mutationFn: async (payload) => {
-      const res = await reqProductsUpdate(payload);
+      const formData = new FormData();
+
+      formData.append("id", String(payload.id));
+      formData.append("name", payload.name);
+      formData.append("description", payload.description);
+      formData.append("stockCount", String(payload.stockCount));
+      formData.append("price", String(payload.price));
+      formData.append("brandId", String(payload.brandId));
+      formData.append("categoryId", String(payload.categoryId));
+      formData.append("currencyId", String(payload.currencyId));
+
+      payload.newAddedImages.forEach((file) => {
+        formData.append("newAddedImages", file);
+      });
+
+      formData.append(
+        "deletedImageIds",
+        JSON.stringify(payload.deletedImageIds),
+      );
+
+      const res = await reqProductsUpdate(formData);
       return res.data;
     },
 

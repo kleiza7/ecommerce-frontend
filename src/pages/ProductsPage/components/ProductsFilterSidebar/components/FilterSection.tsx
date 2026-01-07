@@ -2,19 +2,17 @@ import { useState, type ReactNode } from "react";
 import { KeyboardArrowUpIcon } from "../../../../../assets/icons";
 import { customTwMerge } from "../../../../../shared/utils/Tailwind.util";
 
-type FilterSectionProps = {
-  title: string;
-  children: ReactNode;
-  defaultOpen?: boolean;
-  className?: string;
-};
-
 const FilterSection = ({
   title,
   children,
   defaultOpen = false,
   className,
-}: FilterSectionProps) => {
+}: {
+  title: string;
+  children: ReactNode;
+  defaultOpen?: boolean;
+  className?: string;
+}) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (

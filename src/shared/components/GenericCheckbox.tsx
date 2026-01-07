@@ -2,21 +2,19 @@ import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import { CheckIcon } from "../../assets/icons";
 import { customTwMerge } from "../utils/Tailwind.util";
 
-export type GenericCheckboxProps = {
-  checked?: boolean;
-  defaultChecked?: boolean;
-  onCheckedChange?: (checked: boolean) => void;
-  disabled?: boolean;
-  className?: string;
-};
-
 const GenericCheckbox = ({
   checked,
   defaultChecked,
   onCheckedChange,
   disabled,
   className = "",
-}: GenericCheckboxProps) => {
+}: {
+  checked?: boolean;
+  defaultChecked?: boolean;
+  onCheckedChange?: (checked: boolean) => void;
+  disabled?: boolean;
+  className?: string;
+}) => {
   return (
     <CheckboxPrimitive.Root
       checked={checked}
