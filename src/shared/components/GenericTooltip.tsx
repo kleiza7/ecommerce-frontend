@@ -1,12 +1,14 @@
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 
-type TooltipProps = {
+const GenericTooltip = ({
+  content,
+  children,
+  side = "top",
+}: {
   content: React.ReactNode;
   children: React.ReactNode;
   side?: "top" | "right" | "bottom" | "left";
-};
-
-const GenericTooltip = ({ content, children, side = "top" }: TooltipProps) => {
+}) => {
   return (
     <TooltipPrimitive.Root>
       <TooltipPrimitive.Trigger asChild>{children}</TooltipPrimitive.Trigger>

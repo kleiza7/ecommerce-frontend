@@ -1,18 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { reqProductsGetWaitingApprovalProducts } from "../api/controllers/Products.controller";
-import type { ReqProductsGetWaitingApprovalProductsPayload } from "../api/payloads/ReqProductsGetWaitingApprovalProductsPayload.model";
 import type { ReqProductsGetWaitingApprovalProductsResponse } from "../api/responses/ReqProductsGetWaitingApprovalProductsResponse.model";
 
-export const useProductsGetWaitingApprovalProducts = (
-  payload: ReqProductsGetWaitingApprovalProductsPayload,
-) => {
+export const useProductsGetWaitingApprovalProducts = () => {
   return useQuery<ReqProductsGetWaitingApprovalProductsResponse>({
-    queryKey: ["products", "get-waiting-approval-products", payload],
+    queryKey: ["products", "get-waiting-approval-products"],
     queryFn: async () => {
-      const res = await reqProductsGetWaitingApprovalProducts(payload);
+      const res = await reqProductsGetWaitingApprovalProducts();
       return res.data;
     },
-    enabled: !!payload,
     staleTime: 0,
   });
 };

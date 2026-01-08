@@ -1,4 +1,6 @@
 import { NavLink } from "react-router-dom";
+import { useUserDomain } from "../../hooks/useUserDomain";
+import { USER_DOMAIN } from "../../shared/enums/UserDomain.enum";
 import { useUserStore } from "../../stores/UserStore";
 import AuthPopover from "./components/AuthPopover";
 import CartLink from "./components/CartLink";
@@ -6,8 +8,11 @@ import CategoriesMegaMenu from "./components/CategoriesMegaMenu/CategoriesMegaMe
 import UserPopover from "./components/UserPopover";
 
 const Navbar = () => {
+  const userDomain = useUserDomain();
   const user = useUserStore((state) => state.user);
+
   const isAuthenticated = Boolean(user);
+  const isUserDomainPublic = userDomain === USER_DOMAIN.PUBLIC;
 
   return (
     <header className="border-gray-1 border-b pt-5">
@@ -22,11 +27,11 @@ const Navbar = () => {
 
           <div className="flex gap-x-6">
             {isAuthenticated ? <UserPopover /> : <AuthPopover />}
-            <CartLink />
+            {isUserDomainPublic && <CartLink />}
           </div>
         </div>
 
-        <CategoriesMegaMenu />
+        {isUserDomainPublic && <CategoriesMegaMenu />}
       </div>
     </header>
   );

@@ -28,11 +28,11 @@ const ProductsGrid = ({
 }) => {
   const [params] = useSearchParams();
 
-  const selectedCategorySlug = params.get("category");
+  /* ===========================
+     CATEGORY
+  =========================== */
 
-  const selectedBrandSlugs = useMemo(() => {
-    return params.get("brands")?.split(",") ?? [];
-  }, [params]);
+  const selectedCategorySlug = params.get("category");
 
   const categoryIds = useMemo(() => {
     if (!selectedCategorySlug) return undefined;
@@ -46,6 +46,14 @@ const ProductsGrid = ({
     return collectLeafIds(node);
   }, [categories, selectedCategorySlug]);
 
+  /* ===========================
+     BRAND
+  =========================== */
+
+  const selectedBrandSlugs = useMemo(() => {
+    return params.get("brands")?.split(",") ?? [];
+  }, [params]);
+
   const brandIds = useMemo(() => {
     if (selectedBrandSlugs.length === 0) return undefined;
 
@@ -56,14 +64,35 @@ const ProductsGrid = ({
     return ids.length > 0 ? ids : undefined;
   }, [brands, selectedBrandSlugs]);
 
+  /* ===========================
+     SELLER (PARAM = sellers)
+  =========================== */
+
+  const selectedSellerIds = useMemo(() => {
+    return params.get("sellers")?.split(",").map(Number) ?? [];
+  }, [params]);
+
+  const sellerIds = useMemo(() => {
+    return selectedSellerIds.length > 0 ? selectedSellerIds : undefined;
+  }, [selectedSellerIds]);
+
+  /* ===========================
+     PAYLOAD
+  =========================== */
+
   const payload: Omit<ReqProductsListPayload, "page"> = {
     limit: 20,
     ...(categoryIds && { categoryIds }),
     ...(brandIds && { brandIds }),
+    ...(sellerIds && { sellerIds }),
   };
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useProductsListInfinite(payload);
+
+  /* ===========================
+     MAP HELPERS
+  =========================== */
 
   const brandNameMap = useMemo(() => {
     const map = new Map<number, string>();
@@ -80,6 +109,10 @@ const ProductsGrid = ({
         brandName: brandNameMap.get(product.brandId) ?? "",
       })),
     ) ?? [];
+
+  /* ===========================
+     RENDER
+  =========================== */
 
   if (isLoading) {
     return (

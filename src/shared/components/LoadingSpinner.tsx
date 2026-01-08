@@ -1,15 +1,13 @@
-type LoadingSpinnerProps = {
-  size?: number; // px
-  colorClassName?: string; // tailwind color
-  borderWidth?: number; // px
-  className?: string;
-};
-
 const LoadingSpinner = ({
   size = 24,
   borderWidth = 2,
   className = "",
-}: LoadingSpinnerProps) => {
+}: {
+  size?: number; // px
+  colorClassName?: string; // tailwind color
+  borderWidth?: number; // px
+  className?: string;
+}) => {
   return (
     <div
       className={`border-orange animate-spin rounded-full border-t-transparent ${className} `}

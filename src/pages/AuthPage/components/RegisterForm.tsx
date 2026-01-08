@@ -1,5 +1,8 @@
+import { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { useAuthRegisterSeller } from "../../../hooks/useAuthRegisterSeller";
 import { useAuthRegisterUser } from "../../../hooks/useAuthRegisterUser";
+import GenericCheckbox from "../../../shared/components/GenericCheckbox";
 import GenericFormInput from "../../../shared/components/GenericFormInput";
 import InputErrorLabel from "../../../shared/components/InputErrorLabel";
 import InputLabel from "../../../shared/components/InputLabel";
@@ -20,6 +23,8 @@ const RegisterForm = ({
 }: {
   changeMode: (nextMode: AUTH_PAGE_MODE) => void;
 }) => {
+  const [isSeller, setIsSeller] = useState(false);
+
   const {
     control,
     handleSubmit,
@@ -33,12 +38,24 @@ const RegisterForm = ({
     },
   });
 
-  const { mutate: registerUser, isPending } = useAuthRegisterUser(() => {
+  const onSuccess = () => {
     changeMode(AUTH_PAGE_MODE.LOGIN);
-  });
+  };
+
+  const { mutate: registerUser, isPending: isUserPending } =
+    useAuthRegisterUser(onSuccess);
+
+  const { mutate: registerSeller, isPending: isSellerPending } =
+    useAuthRegisterSeller(onSuccess);
+
+  const isPending = isUserPending || isSellerPending;
 
   const onSubmit: SubmitHandler<RegisterFormValues> = (values) => {
-    registerUser(values);
+    if (isSeller) {
+      registerSeller(values);
+    } else {
+      registerUser(values);
+    }
   };
 
   return (
@@ -109,6 +126,16 @@ const RegisterForm = ({
 
           <InputErrorLabel message={errors.password?.message} />
         </div>
+
+        <label className="flex cursor-pointer items-center gap-3">
+          <GenericCheckbox
+            checked={isSeller}
+            onCheckedChange={() => setIsSeller((prev) => !prev)}
+          />
+          <span className="text-s14-l20 select-none">
+            I want to register as a seller.
+          </span>
+        </label>
       </div>
 
       <button

@@ -2,11 +2,18 @@ import axiosInstance from "../../axios";
 import type { ReqAuthLoginPayload } from "../payloads/ReqAuthLoginPayload.model";
 import type { ReqAuthRegisterSellerPayload } from "../payloads/ReqAuthRegisterSellerPayload.model";
 import type { ReqAuthRegisterUserPayload } from "../payloads/ReqAuthRegisterUserPayload.model";
+import type { ReqAuthGetAllSellersResponse } from "../responses/ReqAuthGetAllSellersResponse.model";
 import type { ReqAuthLoginResponse } from "../responses/ReqAuthLoginResponse.model";
 import type { ReqAuthRegisterSellerResponse } from "../responses/ReqAuthRegisterSellerResponse.model";
 import type { ReqAuthRegisterUserResponse } from "../responses/ReqAuthRegisterUserResponse.model";
 
 const PATH_NAME = "/auth";
+
+export const reqAuthGetAllSellers = () => {
+  return axiosInstance.get<ReqAuthGetAllSellersResponse>(
+    `${PATH_NAME}/get-all-sellers`,
+  );
+};
 
 export const reqAuthRegisterUser = (payload: ReqAuthRegisterUserPayload) => {
   return axiosInstance.post<ReqAuthRegisterUserResponse>(

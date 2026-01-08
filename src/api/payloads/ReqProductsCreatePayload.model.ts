@@ -1,5 +1,8 @@
 import type { Product } from "../models/Product.model";
 
-export type ReqProductsCreatePayload = Omit<Product, "id" | "images"> & {
+export type ReqProductsCreatePayload = Omit<
+  Product,
+  "id" | "sellerId" | "status" | "images"
+> & {
   images: File[];
 };

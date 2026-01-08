@@ -7,10 +7,6 @@ import {
   buildCategoryTree,
 } from "../../../shared/utils/CategoryTree.util";
 
-type Props = {
-  categoryId: number;
-};
-
 const buildPathById = (
   node: CategoryNode,
   slugMap: Map<string, CategoryNode>,
@@ -28,7 +24,7 @@ const buildPathById = (
   return path;
 };
 
-const CategoryBreadcrumb = ({ categoryId }: Props) => {
+const CategoryBreadcrumb = ({ categoryId }: { categoryId: number }) => {
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const { data: categories, isLoading } = useCategoriesGetAll();

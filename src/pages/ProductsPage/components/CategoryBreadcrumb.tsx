@@ -7,10 +7,6 @@ import {
   buildCategoryTree,
 } from "../../../shared/utils/CategoryTree.util";
 
-type Props = {
-  categories: ReqCategoriesGetAllResponse;
-};
-
 const buildPath = (
   node: CategoryNode,
   slugMap: Map<string, CategoryNode>,
@@ -28,7 +24,11 @@ const buildPath = (
   return path;
 };
 
-const CategoryBreadcrumb = ({ categories }: Props) => {
+const CategoryBreadcrumb = ({
+  categories,
+}: {
+  categories: ReqCategoriesGetAllResponse;
+}) => {
   const [params, setParams] = useSearchParams();
   const selectedSlug = params.get("category");
 

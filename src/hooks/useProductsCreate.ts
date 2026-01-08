@@ -1,22 +1,51 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { reqProductsCreate } from "../api/controllers/Products.controller";
 import type { ReqProductsCreatePayload } from "../api/payloads/ReqProductsCreatePayload.model";
 import type { ReqProductsCreateResponse } from "../api/responses/ReqProductsCreateResponse.model";
+import { EVENT_TYPE } from "../shared/enums/EventType.enum";
 import { TOAST_TYPE } from "../shared/enums/ToastType.enum";
 import { showToast } from "../shared/utils/Toast.util";
 
 export const useProductsCreate = () => {
+  const queryClient = useQueryClient();
+
   return useMutation<
     ReqProductsCreateResponse,
     Error,
     ReqProductsCreatePayload
   >({
     mutationFn: async (payload) => {
-      const res = await reqProductsCreate(payload);
+      const formData = new FormData();
+
+      formData.append("name", payload.name);
+      formData.append("description", payload.description);
+      formData.append("stockCount", String(payload.stockCount));
+      formData.append("price", String(payload.price));
+      formData.append("brandId", String(payload.brandId));
+      formData.append("categoryId", String(payload.categoryId));
+      formData.append("currencyId", String(payload.currencyId));
+
+      payload.images.forEach((file) => {
+        formData.append("images", file);
+      });
+
+      const res = await reqProductsCreate(formData);
       return res.data;
     },
 
-    onSuccess: () => {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ["products"],
+      });
+
+      window.dispatchEvent(
+        new CustomEvent<
+          WindowEventMap[typeof EVENT_TYPE.PRODUCT_CREATED]["detail"]
+        >(EVENT_TYPE.PRODUCT_CREATED, {
+          detail: data,
+        }),
+      );
+
       showToast({
         title: "Product created",
         description: "The product has been successfully added.",

@@ -2,15 +2,13 @@ import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import type { ReactNode } from "react";
 import { useState } from "react";
 
-type GenericNavigationMenuProps = {
-  trigger: ReactNode;
-  content: ReactNode;
-};
-
 const GenericNavigationMenu = ({
   trigger,
   content,
-}: GenericNavigationMenuProps) => {
+}: {
+  trigger: ReactNode;
+  content: ReactNode;
+}) => {
   const [open, setOpen] = useState(false);
 
   return (

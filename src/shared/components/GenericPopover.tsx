@@ -3,15 +3,6 @@ import type { ReactNode } from "react";
 
 export const GenericPopoverClose = Popover.Close;
 
-type GenericPopoverProps = {
-  trigger: ReactNode;
-  children: ReactNode;
-  side?: "top" | "right" | "bottom" | "left";
-  align?: "start" | "center" | "end";
-  sideOffset?: number;
-  className?: string;
-};
-
 export const GenericPopover = ({
   trigger,
   children,
@@ -19,7 +10,14 @@ export const GenericPopover = ({
   align = "center",
   sideOffset = 8,
   className = "",
-}: GenericPopoverProps) => {
+}: {
+  trigger: ReactNode;
+  children: ReactNode;
+  side?: "top" | "right" | "bottom" | "left";
+  align?: "start" | "center" | "end";
+  sideOffset?: number;
+  className?: string;
+}) => {
   return (
     <Popover.Root>
       <Popover.Trigger asChild>{trigger}</Popover.Trigger>
