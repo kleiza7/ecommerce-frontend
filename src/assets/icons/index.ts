@@ -4,6 +4,7 @@ import CloseIcon from "./close.svg?react";
 import KeyboardArrowUpIcon from "./keyboard_arrow_up.svg?react";
 import LogoutIcon from "./logout.svg?react";
 import MenuIcon from "./menu.svg?react";
+import PackageIcon from "./package.svg?react";
 import RemoveIcon from "./remove.svg?react";
 import ShoppingCartIcon from "./shopping_cart.svg?react";
 import TimerArrowDownIcon from "./timer_arrow_down.svg?react";
@@ -17,6 +18,7 @@ export {
   KeyboardArrowUpIcon,
   LogoutIcon,
   MenuIcon,
+  PackageIcon,
   RemoveIcon,
   ShoppingCartIcon,
   TimerArrowDownIcon,
