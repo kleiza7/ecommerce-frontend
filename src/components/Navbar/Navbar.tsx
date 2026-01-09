@@ -12,7 +12,8 @@ const Navbar = () => {
   const user = useUserStore((state) => state.user);
 
   const isAuthenticated = Boolean(user);
-  const isUserDomainPublic = userDomain === USER_DOMAIN.PUBLIC;
+  const isGuestOrUser =
+    userDomain === USER_DOMAIN.GUEST || userDomain === USER_DOMAIN.USER;
 
   return (
     <header className="border-gray-1 border-b pt-5">
@@ -27,11 +28,11 @@ const Navbar = () => {
 
           <div className="flex gap-x-6">
             {isAuthenticated ? <UserPopover /> : <AuthPopover />}
-            {isUserDomainPublic && <CartLink />}
+            {isGuestOrUser && <CartLink />}
           </div>
         </div>
 
-        {isUserDomainPublic && <CategoriesMegaMenu />}
+        {isGuestOrUser && <CategoriesMegaMenu />}
       </div>
     </header>
   );

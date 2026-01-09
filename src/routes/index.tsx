@@ -5,6 +5,8 @@ import AdminProductsPage from "../pages/AdminProductsPage/AdminProductsPage";
 import AuthPage from "../pages/AuthPage/AuthPage";
 import CartPage from "../pages/CartPage/CartPage";
 import DashboardPage from "../pages/DashboardPage";
+import MyOrdersPage from "../pages/MyOrdersPage";
+import OrderDetailPage from "../pages/OrderDetailPage";
 import ProductDetailPage from "../pages/ProductDetailPage/ProductDetailPage";
 import ProductsPage from "../pages/ProductsPage/ProductsPage";
 import SellerProductsPage from "../pages/SellerProductsPage/SellerProductsPage";
@@ -19,8 +21,13 @@ const router = createBrowserRouter([
         element: <DashboardPage />,
       },
 
+      // ✅ GUEST + USER
       {
-        element: <ProtectedRoute allowedDomain={USER_DOMAIN.PUBLIC} />,
+        element: (
+          <ProtectedRoute
+            allowedDomains={[USER_DOMAIN.GUEST, USER_DOMAIN.USER]}
+          />
+        ),
         children: [
           { path: "products", element: <ProductsPage /> },
           { path: "product-detail/:id", element: <ProductDetailPage /> },
@@ -28,15 +35,26 @@ const router = createBrowserRouter([
         ],
       },
 
+      // ✅ ONLY USER
       {
-        element: <ProtectedRoute allowedDomain={USER_DOMAIN.SELLER} />,
+        element: <ProtectedRoute allowedDomains={[USER_DOMAIN.USER]} />,
+        children: [
+          { path: "my-orders", element: <MyOrdersPage /> },
+          { path: "order-detail/:id", element: <OrderDetailPage /> },
+        ],
+      },
+
+      // ✅ SELLER
+      {
+        element: <ProtectedRoute allowedDomains={[USER_DOMAIN.SELLER]} />,
         children: [
           { path: "seller/products", element: <SellerProductsPage /> },
         ],
       },
 
+      // ✅ ADMIN
       {
-        element: <ProtectedRoute allowedDomain={USER_DOMAIN.ADMIN} />,
+        element: <ProtectedRoute allowedDomains={[USER_DOMAIN.ADMIN]} />,
         children: [{ path: "admin/products", element: <AdminProductsPage /> }],
       },
 

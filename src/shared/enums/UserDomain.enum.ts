@@ -1,5 +1,6 @@
 export const USER_DOMAIN = {
-  PUBLIC: "PUBLIC",
+  GUEST: "GUEST",
+  USER: "USER",
   SELLER: "SELLER",
   ADMIN: "ADMIN",
 } as const;
