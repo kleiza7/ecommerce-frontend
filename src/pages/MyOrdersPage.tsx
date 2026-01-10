@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ORDER_STATUS } from "../api/enums/OrderStatus.enum";
 import { CloseIcon, PackageIcon, SearchIcon } from "../assets/icons";
+import { useCurrenciesGetAll } from "../hooks/useCurrenciesGetAll";
 import { useOrdersGetOrdersListByUser } from "../hooks/useOrdersGetOrdersListByUser";
 import GenericSelect from "../shared/components/GenericSelect";
 import { ORDER_STATUS_TEXT_PAIRS } from "../shared/constants/Order.constants";
@@ -26,6 +27,7 @@ const DATE_FILTER_OPTIONS: { label: string; value: DATE_FILTER }[] = [
 const MyOrdersPage = () => {
   const navigate = useNavigate();
   const { data: orders = [], isLoading } = useOrdersGetOrdersListByUser();
+  const { data: currencies = [] } = useCurrenciesGetAll();
   const userName = useUserStore((state) => state.user?.name);
 
   const [searchText, setSearchText] = useState("");
@@ -66,8 +68,20 @@ const MyOrdersPage = () => {
     return result;
   }, [orders, searchText, selectedStatus, dateFilter]);
 
+  const currencyMap = useMemo(() => {
+    const map = new Map<number, string>();
+
+    for (const currency of currencies) {
+      map.set(currency.id, currency.code);
+    }
+
+    return map;
+  }, [currencies]);
+
   // TODO: fix loading state
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="flex h-full w-full flex-col gap-5 py-5">
@@ -155,8 +169,8 @@ const MyOrdersPage = () => {
                   <div className="text-s14-l20 flex-1">
                     <div className="font-medium">Total</div>
                     <span className="text-orange">
-                      {/* // TODO: add currency symbol */}
-                      {order.totalPrice.toFixed(2)} TL
+                      {order.totalPrice.toFixed(2)}{" "}
+                      {currencyMap.get(order.currencyId) ?? ""}
                     </span>
                   </div>
                 </div>
@@ -181,7 +195,10 @@ const MyOrdersPage = () => {
                         const img = item.product.images.find(
                           (i) => i.isPrimary,
                         );
-                        if (!img) return null;
+
+                        if (!img) {
+                          return null;
+                        }
 
                         return (
                           <img

@@ -1,4 +1,6 @@
+import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { useCurrenciesGetAll } from "../../../hooks/useCurrenciesGetAll";
 import { useOrdersCreate } from "../../../hooks/useOrdersCreate";
 import { useUserDomain } from "../../../hooks/useUserDomain";
 import { USER_DOMAIN } from "../../../shared/enums/UserDomain.enum";
@@ -11,10 +13,25 @@ const CartSummary = ({
 }) => {
   const navigate = useNavigate();
   const userDomain = useUserDomain();
+
   const totalPrice = useCartStore((state) => state.totalPrice);
+  const currencyId = useCartStore((state) => state.currencyId);
   const clearCart = useCartStore((state) => state.clearCart);
 
+  const { data: currencies = [] } = useCurrenciesGetAll();
   const { mutate: createOrder, isPending } = useOrdersCreate();
+
+  const currencyMap = useMemo(() => {
+    const map = new Map<number, string>();
+
+    for (const currency of currencies) {
+      map.set(currency.id, currency.code);
+    }
+
+    return map;
+  }, [currencies]);
+
+  const currencyCode = currencyId ? (currencyMap.get(currencyId) ?? "") : "";
 
   const handleConfirmCart = () => {
     if (userDomain === USER_DOMAIN.GUEST) {
@@ -36,14 +53,18 @@ const CartSummary = ({
 
       <div className="text-s14-l20 flex justify-between text-gray-600">
         <span>Subtotal</span>
-        <span>{totalPrice.toFixed(2)} TL</span>
+        <span>
+          {totalPrice.toFixed(2)} {currencyCode}
+        </span>
       </div>
 
       <div className="my-4 h-px bg-gray-200" />
 
       <div className="mb-4 flex justify-between font-semibold">
         <span>Total</span>
-        <span className="text-orange">{totalPrice.toFixed(2)} TL</span>
+        <span className="text-orange">
+          {totalPrice.toFixed(2)} {currencyCode}
+        </span>
       </div>
 
       <button

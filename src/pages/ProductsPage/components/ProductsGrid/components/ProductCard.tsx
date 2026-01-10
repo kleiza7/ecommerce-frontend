@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { ReqProductsListResponse } from "../../../../../api/responses/ReqProductsListResponse.model";
+import { useCurrenciesGetAll } from "../../../../../hooks/useCurrenciesGetAll";
 
 const ProductCard = ({
   product,
@@ -8,7 +9,18 @@ const ProductCard = ({
   product: ReqProductsListResponse["items"][number] & { brandName: string };
 }) => {
   const navigate = useNavigate();
+  const { data: currencies = [] } = useCurrenciesGetAll();
   const [hoverIndex, setHoverIndex] = useState(0);
+
+  const currencyMap = useMemo(() => {
+    const map = new Map<number, string>();
+
+    for (const currency of currencies) {
+      map.set(currency.id, currency.code);
+    }
+
+    return map;
+  }, [currencies]);
 
   const images = product.images ?? [];
   const zoneCount = images.length || 1;
@@ -53,8 +65,7 @@ const ProductCard = ({
         </div>
 
         <div className="text-orange text-s16-l24 mt-auto font-bold">
-          {/* TODO: currency */}
-          {product.price.toFixed(2)} TL
+          {product.price.toFixed(2)} {currencyMap.get(product.currencyId) ?? ""}
         </div>
       </div>
     </div>

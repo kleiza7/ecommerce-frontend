@@ -6,6 +6,7 @@ export type OrderItem = {
   productId: number;
   productName: string;
   priceSnapshot: number;
+  currencyId: number;
   quantity: number;
   createdAt: string;
   product: Omit<Product, "images"> & {

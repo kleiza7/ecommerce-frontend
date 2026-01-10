@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeftIcon } from "../assets/icons";
 import { useAuthGetAllSellers } from "../hooks/useAuthGetAllSellers";
 import { useBrandsGetAll } from "../hooks/useBrandsGetAll";
+import { useCurrenciesGetAll } from "../hooks/useCurrenciesGetAll";
 import { useOrdersGetById } from "../hooks/useOrdersGetById";
 import { ORDER_STATUS_TEXT_PAIRS } from "../shared/constants/Order.constants";
 
@@ -14,6 +15,7 @@ const OrderDetailPage = () => {
   const { data: order, isLoading } = useOrdersGetById(orderId);
   const { data: sellers = [] } = useAuthGetAllSellers();
   const { data: brands = [] } = useBrandsGetAll();
+  const { data: currencies = [] } = useCurrenciesGetAll();
 
   const groupedBySeller = useMemo(() => {
     if (!order) return [];
@@ -33,6 +35,16 @@ const OrderDetailPage = () => {
       items,
     }));
   }, [order, sellers]);
+
+  const currencyMap = useMemo(() => {
+    const map = new Map<number, string>();
+
+    for (const currency of currencies) {
+      map.set(currency.id, currency.code);
+    }
+
+    return map;
+  }, [currencies]);
 
   // TODO: loading state
   if (isLoading || !order) return <div>Loading...</div>;
@@ -117,7 +129,8 @@ const OrderDetailPage = () => {
                       </div>
 
                       <div className="text-s14-l20 text-orange mt-auto font-medium">
-                        {item.priceSnapshot.toFixed(2)} TL
+                        {item.priceSnapshot.toFixed(2)}{" "}
+                        {currencyMap.get(item.currencyId) ?? ""}
                       </div>
                     </div>
                   </div>
