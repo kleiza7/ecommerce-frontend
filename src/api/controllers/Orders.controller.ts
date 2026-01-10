@@ -8,7 +8,7 @@ import type { ReqOrdersGetOrdersListByUserResponse } from "../responses/ReqOrder
 const PATH_NAME = "/orders";
 
 export const reqOrdersCreate = () => {
-  return axiosInstance.post<ReqOrdersCreateResponse>(`${PATH_NAME}/create`);
+  return axiosInstance.post<ReqOrdersCreateResponse>(`${PATH_NAME}/create`, {});
 };
 
 export const reqOrdersCompletePayment = (id: number) => {

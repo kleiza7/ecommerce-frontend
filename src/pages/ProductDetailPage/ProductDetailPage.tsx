@@ -148,9 +148,9 @@ const ProductDetailPage = () => {
           </div>
 
           <div className="flex gap-4">
-            <button className="border-orange text-orange hover:bg-orange cursor-pointer rounded-lg border-2 px-6 py-3 transition hover:text-white">
+            {/* <button className="border-orange text-orange hover:bg-orange cursor-pointer rounded-lg border-2 px-6 py-3 transition hover:text-white">
               Buy Now
-            </button>
+            </button> */}
 
             <GenericTooltip
               content={

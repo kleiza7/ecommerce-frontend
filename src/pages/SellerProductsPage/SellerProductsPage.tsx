@@ -12,16 +12,10 @@ import { useCategoriesGetAll } from "../../hooks/useCategoriesGetAll";
 import { useCurrenciesGetAll } from "../../hooks/useCurrenciesGetAll";
 import { useProductsGetProductsBySeller } from "../../hooks/useProductsGetProductsBySeller";
 import LoadingSpinner from "../../shared/components/LoadingSpinner";
+import { PRODUCT_STATUS_TEXT_PAIRS } from "../../shared/constants/Product.constants";
 import { EVENT_TYPE } from "../../shared/enums/EventType.enum";
 import NewProductDialog from "./components/NewProductDialog/NewProductDialog";
 import UpdateProductDialog from "./components/UpdateProductDialog/UpdateProductDialog";
-
-const PRODUCT_STATUS_TEXT_PAIRS: Record<PRODUCT_STATUS, string> = {
-  [PRODUCT_STATUS.APPROVED]: "Approved",
-  [PRODUCT_STATUS.WAITING_FOR_APPROVE]: "Waiting For Approve",
-  [PRODUCT_STATUS.NOT_APPROVED]: "Not Approved",
-  [PRODUCT_STATUS.DELETED]: "Deleted",
-};
 
 const SellerProductsPage = () => {
   const {
