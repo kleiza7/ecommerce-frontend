@@ -23,6 +23,7 @@ export const useCartActions = () => {
   const updateItem = useCartStore((state) => state.updateItem);
   const removeItem = useCartStore((state) => state.removeItem);
   const clearStoreCart = useCartStore((state) => state.clearCart);
+  const cartCurrencyId = useCartStore((state) => state.currencyId);
 
   const user = useUserStore((state) => state.user);
 
@@ -48,15 +49,27 @@ export const useCartActions = () => {
   };
 
   const addToCart = (product: Product) => {
+    if (cartCurrencyId !== null && cartCurrencyId !== product.currencyId) {
+      showToast({
+        title: "Mixed currency not allowed",
+        description:
+          "You cannot add products with different currencies to the same cart.",
+        type: TOAST_TYPE.ERROR,
+      });
+      return;
+    }
+
     if (isAuthenticated) {
       cartAddMutation.mutate(
         { productId: product.id, quantity: 1 },
         {
           onSuccess: (item) => {
             addItem({
+              id: item.id,
               productId: item.productId,
               quantity: item.quantity,
               priceSnapshot: item.priceSnapshot,
+              currencyId: item.currencyId,
               product: item.product,
             });
           },
@@ -70,6 +83,7 @@ export const useCartActions = () => {
         productId: product.id,
         quantity: 1,
         priceSnapshot: product.price,
+        currencyId: product.currencyId,
         product,
       };
 

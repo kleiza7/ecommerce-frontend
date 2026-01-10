@@ -1,6 +1,7 @@
+import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { LogoutIcon, UserIcon } from "../../../assets/icons";
+import { LogoutIcon, PackageIcon, UserIcon } from "../../../assets/icons";
 import {
   GenericPopover,
   GenericPopoverClose,
@@ -15,13 +16,15 @@ const UserPopover = () => {
   const logout = useUserStore((state) => state.logout);
   const clearCartStore = useCartStore((state) => state.clearCart);
 
-  const handleLogout = () => {
+  const handleNavigateMyOrders = useCallback(() => {
+    navigate("/my-orders");
+  }, [navigate]);
+
+  const handleLogout = useCallback(() => {
     logout();
-
     clearCartStore();
-
     navigate("/dashboard", { replace: true });
-  };
+  }, [logout, clearCartStore, navigate]);
 
   return (
     <GenericPopover
@@ -49,6 +52,17 @@ const UserPopover = () => {
             {user?.name}
           </span>
         </div>
+
+        <GenericPopoverClose asChild>
+          <button
+            type="button"
+            onClick={handleNavigateMyOrders}
+            className="text-s14-l20 text-text-primary hover:bg-gray-1 flex cursor-pointer items-center gap-x-3 px-4 py-3 transition-colors"
+          >
+            <PackageIcon className="fill-text-primary h-4 w-4" />
+            <span>My Orders</span>
+          </button>
+        </GenericPopoverClose>
 
         <GenericPopoverClose asChild>
           <button

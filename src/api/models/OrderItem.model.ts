@@ -1,14 +1,17 @@
 import type { Product } from "./Product.model";
 
-export type CartItem = {
+export type OrderItem = {
   id: number;
-  cartId: number;
+  orderId: number;
   productId: number;
-  quantity: number;
+  productName: string;
   priceSnapshot: number;
   currencyId: number;
+  quantity: number;
+  createdAt: string;
   product: Omit<Product, "images"> & {
     images: {
+      id: number;
       thumbUrl: string;
       isPrimary: boolean;
     }[];

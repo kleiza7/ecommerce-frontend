@@ -1,11 +1,24 @@
+import { useMemo } from "react";
 import { AddIcon, RemoveIcon, TrashIcon } from "../../../assets/icons";
 import { useCartActions } from "../../../hooks/useCartActions";
+import { useCurrenciesGetAll } from "../../../hooks/useCurrenciesGetAll";
 import GenericTooltip from "../../../shared/components/GenericTooltip";
 import { useCartStore } from "../../../stores/CartStore";
 
 const CartItemsList = () => {
   const cartItems = useCartStore((state) => state.items);
   const { updateCart, removeFromCart, isLoading } = useCartActions();
+  const { data: currencies = [] } = useCurrenciesGetAll();
+
+  const currencyMap = useMemo(() => {
+    const map = new Map<number, string>();
+
+    for (const currency of currencies) {
+      map.set(currency.id, currency.code);
+    }
+
+    return map;
+  }, [currencies]);
 
   return (
     <div className="flex min-w-0 flex-1 flex-col">
@@ -90,8 +103,8 @@ const CartItemsList = () => {
 
                 <div className="shrink-0 text-right">
                   <p className="text-orange font-semibold">
-                    {/* TODO: currency */}
-                    {(cartItem.priceSnapshot * cartItem.quantity).toFixed(2)} TL
+                    {(cartItem.priceSnapshot * cartItem.quantity).toFixed(2)}{" "}
+                    {currencyMap.get(cartItem.currencyId) ?? ""}
                   </p>
                 </div>
 

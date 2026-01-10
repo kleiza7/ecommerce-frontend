@@ -5,6 +5,10 @@ import { useUserStore } from "../stores/UserStore";
 export const useUserDomain = (): USER_DOMAIN => {
   const userRole = useUserStore((state) => state.user?.role);
 
+  if (!userRole) {
+    return USER_DOMAIN.GUEST;
+  }
+
   switch (userRole) {
     case USER_ROLE.SELLER:
       return USER_DOMAIN.SELLER;
@@ -14,6 +18,6 @@ export const useUserDomain = (): USER_DOMAIN => {
 
     case USER_ROLE.USER:
     default:
-      return USER_DOMAIN.PUBLIC;
+      return USER_DOMAIN.USER;
   }
 };

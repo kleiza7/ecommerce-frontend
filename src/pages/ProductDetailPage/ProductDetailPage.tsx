@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import Lightbox from "yet-another-react-lightbox";
 import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
@@ -7,6 +7,7 @@ import "yet-another-react-lightbox/styles.css";
 import { TimerArrowDownIcon } from "../../assets/icons";
 import { useBrandsGetAll } from "../../hooks/useBrandsGetAll";
 import { useCartActions } from "../../hooks/useCartActions";
+import { useCurrenciesGetAll } from "../../hooks/useCurrenciesGetAll";
 import { useProductsGetById } from "../../hooks/useProductsGetById";
 import GenericTooltip from "../../shared/components/GenericTooltip";
 import LoadingSpinner from "../../shared/components/LoadingSpinner";
@@ -20,9 +21,20 @@ const ProductDetailPage = () => {
 
   const { data, isLoading } = useProductsGetById(Number(id));
   const { data: brands = [] } = useBrandsGetAll();
+  const { data: currencies = [] } = useCurrenciesGetAll();
   const { addToCart, isLoading: isCartLoading } = useCartActions();
 
   const cartItems = useCartStore((state) => state.items);
+
+  const currencyMap = useMemo(() => {
+    const map = new Map<number, string>();
+
+    for (const currency of currencies) {
+      map.set(currency.id, currency.code);
+    }
+
+    return map;
+  }, [currencies]);
 
   // TODO: fix this loading
   if (isLoading || !data) return <LoadingSpinner size={56} borderWidth={3} />;
@@ -109,8 +121,7 @@ const ProductDetailPage = () => {
           </span>
 
           <span className="text-orange text-s24-l32 font-bold">
-            {/* TODO: currency */}
-            {data.price.toFixed(2)} TL
+            {data.price.toFixed(2)} {currencyMap.get(data.currencyId) ?? ""}
           </span>
 
           <div className="text-text-primary text-s12-l16">
@@ -148,9 +159,9 @@ const ProductDetailPage = () => {
           </div>
 
           <div className="flex gap-4">
-            <button className="border-orange text-orange hover:bg-orange cursor-pointer rounded-lg border-2 px-6 py-3 transition hover:text-white">
+            {/* <button className="border-orange text-orange hover:bg-orange cursor-pointer rounded-lg border-2 px-6 py-3 transition hover:text-white">
               Buy Now
-            </button>
+            </button> */}
 
             <GenericTooltip
               content={

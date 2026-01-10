@@ -9,13 +9,16 @@ const calculateCartTotals = (items: CartItemUI[]) => {
     0,
   );
 
-  return { totalQuantity, totalPrice };
+  const currencyId = items.length > 0 ? items[0].currencyId : null;
+
+  return { totalQuantity, totalPrice, currencyId };
 };
 
 type CartStoreState = {
   items: CartItemUI[];
   totalQuantity: number;
   totalPrice: number;
+  currencyId: number | null;
 };
 
 type CartStoreActions = {
@@ -31,6 +34,7 @@ export const useCartStore = create<CartStoreState & CartStoreActions>(
     items: [],
     totalQuantity: 0,
     totalPrice: 0,
+    currencyId: null,
 
     setItems: (items) => {
       const totals = calculateCartTotals(items);
@@ -40,6 +44,7 @@ export const useCartStore = create<CartStoreState & CartStoreActions>(
         ...totals,
       });
     },
+
     addItem: (item) => {
       const { items } = get();
 
@@ -64,6 +69,7 @@ export const useCartStore = create<CartStoreState & CartStoreActions>(
         ...totals,
       });
     },
+
     updateItem: (productId, quantity) => {
       const { items } = get();
 
@@ -78,6 +84,7 @@ export const useCartStore = create<CartStoreState & CartStoreActions>(
         ...totals,
       });
     },
+
     removeItem: (productId) => {
       const { items } = get();
 
@@ -90,11 +97,13 @@ export const useCartStore = create<CartStoreState & CartStoreActions>(
         ...totals,
       });
     },
+
     clearCart: () => {
       set({
         items: [],
         totalQuantity: 0,
         totalPrice: 0,
+        currencyId: null,
       });
     },
   }),

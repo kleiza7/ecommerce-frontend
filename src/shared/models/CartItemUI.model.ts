@@ -5,6 +5,7 @@ export interface CartItemUI {
   productId: number;
   quantity: number;
   priceSnapshot: number;
+  currencyId: number;
   product: Omit<Product, "images"> & {
     images: {
       thumbUrl: string;

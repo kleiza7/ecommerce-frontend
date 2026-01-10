@@ -1,11 +1,22 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ShoppingCartIcon } from "../../assets/icons";
 import { useCartStore } from "../../stores/CartStore";
 import CartItemsList from "./components/CartItemsList";
 import CartSummary from "./components/CartSummary";
+import OrderPaymentDialog from "./OrderPaymentDialog/OrderPaymentDialog";
 
 const CartPage = () => {
   const cartItems = useCartStore((state) => state.items);
+
+  const [orderId, setOrderId] = useState<number | null>(null);
+  const [isOrderPaymentDialogOpen, setIsOrderPaymentDialogOpen] =
+    useState(false);
+
+  const openOrderPaymentDialog = (id: number) => {
+    setOrderId(id);
+    setIsOrderPaymentDialogOpen(true);
+  };
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-10">
@@ -17,7 +28,7 @@ const CartPage = () => {
 
           <div className="flex gap-x-8">
             <CartItemsList />
-            <CartSummary />
+            <CartSummary onOrderCreated={openOrderPaymentDialog} />
           </div>
         </>
       ) : (
@@ -39,6 +50,14 @@ const CartPage = () => {
             Start Shopping
           </Link>
         </div>
+      )}
+
+      {orderId && (
+        <OrderPaymentDialog
+          orderId={orderId}
+          open={isOrderPaymentDialogOpen}
+          setOpen={setIsOrderPaymentDialogOpen}
+        />
       )}
     </div>
   );
