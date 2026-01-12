@@ -4,6 +4,7 @@ import { RouterProvider } from "react-router-dom";
 import ToastProvider from "./components/ToastProvider";
 import TooltipProvider from "./components/TooltipProvider";
 import { useCartHydrate } from "./hooks/useCartHydrate";
+import { useFavoriteHydrate } from "./hooks/useFavoriteHydrate";
 import { queryClient } from "./lib/ReactQuery";
 import router from "./routes";
 import { useUserStore } from "./stores/UserStore";
@@ -12,6 +13,7 @@ const App = () => {
   const hydrateUser = useUserStore((state) => state.hydrate);
 
   useCartHydrate();
+  useFavoriteHydrate();
 
   useEffect(() => {
     hydrateUser();

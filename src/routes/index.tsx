@@ -5,6 +5,7 @@ import AdminProductsPage from "../pages/AdminProductsPage/AdminProductsPage";
 import AuthPage from "../pages/AuthPage/AuthPage";
 import CartPage from "../pages/CartPage/CartPage";
 import DashboardPage from "../pages/DashboardPage";
+import MyFavoritesPage from "../pages/MyFavoritesPage/MyFavoritesPage";
 import MyOrdersPage from "../pages/MyOrdersPage";
 import OrderDetailPage from "../pages/OrderDetailPage";
 import ProductDetailPage from "../pages/ProductDetailPage/ProductDetailPage";
@@ -32,6 +33,7 @@ const router = createBrowserRouter([
           { path: "products", element: <ProductsPage /> },
           { path: "product-detail/:id", element: <ProductDetailPage /> },
           { path: "cart", element: <CartPage /> },
+          { path: "my-favorites", element: <MyFavoritesPage /> },
         ],
       },
 

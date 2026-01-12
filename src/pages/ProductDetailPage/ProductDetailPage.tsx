@@ -9,6 +9,7 @@ import { useBrandsGetAll } from "../../hooks/useBrandsGetAll";
 import { useCartActions } from "../../hooks/useCartActions";
 import { useCurrenciesGetAll } from "../../hooks/useCurrenciesGetAll";
 import { useProductsGetById } from "../../hooks/useProductsGetById";
+import FavoriteButton from "../../shared/components/FavoriteButton";
 import GenericTooltip from "../../shared/components/GenericTooltip";
 import LoadingSpinner from "../../shared/components/LoadingSpinner";
 import { useCartStore } from "../../stores/CartStore";
@@ -158,7 +159,7 @@ const ProductDetailPage = () => {
             )}
           </div>
 
-          <div className="flex gap-4">
+          <div className="flex items-center gap-4">
             {/* <button className="border-orange text-orange hover:bg-orange cursor-pointer rounded-lg border-2 px-6 py-3 transition hover:text-white">
               Buy Now
             </button> */}
@@ -172,7 +173,15 @@ const ProductDetailPage = () => {
             >
               <button
                 disabled={isCartLoading || isOutOfStock}
-                onClick={() => addToCart(data)}
+                onClick={() =>
+                  addToCart({
+                    ...data,
+                    images: data.images.map((img) => ({
+                      thumbUrl: img.thumbUrl,
+                      isPrimary: img.isPrimary,
+                    })),
+                  })
+                }
                 className={`cursor-pointer rounded-lg px-6 py-3 text-white transition ${
                   isCartLoading || isOutOfStock
                     ? "bg-orange/50 cursor-not-allowed"
@@ -182,6 +191,11 @@ const ProductDetailPage = () => {
                 Add to Cart
               </button>
             </GenericTooltip>
+
+            <FavoriteButton
+              product={data}
+              className="border-gray-2 h-12 w-12 border shadow-none hover:shadow-md"
+            />
           </div>
         </div>
       </div>

@@ -24,6 +24,9 @@ body {
   --font-sans: "Roboto", sans-serif;
 
   /* TEXT SIZES */
+  --text-s10-l14: 10px;
+  --text-s10-l14--line-height: 14px;
+
   --text-s12-l16: 12px;
   --text-s12-l16--line-height: 16px;
 

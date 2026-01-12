@@ -10,6 +10,8 @@ export const GenericPopover = ({
   align = "center",
   sideOffset = 8,
   className = "",
+  open,
+  onOpenChange,
 }: {
   trigger: ReactNode;
   children: ReactNode;
@@ -17,9 +19,11 @@ export const GenericPopover = ({
   align?: "start" | "center" | "end";
   sideOffset?: number;
   className?: string;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }) => {
   return (
-    <Popover.Root>
+    <Popover.Root open={open} onOpenChange={onOpenChange}>
       <Popover.Trigger asChild>{trigger}</Popover.Trigger>
 
       <Popover.Portal>

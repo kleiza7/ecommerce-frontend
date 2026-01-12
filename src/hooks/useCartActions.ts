@@ -1,4 +1,3 @@
-import type { Product } from "../api/models/Product.model";
 import { TOAST_TYPE } from "../shared/enums/ToastType.enum";
 import type { CartItemUI } from "../shared/models/CartItemUI.model";
 import {
@@ -48,7 +47,7 @@ export const useCartActions = () => {
     setItems(cart.items);
   };
 
-  const addToCart = (product: Product) => {
+  const addToCart = (product: CartItemUI["product"]) => {
     if (cartCurrencyId !== null && cartCurrencyId !== product.currencyId) {
       showToast({
         title: "Mixed currency not allowed",

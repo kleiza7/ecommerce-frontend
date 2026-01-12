@@ -1,20 +1,27 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-import { LogoutIcon, PackageIcon, UserIcon } from "../../../assets/icons";
+import {
+  LogoutIcon,
+  PackageIcon,
+  UserFilledIcon,
+  UserIcon,
+} from "../../../assets/icons";
 import {
   GenericPopover,
   GenericPopoverClose,
 } from "../../../shared/components/GenericPopover";
 import { useCartStore } from "../../../stores/CartStore";
+import { useFavoriteStore } from "../../../stores/FavoriteStore";
 import { useUserStore } from "../../../stores/UserStore";
 
 const UserPopover = () => {
   const navigate = useNavigate();
-
   const user = useUserStore((state) => state.user);
   const logout = useUserStore((state) => state.logout);
   const clearCartStore = useCartStore((state) => state.clearCart);
+  const clearFavoritesStore = useFavoriteStore((state) => state.clearFavorites);
+
+  const [open, setOpen] = useState(false);
 
   const handleNavigateMyOrders = useCallback(() => {
     navigate("/my-orders");
@@ -23,11 +30,14 @@ const UserPopover = () => {
   const handleLogout = useCallback(() => {
     logout();
     clearCartStore();
+    clearFavoritesStore();
     navigate("/dashboard", { replace: true });
-  }, [logout, clearCartStore, navigate]);
+  }, [logout, clearCartStore, clearFavoritesStore, navigate]);
 
   return (
     <GenericPopover
+      open={open}
+      onOpenChange={setOpen}
       align="end"
       side="bottom"
       className="border-orange border"
@@ -36,8 +46,20 @@ const UserPopover = () => {
           type="button"
           className="group flex cursor-pointer items-center gap-x-2 transition-colors"
         >
-          <UserIcon className="fill-text-primary group-hover:fill-orange h-6 w-6 transition-colors" />
-          <span className="text-s14-l20 text-text-primary group-hover:text-orange font-semibold transition-colors">
+          {open ? (
+            <UserFilledIcon className="fill-orange h-6 w-6 transition-colors" />
+          ) : (
+            <>
+              <UserIcon className="fill-text-primary h-6 w-6 transition-colors group-hover:hidden" />
+              <UserFilledIcon className="fill-orange hidden h-6 w-6 transition-colors group-hover:block" />
+            </>
+          )}
+
+          <span
+            className={`text-s14-l20 font-semibold transition-colors ${
+              open ? "text-orange" : "text-text-primary group-hover:text-orange"
+            }`}
+          >
             My Account
           </span>
         </button>
