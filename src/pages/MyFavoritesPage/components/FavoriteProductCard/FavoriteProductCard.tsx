@@ -1,13 +1,13 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import type { ReqProductsListResponse } from "../../../../../api/responses/ReqProductsListResponse.model";
-import { useCurrenciesGetAll } from "../../../../../hooks/useCurrenciesGetAll";
-import FavoriteButton from "../../../../../shared/components/FavoriteButton";
+import { useCurrenciesGetAll } from "../../../../hooks/useCurrenciesGetAll";
+import type { FavoriteItemUI } from "../../../../shared/models/FavoriteItemUI.model";
+import FavoriteRemoveButton from "./components/FavoriteRemoveButton";
 
-const ProductCard = ({
+const FavoriteProductCard = ({
   product,
 }: {
-  product: ReqProductsListResponse["items"][number] & { brandName: string };
+  product: FavoriteItemUI["product"] & { brandName: string };
 }) => {
   const navigate = useNavigate();
   const { data: currencies = [] } = useCurrenciesGetAll();
@@ -37,7 +37,7 @@ const ProductCard = ({
       onClick={handleNavigate}
       className="border-gray-2 relative flex h-[500px] w-full cursor-pointer flex-col overflow-hidden rounded-xl border bg-white hover:shadow-md"
     >
-      <FavoriteButton
+      <FavoriteRemoveButton
         product={{
           ...product,
           images: product.images.map((img) => ({
@@ -85,4 +85,4 @@ const ProductCard = ({
   );
 };
 
-export default ProductCard;
+export default FavoriteProductCard;

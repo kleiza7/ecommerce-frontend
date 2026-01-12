@@ -3,8 +3,9 @@ import { useUserDomain } from "../../hooks/useUserDomain";
 import { USER_DOMAIN } from "../../shared/enums/UserDomain.enum";
 import { useUserStore } from "../../stores/UserStore";
 import AuthPopover from "./components/AuthPopover";
-import CartLink from "./components/CartLink";
 import CategoriesMegaMenu from "./components/CategoriesMegaMenu/CategoriesMegaMenu";
+import MyCartLink from "./components/MyCartLink";
+import MyFavoritesLink from "./components/MyFavoritesLink";
 import UserPopover from "./components/UserPopover";
 
 const Navbar = () => {
@@ -28,7 +29,13 @@ const Navbar = () => {
 
           <div className="flex gap-x-6">
             {isAuthenticated ? <UserPopover /> : <AuthPopover />}
-            {isGuestOrUser && <CartLink />}
+
+            {isGuestOrUser && (
+              <>
+                <MyFavoritesLink />
+                <MyCartLink />
+              </>
+            )}
           </div>
         </div>
 

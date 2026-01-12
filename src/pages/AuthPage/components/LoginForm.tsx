@@ -12,10 +12,16 @@ import {
 import { useCartStore } from "../../../stores/CartStore";
 import { useUserStore } from "../../../stores/UserStore";
 
+import { useFavoritesMerge } from "../../../hooks/useFavoritesMerge";
 import {
   EMAIL_REGEX,
   PASSWORD_REGEX,
 } from "../../../shared/constants/Form.constants";
+import {
+  clearGuestFavorites,
+  getGuestFavorites,
+} from "../../../shared/utils/GuestFavorite.util";
+import { useFavoriteStore } from "../../../stores/FavoriteStore";
 
 type LoginFormValues = {
   email: string;
@@ -25,7 +31,8 @@ type LoginFormValues = {
 const LoginForm = () => {
   const navigate = useNavigate();
   const loginUser = useUserStore((state) => state.login);
-  const setItems = useCartStore((state) => state.setItems);
+  const setCartItems = useCartStore((state) => state.setItems);
+  const setFavoriteItems = useFavoriteStore((state) => state.setItems);
 
   const {
     control,
@@ -37,8 +44,13 @@ const LoginForm = () => {
   });
 
   const cartMergeMutation = useCartMerge((data) => {
-    setItems(data.items);
+    setCartItems(data.items);
     clearGuestCart();
+  });
+
+  const favoritesMergeMutation = useFavoritesMerge((data) => {
+    setFavoriteItems(data);
+    clearGuestFavorites();
   });
 
   const { mutate: login, isPending } = useAuthLogin((data) => {
@@ -52,6 +64,14 @@ const LoginForm = () => {
           productId: item.productId,
           quantity: item.quantity,
         })),
+      });
+    }
+
+    const guestFavorites = getGuestFavorites();
+
+    if (guestFavorites.items.length > 0) {
+      favoritesMergeMutation.mutate({
+        productIds: guestFavorites.items.map((item) => item.productId),
       });
     }
 
