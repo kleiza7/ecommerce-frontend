@@ -17,7 +17,9 @@ const buildPathById = (
   while (current) {
     path.unshift(current);
     current = current.parentId
-      ? Array.from(slugMap.values()).find((c) => c.id === current!.parentId)
+      ? Array.from(slugMap.values()).find(
+          (categoryNode) => categoryNode.id === current!.parentId,
+        )
       : undefined;
   }
 
@@ -35,7 +37,9 @@ const CategoryBreadcrumb = ({ categoryId }: { categoryId: number }) => {
     const tree = buildCategoryTree(categories);
     const slugMap = buildCategorySlugMap(tree);
 
-    const node = Array.from(slugMap.values()).find((c) => c.id === categoryId);
+    const node = Array.from(slugMap.values()).find(
+      (categoryNode) => categoryNode.id === categoryId,
+    );
 
     if (!node) return [];
 

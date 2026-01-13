@@ -31,7 +31,7 @@ const OrderDetailPage = () => {
     });
 
     return Array.from(map.entries()).map(([sellerId, items]) => ({
-      seller: sellers.find((s) => s.id === sellerId),
+      seller: sellers.find((seller) => seller.id === sellerId),
       items,
     }));
   }, [order, sellers]);
@@ -98,8 +98,10 @@ const OrderDetailPage = () => {
           <div className="overflow-x-auto">
             <div className="flex min-w-max gap-x-5">
               {items.map((item) => {
-                const img = item.product.images.find((i) => i.isPrimary);
-                const brand = brands.find((b) => b.id === item.product.brandId);
+                const img = item.product.images.find((img) => img.isPrimary);
+                const brand = brands.find(
+                  (brand) => brand.id === item.product.brandId,
+                );
 
                 if (!img) return null;
 

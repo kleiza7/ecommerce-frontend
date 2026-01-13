@@ -113,9 +113,13 @@ const ProductApprovalForm = ({
         description: product.description,
         stockCount: product.stockCount,
         price: product.price,
-        brand: brands.find((b) => b.id === product.brandId)!,
-        category: categories.find((c) => c.id === product.categoryId)!,
-        currency: currencies.find((c) => c.id === product.currencyId)!,
+        brand: brands.find((brand) => brand.id === product.brandId)!,
+        category: categories.find(
+          (category) => category.id === product.categoryId,
+        )!,
+        currency: currencies.find(
+          (currency) => currency.id === product.currencyId,
+        )!,
         images: imageFiles,
       });
     };

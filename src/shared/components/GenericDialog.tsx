@@ -1,5 +1,3 @@
-// src/shared/components/GenericDialog.tsx
-
 import * as Dialog from "@radix-ui/react-dialog";
 import type { ReactNode } from "react";
 import { CloseIcon } from "../../assets/icons";

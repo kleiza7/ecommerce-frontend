@@ -17,7 +17,6 @@ const FilterSection = ({
 
   return (
     <div className={customTwMerge("border-b border-gray-200", className)}>
-      {/* HEADER */}
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
@@ -35,7 +34,6 @@ const FilterSection = ({
         />
       </button>
 
-      {/* CONTENT */}
       <div
         className={customTwMerge(
           "grid transition-all duration-300 ease-in-out",

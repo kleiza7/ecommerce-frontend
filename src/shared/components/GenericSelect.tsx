@@ -1,5 +1,3 @@
-// src/shared/components/GenericSelect.tsx
-
 import * as Select from "@radix-ui/react-select";
 import type { ReactNode } from "react";
 import { CheckIcon, KeyboardArrowUpIcon } from "../../assets/icons";
@@ -29,18 +27,19 @@ const GenericSelect = <T,>({
   onChange,
   renderValue,
 }: GenericSelectProps<T>) => {
-  const selectedOption = options.find((o) => isSameValue(o.value, value));
+  const selectedOption = options.find((option) =>
+    isSameValue(option.value, value),
+  );
 
   return (
     <Select.Root
       disabled={disabled}
       value={selectedOption?.label}
       onValueChange={(label) => {
-        const option = options.find((o) => o.label === label);
+        const option = options.find((option) => option.label === label);
         if (option) onChange(option.value);
       }}
     >
-      {/* TRIGGER */}
       <Select.Trigger className="flex h-10 w-full items-center justify-between rounded-md border border-gray-300 px-3 text-sm outline-none disabled:cursor-not-allowed disabled:bg-gray-100">
         <Select.Value placeholder={placeholder}>
           {selectedOption
@@ -55,7 +54,6 @@ const GenericSelect = <T,>({
         </Select.Icon>
       </Select.Trigger>
 
-      {/* PORTAL */}
       <Select.Portal>
         <Select.Content
           position="popper"

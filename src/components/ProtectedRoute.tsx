@@ -1,4 +1,3 @@
-// src/routes/ProtectedRoute.tsx
 import { Navigate, Outlet } from "react-router-dom";
 import { useUserDomain } from "../hooks/useUserDomain";
 import { USER_DOMAIN } from "../shared/enums/UserDomain.enum";

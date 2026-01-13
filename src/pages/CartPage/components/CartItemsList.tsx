@@ -34,7 +34,7 @@ const CartItemsList = () => {
           return (
             <div
               key={cartItem.productId}
-              className="mb-4 rounded-lg border bg-white p-5"
+              className="border-gray-2 mb-4 rounded-lg border bg-white p-5"
             >
               <div className="flex items-center gap-x-6">
                 <div className="h-28 w-28 shrink-0 overflow-hidden rounded bg-gray-100">
@@ -55,7 +55,7 @@ const CartItemsList = () => {
                   </p>
                 </div>
 
-                <div className="flex shrink-0 items-center gap-x-3 rounded-full border px-3 py-1">
+                <div className="border-gray-2 flex shrink-0 items-center gap-x-3 rounded-full border px-3 py-1.5">
                   <GenericTooltip
                     content={isMin ? "Minimum quantity is 1" : ""}
                   >
@@ -68,15 +68,17 @@ const CartItemsList = () => {
                           cartItem.id,
                         )
                       }
-                      className="cursor-pointer rounded p-1 hover:bg-gray-100 disabled:opacity-40"
+                      className="group cursor-pointer rounded p-1"
                     >
-                      <RemoveIcon className="h-4 w-4" />
+                      <RemoveIcon className="fill-orange group-disabled:fill-gray-1 h-4 w-4" />
                     </button>
                   </GenericTooltip>
 
-                  <span className="text-s14-l20 w-6 text-center font-medium">
-                    {cartItem.quantity}
-                  </span>
+                  <div className="bg-orange/10 flex h-6 w-6 items-center justify-center rounded-full">
+                    <span className="text-s14-l20 text-orange font-medium">
+                      {cartItem.quantity}
+                    </span>
+                  </div>
 
                   <GenericTooltip
                     content={
@@ -94,9 +96,9 @@ const CartItemsList = () => {
                           cartItem.id,
                         )
                       }
-                      className="cursor-pointer rounded p-1 hover:bg-gray-100 disabled:opacity-40"
+                      className="group cursor-pointer rounded p-1"
                     >
-                      <AddIcon className="h-4 w-4" />
+                      <AddIcon className="fill-orange group-disabled:fill-gray-1 h-4 w-4" />
                     </button>
                   </GenericTooltip>
                 </div>

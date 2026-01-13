@@ -18,9 +18,9 @@ const CategoriesMegaMenuContent = ({
 
   const [activeParent, setActiveParent] = useState<CategoryNode | null>(
     parents.find(
-      (p) =>
-        activeCategorySlug === p.slug ||
-        activeCategorySlug?.startsWith(`${p.slug}-`),
+      (parent) =>
+        activeCategorySlug === parent.slug ||
+        activeCategorySlug?.startsWith(`${parent.slug}-`),
     ) ??
       parents[0] ??
       null,

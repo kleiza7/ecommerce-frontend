@@ -61,7 +61,9 @@ export const useFavoriteActions = () => {
     try {
       const favorites = getGuestFavorites();
 
-      const exists = favorites.items.find((i) => i.productId === product.id);
+      const exists = favorites.items.find(
+        (item) => item.productId === product.id,
+      );
 
       if (exists) {
         removeFavoriteFromGuestFavorites(product.id);
