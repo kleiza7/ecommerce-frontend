@@ -93,7 +93,7 @@ const SellerProductsPage = () => {
             <img
               src={primaryImage.mediumUrl}
               alt={params.data?.name}
-              className="h-12 w-12 rounded object-cover"
+              className="h-9 w-9 rounded object-cover"
             />
           );
         },
