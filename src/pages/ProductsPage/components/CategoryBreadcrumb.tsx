@@ -17,7 +17,9 @@ const buildPath = (
   while (current) {
     path.unshift(current);
     current = current.parentId
-      ? Array.from(slugMap.values()).find((c) => c.id === current!.parentId)
+      ? Array.from(slugMap.values()).find(
+          (categoryNode) => categoryNode.id === current!.parentId,
+        )
       : undefined;
   }
 

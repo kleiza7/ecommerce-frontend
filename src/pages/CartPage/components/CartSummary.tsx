@@ -48,8 +48,8 @@ const CartSummary = ({
   };
 
   return (
-    <div className="w-[340px] shrink-0 rounded-lg border bg-white p-6">
-      <h2 className="text-s18-l28 mb-4 font-semibold">Cart Summary</h2>
+    <div className="border-gray-2 w-[340px] shrink-0 rounded-lg border bg-white p-6">
+      <h2 className="text-s22-l28 mb-4 font-medium">Cart Summary</h2>
 
       <div className="text-s14-l20 flex justify-between text-gray-600">
         <span>Subtotal</span>
@@ -60,7 +60,7 @@ const CartSummary = ({
 
       <div className="my-4 h-px bg-gray-200" />
 
-      <div className="mb-4 flex justify-between font-semibold">
+      <div className="mb-4 flex justify-between font-medium">
         <span>Total</span>
         <span className="text-orange">
           {totalPrice.toFixed(2)} {currencyCode}
@@ -71,7 +71,7 @@ const CartSummary = ({
         type="button"
         onClick={handleConfirmCart}
         disabled={isPending}
-        className="bg-orange hover:bg-orange-dark w-full rounded py-3 font-semibold text-white transition-colors disabled:opacity-60"
+        className="bg-orange hover:bg-orange-dark text-s18-l28 w-full rounded py-3 font-medium text-white transition-colors disabled:opacity-60"
       >
         Confirm Cart
       </button>

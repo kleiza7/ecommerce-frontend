@@ -28,10 +28,6 @@ const ProductsGrid = ({
 }) => {
   const [params] = useSearchParams();
 
-  /* ===========================
-     CATEGORY
-  =========================== */
-
   const selectedCategorySlug = params.get("category");
 
   const categoryIds = useMemo(() => {
@@ -45,10 +41,6 @@ const ProductsGrid = ({
 
     return collectLeafIds(node);
   }, [categories, selectedCategorySlug]);
-
-  /* ===========================
-     BRAND
-  =========================== */
 
   const selectedBrandSlugs = useMemo(() => {
     return params.get("brands")?.split(",") ?? [];
@@ -64,10 +56,6 @@ const ProductsGrid = ({
     return ids.length > 0 ? ids : undefined;
   }, [brands, selectedBrandSlugs]);
 
-  /* ===========================
-     SELLER (PARAM = sellers)
-  =========================== */
-
   const selectedSellerIds = useMemo(() => {
     return params.get("sellers")?.split(",").map(Number) ?? [];
   }, [params]);
@@ -75,10 +63,6 @@ const ProductsGrid = ({
   const sellerIds = useMemo(() => {
     return selectedSellerIds.length > 0 ? selectedSellerIds : undefined;
   }, [selectedSellerIds]);
-
-  /* ===========================
-     PAYLOAD
-  =========================== */
 
   const payload: Omit<ReqProductsListPayload, "page"> = {
     limit: 20,
@@ -89,10 +73,6 @@ const ProductsGrid = ({
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useProductsListInfinite(payload);
-
-  /* ===========================
-     MAP HELPERS
-  =========================== */
 
   const brandNameMap = useMemo(() => {
     const map = new Map<number, string>();
@@ -109,10 +89,6 @@ const ProductsGrid = ({
         brandName: brandNameMap.get(product.brandId) ?? "",
       })),
     ) ?? [];
-
-  /* ===========================
-     RENDER
-  =========================== */
 
   if (isLoading) {
     return (

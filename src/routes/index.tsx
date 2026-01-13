@@ -22,7 +22,6 @@ const router = createBrowserRouter([
         element: <DashboardPage />,
       },
 
-      // ✅ GUEST + USER
       {
         element: (
           <ProtectedRoute
@@ -37,7 +36,6 @@ const router = createBrowserRouter([
         ],
       },
 
-      // ✅ ONLY USER
       {
         element: <ProtectedRoute allowedDomains={[USER_DOMAIN.USER]} />,
         children: [
@@ -46,7 +44,6 @@ const router = createBrowserRouter([
         ],
       },
 
-      // ✅ SELLER
       {
         element: <ProtectedRoute allowedDomains={[USER_DOMAIN.SELLER]} />,
         children: [
@@ -54,7 +51,6 @@ const router = createBrowserRouter([
         ],
       },
 
-      // ✅ ADMIN
       {
         element: <ProtectedRoute allowedDomains={[USER_DOMAIN.ADMIN]} />,
         children: [{ path: "admin/products", element: <AdminProductsPage /> }],

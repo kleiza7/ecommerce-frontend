@@ -38,11 +38,13 @@ const ProductDetailPage = () => {
   }, [currencies]);
 
   // TODO: fix this loading
-  if (isLoading || !data) return <LoadingSpinner size={56} borderWidth={3} />;
+  if (isLoading || !data) {
+    return <LoadingSpinner size={56} borderWidth={3} />;
+  }
 
   const images = data.images;
 
-  const cartItem = cartItems.find((i) => i.productId === data.id);
+  const cartItem = cartItems.find((item) => item.productId === data.id);
   const cartQuantity = cartItem?.quantity ?? 0;
 
   const isOutOfStock = cartQuantity >= data.stockCount;
@@ -58,7 +60,7 @@ const ProductDetailPage = () => {
       <div className="flex gap-8">
         <div className="flex flex-col gap-4">
           <div
-            className="relative h-[500px] w-[400px] cursor-pointer overflow-hidden rounded-xl border"
+            className="border-gray-2 relative h-[500px] w-[400px] cursor-pointer overflow-hidden rounded-xl border"
             onClick={() => setLightboxOpen(true)}
           >
             <img
@@ -67,29 +69,35 @@ const ProductDetailPage = () => {
               className="h-full w-full object-cover"
             />
 
-            {activeIndex > 0 && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setActiveIndex(activeIndex - 1);
-                }}
-                className="absolute top-1/2 left-2 -translate-y-1/2 cursor-pointer rounded-full bg-white p-2 shadow"
-              >
-                ←
-              </button>
-            )}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setActiveIndex((prev) => {
+                  if (prev === 0) {
+                    return images.length - 1;
+                  }
+                  return prev - 1;
+                });
+              }}
+              className="absolute top-1/2 left-2 h-10 w-10 -translate-y-1/2 cursor-pointer rounded-full bg-white p-2 shadow"
+            >
+              ←
+            </button>
 
-            {activeIndex < images.length - 1 && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setActiveIndex(activeIndex + 1);
-                }}
-                className="absolute top-1/2 right-2 -translate-y-1/2 cursor-pointer rounded-full bg-white p-2 shadow"
-              >
-                →
-              </button>
-            )}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setActiveIndex((prev) => {
+                  if (prev === images.length - 1) {
+                    return 0;
+                  }
+                  return prev + 1;
+                });
+              }}
+              className="absolute top-1/2 right-2 h-10 w-10 -translate-y-1/2 cursor-pointer rounded-full bg-white p-2 shadow"
+            >
+              →
+            </button>
           </div>
 
           <div className="mt-2 flex gap-3">
@@ -98,7 +106,7 @@ const ProductDetailPage = () => {
                 key={img.id}
                 onClick={() => setActiveIndex(index)}
                 className={`h-20 w-20 cursor-pointer overflow-hidden rounded-lg border ${
-                  index === activeIndex ? "border-orange" : "border-gray-300"
+                  index === activeIndex ? "border-orange" : "border-gray-2"
                 }`}
               >
                 <img

@@ -65,6 +65,19 @@ const FavoriteProductCard = ({
             />
           ))}
         </div>
+
+        <div className="absolute bottom-3 left-1/2 z-10 -translate-x-1/2 rounded-full bg-gray-300 p-1">
+          <div className="flex items-center gap-1">
+            {Array.from({ length: zoneCount }).map((_, i) => (
+              <span
+                key={i}
+                className={`h-1 w-1 rounded-full transition ${
+                  i === hoverIndex ? "bg-text-primary" : "bg-white"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
       </div>
 
       <div className="flex flex-1 flex-col p-3">

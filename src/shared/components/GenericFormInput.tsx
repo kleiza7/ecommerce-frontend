@@ -13,12 +13,8 @@ type GenericFormInputProps<TFieldValues extends FieldValues> = {
   placeholder?: string;
   required?: boolean;
   disabled?: boolean;
-
-  /** number type için */
   min?: number;
   max?: number;
-
-  /** extra override gerekirse */
   rules?: RegisterOptions<TFieldValues, FieldPath<TFieldValues>>;
 };
 

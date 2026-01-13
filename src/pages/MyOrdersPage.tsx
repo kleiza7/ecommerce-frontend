@@ -193,7 +193,7 @@ const MyOrdersPage = () => {
                     <div className="flex min-w-max gap-x-5">
                       {order.items.map((item) => {
                         const img = item.product.images.find(
-                          (i) => i.isPrimary,
+                          (img) => img.isPrimary,
                         );
 
                         if (!img) {

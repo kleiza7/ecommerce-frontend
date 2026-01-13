@@ -48,9 +48,11 @@ const CategorySelectionDialogContent = ({
     if (!initialSelectedCategory || tree.length === 0) return tree[0] ?? null;
 
     return (
-      tree.find((p) => p.id === initialSelectedCategory.parentId) ??
-      tree.find((p) =>
-        p.children?.some((c) => c.id === initialSelectedCategory.id),
+      tree.find((parent) => parent.id === initialSelectedCategory.parentId) ??
+      tree.find((parent) =>
+        parent.children?.some(
+          (child) => child.id === initialSelectedCategory.id,
+        ),
       ) ??
       tree[0] ??
       null

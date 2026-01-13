@@ -3,9 +3,9 @@ const LoadingSpinner = ({
   borderWidth = 2,
   className = "",
 }: {
-  size?: number; // px
-  colorClassName?: string; // tailwind color
-  borderWidth?: number; // px
+  size?: number;
+  colorClassName?: string;
+  borderWidth?: number;
   className?: string;
 }) => {
   return (

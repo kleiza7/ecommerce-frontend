@@ -24,10 +24,6 @@ const ProductsFilterSidebar = ({
   const [brandSearch, setBrandSearch] = useState("");
   const [sellerSearch, setSellerSearch] = useState("");
 
-  /* ===========================
-     CATEGORY
-  =========================== */
-
   const selectedCategorySlug = searchParams.get("category");
 
   const categoryTree = useMemo(
@@ -51,7 +47,9 @@ const ProductsFilterSidebar = ({
     }
 
     if (current.parentId) {
-      const parent = categories.find((c) => c.id === current.parentId);
+      const parent = categories.find(
+        (category) => category.id === current.parentId,
+      );
       return parent
         ? (slugMap.get(parent.slug)?.children ?? categoryTree)
         : categoryTree;
@@ -66,10 +64,6 @@ const ProductsFilterSidebar = ({
     params.delete("page");
     setSearchParams(params);
   };
-
-  /* ===========================
-     BRAND
-  =========================== */
 
   const selectedBrandSlugs = searchParams.get("brands")?.split(",") ?? [];
 
@@ -95,10 +89,6 @@ const ProductsFilterSidebar = ({
       brand.name.toLowerCase().includes(brandSearch.toLowerCase()),
     );
   }, [brands, brandSearch]);
-
-  /* ===========================
-     SELLER
-  =========================== */
 
   const selectedSellerIds =
     searchParams.get("sellers")?.split(",").map(Number) ?? [];
@@ -126,10 +116,6 @@ const ProductsFilterSidebar = ({
     );
   }, [sellers, sellerSearch]);
 
-  /* ===========================
-     RENDER
-  =========================== */
-
   return (
     <aside className="text-text-primary text-s14-l20">
       <FilterSection title="Category" defaultOpen>
@@ -153,7 +139,7 @@ const ProductsFilterSidebar = ({
       <FilterSection title="Brand" defaultOpen>
         <input
           type="text"
-          placeholder="Marka Ara"
+          placeholder="Search Brand"
           value={brandSearch}
           onChange={(e) => setBrandSearch(e.target.value)}
           className="text-s12-l16 placeholder:text-gray-2 border-gray-2 text-text-primary mb-2.5 h-8 w-full rounded border px-3 py-2 outline-none"
@@ -179,10 +165,10 @@ const ProductsFilterSidebar = ({
         </div>
       </FilterSection>
 
-      <FilterSection title="Seller" defaultOpen={false}>
+      <FilterSection title="Seller" defaultOpen>
         <input
           type="text"
-          placeholder="Satıcı Ara"
+          placeholder="Search Seller"
           value={sellerSearch}
           onChange={(e) => setSellerSearch(e.target.value)}
           className="text-s12-l16 placeholder:text-gray-2 border-gray-2 text-text-primary mb-2.5 h-8 w-full rounded border px-3 py-2 outline-none"
