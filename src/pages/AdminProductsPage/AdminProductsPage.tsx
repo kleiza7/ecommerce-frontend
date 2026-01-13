@@ -13,6 +13,8 @@ import { useCurrenciesGetAll } from "../../hooks/useCurrenciesGetAll";
 import { useProductsGetWaitingApprovalProducts } from "../../hooks/useProductsGetWaitingApprovalProducts";
 import LoadingSpinner from "../../shared/components/LoadingSpinner";
 import { EVENT_TYPE } from "../../shared/enums/EventType.enum";
+import { registerAgGridModules } from "../../shared/utils/AgGrid.util";
+import "../../styles/agGrid.css";
 import ProductApprovalDialog from "./components/ProductApprovalDialog/ProductApprovalDialog";
 
 const AdminProductsPage = () => {
@@ -132,6 +134,10 @@ const AdminProductsPage = () => {
     },
     [],
   );
+
+  useEffect(() => {
+    registerAgGridModules();
+  }, []);
 
   useEffect(() => {
     const onProductApproved = () => {

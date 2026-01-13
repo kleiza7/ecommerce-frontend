@@ -14,6 +14,8 @@ import { useProductsGetProductsBySeller } from "../../hooks/useProductsGetProduc
 import LoadingSpinner from "../../shared/components/LoadingSpinner";
 import { PRODUCT_STATUS_TEXT_PAIRS } from "../../shared/constants/Product.constants";
 import { EVENT_TYPE } from "../../shared/enums/EventType.enum";
+import { registerAgGridModules } from "../../shared/utils/AgGrid.util";
+import "../../styles/agGrid.css";
 import NewProductDialog from "./components/NewProductDialog/NewProductDialog";
 import UpdateProductDialog from "./components/UpdateProductDialog/UpdateProductDialog";
 
@@ -144,6 +146,10 @@ const SellerProductsPage = () => {
     },
     [],
   );
+
+  useEffect(() => {
+    registerAgGridModules();
+  }, []);
 
   useEffect(() => {
     const onProductCreated = () => {
