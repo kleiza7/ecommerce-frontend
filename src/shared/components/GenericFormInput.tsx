@@ -66,7 +66,7 @@ const GenericFormInput = <TFieldValues extends FieldValues>({
           disabled={disabled}
           min={isNumber ? min : undefined}
           max={isNumber ? max : undefined}
-          className={`text-s14-l20 text-text-primary placeholder:text-gray-2 h-10 rounded-lg border pl-5 font-medium outline-none ${
+          className={`text-s14-l20 text-text-primary placeholder:text-gray-2 h-10 rounded-lg border pl-4 outline-none ${
             disabled
               ? "bg-gray-3 text-gray-6 cursor-not-allowed opacity-60"
               : fieldState.error

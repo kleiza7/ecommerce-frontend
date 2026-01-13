@@ -39,7 +39,7 @@ const GenericFormTextArea = <TFieldValues extends FieldValues>({
           rows={rows}
           placeholder={placeholder}
           disabled={disabled}
-          className={`text-s14-l20 text-text-primary placeholder:text-gray-2 h-20 resize-none rounded-[10px] border py-3 pr-4 pl-5 font-medium ${
+          className={`text-s14-l20 text-text-primary placeholder:text-gray-2 h-20 resize-none rounded-[10px] border px-4 py-3 ${
             disabled
               ? "bg-gray-3 text-gray-6 cursor-not-allowed opacity-60"
               : fieldState.error
