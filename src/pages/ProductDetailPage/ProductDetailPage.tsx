@@ -54,7 +54,7 @@ const ProductDetailPage = () => {
     brands.find((brand) => brand.id === data.brandId)?.name ?? "";
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-y-5">
       <CategoryBreadcrumb categoryId={data.categoryId} />
 
       <div className="flex gap-8">

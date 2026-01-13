@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import type { ReqCategoriesGetAllResponse } from "../../../api/responses/ReqCategoriesGetAllResponse.model";
+import { KeyboardArrowUpIcon } from "../../../assets/icons";
 import type { CategoryNode } from "../../../shared/models/CategoryNode.model";
 import {
   buildCategorySlugMap,
@@ -56,11 +57,13 @@ const CategoryBreadcrumb = ({
   };
 
   return (
-    <nav className="text-s14-l20 flex items-center gap-x-4 px-[120px] py-2 text-gray-700">
-      <ol className="flex flex-wrap items-center gap-1 font-semibold">
+    <nav className="text-s14-l20 text-text-primary flex items-center gap-x-4 px-[120px]">
+      <ol className="flex flex-wrap items-center gap-1">
         {breadcrumb.map((item, index) => (
           <li key={item.id} className="flex items-center gap-1">
-            {index !== 0 && <span className="mx-1 font-semibold">›</span>}
+            {index !== 0 && (
+              <KeyboardArrowUpIcon className="fill-orange h-4 w-4 rotate-90" />
+            )}
 
             <button
               onClick={() => {
@@ -69,7 +72,9 @@ const CategoryBreadcrumb = ({
                 next.delete("page");
                 setParams(next);
               }}
-              className="hover:text-orange cursor-pointer hover:underline"
+              className={`cursor-pointer ${
+                index === breadcrumb.length - 1 ? "font-medium" : "font-normal"
+              }`}
             >
               {item.name}
             </button>

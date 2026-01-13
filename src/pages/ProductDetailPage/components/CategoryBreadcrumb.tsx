@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { KeyboardArrowUpIcon } from "../../../assets/icons";
 import { useCategoriesGetAll } from "../../../hooks/useCategoriesGetAll";
 import type { CategoryNode } from "../../../shared/models/CategoryNode.model";
 import {
@@ -49,11 +50,13 @@ const CategoryBreadcrumb = ({ categoryId }: { categoryId: number }) => {
   if (isLoading || breadcrumb.length === 0) return null;
 
   return (
-    <nav className="text-s14-l20 flex items-center gap-x-4 py-[15px] text-gray-700">
-      <ol className="flex flex-wrap items-center gap-1 font-semibold">
+    <nav className="text-s14-l20 text-text-primary flex items-center gap-x-4">
+      <ol className="flex flex-wrap items-center gap-1">
         {breadcrumb.map((item, index) => (
           <li key={item.id} className="flex items-center gap-1">
-            {index !== 0 && <span className="mx-1">›</span>}
+            {index !== 0 && (
+              <KeyboardArrowUpIcon className="fill-orange h-4 w-4 rotate-90" />
+            )}
 
             <button
               onClick={() => {
@@ -63,7 +66,9 @@ const CategoryBreadcrumb = ({ categoryId }: { categoryId: number }) => {
 
                 navigate(`/products?${next.toString()}`);
               }}
-              className="hover:text-orange cursor-pointer hover:underline"
+              className={`cursor-pointer ${
+                index === breadcrumb.length - 1 ? "font-medium" : "font-normal"
+              }`}
             >
               {item.name}
             </button>

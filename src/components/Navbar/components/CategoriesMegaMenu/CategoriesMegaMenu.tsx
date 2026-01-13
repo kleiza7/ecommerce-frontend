@@ -7,7 +7,6 @@ import CategoriesMegaMenuContent from "./components/CategoriesMegaMenuContent";
 
 const CategoriesMegaMenu = () => {
   const { data: categories = [] } = useCategoriesGetAll();
-
   const [searchParams] = useSearchParams();
   const activeCategorySlug = searchParams.get("category");
 
@@ -57,6 +56,7 @@ const CategoriesMegaMenu = () => {
         />
       </GenericNavigationMenu>
 
+      {/* TOP LEVEL CATEGORIES */}
       {parentCategories.map((parent) => {
         const isActive =
           activeCategorySlug === parent.slug ||
@@ -66,11 +66,16 @@ const CategoriesMegaMenu = () => {
           <NavLink
             key={parent.id}
             to={`/products?category=${parent.slug}`}
-            className={`text-s14-l20 font-medium ${
-              isActive ? "text-orange" : "text-gray-700 hover:text-gray-900"
+            className={`text-s14-l20 relative flex h-8 items-center font-medium transition-colors ${
+              isActive ? "text-orange" : "hover:text-orange text-text-primary"
             }`}
           >
             {parent.label}
+
+            {/* ACTIVE BORDER */}
+            {isActive && (
+              <div className="bg-orange absolute bottom-0 left-0 h-0.5 w-full rounded-full" />
+            )}
           </NavLink>
         );
       })}
