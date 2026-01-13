@@ -2,11 +2,11 @@ import { NavLink } from "react-router-dom";
 import { useUserDomain } from "../../hooks/useUserDomain";
 import { USER_DOMAIN } from "../../shared/enums/UserDomain.enum";
 import { useUserStore } from "../../stores/UserStore";
-import AuthPopover from "./components/AuthPopover";
+import AuthNavigationMenu from "./components/AuthNavigationMenu";
 import CategoriesMegaMenu from "./components/CategoriesMegaMenu/CategoriesMegaMenu";
 import MyCartLink from "./components/MyCartLink";
 import MyFavoritesLink from "./components/MyFavoritesLink";
-import UserPopover from "./components/UserPopover";
+import UserNavigationMenu from "./components/UserNavigationMenu";
 
 const Navbar = () => {
   const userDomain = useUserDomain();
@@ -28,7 +28,7 @@ const Navbar = () => {
           </NavLink>
 
           <div className="flex gap-x-6">
-            {isAuthenticated ? <UserPopover /> : <AuthPopover />}
+            {isAuthenticated ? <UserNavigationMenu /> : <AuthNavigationMenu />}
 
             {isGuestOrUser && (
               <>

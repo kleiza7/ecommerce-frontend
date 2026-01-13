@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { NavLink, useSearchParams } from "react-router-dom";
+import { KeyboardArrowUpIcon } from "../../../../../assets/icons";
 
 type CategoryNode = {
   id: number;
@@ -10,8 +11,10 @@ type CategoryNode = {
 
 const CategoriesMegaMenuContent = ({
   parents,
+  closeMenu,
 }: {
   parents: CategoryNode[];
+  closeMenu: () => void;
 }) => {
   const [searchParams] = useSearchParams();
   const activeCategorySlug = searchParams.get("category");
@@ -30,48 +33,48 @@ const CategoriesMegaMenuContent = ({
 
   return (
     <div className="flex min-w-[900px]">
-      <aside className="w-56 border-r pr-4">
+      {/* LEFT */}
+      <aside className="border-gray-2 w-56 border-r pr-4">
         <ul className="space-y-1">
           {parents.map((parent) => {
-            const isActive =
-              activeCategorySlug === parent.slug ||
-              activeCategorySlug?.startsWith(`${parent.slug}-`);
+            const isActive = activeParent?.id === parent.id;
 
             return (
               <li
                 key={parent.id}
                 onMouseEnter={() => setActiveParent(parent)}
-                className={`text-s14-l20 cursor-pointer rounded px-3 py-2 ${
+                className={`flex h-12 cursor-pointer items-center justify-between rounded-md px-3 transition-colors ${
                   isActive
-                    ? "text-orange bg-orange-50 font-semibold"
-                    : "text-gray-700 hover:bg-gray-50"
+                    ? "bg-orange/10 text-orange"
+                    : "text-text-primary hover:bg-orange/10 hover:text-orange"
                 }`}
               >
-                {parent.label}
+                <span className="text-s14-l20 font-semibold">
+                  {parent.label}
+                </span>
+
+                {isActive && (
+                  <KeyboardArrowUpIcon className="fill-orange h-4 w-4 rotate-90" />
+                )}
               </li>
             );
           })}
         </ul>
       </aside>
 
+      {/* RIGHT */}
       <section className="flex-1 pl-6">
         <div className="grid grid-cols-3 gap-8">
           {activeParent.children?.map((child) => {
-            const isChildActive =
-              activeCategorySlug === child.slug ||
-              activeCategorySlug?.startsWith(`${child.slug}-`);
-
             return (
               <div key={child.id}>
                 <NavLink
                   to={`/products?category=${child.slug}`}
-                  className={`text-s14-l20 mb-2 block font-semibold ${
-                    isChildActive
-                      ? "text-orange"
-                      : "hover:text-orange text-gray-900"
-                  }`}
+                  onClick={closeMenu}
+                  className="text-s14-l20 text-orange mb-2 flex items-center gap-x-1 font-medium hover:underline"
                 >
-                  {child.label}
+                  <span>{child.label}</span>
+                  <KeyboardArrowUpIcon className="fill-orange h-4 w-4 rotate-90" />
                 </NavLink>
 
                 {child.children && (
@@ -83,10 +86,11 @@ const CategoriesMegaMenuContent = ({
                         <li key={sub.id}>
                           <NavLink
                             to={`/products?category=${sub.slug}`}
-                            className={`text-s14-l20 ${
+                            onClick={closeMenu}
+                            className={`text-s14-l20 block transition-colors ${
                               isSubActive
-                                ? "text-orange"
-                                : "text-gray-600 hover:text-gray-900"
+                                ? "text-orange underline"
+                                : "text-text-primary hover:text-orange hover:underline"
                             }`}
                           >
                             {sub.label}

@@ -6,16 +6,14 @@ import {
   UserFilledIcon,
   UserIcon,
 } from "../../../assets/icons";
-import {
-  GenericPopover,
-  GenericPopoverClose,
-} from "../../../shared/components/GenericPopover";
+import GenericNavigationMenu from "../../../shared/components/GenericNavigationMenu";
 import { useCartStore } from "../../../stores/CartStore";
 import { useFavoriteStore } from "../../../stores/FavoriteStore";
 import { useUserStore } from "../../../stores/UserStore";
 
-const UserPopover = () => {
+const UserNavigationMenu = () => {
   const navigate = useNavigate();
+
   const user = useUserStore((state) => state.user);
   const logout = useUserStore((state) => state.logout);
   const clearCartStore = useCartStore((state) => state.clearCart);
@@ -24,10 +22,12 @@ const UserPopover = () => {
   const [open, setOpen] = useState(false);
 
   const handleNavigateMyOrders = useCallback(() => {
+    setOpen(false);
     navigate("/my-orders");
   }, [navigate]);
 
   const handleLogout = useCallback(() => {
+    setOpen(false);
     logout();
     clearCartStore();
     clearFavoritesStore();
@@ -35,11 +35,11 @@ const UserPopover = () => {
   }, [logout, clearCartStore, clearFavoritesStore, navigate]);
 
   return (
-    <GenericPopover
+    <GenericNavigationMenu
       open={open}
-      onOpenChange={setOpen}
-      align="end"
-      side="bottom"
+      setOpen={setOpen}
+      withOverlay={false}
+      contentAlign="center"
       className="border-orange border"
       trigger={
         <button
@@ -75,30 +75,26 @@ const UserPopover = () => {
           </span>
         </div>
 
-        <GenericPopoverClose asChild>
-          <button
-            type="button"
-            onClick={handleNavigateMyOrders}
-            className="text-s14-l20 text-text-primary hover:bg-gray-1 flex cursor-pointer items-center gap-x-3 px-4 py-3 transition-colors"
-          >
-            <PackageIcon className="fill-text-primary h-4 w-4" />
-            <span>My Orders</span>
-          </button>
-        </GenericPopoverClose>
+        <button
+          type="button"
+          onClick={handleNavigateMyOrders}
+          className="text-s14-l20 text-text-primary hover:bg-gray-1 flex items-center gap-x-3 px-4 py-3 transition-colors"
+        >
+          <PackageIcon className="fill-text-primary h-4 w-4" />
+          <span>My Orders</span>
+        </button>
 
-        <GenericPopoverClose asChild>
-          <button
-            type="button"
-            onClick={handleLogout}
-            className="text-s14-l20 text-text-primary hover:bg-gray-1 flex cursor-pointer items-center gap-x-3 px-4 py-3 transition-colors"
-          >
-            <LogoutIcon className="fill-text-primary h-4 w-4" />
-            <span>Log Out</span>
-          </button>
-        </GenericPopoverClose>
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="text-s14-l20 text-text-primary hover:bg-gray-1 flex items-center gap-x-3 px-4 py-3 transition-colors"
+        >
+          <LogoutIcon className="fill-text-primary h-4 w-4" />
+          <span>Log Out</span>
+        </button>
       </div>
-    </GenericPopover>
+    </GenericNavigationMenu>
   );
 };
 
-export default UserPopover;
+export default UserNavigationMenu;

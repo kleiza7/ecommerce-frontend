@@ -1,3 +1,4 @@
+import { useCallback, useState } from "react";
 import { NavLink, useSearchParams } from "react-router-dom";
 import { MenuIcon } from "../../../../assets/icons";
 import { useCategoriesGetAll } from "../../../../hooks/useCategoriesGetAll";
@@ -9,6 +10,12 @@ const CategoriesMegaMenu = () => {
 
   const [searchParams] = useSearchParams();
   const activeCategorySlug = searchParams.get("category");
+
+  const [isNavigationMenuOpen, setIsNavigationMenuOpen] = useState(false);
+
+  const closeMenu = useCallback(() => {
+    setIsNavigationMenuOpen(false);
+  }, []);
 
   const parentCategories = categories
     .filter((category) => category.parentId === null)
@@ -35,14 +42,20 @@ const CategoriesMegaMenu = () => {
   return (
     <div className="flex h-8 items-center gap-x-6">
       <GenericNavigationMenu
+        open={isNavigationMenuOpen}
+        setOpen={setIsNavigationMenuOpen}
         trigger={
           <span className="flex items-center gap-2 font-semibold">
             <MenuIcon className="fill-text-primary" />
             All Categories
           </span>
         }
-        content={<CategoriesMegaMenuContent parents={parentCategories} />}
-      />
+      >
+        <CategoriesMegaMenuContent
+          parents={parentCategories}
+          closeMenu={closeMenu}
+        />
+      </GenericNavigationMenu>
 
       {parentCategories.map((parent) => {
         const isActive =
