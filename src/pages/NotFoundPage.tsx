@@ -23,7 +23,7 @@ const NotFoundPage = () => {
           onClick={() => navigate("/products")}
           className="bg-orange hover:bg-orange-dark text-s16-l24 rounded-lg px-8 py-3 font-medium text-white transition"
         >
-          Go to Products
+          Continue Shopping
         </button>
       </div>
     </div>

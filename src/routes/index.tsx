@@ -1,6 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
+import ErrorBoundary from "../components/ErrorBoundary";
 import ProtectedRoute from "../components/ProtectedRoute";
 import RootLayout from "../components/RootLayout";
+
 import AdminProductsPage from "../pages/AdminProductsPage/AdminProductsPage";
 import AuthPage from "../pages/AuthPage/AuthPage";
 import CartPage from "../pages/CartPage/CartPage";
@@ -15,9 +17,12 @@ import SellerProductsPage from "../pages/SellerProductsPage/SellerProductsPage";
 import { USER_DOMAIN } from "../shared/enums/UserDomain.enum";
 
 const router = createBrowserRouter([
-  // ✅ NORMAL APP (Navbar + Layout VAR)
   {
-    element: <RootLayout />,
+    element: (
+      <ErrorBoundary>
+        <RootLayout />
+      </ErrorBoundary>
+    ),
     children: [
       { path: "/", element: <DashboardPage /> },
 
