@@ -245,8 +245,8 @@ const NewProductForm = ({ close }: { close: () => void }) => {
                   disabled={isPending}
                   onChange={(e) => {
                     const files = Array.from(e.target.files ?? []);
-                    const valid = files.filter((f) =>
-                      ACCEPTED_FILE_TYPES.includes(f.type),
+                    const valid = files.filter((file) =>
+                      ACCEPTED_FILE_TYPES.includes(file.type),
                     );
                     field.onChange([...field.value, ...valid].slice(0, 4));
                     e.target.value = "";

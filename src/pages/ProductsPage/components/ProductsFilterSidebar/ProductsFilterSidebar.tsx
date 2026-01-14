@@ -69,7 +69,7 @@ const ProductsFilterSidebar = ({
 
   const toggleBrand = (slug: string) => {
     const next = selectedBrandSlugs.includes(slug)
-      ? selectedBrandSlugs.filter((s) => s !== slug)
+      ? selectedBrandSlugs.filter((brandSlug) => brandSlug !== slug)
       : [...selectedBrandSlugs, slug];
 
     const params = new URLSearchParams(searchParams);
@@ -95,7 +95,7 @@ const ProductsFilterSidebar = ({
 
   const toggleSeller = (id: number) => {
     const next = selectedSellerIds.includes(id)
-      ? selectedSellerIds.filter((x) => x !== id)
+      ? selectedSellerIds.filter((sellerId) => sellerId !== id)
       : [...selectedSellerIds, id];
 
     const params = new URLSearchParams(searchParams);

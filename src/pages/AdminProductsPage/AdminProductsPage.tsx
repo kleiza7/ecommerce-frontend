@@ -38,25 +38,25 @@ const AdminProductsPage = () => {
 
   const brandMap = useMemo(() => {
     const map = new Map<number, string>();
-    brands.forEach((b) => map.set(b.id, b.name));
+    brands.forEach((brand) => map.set(brand.id, brand.name));
     return map;
   }, [brands]);
 
   const categoryMap = useMemo(() => {
     const map = new Map<number, string>();
-    categories.forEach((c) => map.set(c.id, c.name));
+    categories.forEach((category) => map.set(category.id, category.name));
     return map;
   }, [categories]);
 
   const sellerMap = useMemo(() => {
     const map = new Map<number, string>();
-    sellers.forEach((s) => map.set(s.id, s.name));
+    sellers.forEach((seller) => map.set(seller.id, seller.name));
     return map;
   }, [sellers]);
 
   const currencyMap = useMemo(() => {
     const map = new Map<number, string>();
-    currencies.forEach((c) => map.set(c.id, c.code));
+    currencies.forEach((currency) => map.set(currency.id, currency.code));
     return map;
   }, [currencies]);
 

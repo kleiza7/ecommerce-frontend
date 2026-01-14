@@ -55,19 +55,19 @@ const SellerProductsPage = () => {
 
   const brandMap = useMemo(() => {
     const map = new Map<number, string>();
-    brands.forEach((b) => map.set(b.id, b.name));
+    brands.forEach((brand) => map.set(brand.id, brand.name));
     return map;
   }, [brands]);
 
   const categoryMap = useMemo(() => {
     const map = new Map<number, string>();
-    categories.forEach((c) => map.set(c.id, c.name));
+    categories.forEach((category) => map.set(category.id, category.name));
     return map;
   }, [categories]);
 
   const currencyMap = useMemo(() => {
     const map = new Map<number, string>();
-    currencies.forEach((c) => map.set(c.id, c.code));
+    currencies.forEach((currency) => map.set(currency.id, currency.code));
     return map;
   }, [currencies]);
 

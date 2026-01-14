@@ -6,7 +6,7 @@ import { useUserStore } from "../stores/UserStore";
 
 export const useFavoriteHydrate = () => {
   const { user, isHydrated } = useUserStore();
-  const setItems = useFavoriteStore((s) => s.setItems);
+  const setItems = useFavoriteStore((state) => state.setItems);
 
   const hydratedRef = useRef(false);
 

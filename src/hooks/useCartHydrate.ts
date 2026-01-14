@@ -6,7 +6,7 @@ import { useUserStore } from "../stores/UserStore";
 
 export const useCartHydrate = () => {
   const { user, isHydrated } = useUserStore();
-  const setItems = useCartStore((s) => s.setItems);
+  const setItems = useCartStore((state) => state.setItems);
 
   const hydratedRef = useRef(false);
 
