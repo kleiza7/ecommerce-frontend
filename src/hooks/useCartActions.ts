@@ -1,3 +1,5 @@
+import { useQueryClient } from "@tanstack/react-query";
+import type { AxiosError } from "axios";
 import { TOAST_TYPE } from "../shared/enums/ToastType.enum";
 import type { CartItemUI } from "../shared/models/CartItemUI.model";
 import {
@@ -17,6 +19,8 @@ import { useCartRemove } from "./useCartRemove";
 import { useCartUpdate } from "./useCartUpdate";
 
 export const useCartActions = () => {
+  const queryClient = useQueryClient();
+
   const setItems = useCartStore((state) => state.setItems);
   const addItem = useCartStore((state) => state.addItem);
   const updateItem = useCartStore((state) => state.updateItem);
@@ -72,6 +76,13 @@ export const useCartActions = () => {
               product: item.product,
             });
           },
+          onError: (error: AxiosError) => {
+            if (error.response?.status === 409) {
+              queryClient.invalidateQueries({
+                queryKey: ["cart"],
+              });
+            }
+          },
         },
       );
       return;
@@ -112,6 +123,13 @@ export const useCartActions = () => {
         {
           onSuccess: (item) => {
             updateItem(item.productId, item.quantity);
+          },
+          onError: (error: AxiosError) => {
+            if (error.response?.status === 409) {
+              queryClient.invalidateQueries({
+                queryKey: ["cart"],
+              });
+            }
           },
         },
       );
