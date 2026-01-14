@@ -1,26 +1,38 @@
+import { Suspense, lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import ErrorBoundary from "../components/ErrorBoundary";
+import PageFallback from "../components/PageFallback";
 import ProtectedRoute from "../components/ProtectedRoute";
 import RootLayout from "../components/RootLayout";
-
-import AdminProductsPage from "../pages/AdminProductsPage/AdminProductsPage";
-import AuthPage from "../pages/AuthPage/AuthPage";
-import CartPage from "../pages/CartPage/CartPage";
-import DashboardPage from "../pages/DashboardPage";
-import MyFavoritesPage from "../pages/MyFavoritesPage/MyFavoritesPage";
-import MyOrdersPage from "../pages/MyOrdersPage";
-import NotFoundPage from "../pages/NotFoundPage";
-import OrderDetailPage from "../pages/OrderDetailPage";
-import ProductDetailPage from "../pages/ProductDetailPage/ProductDetailPage";
-import ProductsPage from "../pages/ProductsPage/ProductsPage";
-import SellerProductsPage from "../pages/SellerProductsPage/SellerProductsPage";
 import { USER_DOMAIN } from "../shared/enums/UserDomain.enum";
+
+const DashboardPage = lazy(() => import("../pages/DashboardPage"));
+const ProductsPage = lazy(() => import("../pages/ProductsPage/ProductsPage"));
+const ProductDetailPage = lazy(
+  () => import("../pages/ProductDetailPage/ProductDetailPage"),
+);
+const CartPage = lazy(() => import("../pages/CartPage/CartPage"));
+const MyFavoritesPage = lazy(
+  () => import("../pages/MyFavoritesPage/MyFavoritesPage"),
+);
+const MyOrdersPage = lazy(() => import("../pages/MyOrdersPage"));
+const OrderDetailPage = lazy(() => import("../pages/OrderDetailPage"));
+const SellerProductsPage = lazy(
+  () => import("../pages/SellerProductsPage/SellerProductsPage"),
+);
+const AdminProductsPage = lazy(
+  () => import("../pages/AdminProductsPage/AdminProductsPage"),
+);
+const AuthPage = lazy(() => import("../pages/AuthPage/AuthPage"));
+const NotFoundPage = lazy(() => import("../pages/NotFoundPage"));
 
 const router = createBrowserRouter([
   {
     element: (
       <ErrorBoundary>
-        <RootLayout />
+        <Suspense fallback={<PageFallback />}>
+          <RootLayout />
+        </Suspense>
       </ErrorBoundary>
     ),
     children: [
@@ -66,7 +78,11 @@ const router = createBrowserRouter([
 
   {
     path: "*",
-    element: <NotFoundPage />,
+    element: (
+      <Suspense fallback={<PageFallback />}>
+        <NotFoundPage />
+      </Suspense>
+    ),
   },
 ]);
 
