@@ -1,27 +1,15 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useCurrenciesGetAll } from "../../../../hooks/useCurrenciesGetAll";
 import type { FavoriteItemUI } from "../../../../shared/models/FavoriteItemUI.model";
 import FavoriteRemoveButton from "./components/FavoriteRemoveButton";
 
 const FavoriteProductCard = ({
   product,
 }: {
-  product: FavoriteItemUI["product"] & { brandName: string };
+  product: FavoriteItemUI["product"];
 }) => {
   const navigate = useNavigate();
-  const { data: currencies = [] } = useCurrenciesGetAll();
   const [hoverIndex, setHoverIndex] = useState(0);
-
-  const currencyMap = useMemo(() => {
-    const map = new Map<number, string>();
-
-    for (const currency of currencies) {
-      map.set(currency.id, currency.code);
-    }
-
-    return map;
-  }, [currencies]);
 
   const images = product.images ?? [];
   const zoneCount = images.length || 1;
@@ -82,7 +70,7 @@ const FavoriteProductCard = ({
 
       <div className="flex flex-1 flex-col p-3">
         <div className="text-text-primary text-s14-l20 flex flex-wrap gap-1">
-          <span className="font-semibold">{product.brandName}</span>
+          <span className="font-semibold">{product.brand.name}</span>
           <span>{product.name}</span>
         </div>
 
@@ -91,7 +79,7 @@ const FavoriteProductCard = ({
         </div>
 
         <div className="text-orange text-s16-l24 mt-auto font-bold">
-          {product.price.toFixed(2)} {currencyMap.get(product.currencyId) ?? ""}
+          {product.price.toFixed(2)} {product.currency.code}
         </div>
       </div>
     </div>

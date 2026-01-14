@@ -74,21 +74,7 @@ const ProductsGrid = ({
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useProductsListInfinite(payload);
 
-  const brandNameMap = useMemo(() => {
-    const map = new Map<number, string>();
-    for (const brand of brands) {
-      map.set(brand.id, brand.name);
-    }
-    return map;
-  }, [brands]);
-
-  const allProducts =
-    data?.pages.flatMap((page) =>
-      page.items.map((product) => ({
-        ...product,
-        brandName: brandNameMap.get(product.brandId) ?? "",
-      })),
-    ) ?? [];
+  const allProducts = data?.pages.flatMap((page) => page.items) ?? [];
 
   if (isLoading) {
     return (

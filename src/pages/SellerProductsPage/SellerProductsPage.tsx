@@ -7,9 +7,6 @@ import { AgGridReact } from "ag-grid-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { PRODUCT_STATUS } from "../../api/enums/ProductStatus.enum";
 import type { ReqProductsGetProductsBySellerResponse } from "../../api/responses/ReqProductsGetProductsBySellerResponse.model";
-import { useBrandsGetAll } from "../../hooks/useBrandsGetAll";
-import { useCategoriesGetAll } from "../../hooks/useCategoriesGetAll";
-import { useCurrenciesGetAll } from "../../hooks/useCurrenciesGetAll";
 import { useProductsGetProductsBySeller } from "../../hooks/useProductsGetProductsBySeller";
 import LoadingSpinner from "../../shared/components/LoadingSpinner";
 import { PRODUCT_STATUS_TEXT_PAIRS } from "../../shared/constants/Product.constants";
@@ -25,9 +22,6 @@ const SellerProductsPage = () => {
     isLoading,
     refetch,
   } = useProductsGetProductsBySeller();
-  const { data: categories = [] } = useCategoriesGetAll();
-  const { data: brands = [] } = useBrandsGetAll();
-  const { data: currencies = [] } = useCurrenciesGetAll();
 
   const [isNewProductDialogOpen, setIsNewProductDialogOpen] = useState(false);
   const [isUpdateProductDialogOpen, setIsUpdateProductDialogOpen] =
@@ -52,24 +46,6 @@ const SellerProductsPage = () => {
       },
     );
   }, [products]);
-
-  const brandMap = useMemo(() => {
-    const map = new Map<number, string>();
-    brands.forEach((brand) => map.set(brand.id, brand.name));
-    return map;
-  }, [brands]);
-
-  const categoryMap = useMemo(() => {
-    const map = new Map<number, string>();
-    categories.forEach((category) => map.set(category.id, category.name));
-    return map;
-  }, [categories]);
-
-  const currencyMap = useMemo(() => {
-    const map = new Map<number, string>();
-    currencies.forEach((currency) => map.set(currency.id, currency.code));
-    return map;
-  }, [currencies]);
 
   const columnDefs = useMemo<
     ColDef<ReqProductsGetProductsBySellerResponse[number]>[]
@@ -104,18 +80,18 @@ const SellerProductsPage = () => {
       },
       {
         headerName: "Brand",
-        valueGetter: (params) => brandMap.get(params.data?.brandId ?? 0) ?? "-",
+        valueGetter: (params) => params.data?.brand?.name ?? "-",
       },
       {
         headerName: "Category",
-        valueGetter: (params) =>
-          categoryMap.get(params.data?.categoryId ?? 0) ?? "-",
+        valueGetter: (params) => params.data?.category?.name ?? "-",
       },
       {
         headerName: "Price",
         valueGetter: (params) => {
           const price = params.data?.price;
-          const code = currencyMap.get(params.data?.currencyId ?? 0) ?? "";
+          const code = params.data?.currency?.code ?? "";
+
           return price != null ? `${price.toFixed(2)} ${code}` : "-";
         },
       },
@@ -130,7 +106,7 @@ const SellerProductsPage = () => {
           params.data?.status,
       },
     ],
-    [brandMap, categoryMap, currencyMap],
+    [],
   );
 
   const onRowDoubleClicked = useCallback(

@@ -1,13 +1,11 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import Lightbox from "yet-another-react-lightbox";
 import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
 import "yet-another-react-lightbox/styles.css";
 import { TimerArrowDownIcon } from "../../assets/icons";
-import { useBrandsGetAll } from "../../hooks/useBrandsGetAll";
 import { useCartActions } from "../../hooks/useCartActions";
-import { useCurrenciesGetAll } from "../../hooks/useCurrenciesGetAll";
 import { useProductsGetById } from "../../hooks/useProductsGetById";
 import FavoriteButton from "../../shared/components/FavoriteButton";
 import GenericTooltip from "../../shared/components/GenericTooltip";
@@ -21,21 +19,9 @@ const ProductDetailPage = () => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
   const { data, isLoading } = useProductsGetById(Number(id));
-  const { data: brands = [] } = useBrandsGetAll();
-  const { data: currencies = [] } = useCurrenciesGetAll();
   const { addToCart, isLoading: isCartLoading } = useCartActions();
 
   const cartItems = useCartStore((state) => state.items);
-
-  const currencyMap = useMemo(() => {
-    const map = new Map<number, string>();
-
-    for (const currency of currencies) {
-      map.set(currency.id, currency.code);
-    }
-
-    return map;
-  }, [currencies]);
 
   // TODO: fix this loading
   if (isLoading || !data) {
@@ -49,13 +35,9 @@ const ProductDetailPage = () => {
 
   const isOutOfStock = cartQuantity >= data.stockCount;
 
-  // TODO: brand lookup (sonra map / backend include olacak)
-  const brandName =
-    brands.find((brand) => brand.id === data.brandId)?.name ?? "";
-
   return (
     <div className="flex flex-col gap-y-5">
-      <CategoryBreadcrumb categoryId={data.categoryId} />
+      <CategoryBreadcrumb categoryId={data.category.id} />
 
       <div className="flex gap-8">
         <div className="flex flex-col gap-4">
@@ -121,7 +103,7 @@ const ProductDetailPage = () => {
 
         <div className="flex flex-1 flex-col gap-4">
           <div className="text-text-primary text-s20-l28 flex flex-wrap gap-2">
-            <span className="font-bold">{brandName}</span>
+            <span className="font-bold">{data.brand.name}</span>
             <span>{data.name}</span>
           </div>
 
@@ -130,7 +112,7 @@ const ProductDetailPage = () => {
           </span>
 
           <span className="text-orange text-s24-l32 font-bold">
-            {data.price.toFixed(2)} {currencyMap.get(data.currencyId) ?? ""}
+            {data.price.toFixed(2)} {data.currency.code}
           </span>
 
           <div className="text-text-primary text-s12-l16">

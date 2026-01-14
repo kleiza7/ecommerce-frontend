@@ -6,6 +6,7 @@ export type ProductImage = {
   mediumUrl: string;
   largeUrl: string;
   isPrimary: boolean;
+  publicId: string | null;
   createdAt: string;
   updatedAt: string;
 };

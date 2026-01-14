@@ -128,12 +128,12 @@ const UpdateProductForm = ({
         description: product.description,
         stockCount: product.stockCount,
         price: product.price,
-        brand: brands.find((brand) => brand.id === product.brandId)!,
+        brand: brands.find((brand) => brand.id === product.brand.id)!,
         category: categories.find(
-          (category) => category.id === product.categoryId,
+          (category) => category.id === product.category.id,
         )!,
         currency: currencies.find(
-          (currency) => currency.id === product.currencyId,
+          (currency) => currency.id === product.currency.id,
         )!,
         images: imageFiles,
       });

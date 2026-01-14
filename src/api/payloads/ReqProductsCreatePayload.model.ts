@@ -2,7 +2,10 @@ import type { Product } from "../models/Product.model";
 
 export type ReqProductsCreatePayload = Omit<
   Product,
-  "id" | "sellerId" | "status" | "images"
+  "id" | "brand" | "category" | "currency" | "seller" | "status" | "images"
 > & {
+  brandId: number;
+  categoryId: number;
+  currencyId: number;
   images: File[];
 };

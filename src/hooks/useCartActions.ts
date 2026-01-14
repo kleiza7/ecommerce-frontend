@@ -52,7 +52,7 @@ export const useCartActions = () => {
   };
 
   const addToCart = (product: CartItemUI["product"]) => {
-    if (cartCurrencyId !== null && cartCurrencyId !== product.currencyId) {
+    if (cartCurrencyId !== null && cartCurrencyId !== product.currency.id) {
       showToast({
         title: "Mixed currency not allowed",
         description:
@@ -93,7 +93,7 @@ export const useCartActions = () => {
         productId: product.id,
         quantity: 1,
         priceSnapshot: product.price,
-        currencyId: product.currencyId,
+        currencyId: product.currency.id,
         product,
       };
 
