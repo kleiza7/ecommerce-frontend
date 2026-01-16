@@ -17,7 +17,7 @@ const CategorySelectionDialog = ({
     <GenericDialog
       open={open}
       onOpenChange={setOpen}
-      className="h-[80vh] w-[90vw] max-w-none"
+      className="h-[80vh] w-[50vw] max-w-none"
     >
       <CategorySelectionDialogContent
         initialSelectedCategory={initialSelectedCategory}
