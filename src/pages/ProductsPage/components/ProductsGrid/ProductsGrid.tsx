@@ -15,7 +15,10 @@ import ProductCard from "./components/ProductCard";
 import ProductCardSkeleton from "./components/ProductCardSkeleton";
 
 const collectLeafIds = (node: CategoryNode): number[] => {
-  if (node.children.length === 0) return [node.id];
+  if (node.children.length === 0) {
+    return [node.id];
+  }
+
   return node.children.flatMap(collectLeafIds);
 };
 
@@ -31,13 +34,17 @@ const ProductsGrid = ({
   const selectedCategorySlug = params.get("category");
 
   const categoryIds = useMemo(() => {
-    if (!selectedCategorySlug) return undefined;
+    if (!selectedCategorySlug) {
+      return undefined;
+    }
 
     const tree = buildCategoryTree(categories);
     const slugMap = buildCategorySlugMap(tree);
 
     const node = slugMap.get(selectedCategorySlug);
-    if (!node) return undefined;
+    if (!node) {
+      return undefined;
+    }
 
     return collectLeafIds(node);
   }, [categories, selectedCategorySlug]);
@@ -47,7 +54,9 @@ const ProductsGrid = ({
   }, [params]);
 
   const brandIds = useMemo(() => {
-    if (selectedBrandSlugs.length === 0) return undefined;
+    if (selectedBrandSlugs.length === 0) {
+      return undefined;
+    }
 
     const ids = brands
       .filter((brand) => selectedBrandSlugs.includes(brand.slug))
@@ -64,11 +73,17 @@ const ProductsGrid = ({
     return selectedSellerIds.length > 0 ? selectedSellerIds : undefined;
   }, [selectedSellerIds]);
 
+  const query = useMemo(() => {
+    const raw = params.get("q")?.trim() ?? "";
+    return raw.length > 0 ? raw : undefined;
+  }, [params]);
+
   const payload: Omit<ReqProductsListPayload, "page"> = {
     limit: 20,
     ...(categoryIds && { categoryIds }),
     ...(brandIds && { brandIds }),
     ...(sellerIds && { sellerIds }),
+    ...(query && { query }),
   };
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =

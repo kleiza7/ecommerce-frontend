@@ -4,4 +4,5 @@ export type ReqProductsListPayload = {
   brandIds?: number[];
   categoryIds?: number[];
   sellerIds?: number[];
+  query?: string;
 };

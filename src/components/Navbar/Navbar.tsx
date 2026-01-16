@@ -4,6 +4,7 @@ import { USER_DOMAIN } from "../../shared/enums/UserDomain.enum";
 import { useUserStore } from "../../stores/UserStore";
 import AuthNavigationMenu from "./components/AuthNavigationMenu";
 import CategoriesMegaMenu from "./components/CategoriesMegaMenu/CategoriesMegaMenu";
+import GlobalSearchInput from "./components/GlobalSearchInput";
 import MyCartLink from "./components/MyCartLink";
 import MyFavoritesLink from "./components/MyFavoritesLink";
 import UserNavigationMenu from "./components/UserNavigationMenu";
@@ -19,15 +20,17 @@ const Navbar = () => {
   return (
     <header className="border-gray-1 border-b pt-5">
       <div className="w-full px-10 2xl:mx-auto 2xl:max-w-[1536px] 2xl:px-0">
-        <div className="flex h-[72px] items-center justify-between">
+        <div className="flex h-[72px] items-center justify-between gap-x-16">
           <NavLink
             to="/"
-            className="text-s48-l56 text-text-primary select-none"
+            className="text-s48-l56 text-text-primary shrink-0 select-none"
           >
             Ecommerce
           </NavLink>
 
-          <div className="flex gap-x-6">
+          {isGuestOrUser && <GlobalSearchInput />}
+
+          <div className="flex shrink-0 gap-x-6">
             {isAuthenticated ? <UserNavigationMenu /> : <AuthNavigationMenu />}
 
             {isGuestOrUser && (
