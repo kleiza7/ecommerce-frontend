@@ -12,11 +12,11 @@ export const BUTTON_SIZE_X_LARGE =
 
 export const BUTTON_BASE = `${BUTTON_SIZE_MEDIUM} flex items-center justify-center cursor-pointer transition-colors duration-200 disabled:cursor-not-allowed`;
 
-export const BUTTON_PRIMARY = `${BUTTON_BASE} bg-orange text-white hover:bg-orange-dark disabled:bg-orange/40`;
+export const BUTTON_PRIMARY = `${BUTTON_BASE} bg-orange text-surface-primary hover:bg-orange-dark disabled:bg-orange/40`;
 
-export const BUTTON_PRIMARY_OUTLINED = `${BUTTON_BASE} bg-transparent border border-orange text-orange hover:bg-orange hover:text-white hover:border-orange disabled:border-orange/40 disabled:text-orange/40 disabled:hover:bg-transparent`;
+export const BUTTON_PRIMARY_OUTLINED = `${BUTTON_BASE} bg-transparent border border-orange text-orange hover:bg-orange hover:text-surface-primary hover:border-orange disabled:border-orange/40 disabled:text-orange/40 disabled:hover:bg-transparent`;
 
-export const BUTTON_ERROR = `${BUTTON_BASE} bg-error-primary text-white hover:bg-error-primary/90 disabled:bg-error-primary/40`;
+export const BUTTON_ERROR = `${BUTTON_BASE} bg-error-primary text-surface-primary hover:bg-error-primary/90 disabled:bg-error-primary/40`;
 
 export const INPUT_BASE = `h-10 pl-4 rounded-lg text-s14-l20 text-text-primary placeholder:text-gray-2 border border-gray-2 outline-none transition-colors`;
 

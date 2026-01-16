@@ -23,7 +23,7 @@ const ProductCard = ({
   return (
     <div
       onClick={handleNavigate}
-      className="border-gray-2 relative flex h-[500px] w-full cursor-pointer flex-col overflow-hidden rounded-xl border bg-white hover:shadow-md"
+      className="border-gray-2 bg-surface-primary relative flex h-[500px] w-full cursor-pointer flex-col overflow-hidden rounded-xl border hover:shadow-md"
     >
       <FavoriteButton
         product={{
@@ -60,7 +60,7 @@ const ProductCard = ({
               <span
                 key={i}
                 className={`h-1 w-1 rounded-full transition ${
-                  i === hoverIndex ? "bg-text-primary" : "bg-white"
+                  i === hoverIndex ? "bg-text-primary" : "bg-surface-primary"
                 }`}
               />
             ))}

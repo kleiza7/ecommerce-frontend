@@ -32,7 +32,7 @@ const CartPage = () => {
           </div>
         </>
       ) : (
-        <div className="border-gray-2 flex items-center justify-between rounded-xl border bg-white p-5">
+        <div className="border-gray-2 bg-surface-primary flex items-center justify-between rounded-xl border p-5">
           <div className="flex items-center gap-4">
             <div className="bg-orange/10 flex h-[68px] w-[68px] items-center justify-center rounded-full">
               <ShoppingCartIcon className="fill-orange h-7 w-7" />
@@ -45,7 +45,7 @@ const CartPage = () => {
 
           <Link
             to="/products"
-            className="bg-orange hover:bg-orange-dark rounded-lg px-6 py-3 font-semibold text-white transition"
+            className="bg-orange hover:bg-orange-dark text-surface-primary rounded-lg px-6 py-3 font-semibold transition"
           >
             Start Shopping
           </Link>

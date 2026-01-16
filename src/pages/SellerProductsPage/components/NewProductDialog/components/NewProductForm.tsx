@@ -277,7 +277,7 @@ const NewProductForm = ({ close }: { close: () => void }) => {
                         }
                         className="absolute top-0 right-0 rounded-full bg-black/40 p-0.5"
                       >
-                        <CloseIcon className="h-3 w-3 fill-white" />
+                        <CloseIcon className="fill-surface-primary h-3 w-3" />
                       </button>
                     </div>
                   ))}

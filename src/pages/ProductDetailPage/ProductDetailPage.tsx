@@ -66,7 +66,7 @@ const ProductDetailPage = () => {
                   return prev - 1;
                 });
               }}
-              className="absolute top-1/2 left-2 h-10 w-10 -translate-y-1/2 cursor-pointer rounded-full bg-white p-2 shadow"
+              className="bg-surface-primary absolute top-1/2 left-2 h-10 w-10 -translate-y-1/2 cursor-pointer rounded-full p-2 shadow"
             >
               ←
             </button>
@@ -81,7 +81,7 @@ const ProductDetailPage = () => {
                   return prev + 1;
                 });
               }}
-              className="absolute top-1/2 right-2 h-10 w-10 -translate-y-1/2 cursor-pointer rounded-full bg-white p-2 shadow"
+              className="bg-surface-primary absolute top-1/2 right-2 h-10 w-10 -translate-y-1/2 cursor-pointer rounded-full p-2 shadow"
             >
               →
             </button>

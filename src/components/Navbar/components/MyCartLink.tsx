@@ -21,7 +21,7 @@ const MyCartLink = () => {
       </span>
 
       {totalQuantity > 0 && (
-        <span className="bg-orange text-s10-l14 absolute -top-1 left-2 flex h-4 w-4 items-center justify-center rounded-full font-semibold text-white">
+        <span className="bg-orange text-s10-l14 text-surface-primary absolute -top-1 left-2 flex h-4 w-4 items-center justify-center rounded-full font-semibold">
           {totalQuantity}
         </span>
       )}

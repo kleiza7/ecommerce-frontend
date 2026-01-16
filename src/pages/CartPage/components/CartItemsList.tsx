@@ -34,7 +34,7 @@ const CartItemsList = () => {
           return (
             <div
               key={cartItem.productId}
-              className="border-gray-2 mb-4 rounded-lg border bg-white p-5"
+              className="border-gray-2 bg-surface-primary mb-4 rounded-lg border p-5"
             >
               <div className="flex items-center gap-x-6">
                 <div className="h-28 w-28 shrink-0 overflow-hidden rounded bg-gray-100">

@@ -35,7 +35,7 @@ const MyFavoritesPage = () => {
 
         <Link
           to="/products"
-          className="bg-orange hover:bg-orange-dark rounded-lg px-6 py-3 font-semibold text-white transition"
+          className="bg-orange hover:bg-orange-dark text-surface-primary rounded-lg px-6 py-3 font-semibold transition"
         >
           Continue Shopping
         </Link>
