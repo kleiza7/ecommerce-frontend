@@ -4,7 +4,7 @@ import Lightbox from "yet-another-react-lightbox";
 import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
 import "yet-another-react-lightbox/styles.css";
-import { TimerArrowDownIcon } from "../../assets/icons";
+import { KeyboardArrowUpIcon, TimerArrowDownIcon } from "../../assets/icons";
 import { useCartActions } from "../../hooks/useCartActions";
 import { useProductsGetById } from "../../hooks/useProductsGetById";
 import FavoriteButton from "../../shared/components/FavoriteButton";
@@ -66,9 +66,9 @@ const ProductDetailPage = () => {
                   return prev - 1;
                 });
               }}
-              className="bg-surface-primary absolute top-1/2 left-2 h-10 w-10 -translate-y-1/2 cursor-pointer rounded-full p-2 shadow"
+              className="bg-surface-primary absolute top-1/2 left-2 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full shadow"
             >
-              ←
+              <KeyboardArrowUpIcon className="fill-text-primary h-8 w-8 -rotate-90" />
             </button>
 
             <button
@@ -81,9 +81,9 @@ const ProductDetailPage = () => {
                   return prev + 1;
                 });
               }}
-              className="bg-surface-primary absolute top-1/2 right-2 h-10 w-10 -translate-y-1/2 cursor-pointer rounded-full p-2 shadow"
+              className="bg-surface-primary absolute top-1/2 right-2 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full shadow"
             >
-              →
+              <KeyboardArrowUpIcon className="fill-text-primary h-8 w-8 rotate-90" />
             </button>
           </div>
 
