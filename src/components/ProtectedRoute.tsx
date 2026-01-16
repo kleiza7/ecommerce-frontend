@@ -9,7 +9,11 @@ const ProtectedRoute = ({
 }) => {
   const userDomain = useUserDomain();
 
-  return true ? <Outlet /> : <Navigate to="/auth" replace />;
+  return allowedDomains.includes(userDomain) ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/auth" replace />
+  );
 };
 
 export default ProtectedRoute;
