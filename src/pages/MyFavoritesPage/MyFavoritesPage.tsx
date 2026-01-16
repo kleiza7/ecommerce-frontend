@@ -2,34 +2,25 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { CloseIcon, FavoriteFilledIcon, SearchIcon } from "../../assets/icons";
-import { useBrandsGetAll } from "../../hooks/useBrandsGetAll";
+import { INPUT_BASE } from "../../shared/constants/CommonTailwindClasses.constants";
+import { customTwMerge } from "../../shared/utils/Tailwind.util";
 import { useFavoriteStore } from "../../stores/FavoriteStore";
 import FavoriteProductCard from "./components/FavoriteProductCard/FavoriteProductCard";
 
 const MyFavoritesPage = () => {
   const favorites = useFavoriteStore((state) => state.items);
-  const { data: brands = [] } = useBrandsGetAll();
 
   const [searchText, setSearchText] = useState("");
 
-  const brandNameMap = useMemo(() => {
-    const map = new Map<number, string>();
-    for (const brand of brands) {
-      map.set(brand.id, brand.name);
-    }
-    return map;
-  }, [brands]);
-
   const filteredFavoriteProducts = useMemo(() => {
+    const normalizedSearchText = searchText.trim().toLowerCase();
+
     return favorites
-      .map((item) => ({
-        ...item.product,
-        brandName: brandNameMap.get(item.product.brandId) ?? "",
-      }))
+      .map((item) => item.product)
       .filter((product) =>
-        product.name.toLowerCase().includes(searchText.trim().toLowerCase()),
+        product.name.toLowerCase().includes(normalizedSearchText),
       );
-  }, [favorites, brandNameMap, searchText]);
+  }, [favorites, searchText]);
 
   if (favorites.length === 0) {
     return (
@@ -44,7 +35,7 @@ const MyFavoritesPage = () => {
 
         <Link
           to="/products"
-          className="bg-orange hover:bg-orange-dark rounded-lg px-6 py-3 font-semibold text-white transition"
+          className="bg-orange hover:bg-orange-dark text-surface-primary rounded-lg px-6 py-3 font-semibold transition"
         >
           Continue Shopping
         </Link>
@@ -62,7 +53,10 @@ const MyFavoritesPage = () => {
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
             placeholder="Search product name"
-            className="bg-gray-3 w-full rounded-md py-2.5 pr-10 pl-10 text-sm outline-none"
+            className={customTwMerge(
+              INPUT_BASE,
+              "bg-gray-3 w-full border-none px-10 placeholder:text-gray-300",
+            )}
           />
 
           {searchText && (

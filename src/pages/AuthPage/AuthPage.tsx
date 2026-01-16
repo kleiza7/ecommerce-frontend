@@ -23,14 +23,15 @@ const AuthPage = () => {
           Log In or Register
         </p>
       </div>
-      <div className="border-gray-2 flex w-[600px] flex-col gap-y-6 rounded-[3px] border bg-white px-10 py-6">
+
+      <div className="border-gray-2 bg-surface-primary flex w-[600px] flex-col gap-y-6 rounded-[3px] border px-10 py-6">
         <div className="bg-gray-2 flex rounded-lg p-1">
           <button
             type="button"
             onClick={() => changeMode(AUTH_PAGE_MODE.LOGIN)}
             className={`text-s14-l20 h-9 flex-1 cursor-pointer rounded-md transition-colors ${
               mode === AUTH_PAGE_MODE.LOGIN
-                ? "text-orange bg-white shadow"
+                ? "text-orange bg-surface-primary shadow"
                 : "text-text-primary"
             }`}
           >
@@ -42,7 +43,7 @@ const AuthPage = () => {
             onClick={() => changeMode(AUTH_PAGE_MODE.REGISTER)}
             className={`text-s14-l20 h-9 flex-1 cursor-pointer rounded-md transition-colors ${
               mode === AUTH_PAGE_MODE.REGISTER
-                ? "text-orange bg-white shadow"
+                ? "text-orange bg-surface-primary shadow"
                 : "text-text-primary"
             }`}
           >

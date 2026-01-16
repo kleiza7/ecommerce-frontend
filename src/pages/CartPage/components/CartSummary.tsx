@@ -3,7 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { useCurrenciesGetAll } from "../../../hooks/useCurrenciesGetAll";
 import { useOrdersCreate } from "../../../hooks/useOrdersCreate";
 import { useUserDomain } from "../../../hooks/useUserDomain";
+import {
+  BUTTON_PRIMARY,
+  BUTTON_SIZE_X_LARGE,
+} from "../../../shared/constants/CommonTailwindClasses.constants";
 import { USER_DOMAIN } from "../../../shared/enums/UserDomain.enum";
+import { customTwMerge } from "../../../shared/utils/Tailwind.util";
 import { useCartStore } from "../../../stores/CartStore";
 
 const CartSummary = ({
@@ -48,7 +53,7 @@ const CartSummary = ({
   };
 
   return (
-    <div className="border-gray-2 w-[340px] shrink-0 rounded-lg border bg-white p-6">
+    <div className="border-gray-2 bg-surface-primary w-[340px] shrink-0 rounded-lg border p-6">
       <h2 className="text-s22-l28 mb-4 font-medium">Cart Summary</h2>
 
       <div className="text-s14-l20 flex justify-between text-gray-600">
@@ -71,7 +76,11 @@ const CartSummary = ({
         type="button"
         onClick={handleConfirmCart}
         disabled={isPending}
-        className="bg-orange hover:bg-orange-dark text-s18-l28 w-full rounded py-3 font-medium text-white transition-colors disabled:opacity-60"
+        className={customTwMerge(
+          BUTTON_PRIMARY,
+          BUTTON_SIZE_X_LARGE,
+          "text-s18-l28 h-[52px] w-full rounded",
+        )}
       >
         Confirm Cart
       </button>

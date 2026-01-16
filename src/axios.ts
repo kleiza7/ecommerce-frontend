@@ -43,7 +43,7 @@ axiosInstance.interceptors.response.use(
 
         useUserStore.getState().logout();
 
-        window.location.replace("/dashboard");
+        window.location.replace("/");
         break;
       }
 

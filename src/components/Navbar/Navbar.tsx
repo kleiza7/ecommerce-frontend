@@ -2,11 +2,11 @@ import { NavLink } from "react-router-dom";
 import { useUserDomain } from "../../hooks/useUserDomain";
 import { USER_DOMAIN } from "../../shared/enums/UserDomain.enum";
 import { useUserStore } from "../../stores/UserStore";
-import AuthPopover from "./components/AuthPopover";
+import AuthNavigationMenu from "./components/AuthNavigationMenu";
 import CategoriesMegaMenu from "./components/CategoriesMegaMenu/CategoriesMegaMenu";
 import MyCartLink from "./components/MyCartLink";
 import MyFavoritesLink from "./components/MyFavoritesLink";
-import UserPopover from "./components/UserPopover";
+import UserNavigationMenu from "./components/UserNavigationMenu";
 
 const Navbar = () => {
   const userDomain = useUserDomain();
@@ -21,14 +21,14 @@ const Navbar = () => {
       <div className="w-full px-10 2xl:mx-auto 2xl:max-w-[1536px] 2xl:px-0">
         <div className="flex h-[72px] items-center justify-between">
           <NavLink
-            to="/dashboard"
+            to="/"
             className="text-s48-l56 text-text-primary select-none"
           >
             Ecommerce
           </NavLink>
 
           <div className="flex gap-x-6">
-            {isAuthenticated ? <UserPopover /> : <AuthPopover />}
+            {isAuthenticated ? <UserNavigationMenu /> : <AuthNavigationMenu />}
 
             {isGuestOrUser && (
               <>

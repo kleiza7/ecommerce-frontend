@@ -31,10 +31,10 @@ export const GenericPopover = ({
           side={side}
           align={align}
           sideOffset={sideOffset}
-          className={`data-[state=open]:animate-popover-in data-[state=closed]:animate-popover-out data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 z-50 rounded-xl bg-white p-4 shadow-lg outline-none ${className} `}
+          className={`data-[state=open]:animate-popover-in data-[state=closed]:animate-popover-out data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 bg-surface-primary z-50 rounded-xl p-4 shadow-lg outline-none ${className} `}
         >
           {children}
-          <Popover.Arrow className="fill-white" />
+          <Popover.Arrow className="fill-surface-primary" />
         </Popover.Content>
       </Popover.Portal>
     </Popover.Root>

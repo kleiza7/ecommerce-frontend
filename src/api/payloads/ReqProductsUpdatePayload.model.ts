@@ -2,8 +2,11 @@ import type { Product } from "../models/Product.model";
 
 export type ReqProductsUpdatePayload = Omit<
   Product,
-  "sellerId" | "status" | "images"
+  "brand" | "category" | "currency" | "seller" | "status" | "images"
 > & {
+  brandId: number;
+  categoryId: number;
+  currencyId: number;
   newAddedImages: File[];
   deletedImageIds: number[];
 };

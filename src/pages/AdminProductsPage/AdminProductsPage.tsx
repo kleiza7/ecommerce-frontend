@@ -6,13 +6,11 @@ import type {
 import { AgGridReact } from "ag-grid-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { ReqProductsGetWaitingApprovalProductsResponse } from "../../api/responses/ReqProductsGetWaitingApprovalProductsResponse.model";
-import { useAuthGetAllSellers } from "../../hooks/useAuthGetAllSellers";
-import { useBrandsGetAll } from "../../hooks/useBrandsGetAll";
-import { useCategoriesGetAll } from "../../hooks/useCategoriesGetAll";
-import { useCurrenciesGetAll } from "../../hooks/useCurrenciesGetAll";
 import { useProductsGetWaitingApprovalProducts } from "../../hooks/useProductsGetWaitingApprovalProducts";
 import LoadingSpinner from "../../shared/components/LoadingSpinner";
 import { EVENT_TYPE } from "../../shared/enums/EventType.enum";
+import { registerAgGridModules } from "../../shared/utils/AgGrid.util";
+import "../../styles/agGrid.css";
 import ProductApprovalDialog from "./components/ProductApprovalDialog/ProductApprovalDialog";
 
 const AdminProductsPage = () => {
@@ -21,10 +19,6 @@ const AdminProductsPage = () => {
     isLoading,
     refetch,
   } = useProductsGetWaitingApprovalProducts();
-  const { data: categories = [] } = useCategoriesGetAll();
-  const { data: brands = [] } = useBrandsGetAll();
-  const { data: sellers = [] } = useAuthGetAllSellers();
-  const { data: currencies = [] } = useCurrenciesGetAll();
 
   const [isProductApprovalDialogOpen, setIsProductApprovalDialogOpen] =
     useState(false);
@@ -33,30 +27,6 @@ const AdminProductsPage = () => {
   );
 
   const totalCount = products.length;
-
-  const brandMap = useMemo(() => {
-    const map = new Map<number, string>();
-    brands.forEach((b) => map.set(b.id, b.name));
-    return map;
-  }, [brands]);
-
-  const categoryMap = useMemo(() => {
-    const map = new Map<number, string>();
-    categories.forEach((c) => map.set(c.id, c.name));
-    return map;
-  }, [categories]);
-
-  const sellerMap = useMemo(() => {
-    const map = new Map<number, string>();
-    sellers.forEach((s) => map.set(s.id, s.name));
-    return map;
-  }, [sellers]);
-
-  const currencyMap = useMemo(() => {
-    const map = new Map<number, string>();
-    currencies.forEach((c) => map.set(c.id, c.code));
-    return map;
-  }, [currencies]);
 
   const columnDefs = useMemo<
     ColDef<ReqProductsGetWaitingApprovalProductsResponse[number]>[]
@@ -80,7 +50,7 @@ const AdminProductsPage = () => {
             <img
               src={primaryImage.mediumUrl}
               alt={params.data?.name}
-              className="h-12 w-12 rounded object-cover"
+              className="h-9 w-9 rounded object-cover"
             />
           );
         },
@@ -91,23 +61,22 @@ const AdminProductsPage = () => {
       },
       {
         headerName: "Seller",
-        valueGetter: (params) =>
-          sellerMap.get(params.data?.sellerId ?? 0) ?? "-",
+        valueGetter: (params) => params.data?.seller?.name ?? "-",
       },
       {
         headerName: "Brand",
-        valueGetter: (params) => brandMap.get(params.data?.brandId ?? 0) ?? "-",
+        valueGetter: (params) => params.data?.brand?.name ?? "-",
       },
       {
         headerName: "Category",
-        valueGetter: (params) =>
-          categoryMap.get(params.data?.categoryId ?? 0) ?? "-",
+        valueGetter: (params) => params.data?.category?.name ?? "-",
       },
       {
         headerName: "Price",
         valueGetter: (params) => {
           const price = params.data?.price;
-          const code = currencyMap.get(params.data?.currencyId ?? 0) ?? "";
+          const code = params.data?.currency?.code ?? "";
+
           return price != null ? `${price.toFixed(2)} ${code}` : "-";
         },
       },
@@ -116,7 +85,7 @@ const AdminProductsPage = () => {
         headerName: "Stock",
       },
     ],
-    [brandMap, categoryMap, currencyMap, sellerMap],
+    [],
   );
 
   const onRowDoubleClicked = useCallback(
@@ -132,6 +101,10 @@ const AdminProductsPage = () => {
     },
     [],
   );
+
+  useEffect(() => {
+    registerAgGridModules();
+  }, []);
 
   useEffect(() => {
     const onProductApproved = () => {

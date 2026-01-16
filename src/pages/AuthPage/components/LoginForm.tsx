@@ -14,6 +14,10 @@ import { useUserStore } from "../../../stores/UserStore";
 
 import { useFavoritesMerge } from "../../../hooks/useFavoritesMerge";
 import {
+  BUTTON_PRIMARY,
+  BUTTON_SIZE_X_LARGE,
+} from "../../../shared/constants/CommonTailwindClasses.constants";
+import {
   EMAIL_REGEX,
   PASSWORD_REGEX,
 } from "../../../shared/constants/Form.constants";
@@ -21,6 +25,7 @@ import {
   clearGuestFavorites,
   getGuestFavorites,
 } from "../../../shared/utils/GuestFavorite.util";
+import { customTwMerge } from "../../../shared/utils/Tailwind.util";
 import { useFavoriteStore } from "../../../stores/FavoriteStore";
 
 type LoginFormValues = {
@@ -75,7 +80,7 @@ const LoginForm = () => {
       });
     }
 
-    navigate("/dashboard", { replace: true });
+    navigate("/", { replace: true });
   });
 
   const onSubmit: SubmitHandler<LoginFormValues> = (values) => {
@@ -87,8 +92,9 @@ const LoginForm = () => {
       onSubmit={handleSubmit(onSubmit)}
       className="relative flex flex-col gap-y-5"
     >
+      {/* TODO: loading spinner */}
       {isPending && (
-        <div className="absolute inset-0 z-20 flex items-center justify-center rounded-lg bg-white/70">
+        <div className="bg-surface-primary/70 absolute inset-0 z-20 flex items-center justify-center rounded-lg">
           <div className="border-t-orange h-12 w-12 animate-spin rounded-full border-4 border-gray-300" />
         </div>
       )}
@@ -141,13 +147,9 @@ const LoginForm = () => {
       <button
         type="submit"
         disabled={!isValid || isPending}
-        className={`text-s16-l16 h-12 cursor-pointer rounded-lg font-semibold text-white ${
-          !isValid || isPending
-            ? "bg-orange/40 cursor-not-allowed"
-            : "bg-orange hover:bg-orange/90"
-        }`}
+        className={customTwMerge(BUTTON_PRIMARY, BUTTON_SIZE_X_LARGE)}
       >
-        Giriş Yap
+        Log In
       </button>
     </form>
   );

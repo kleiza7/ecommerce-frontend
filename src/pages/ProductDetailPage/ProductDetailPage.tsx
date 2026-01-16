@@ -1,17 +1,20 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import Lightbox from "yet-another-react-lightbox";
 import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
 import "yet-another-react-lightbox/styles.css";
-import { TimerArrowDownIcon } from "../../assets/icons";
-import { useBrandsGetAll } from "../../hooks/useBrandsGetAll";
+import { KeyboardArrowUpIcon, TimerArrowDownIcon } from "../../assets/icons";
 import { useCartActions } from "../../hooks/useCartActions";
-import { useCurrenciesGetAll } from "../../hooks/useCurrenciesGetAll";
 import { useProductsGetById } from "../../hooks/useProductsGetById";
 import FavoriteButton from "../../shared/components/FavoriteButton";
 import GenericTooltip from "../../shared/components/GenericTooltip";
 import LoadingSpinner from "../../shared/components/LoadingSpinner";
+import {
+  BUTTON_PRIMARY,
+  BUTTON_SIZE_X_LARGE,
+} from "../../shared/constants/CommonTailwindClasses.constants";
+import { customTwMerge } from "../../shared/utils/Tailwind.util";
 import { useCartStore } from "../../stores/CartStore";
 import CategoryBreadcrumb from "./components/CategoryBreadcrumb";
 
@@ -21,21 +24,9 @@ const ProductDetailPage = () => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
   const { data, isLoading } = useProductsGetById(Number(id));
-  const { data: brands = [] } = useBrandsGetAll();
-  const { data: currencies = [] } = useCurrenciesGetAll();
   const { addToCart, isLoading: isCartLoading } = useCartActions();
 
   const cartItems = useCartStore((state) => state.items);
-
-  const currencyMap = useMemo(() => {
-    const map = new Map<number, string>();
-
-    for (const currency of currencies) {
-      map.set(currency.id, currency.code);
-    }
-
-    return map;
-  }, [currencies]);
 
   // TODO: fix this loading
   if (isLoading || !data) {
@@ -49,13 +40,9 @@ const ProductDetailPage = () => {
 
   const isOutOfStock = cartQuantity >= data.stockCount;
 
-  // TODO: brand lookup (sonra map / backend include olacak)
-  const brandName =
-    brands.find((brand) => brand.id === data.brandId)?.name ?? "";
-
   return (
-    <div className="flex flex-col">
-      <CategoryBreadcrumb categoryId={data.categoryId} />
+    <div className="flex flex-col gap-y-5">
+      <CategoryBreadcrumb categoryId={data.category.id} />
 
       <div className="flex gap-8">
         <div className="flex flex-col gap-4">
@@ -79,9 +66,9 @@ const ProductDetailPage = () => {
                   return prev - 1;
                 });
               }}
-              className="absolute top-1/2 left-2 h-10 w-10 -translate-y-1/2 cursor-pointer rounded-full bg-white p-2 shadow"
+              className="bg-surface-primary absolute top-1/2 left-2 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full shadow"
             >
-              ←
+              <KeyboardArrowUpIcon className="fill-text-primary h-8 w-8 -rotate-90" />
             </button>
 
             <button
@@ -94,9 +81,9 @@ const ProductDetailPage = () => {
                   return prev + 1;
                 });
               }}
-              className="absolute top-1/2 right-2 h-10 w-10 -translate-y-1/2 cursor-pointer rounded-full bg-white p-2 shadow"
+              className="bg-surface-primary absolute top-1/2 right-2 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full shadow"
             >
-              →
+              <KeyboardArrowUpIcon className="fill-text-primary h-8 w-8 rotate-90" />
             </button>
           </div>
 
@@ -121,7 +108,7 @@ const ProductDetailPage = () => {
 
         <div className="flex flex-1 flex-col gap-4">
           <div className="text-text-primary text-s20-l28 flex flex-wrap gap-2">
-            <span className="font-bold">{brandName}</span>
+            <span className="font-bold">{data.brand.name}</span>
             <span>{data.name}</span>
           </div>
 
@@ -130,7 +117,7 @@ const ProductDetailPage = () => {
           </span>
 
           <span className="text-orange text-s24-l32 font-bold">
-            {data.price.toFixed(2)} {currencyMap.get(data.currencyId) ?? ""}
+            {data.price.toFixed(2)} {data.currency.code}
           </span>
 
           <div className="text-text-primary text-s12-l16">
@@ -168,7 +155,13 @@ const ProductDetailPage = () => {
           </div>
 
           <div className="flex items-center gap-4">
-            {/* <button className="border-orange text-orange hover:bg-orange cursor-pointer rounded-lg border-2 px-6 py-3 transition hover:text-white">
+            {/* <button
+              className={customTwMerge(
+                BUTTON_PRIMARY_OUTLINED,
+                BUTTON_SIZE_X_LARGE,
+                "border-2",
+              )}
+            >
               Buy Now
             </button> */}
 
@@ -190,11 +183,7 @@ const ProductDetailPage = () => {
                     })),
                   })
                 }
-                className={`cursor-pointer rounded-lg px-6 py-3 text-white transition ${
-                  isCartLoading || isOutOfStock
-                    ? "bg-orange/50 cursor-not-allowed"
-                    : "bg-orange hover:bg-orange-dark"
-                }`}
+                className={customTwMerge(BUTTON_PRIMARY, BUTTON_SIZE_X_LARGE)}
               >
                 Add to Cart
               </button>

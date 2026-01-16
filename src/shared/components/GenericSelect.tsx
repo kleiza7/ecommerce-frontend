@@ -59,7 +59,7 @@ const GenericSelect = <T,>({
           position="popper"
           align="start"
           sideOffset={4}
-          className="z-50 min-w-(--radix-select-trigger-width) rounded-md border border-gray-300 bg-white shadow-md"
+          className="bg-surface-primary z-50 min-w-(--radix-select-trigger-width) rounded-md border border-gray-300 shadow-md"
         >
           <Select.Viewport className="max-h-60 overflow-y-auto p-1">
             {options.map((option) => (

@@ -7,10 +7,15 @@ import GenericFormInput from "../../../shared/components/GenericFormInput";
 import InputErrorLabel from "../../../shared/components/InputErrorLabel";
 import InputLabel from "../../../shared/components/InputLabel";
 import {
+  BUTTON_PRIMARY,
+  BUTTON_SIZE_X_LARGE,
+} from "../../../shared/constants/CommonTailwindClasses.constants";
+import {
   EMAIL_REGEX,
   PASSWORD_REGEX,
 } from "../../../shared/constants/Form.constants";
 import { AUTH_PAGE_MODE } from "../../../shared/enums/AuthPageMode.enum";
+import { customTwMerge } from "../../../shared/utils/Tailwind.util";
 
 type RegisterFormValues = {
   name: string;
@@ -63,8 +68,9 @@ const RegisterForm = ({
       onSubmit={handleSubmit(onSubmit)}
       className="relative flex flex-col gap-y-5"
     >
+      {/* TODO: loading spiiner */}
       {isPending && (
-        <div className="absolute inset-0 z-20 flex items-center justify-center rounded-lg bg-white/70">
+        <div className="bg-surface-primary/70 absolute inset-0 z-20 flex items-center justify-center rounded-lg">
           <div className="border-t-orange h-12 w-12 animate-spin rounded-full border-4 border-gray-300" />
         </div>
       )}
@@ -141,13 +147,9 @@ const RegisterForm = ({
       <button
         type="submit"
         disabled={!isValid || isPending}
-        className={`text-s16-l16 h-12 cursor-pointer rounded-lg font-semibold text-white ${
-          !isValid || isPending
-            ? "bg-orange/40 cursor-not-allowed"
-            : "bg-orange hover:bg-orange/90"
-        }`}
+        className={customTwMerge(BUTTON_PRIMARY, BUTTON_SIZE_X_LARGE)}
       >
-        Üye Ol
+        Register
       </button>
     </form>
   );

@@ -22,7 +22,7 @@ const GenericCheckbox = ({
       disabled={disabled}
       onCheckedChange={(checkedState) => onCheckedChange?.(!!checkedState)}
       className={customTwMerge(
-        "flex h-4 w-4 items-center justify-center rounded-sm border border-gray-300 bg-white transition",
+        "bg-surface-primary flex h-4 w-4 items-center justify-center rounded-sm border border-gray-300 transition",
         "focus-visible:ring-2 focus-visible:ring-orange-500/40 focus-visible:outline-none",
         "disabled:cursor-not-allowed disabled:opacity-50",
         "data-[state=checked]:border-orange-500 data-[state=checked]:bg-orange-500",
@@ -30,7 +30,7 @@ const GenericCheckbox = ({
       )}
     >
       <CheckboxPrimitive.Indicator className="flex items-center justify-center">
-        <CheckIcon className="h-4 w-4 fill-white" />
+        <CheckIcon className="fill-surface-primary h-4 w-4" />
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
   );

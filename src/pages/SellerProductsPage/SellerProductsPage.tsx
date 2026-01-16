@@ -7,13 +7,14 @@ import { AgGridReact } from "ag-grid-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { PRODUCT_STATUS } from "../../api/enums/ProductStatus.enum";
 import type { ReqProductsGetProductsBySellerResponse } from "../../api/responses/ReqProductsGetProductsBySellerResponse.model";
-import { useBrandsGetAll } from "../../hooks/useBrandsGetAll";
-import { useCategoriesGetAll } from "../../hooks/useCategoriesGetAll";
-import { useCurrenciesGetAll } from "../../hooks/useCurrenciesGetAll";
 import { useProductsGetProductsBySeller } from "../../hooks/useProductsGetProductsBySeller";
 import LoadingSpinner from "../../shared/components/LoadingSpinner";
+import { BUTTON_PRIMARY } from "../../shared/constants/CommonTailwindClasses.constants";
 import { PRODUCT_STATUS_TEXT_PAIRS } from "../../shared/constants/Product.constants";
 import { EVENT_TYPE } from "../../shared/enums/EventType.enum";
+import { registerAgGridModules } from "../../shared/utils/AgGrid.util";
+import { customTwMerge } from "../../shared/utils/Tailwind.util";
+import "../../styles/agGrid.css";
 import NewProductDialog from "./components/NewProductDialog/NewProductDialog";
 import UpdateProductDialog from "./components/UpdateProductDialog/UpdateProductDialog";
 
@@ -23,9 +24,6 @@ const SellerProductsPage = () => {
     isLoading,
     refetch,
   } = useProductsGetProductsBySeller();
-  const { data: categories = [] } = useCategoriesGetAll();
-  const { data: brands = [] } = useBrandsGetAll();
-  const { data: currencies = [] } = useCurrenciesGetAll();
 
   const [isNewProductDialogOpen, setIsNewProductDialogOpen] = useState(false);
   const [isUpdateProductDialogOpen, setIsUpdateProductDialogOpen] =
@@ -51,24 +49,6 @@ const SellerProductsPage = () => {
     );
   }, [products]);
 
-  const brandMap = useMemo(() => {
-    const map = new Map<number, string>();
-    brands.forEach((b) => map.set(b.id, b.name));
-    return map;
-  }, [brands]);
-
-  const categoryMap = useMemo(() => {
-    const map = new Map<number, string>();
-    categories.forEach((c) => map.set(c.id, c.name));
-    return map;
-  }, [categories]);
-
-  const currencyMap = useMemo(() => {
-    const map = new Map<number, string>();
-    currencies.forEach((c) => map.set(c.id, c.code));
-    return map;
-  }, [currencies]);
-
   const columnDefs = useMemo<
     ColDef<ReqProductsGetProductsBySellerResponse[number]>[]
   >(
@@ -91,7 +71,7 @@ const SellerProductsPage = () => {
             <img
               src={primaryImage.mediumUrl}
               alt={params.data?.name}
-              className="h-12 w-12 rounded object-cover"
+              className="h-9 w-9 rounded object-cover"
             />
           );
         },
@@ -102,18 +82,18 @@ const SellerProductsPage = () => {
       },
       {
         headerName: "Brand",
-        valueGetter: (params) => brandMap.get(params.data?.brandId ?? 0) ?? "-",
+        valueGetter: (params) => params.data?.brand?.name ?? "-",
       },
       {
         headerName: "Category",
-        valueGetter: (params) =>
-          categoryMap.get(params.data?.categoryId ?? 0) ?? "-",
+        valueGetter: (params) => params.data?.category?.name ?? "-",
       },
       {
         headerName: "Price",
         valueGetter: (params) => {
           const price = params.data?.price;
-          const code = currencyMap.get(params.data?.currencyId ?? 0) ?? "";
+          const code = params.data?.currency?.code ?? "";
+
           return price != null ? `${price.toFixed(2)} ${code}` : "-";
         },
       },
@@ -128,7 +108,7 @@ const SellerProductsPage = () => {
           params.data?.status,
       },
     ],
-    [brandMap, categoryMap, currencyMap],
+    [],
   );
 
   const onRowDoubleClicked = useCallback(
@@ -144,6 +124,10 @@ const SellerProductsPage = () => {
     },
     [],
   );
+
+  useEffect(() => {
+    registerAgGridModules();
+  }, []);
 
   useEffect(() => {
     const onProductCreated = () => {
@@ -198,7 +182,7 @@ const SellerProductsPage = () => {
           <button
             type="button"
             onClick={() => setIsNewProductDialogOpen(true)}
-            className="bg-orange hover:bg-orange-dark text-s14-l20 rounded-lg px-6 py-2 font-medium text-white transition"
+            className={customTwMerge(BUTTON_PRIMARY, "px-6")}
           >
             New Product
           </button>

@@ -17,6 +17,11 @@ import GenericFormTextArea from "../../../../../shared/components/GenericFormTex
 import GenericSelect from "../../../../../shared/components/GenericSelect";
 import InputErrorLabel from "../../../../../shared/components/InputErrorLabel";
 import InputLabel from "../../../../../shared/components/InputLabel";
+import {
+  BUTTON_PRIMARY,
+  BUTTON_PRIMARY_OUTLINED,
+} from "../../../../../shared/constants/CommonTailwindClasses.constants";
+import { customTwMerge } from "../../../../../shared/utils/Tailwind.util";
 
 type ProductCreateFormType = {
   name: string;
@@ -245,8 +250,8 @@ const NewProductForm = ({ close }: { close: () => void }) => {
                   disabled={isPending}
                   onChange={(e) => {
                     const files = Array.from(e.target.files ?? []);
-                    const valid = files.filter((f) =>
-                      ACCEPTED_FILE_TYPES.includes(f.type),
+                    const valid = files.filter((file) =>
+                      ACCEPTED_FILE_TYPES.includes(file.type),
                     );
                     field.onChange([...field.value, ...valid].slice(0, 4));
                     e.target.value = "";
@@ -272,7 +277,7 @@ const NewProductForm = ({ close }: { close: () => void }) => {
                         }
                         className="absolute top-0 right-0 rounded-full bg-black/40 p-0.5"
                       >
-                        <CloseIcon className="h-3 w-3 fill-white" />
+                        <CloseIcon className="fill-surface-primary h-3 w-3" />
                       </button>
                     </div>
                   ))}
@@ -301,7 +306,7 @@ const NewProductForm = ({ close }: { close: () => void }) => {
             type="button"
             disabled={isPending}
             onClick={close}
-            className="text-s14-l20 rounded-md border px-4 py-2 hover:bg-gray-50"
+            className={customTwMerge(BUTTON_PRIMARY_OUTLINED, "px-4")}
           >
             Cancel
           </button>
@@ -310,11 +315,7 @@ const NewProductForm = ({ close }: { close: () => void }) => {
         <button
           type="submit"
           disabled={!isValid || isPending}
-          className={`text-s14-l20 rounded-md px-4 py-2 text-white ${
-            !isValid || isPending
-              ? "bg-orange/40 cursor-not-allowed"
-              : "bg-orange hover:bg-orange/90"
-          }`}
+          className={customTwMerge(BUTTON_PRIMARY, "px-4")}
         >
           Create
         </button>

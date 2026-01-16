@@ -1,7 +1,7 @@
 const ProductCardSkeleton = () => {
   return (
-    <div className="border-gray-2 relative flex h-[500px] w-full overflow-hidden rounded-xl border bg-white">
-      <div className="animate-shimmer absolute inset-0 bg-linear-to-r from-transparent via-white/40 to-transparent" />
+    <div className="border-gray-2 bg-surface-primary relative flex h-[500px] w-full overflow-hidden rounded-xl border">
+      <div className="animate-shimmer via-surface-primary/40 absolute inset-0 bg-linear-to-r from-transparent to-transparent" />
 
       <div className="flex w-full flex-col">
         <div className="h-[360px] w-full bg-gray-200" />

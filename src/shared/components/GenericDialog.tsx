@@ -31,7 +31,7 @@ export const GenericDialog = ({
         <Dialog.Overlay className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" />
 
         <Dialog.Content
-          className={`fixed top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white p-6 shadow-xl ${
+          className={`bg-surface-primary fixed top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 rounded-xl p-6 shadow-xl ${
             className ?? "w-full max-w-md"
           }`}
         >

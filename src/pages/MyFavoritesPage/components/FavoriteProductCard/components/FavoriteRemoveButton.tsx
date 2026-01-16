@@ -27,7 +27,7 @@ const FavoriteRemoveButton = ({
       type="button"
       onClick={handleClick}
       className={customTwMerge(
-        "group flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-md transition-colors",
+        "group bg-surface-primary flex h-10 w-10 items-center justify-center rounded-full shadow-md transition-colors",
         className,
       )}
     >

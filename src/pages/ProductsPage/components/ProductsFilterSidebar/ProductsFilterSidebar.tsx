@@ -4,11 +4,13 @@ import type { ReqBrandsGetAllResponse } from "../../../../api/responses/ReqBrand
 import type { ReqCategoriesGetAllResponse } from "../../../../api/responses/ReqCategoriesGetAllResponse.model";
 import { useAuthGetAllSellers } from "../../../../hooks/useAuthGetAllSellers";
 import GenericCheckbox from "../../../../shared/components/GenericCheckbox";
+import { INPUT_BASE } from "../../../../shared/constants/CommonTailwindClasses.constants";
 import type { CategoryNode } from "../../../../shared/models/CategoryNode.model";
 import {
   buildCategorySlugMap,
   buildCategoryTree,
 } from "../../../../shared/utils/CategoryTree.util";
+import { customTwMerge } from "../../../../shared/utils/Tailwind.util";
 import FilterSection from "./components/FilterSection";
 
 const ProductsFilterSidebar = ({
@@ -69,7 +71,7 @@ const ProductsFilterSidebar = ({
 
   const toggleBrand = (slug: string) => {
     const next = selectedBrandSlugs.includes(slug)
-      ? selectedBrandSlugs.filter((s) => s !== slug)
+      ? selectedBrandSlugs.filter((brandSlug) => brandSlug !== slug)
       : [...selectedBrandSlugs, slug];
 
     const params = new URLSearchParams(searchParams);
@@ -95,7 +97,7 @@ const ProductsFilterSidebar = ({
 
   const toggleSeller = (id: number) => {
     const next = selectedSellerIds.includes(id)
-      ? selectedSellerIds.filter((x) => x !== id)
+      ? selectedSellerIds.filter((sellerId) => sellerId !== id)
       : [...selectedSellerIds, id];
 
     const params = new URLSearchParams(searchParams);
@@ -142,7 +144,10 @@ const ProductsFilterSidebar = ({
           placeholder="Search Brand"
           value={brandSearch}
           onChange={(e) => setBrandSearch(e.target.value)}
-          className="text-s12-l16 placeholder:text-gray-2 border-gray-2 text-text-primary mb-2.5 h-8 w-full rounded border px-3 py-2 outline-none"
+          className={customTwMerge(
+            INPUT_BASE,
+            "text-s12-l16 mb-2.5 h-8 w-full rounded px-3",
+          )}
         />
 
         <div className="max-h-64 space-y-2 overflow-y-auto px-[5px] pr-1">
@@ -171,7 +176,10 @@ const ProductsFilterSidebar = ({
           placeholder="Search Seller"
           value={sellerSearch}
           onChange={(e) => setSellerSearch(e.target.value)}
-          className="text-s12-l16 placeholder:text-gray-2 border-gray-2 text-text-primary mb-2.5 h-8 w-full rounded border px-3 py-2 outline-none"
+          className={customTwMerge(
+            INPUT_BASE,
+            "text-s12-l16 mb-2.5 h-8 w-full rounded px-3",
+          )}
         />
 
         <div className="max-h-64 space-y-2 overflow-y-auto px-[5px] pr-1">

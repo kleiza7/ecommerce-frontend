@@ -5,8 +5,8 @@ export const buildCategoryTree = (
 ): CategoryNode[] => {
   const map = new Map<number, CategoryNode>();
 
-  categories.forEach((c) => {
-    map.set(c.id, { ...c, children: [] });
+  categories.forEach((category) => {
+    map.set(category.id, { ...category, children: [] });
   });
 
   const tree: CategoryNode[] = [];

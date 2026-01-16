@@ -5,6 +5,12 @@ import type {
   RegisterOptions,
 } from "react-hook-form";
 import { Controller } from "react-hook-form";
+import {
+  TEXT_AREA_BASE,
+  TEXT_AREA_DISABLED,
+  TEXT_AREA_ERROR,
+} from "../constants/CommonTailwindClasses.constants";
+import { customTwMerge } from "../utils/Tailwind.util";
 
 type GenericFormTextAreaProps<TFieldValues extends FieldValues> = {
   field: FieldPath<TFieldValues>;
@@ -39,13 +45,14 @@ const GenericFormTextArea = <TFieldValues extends FieldValues>({
           rows={rows}
           placeholder={placeholder}
           disabled={disabled}
-          className={`text-s14-l20 text-text-primary placeholder:text-gray-2 h-20 resize-none rounded-[10px] border py-3 pr-4 pl-5 font-medium ${
+          className={customTwMerge(
+            TEXT_AREA_BASE,
             disabled
-              ? "bg-gray-3 text-gray-6 cursor-not-allowed opacity-60"
+              ? TEXT_AREA_DISABLED
               : fieldState.error
-                ? "border-error-primary focus:border-error-primary outline-none"
-                : "border-gray-2 focus:outline-none"
-          }`}
+                ? TEXT_AREA_ERROR
+                : "",
+          )}
         />
       )}
     />
