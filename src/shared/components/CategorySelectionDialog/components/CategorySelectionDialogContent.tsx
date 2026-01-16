@@ -5,6 +5,11 @@ import {
   GenericDialogClose,
   GenericDialogTitle,
 } from "../../../../shared/components/GenericDialog";
+import {
+  BUTTON_PRIMARY,
+  BUTTON_PRIMARY_OUTLINED,
+} from "../../../constants/CommonTailwindClasses.constants";
+import { customTwMerge } from "../../../utils/Tailwind.util";
 
 type CategoryNode = ReqCategoriesGetAllResponse[number] & {
   children?: CategoryNode[];
@@ -138,7 +143,7 @@ const CategorySelectionDialogContent = ({
           <button
             type="button"
             onClick={close}
-            className="text-s14-l20 rounded-md border px-4 py-2 hover:bg-gray-50"
+            className={customTwMerge(BUTTON_PRIMARY_OUTLINED, "px-4")}
           >
             Cancel
           </button>
@@ -152,11 +157,7 @@ const CategorySelectionDialogContent = ({
             onCategorySelected(selectedCategory);
             close();
           }}
-          className={`text-s14-l20 rounded-md px-4 py-2 text-white ${
-            selectedCategory
-              ? "bg-orange hover:bg-orange/90"
-              : "bg-orange/40 cursor-not-allowed"
-          }`}
+          className={customTwMerge(BUTTON_PRIMARY, "px-4")}
         >
           Select
         </button>

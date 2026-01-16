@@ -3,7 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { useCurrenciesGetAll } from "../../../hooks/useCurrenciesGetAll";
 import { useOrdersCreate } from "../../../hooks/useOrdersCreate";
 import { useUserDomain } from "../../../hooks/useUserDomain";
+import {
+  BUTTON_PRIMARY,
+  BUTTON_SIZE_X_LARGE,
+} from "../../../shared/constants/CommonTailwindClasses.constants";
 import { USER_DOMAIN } from "../../../shared/enums/UserDomain.enum";
+import { customTwMerge } from "../../../shared/utils/Tailwind.util";
 import { useCartStore } from "../../../stores/CartStore";
 
 const CartSummary = ({
@@ -71,7 +76,11 @@ const CartSummary = ({
         type="button"
         onClick={handleConfirmCart}
         disabled={isPending}
-        className="bg-orange hover:bg-orange-dark text-s18-l28 w-full rounded py-3 font-medium text-white transition-colors disabled:opacity-60"
+        className={customTwMerge(
+          BUTTON_PRIMARY,
+          BUTTON_SIZE_X_LARGE,
+          "text-s18-l28 h-[52px] w-full rounded",
+        )}
       >
         Confirm Cart
       </button>

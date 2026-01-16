@@ -14,6 +14,10 @@ import { useUserStore } from "../../../stores/UserStore";
 
 import { useFavoritesMerge } from "../../../hooks/useFavoritesMerge";
 import {
+  BUTTON_PRIMARY,
+  BUTTON_SIZE_X_LARGE,
+} from "../../../shared/constants/CommonTailwindClasses.constants";
+import {
   EMAIL_REGEX,
   PASSWORD_REGEX,
 } from "../../../shared/constants/Form.constants";
@@ -21,6 +25,7 @@ import {
   clearGuestFavorites,
   getGuestFavorites,
 } from "../../../shared/utils/GuestFavorite.util";
+import { customTwMerge } from "../../../shared/utils/Tailwind.util";
 import { useFavoriteStore } from "../../../stores/FavoriteStore";
 
 type LoginFormValues = {
@@ -141,13 +146,9 @@ const LoginForm = () => {
       <button
         type="submit"
         disabled={!isValid || isPending}
-        className={`text-s16-l16 h-12 cursor-pointer rounded-lg font-semibold text-white ${
-          !isValid || isPending
-            ? "bg-orange/40 cursor-not-allowed"
-            : "bg-orange hover:bg-orange/90"
-        }`}
+        className={customTwMerge(BUTTON_PRIMARY, BUTTON_SIZE_X_LARGE)}
       >
-        Giriş Yap
+        Log In
       </button>
     </form>
   );

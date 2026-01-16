@@ -2,6 +2,8 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { CloseIcon, FavoriteFilledIcon, SearchIcon } from "../../assets/icons";
+import { INPUT_BASE } from "../../shared/constants/CommonTailwindClasses.constants";
+import { customTwMerge } from "../../shared/utils/Tailwind.util";
 import { useFavoriteStore } from "../../stores/FavoriteStore";
 import FavoriteProductCard from "./components/FavoriteProductCard/FavoriteProductCard";
 
@@ -51,7 +53,10 @@ const MyFavoritesPage = () => {
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
             placeholder="Search product name"
-            className="bg-gray-3 w-full rounded-md py-2.5 pr-10 pl-10 text-sm outline-none"
+            className={customTwMerge(
+              INPUT_BASE,
+              "bg-gray-3 w-full border-none px-10 placeholder:text-gray-300",
+            )}
           />
 
           {searchText && (

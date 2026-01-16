@@ -5,6 +5,12 @@ import type {
   RegisterOptions,
 } from "react-hook-form";
 import { Controller } from "react-hook-form";
+import {
+  INPUT_BASE,
+  INPUT_DISABLED,
+  INPUT_ERROR,
+} from "../constants/CommonTailwindClasses.constants";
+import { customTwMerge } from "../utils/Tailwind.util";
 
 type GenericFormInputProps<TFieldValues extends FieldValues> = {
   field: FieldPath<TFieldValues>;
@@ -66,13 +72,10 @@ const GenericFormInput = <TFieldValues extends FieldValues>({
           disabled={disabled}
           min={isNumber ? min : undefined}
           max={isNumber ? max : undefined}
-          className={`text-s14-l20 text-text-primary placeholder:text-gray-2 h-10 rounded-lg border pl-4 outline-none ${
-            disabled
-              ? "bg-gray-3 text-gray-6 cursor-not-allowed opacity-60"
-              : fieldState.error
-                ? "border-error-primary focus:border-error-primary"
-                : "border-gray-2"
-          }`}
+          className={customTwMerge(
+            INPUT_BASE,
+            disabled ? INPUT_DISABLED : fieldState.error ? INPUT_ERROR : "",
+          )}
         />
       )}
     />

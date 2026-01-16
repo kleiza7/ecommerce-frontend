@@ -1,3 +1,9 @@
+import {
+  BUTTON_PRIMARY,
+  BUTTON_SIZE_X_LARGE,
+} from "../shared/constants/CommonTailwindClasses.constants";
+import { customTwMerge } from "../shared/utils/Tailwind.util";
+
 const ErrorPage = ({
   error,
   onReset,
@@ -30,7 +36,7 @@ const ErrorPage = ({
         <button
           type="button"
           onClick={onReset}
-          className="bg-orange hover:bg-orange-dark text-s16-l24 rounded-lg px-8 py-3 font-medium text-white transition"
+          className={customTwMerge(BUTTON_PRIMARY, BUTTON_SIZE_X_LARGE, "px-8")}
         >
           Continue Shopping
         </button>

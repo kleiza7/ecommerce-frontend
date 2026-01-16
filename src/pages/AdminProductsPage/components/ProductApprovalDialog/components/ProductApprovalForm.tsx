@@ -21,6 +21,12 @@ import GenericFormTextArea from "../../../../../shared/components/GenericFormTex
 import GenericSelect from "../../../../../shared/components/GenericSelect";
 import InputErrorLabel from "../../../../../shared/components/InputErrorLabel";
 import InputLabel from "../../../../../shared/components/InputLabel";
+import {
+  BUTTON_ERROR,
+  BUTTON_PRIMARY,
+  BUTTON_PRIMARY_OUTLINED,
+} from "../../../../../shared/constants/CommonTailwindClasses.constants";
+import { customTwMerge } from "../../../../../shared/utils/Tailwind.util";
 
 type ProductApprovalFormType = {
   name: string;
@@ -313,7 +319,7 @@ const ProductApprovalForm = ({
             type="button"
             disabled={isPending}
             onClick={close}
-            className="text-s14-l20 rounded-md border px-4 py-2 hover:bg-gray-50"
+            className={customTwMerge(BUTTON_PRIMARY_OUTLINED, "px-4")}
           >
             Cancel
           </button>
@@ -323,11 +329,7 @@ const ProductApprovalForm = ({
           type="button"
           disabled={isPending}
           onClick={onRejectProduct}
-          className={`text-s14-l20 rounded-md px-4 py-2 text-white ${
-            isPending
-              ? "bg-error-primary/40 cursor-not-allowed"
-              : "bg-error-primary hover:bg-error-primary/90"
-          }`}
+          className={customTwMerge(BUTTON_ERROR, "px-4")}
         >
           Reject
         </button>
@@ -336,11 +338,7 @@ const ProductApprovalForm = ({
           type="button"
           disabled={isPending}
           onClick={onApproveProduct}
-          className={`text-s14-l20 rounded-md px-4 py-2 text-white ${
-            isPending
-              ? "bg-orange/40 cursor-not-allowed"
-              : "bg-orange hover:bg-orange/90"
-          }`}
+          className={customTwMerge(BUTTON_PRIMARY, "px-4")}
         >
           Approve
         </button>

@@ -9,9 +9,11 @@ import { PRODUCT_STATUS } from "../../api/enums/ProductStatus.enum";
 import type { ReqProductsGetProductsBySellerResponse } from "../../api/responses/ReqProductsGetProductsBySellerResponse.model";
 import { useProductsGetProductsBySeller } from "../../hooks/useProductsGetProductsBySeller";
 import LoadingSpinner from "../../shared/components/LoadingSpinner";
+import { BUTTON_PRIMARY } from "../../shared/constants/CommonTailwindClasses.constants";
 import { PRODUCT_STATUS_TEXT_PAIRS } from "../../shared/constants/Product.constants";
 import { EVENT_TYPE } from "../../shared/enums/EventType.enum";
 import { registerAgGridModules } from "../../shared/utils/AgGrid.util";
+import { customTwMerge } from "../../shared/utils/Tailwind.util";
 import "../../styles/agGrid.css";
 import NewProductDialog from "./components/NewProductDialog/NewProductDialog";
 import UpdateProductDialog from "./components/UpdateProductDialog/UpdateProductDialog";
@@ -180,7 +182,7 @@ const SellerProductsPage = () => {
           <button
             type="button"
             onClick={() => setIsNewProductDialogOpen(true)}
-            className="bg-orange hover:bg-orange-dark text-s14-l20 rounded-lg px-6 py-2 font-medium text-white transition"
+            className={customTwMerge(BUTTON_PRIMARY, "px-6")}
           >
             New Product
           </button>

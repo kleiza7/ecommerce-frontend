@@ -10,6 +10,11 @@ import { useProductsGetById } from "../../hooks/useProductsGetById";
 import FavoriteButton from "../../shared/components/FavoriteButton";
 import GenericTooltip from "../../shared/components/GenericTooltip";
 import LoadingSpinner from "../../shared/components/LoadingSpinner";
+import {
+  BUTTON_PRIMARY,
+  BUTTON_SIZE_X_LARGE,
+} from "../../shared/constants/CommonTailwindClasses.constants";
+import { customTwMerge } from "../../shared/utils/Tailwind.util";
 import { useCartStore } from "../../stores/CartStore";
 import CategoryBreadcrumb from "./components/CategoryBreadcrumb";
 
@@ -150,7 +155,13 @@ const ProductDetailPage = () => {
           </div>
 
           <div className="flex items-center gap-4">
-            {/* <button className="border-orange text-orange hover:bg-orange cursor-pointer rounded-lg border-2 px-6 py-3 transition hover:text-white">
+            {/* <button
+              className={customTwMerge(
+                BUTTON_PRIMARY_OUTLINED,
+                BUTTON_SIZE_X_LARGE,
+                "border-2",
+              )}
+            >
               Buy Now
             </button> */}
 
@@ -172,11 +183,7 @@ const ProductDetailPage = () => {
                     })),
                   })
                 }
-                className={`cursor-pointer rounded-lg px-6 py-3 text-white transition ${
-                  isCartLoading || isOutOfStock
-                    ? "bg-orange/50 cursor-not-allowed"
-                    : "bg-orange hover:bg-orange-dark"
-                }`}
+                className={customTwMerge(BUTTON_PRIMARY, BUTTON_SIZE_X_LARGE)}
               >
                 Add to Cart
               </button>

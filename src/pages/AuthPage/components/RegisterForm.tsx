@@ -7,10 +7,15 @@ import GenericFormInput from "../../../shared/components/GenericFormInput";
 import InputErrorLabel from "../../../shared/components/InputErrorLabel";
 import InputLabel from "../../../shared/components/InputLabel";
 import {
+  BUTTON_PRIMARY,
+  BUTTON_SIZE_X_LARGE,
+} from "../../../shared/constants/CommonTailwindClasses.constants";
+import {
   EMAIL_REGEX,
   PASSWORD_REGEX,
 } from "../../../shared/constants/Form.constants";
 import { AUTH_PAGE_MODE } from "../../../shared/enums/AuthPageMode.enum";
+import { customTwMerge } from "../../../shared/utils/Tailwind.util";
 
 type RegisterFormValues = {
   name: string;
@@ -141,13 +146,9 @@ const RegisterForm = ({
       <button
         type="submit"
         disabled={!isValid || isPending}
-        className={`text-s16-l16 h-12 cursor-pointer rounded-lg font-semibold text-white ${
-          !isValid || isPending
-            ? "bg-orange/40 cursor-not-allowed"
-            : "bg-orange hover:bg-orange/90"
-        }`}
+        className={customTwMerge(BUTTON_PRIMARY, BUTTON_SIZE_X_LARGE)}
       >
-        Üye Ol
+        Register
       </button>
     </form>
   );

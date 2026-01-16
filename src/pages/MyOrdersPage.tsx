@@ -5,7 +5,14 @@ import { CloseIcon, PackageIcon, SearchIcon } from "../assets/icons";
 import { useCurrenciesGetAll } from "../hooks/useCurrenciesGetAll";
 import { useOrdersGetOrdersListByUser } from "../hooks/useOrdersGetOrdersListByUser";
 import GenericSelect from "../shared/components/GenericSelect";
+import {
+  BUTTON_PRIMARY,
+  BUTTON_SIZE_SMALL,
+  BUTTON_SIZE_X_LARGE,
+  INPUT_BASE,
+} from "../shared/constants/CommonTailwindClasses.constants";
 import { ORDER_STATUS_TEXT_PAIRS } from "../shared/constants/Order.constants";
+import { customTwMerge } from "../shared/utils/Tailwind.util";
 import { useUserStore } from "../stores/UserStore";
 
 const DATE_FILTER = {
@@ -95,7 +102,10 @@ const MyOrdersPage = () => {
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
             placeholder="Search product name"
-            className="bg-gray-3 w-full rounded-md py-2.5 pr-10 pl-10 text-sm outline-none"
+            className={customTwMerge(
+              INPUT_BASE,
+              "bg-gray-3 w-full border-none px-10 placeholder:text-gray-300",
+            )}
           />
 
           {searchText && (
@@ -177,7 +187,11 @@ const MyOrdersPage = () => {
 
                 <button
                   onClick={() => navigate(`/order-detail/${order.id}`)}
-                  className="bg-orange hover:bg-orange-dark text-s14-l20 rounded-md px-6 py-[5px] text-white transition"
+                  className={customTwMerge(
+                    BUTTON_PRIMARY,
+                    BUTTON_SIZE_SMALL,
+                    "px-6",
+                  )}
                 >
                   Details
                 </button>
@@ -229,7 +243,7 @@ const MyOrdersPage = () => {
 
           <button
             onClick={() => navigate("/products")}
-            className="bg-orange hover:bg-orange-dark rounded-md px-6 py-3 text-white transition"
+            className={customTwMerge(BUTTON_PRIMARY, BUTTON_SIZE_X_LARGE)}
           >
             Start Shopping
           </button>

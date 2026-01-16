@@ -2,7 +2,12 @@ import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserFilledIcon, UserIcon } from "../../../assets/icons";
 import GenericNavigationMenu from "../../../shared/components/GenericNavigationMenu";
+import {
+  BUTTON_PRIMARY,
+  BUTTON_PRIMARY_OUTLINED,
+} from "../../../shared/constants/CommonTailwindClasses.constants";
 import { AUTH_PAGE_MODE } from "../../../shared/enums/AuthPageMode.enum";
+import { customTwMerge } from "../../../shared/utils/Tailwind.util";
 
 const AuthNavigationMenu = () => {
   const navigate = useNavigate();
@@ -51,7 +56,7 @@ const AuthNavigationMenu = () => {
         <button
           type="button"
           onClick={() => goToAuthPage(AUTH_PAGE_MODE.LOGIN)}
-          className="bg-orange text-s14-l20 hover:bg-orange/90 h-9 w-full rounded-lg font-semibold text-white transition-colors"
+          className={customTwMerge(BUTTON_PRIMARY, "w-full")}
         >
           Log In
         </button>
@@ -59,7 +64,7 @@ const AuthNavigationMenu = () => {
         <button
           type="button"
           onClick={() => goToAuthPage(AUTH_PAGE_MODE.REGISTER)}
-          className="border-orange text-s14-l20 text-orange hover:bg-orange/10 h-9 w-full rounded-lg border font-semibold transition-colors"
+          className={customTwMerge(BUTTON_PRIMARY_OUTLINED, "w-full")}
         >
           Register
         </button>
