@@ -21,7 +21,7 @@ const Navbar = () => {
       <div className="w-full px-10 2xl:mx-auto 2xl:max-w-[1536px] 2xl:px-0">
         <div className="flex h-[72px] items-center justify-between">
           <NavLink
-            to="/dashboard"
+            to="/"
             className="text-s48-l56 text-text-primary select-none"
           >
             Ecommerce

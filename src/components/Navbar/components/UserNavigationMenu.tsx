@@ -31,7 +31,7 @@ const UserNavigationMenu = () => {
     logout();
     clearCartStore();
     clearFavoritesStore();
-    navigate("/dashboard", { replace: true });
+    navigate("/", { replace: true });
   }, [logout, clearCartStore, clearFavoritesStore, navigate]);
 
   return (

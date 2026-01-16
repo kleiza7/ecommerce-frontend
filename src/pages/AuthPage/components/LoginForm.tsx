@@ -80,7 +80,7 @@ const LoginForm = () => {
       });
     }
 
-    navigate("/dashboard", { replace: true });
+    navigate("/", { replace: true });
   });
 
   const onSubmit: SubmitHandler<LoginFormValues> = (values) => {
