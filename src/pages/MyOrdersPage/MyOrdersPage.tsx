@@ -106,7 +106,7 @@ const MyOrdersPage = () => {
             <button
               type="button"
               onClick={() => setSearchText("")}
-              className="absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2"
+              className="absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 cursor-pointer"
             >
               <CloseIcon className="fill-text-primary h-4 w-4" />
             </button>
@@ -117,7 +117,7 @@ const MyOrdersPage = () => {
       <div className="flex items-center gap-3">
         <button
           onClick={() => setSelectedStatus("ALL")}
-          className={`text-s14-l20 h-8 rounded-full border px-4 ${
+          className={`text-s14-l20 h-8 cursor-pointer rounded-full border px-4 ${
             selectedStatus === "ALL"
               ? "border-orange text-orange"
               : "text-gray-9"
@@ -130,7 +130,7 @@ const MyOrdersPage = () => {
           <button
             key={status}
             onClick={() => setSelectedStatus(status)}
-            className={`text-s14-l20 h-8 rounded-full border px-4 ${
+            className={`text-s14-l20 h-8 cursor-pointer rounded-full border px-4 ${
               selectedStatus === status
                 ? "border-orange text-orange"
                 : "text-gray-9"

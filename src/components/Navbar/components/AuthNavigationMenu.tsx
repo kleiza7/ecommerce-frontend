@@ -27,7 +27,7 @@ const AuthNavigationMenu = () => {
       setOpen={setOpen}
       withOverlay={false}
       contentAlign="center"
-      className="border-orange border"
+      className="border-orange w-[182px] overflow-hidden border"
       trigger={
         <button
           type="button"
@@ -52,11 +52,11 @@ const AuthNavigationMenu = () => {
         </button>
       }
     >
-      <div className="flex min-w-40 flex-col gap-y-2">
+      <div className="flex flex-col gap-y-2">
         <button
           type="button"
           onClick={() => goToAuthPage(AUTH_PAGE_MODE.LOGIN)}
-          className={customTwMerge(BUTTON_PRIMARY, "w-full")}
+          className={customTwMerge(BUTTON_PRIMARY, "h-[34px] w-full")}
         >
           Log In
         </button>
@@ -64,7 +64,7 @@ const AuthNavigationMenu = () => {
         <button
           type="button"
           onClick={() => goToAuthPage(AUTH_PAGE_MODE.REGISTER)}
-          className={customTwMerge(BUTTON_PRIMARY_OUTLINED, "w-full")}
+          className={customTwMerge(BUTTON_PRIMARY_OUTLINED, "h-[34px] w-full")}
         >
           Register
         </button>

@@ -63,7 +63,7 @@ const MyFavoritesPage = () => {
             <button
               type="button"
               onClick={() => setSearchText("")}
-              className="absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2"
+              className="absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 cursor-pointer"
             >
               <CloseIcon className="fill-text-primary h-4 w-4" />
             </button>

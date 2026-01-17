@@ -221,7 +221,7 @@ const UpdateProductForm = ({
                   <button
                     type="button"
                     onClick={() => setIsCategorySelectionDialogOpen(true)}
-                    className="border-gray-2 text-s14-l20 text-gray-7 hover:bg-gray-12 flex h-10 w-full items-center justify-center rounded-lg border px-2"
+                    className="border-gray-2 text-s14-l20 text-gray-7 hover:bg-gray-12 flex h-10 w-full cursor-pointer items-center justify-center rounded-lg border px-2"
                   >
                     Select Category
                   </button>
@@ -234,7 +234,7 @@ const UpdateProductForm = ({
                     <button
                       type="button"
                       onClick={() => setIsCategorySelectionDialogOpen(true)}
-                      className="border-gray-2 text-s14-l20 text-gray-7 hover:bg-gray-12 flex h-10 flex-1 items-center justify-center rounded-lg border px-2"
+                      className="border-gray-2 text-s14-l20 text-gray-7 hover:bg-gray-12 flex h-10 flex-1 cursor-pointer items-center justify-center rounded-lg border px-2"
                     >
                       Change Category
                     </button>
@@ -347,7 +347,7 @@ const UpdateProductForm = ({
                             field.value.filter((_, i) => i !== index),
                           )
                         }
-                        className="absolute top-0 right-0 rounded-full bg-black/40 p-0.5"
+                        className="absolute top-0 right-0 cursor-pointer rounded-full bg-black/40 p-0.5"
                       >
                         <CloseIcon className="fill-surface-primary h-3 w-3" />
                       </button>
@@ -358,7 +358,7 @@ const UpdateProductForm = ({
                     <button
                       type="button"
                       onClick={() => fileInputRef.current?.click()}
-                      className="border-gray-2 hover:bg-gray-12 flex h-12 w-12 items-center justify-center rounded border"
+                      className="border-gray-2 hover:bg-gray-12 flex h-12 w-12 cursor-pointer items-center justify-center rounded border"
                     >
                       <AddIcon className="fill-gray-2" />
                     </button>

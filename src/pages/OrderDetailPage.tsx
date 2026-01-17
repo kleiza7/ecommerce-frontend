@@ -53,7 +53,7 @@ const OrderDetailPage = () => {
         <button
           type="button"
           onClick={() => navigate("/my-orders")}
-          className="flex items-center gap-x-2"
+          className="flex cursor-pointer items-center gap-x-2"
         >
           <ArrowLeftIcon className="h-4 w-4" />
           <span className="text-s14-l20 text-text-primary">All Orders</span>

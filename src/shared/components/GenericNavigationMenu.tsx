@@ -11,6 +11,7 @@ const GenericNavigationMenu = ({
   withOverlay = true,
   contentAlign = "left",
   contentOffsetY = 8, // px
+  delayDuration = 0,
 }: {
   trigger: ReactNode;
   children: ReactNode;
@@ -20,6 +21,7 @@ const GenericNavigationMenu = ({
   withOverlay?: boolean;
   contentAlign?: "left" | "center" | "right";
   contentOffsetY?: number; // px
+  delayDuration?: number;
 }) => {
   const alignClass =
     contentAlign === "center"
@@ -33,6 +35,7 @@ const GenericNavigationMenu = ({
       value={open ? "main" : ""}
       onValueChange={(value) => setOpen(value === "main")}
       className="relative z-50"
+      delayDuration={delayDuration}
     >
       {withOverlay && (
         <div
@@ -45,7 +48,7 @@ const GenericNavigationMenu = ({
       <NavigationMenu.List>
         <NavigationMenu.Item value="main">
           <NavigationMenu.Trigger
-            className="text-s14-l20 text-gray-11 relative z-50 flex items-center font-semibold"
+            className="text-s14-l20 text-gray-11 relative z-50 flex cursor-pointer items-center font-semibold"
             asChild
           >
             {trigger}
