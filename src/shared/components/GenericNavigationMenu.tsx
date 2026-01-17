@@ -45,7 +45,7 @@ const GenericNavigationMenu = ({
       <NavigationMenu.List>
         <NavigationMenu.Item value="main">
           <NavigationMenu.Trigger
-            className="text-s14-l20 relative z-50 flex items-center font-semibold text-gray-900"
+            className="text-s14-l20 text-gray-11 relative z-50 flex items-center font-semibold"
             asChild
           >
             {trigger}

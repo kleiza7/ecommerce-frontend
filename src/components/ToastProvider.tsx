@@ -3,6 +3,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { EVENT_TYPE } from "../shared/enums/EventType.enum";
 import { TOAST_TYPE } from "../shared/enums/ToastType.enum";
 import type { ToastEventDetail } from "../shared/models/ToastEventDetail.model";
+import { customTwMerge } from "../shared/utils/Tailwind.util";
 
 type ToastItem = {
   id: string;
@@ -15,9 +16,9 @@ const DEFAULT_TITLES = {
 };
 
 const BG_CLASSES = {
-  [TOAST_TYPE.SUCCESS]: "bg-emerald-100 text-emerald-900",
-  [TOAST_TYPE.ERROR]: "bg-red-100 text-red-900",
-  [TOAST_TYPE.INFO]: "bg-blue-100 text-blue-900",
+  [TOAST_TYPE.SUCCESS]: "bg-emerald-1 text-emerald-2",
+  [TOAST_TYPE.ERROR]: "bg-red-2 text-red-3",
+  [TOAST_TYPE.INFO]: "bg-blue-1 text-blue-2",
 };
 
 const ToastProvider = ({ children }: { children: ReactNode }) => {
@@ -63,7 +64,7 @@ const ToastProvider = ({ children }: { children: ReactNode }) => {
             key={toast.id}
             defaultOpen={true}
             duration={5000}
-            className={`rounded-sm px-4 py-3 shadow-md ${bgClass} `}
+            className={customTwMerge("rounded-sm px-4 py-3 shadow-md", bgClass)}
           >
             <Toast.Title className="font-semibold">
               {toast.title || autoTitle}

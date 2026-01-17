@@ -377,7 +377,7 @@ const GlobalSearchInput = () => {
         placeholder="Search product, category or brand"
         className={customTwMerge(
           INPUT_BASE,
-          "bg-gray-3 h-11 w-full px-10 placeholder:text-gray-500",
+          "bg-gray-3 placeholder:text-gray-8 h-11 w-full px-10",
           isPortalOpen
             ? "border-orange bg-surface-primary rounded-t-lg rounded-b-none border-2 shadow-lg"
             : "border-gray-2 rounded-lg border",
@@ -415,14 +415,14 @@ const GlobalSearchInput = () => {
                           {getPrimaryLabel(item)}
                         </span>
 
-                        <span className="text-s12-l16 text-gray-400">
+                        <span className="text-s12-l16 text-gray-7">
                           {getSecondaryLabel(item)}
                         </span>
                       </li>
                     ))}
                   </ul>
                 ) : (
-                  <div className="text-s14-l20 text-center text-gray-400">
+                  <div className="text-s14-l20 text-gray-7 text-center">
                     No results found.
                   </div>
                 )
@@ -458,14 +458,14 @@ const GlobalSearchInput = () => {
                         {getPrimaryLabel(item)}
                       </span>
 
-                      <span className="text-s12-l16 text-gray-400">
+                      <span className="text-s12-l16 text-gray-7">
                         {getSecondaryLabel(item)}
                       </span>
                     </li>
                   ))}
                 </ul>
               ) : (
-                <div className="text-s14-l20 text-center text-gray-400">
+                <div className="text-s14-l20 text-gray-7 text-center">
                   No recent searches.
                 </div>
               )}

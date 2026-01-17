@@ -16,19 +16,19 @@ const FilterSection = ({
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
-    <div className={customTwMerge("border-b border-gray-200", className)}>
+    <div className={customTwMerge("border-gray-5 border-b", className)}>
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        className="flex h-10 w-full cursor-pointer items-center justify-between px-[5px] py-3 text-left transition-colors hover:bg-gray-100"
+        className="hover:bg-gray-4 flex h-10 w-full cursor-pointer items-center justify-between px-[5px] py-3 text-left transition-colors"
       >
-        <span className="text-s14-l20 leading-none font-semibold text-gray-800">
+        <span className="text-s14-l20 text-gray-10 leading-none font-semibold">
           {title}
         </span>
 
         <KeyboardArrowUpIcon
           className={customTwMerge(
-            "text-gray-500 transition-transform duration-300",
+            "text-gray-8 transition-transform duration-300",
             isOpen ? "rotate-180" : "rotate-0",
           )}
         />

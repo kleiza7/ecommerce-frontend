@@ -104,7 +104,7 @@ const MyOrdersPage = () => {
             placeholder="Search product name"
             className={customTwMerge(
               INPUT_BASE,
-              "bg-gray-3 w-full border-none px-10 placeholder:text-gray-300",
+              "bg-gray-3 placeholder:text-gray-6 w-full border-none px-10",
             )}
           />
 
@@ -126,7 +126,7 @@ const MyOrdersPage = () => {
           className={`text-s14-l20 h-8 rounded-full border px-4 ${
             selectedStatus === "ALL"
               ? "border-orange text-orange"
-              : "text-gray-600"
+              : "text-gray-9"
           }`}
         >
           All
@@ -139,7 +139,7 @@ const MyOrdersPage = () => {
             className={`text-s14-l20 h-8 rounded-full border px-4 ${
               selectedStatus === status
                 ? "border-orange text-orange"
-                : "text-gray-600"
+                : "text-gray-9"
             }`}
           >
             {ORDER_STATUS_TEXT_PAIRS[status]}

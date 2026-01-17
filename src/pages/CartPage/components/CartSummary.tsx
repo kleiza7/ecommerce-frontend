@@ -56,14 +56,14 @@ const CartSummary = ({
     <div className="border-gray-2 bg-surface-primary w-[340px] shrink-0 rounded-lg border p-6">
       <h2 className="text-s22-l28 mb-4 font-medium">Cart Summary</h2>
 
-      <div className="text-s14-l20 flex justify-between text-gray-600">
+      <div className="text-s14-l20 text-gray-9 flex justify-between">
         <span>Subtotal</span>
         <span>
           {totalPrice.toFixed(2)} {currencyCode}
         </span>
       </div>
 
-      <div className="my-4 h-px bg-gray-200" />
+      <div className="bg-gray-5 my-4 h-px" />
 
       <div className="mb-4 flex justify-between font-medium">
         <span>Total</span>
