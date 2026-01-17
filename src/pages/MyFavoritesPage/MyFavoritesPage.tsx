@@ -55,7 +55,7 @@ const MyFavoritesPage = () => {
             placeholder="Search product name"
             className={customTwMerge(
               INPUT_BASE,
-              "bg-gray-3 w-full border-none px-10 placeholder:text-gray-300",
+              "bg-gray-3 placeholder:text-gray-6 w-full border-none px-10",
             )}
           />
 
@@ -76,7 +76,7 @@ const MyFavoritesPage = () => {
       <div className="flex-1 overflow-y-auto px-[90px]">
         {filteredFavoriteProducts.length === 0 ? (
           <div className="flex h-[300px] items-center justify-center">
-            <span className="text-s14-l20 text-gray-500">
+            <span className="text-s14-l20 text-gray-8">
               No matching products found
             </span>
           </div>

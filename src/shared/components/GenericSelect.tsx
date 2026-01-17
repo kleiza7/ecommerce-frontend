@@ -40,7 +40,7 @@ const GenericSelect = <T,>({
         if (option) onChange(option.value);
       }}
     >
-      <Select.Trigger className="text-s14-l20 text-text-primary flex h-10 w-full items-center justify-between rounded-md border border-gray-300 px-3 outline-none disabled:cursor-not-allowed disabled:bg-gray-100">
+      <Select.Trigger className="text-s14-l20 text-text-primary disabled:bg-gray-4 border-gray-6 flex h-10 w-full items-center justify-between rounded-md border px-3 outline-none disabled:cursor-not-allowed">
         <Select.Value placeholder={placeholder}>
           {selectedOption
             ? renderValue
@@ -50,7 +50,7 @@ const GenericSelect = <T,>({
         </Select.Value>
 
         <Select.Icon>
-          <KeyboardArrowUpIcon className="h-4 w-4 rotate-180 text-gray-500" />
+          <KeyboardArrowUpIcon className="text-gray-8 h-4 w-4 rotate-180" />
         </Select.Icon>
       </Select.Trigger>
 
@@ -59,14 +59,14 @@ const GenericSelect = <T,>({
           position="popper"
           align="start"
           sideOffset={4}
-          className="bg-surface-primary z-50 min-w-(--radix-select-trigger-width) rounded-md border border-gray-300 shadow-md"
+          className="bg-surface-primary border-gray-6 z-50 min-w-(--radix-select-trigger-width) rounded-md border shadow-md"
         >
           <Select.Viewport className="max-h-60 overflow-y-auto p-1">
             {options.map((option) => (
               <Select.Item
                 key={option.label}
                 value={option.label}
-                className="text-s14-l20 text-text-primary relative flex cursor-pointer items-center rounded px-8 py-2 outline-none select-none hover:bg-gray-100 data-[state=checked]:bg-gray-100"
+                className="text-s14-l20 text-text-primary data-[state=checked]:bg-gray-4 hover:bg-gray-4 relative flex cursor-pointer items-center rounded px-8 py-2 outline-none select-none"
               >
                 <Select.ItemText className="truncate">
                   {option.label}

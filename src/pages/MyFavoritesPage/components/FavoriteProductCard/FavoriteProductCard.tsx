@@ -37,7 +37,7 @@ const FavoriteProductCard = ({
         className="absolute top-3 right-3 z-10"
       />
 
-      <div className="relative h-[360px] w-full overflow-hidden bg-gray-100">
+      <div className="bg-gray-4 relative h-[360px] w-full overflow-hidden">
         <img
           src={activeImage}
           alt={product.name}
@@ -54,7 +54,7 @@ const FavoriteProductCard = ({
           ))}
         </div>
 
-        <div className="absolute bottom-3 left-1/2 z-10 -translate-x-1/2 rounded-full bg-gray-300 p-1">
+        <div className="bg-gray-6 absolute bottom-3 left-1/2 z-10 -translate-x-1/2 rounded-full p-1">
           <div className="flex items-center gap-1">
             {Array.from({ length: zoneCount }).map((_, i) => (
               <span

@@ -139,7 +139,7 @@ const ProductApprovalForm = ({
     <form className="relative flex flex-col gap-y-6">
       <div className="flex flex-col gap-y-1">
         <GenericDialogTitle>Product Approval</GenericDialogTitle>
-        <span className="text-s14-l20 text-gray-500">
+        <span className="text-s14-l20 text-gray-8">
           Review the product details.
         </span>
       </div>
@@ -193,20 +193,20 @@ const ProductApprovalForm = ({
                   <button
                     type="button"
                     disabled
-                    className="border-gray-2 text-s14-l20 flex h-10 w-full items-center justify-center rounded-lg border px-2 text-gray-400"
+                    className="border-gray-2 text-s14-l20 text-gray-7 flex h-10 w-full items-center justify-center rounded-lg border px-2"
                   >
                     Select Category
                   </button>
                 ) : (
                   <div className="flex w-full items-center justify-between gap-x-4">
-                    <span className="text-s14-l20 truncate text-gray-900">
+                    <span className="text-s14-l20 text-gray-11 truncate">
                       {field.value.name}
                     </span>
 
                     <button
                       type="button"
                       disabled
-                      className="border-gray-2 text-s14-l20 flex h-10 flex-1 items-center justify-center rounded-lg border px-2 text-gray-400"
+                      className="border-gray-2 text-s14-l20 text-gray-7 flex h-10 flex-1 items-center justify-center rounded-lg border px-2"
                     >
                       Change Category
                     </button>

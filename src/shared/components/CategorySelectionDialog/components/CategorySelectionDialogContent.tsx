@@ -94,7 +94,7 @@ const CategorySelectionDialogContent = ({
     <div className="flex h-full flex-col gap-y-6">
       <div>
         <GenericDialogTitle>Select Category</GenericDialogTitle>
-        <p className="text-s14-l20 text-gray-500">
+        <p className="text-s14-l20 text-gray-8">
           Choose a category for this product.
         </p>
       </div>

@@ -95,7 +95,7 @@ const LoginForm = () => {
       {/* TODO: loading spinner */}
       {isPending && (
         <div className="bg-surface-primary/70 absolute inset-0 z-20 flex items-center justify-center rounded-lg">
-          <div className="border-t-orange h-12 w-12 animate-spin rounded-full border-4 border-gray-300" />
+          <div className="border-t-orange border-gray-6 h-12 w-12 animate-spin rounded-full border-4" />
         </div>
       )}
 

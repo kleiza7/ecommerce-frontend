@@ -159,7 +159,7 @@ const SellerProductsPage = () => {
               My Products ({totalCount})
             </span>
 
-            <div className="text-s20-l28 flex items-center gap-4 text-gray-600">
+            <div className="text-s20-l28 text-gray-9 flex items-center gap-4">
               <span>
                 {PRODUCT_STATUS_TEXT_PAIRS[PRODUCT_STATUS.APPROVED]} (
                 {statusCounts[PRODUCT_STATUS.APPROVED]})

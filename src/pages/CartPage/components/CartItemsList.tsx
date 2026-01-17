@@ -37,7 +37,7 @@ const CartItemsList = () => {
               className="border-gray-2 bg-surface-primary mb-4 rounded-lg border p-5"
             >
               <div className="flex items-center gap-x-6">
-                <div className="h-28 w-28 shrink-0 overflow-hidden rounded bg-gray-100">
+                <div className="bg-gray-4 h-28 w-28 shrink-0 overflow-hidden rounded">
                   {thumb && (
                     <img
                       src={thumb}
@@ -50,7 +50,7 @@ const CartItemsList = () => {
                 <div className="flex min-w-0 flex-1 flex-col">
                   <p className="font-semibold">{cartItem.product.name}</p>
 
-                  <p className="text-s14-l20 mt-1 text-gray-600">
+                  <p className="text-s14-l20 text-gray-9 mt-1">
                     {cartItem.product.description}
                   </p>
                 </div>
@@ -116,12 +116,9 @@ const CartItemsList = () => {
                     onClick={() =>
                       removeFromCart(cartItem.productId, cartItem.id)
                     }
-                    className="shrink-0 cursor-pointer rounded p-2 hover:bg-red-50 disabled:opacity-40"
+                    className="hover:bg-red-1 shrink-0 cursor-pointer rounded p-2 disabled:opacity-40"
                   >
-                    <TrashIcon
-                      className="h-4 w-4"
-                      style={{ fill: "#fb2c36" }}
-                    />
+                    <TrashIcon className="fill-error-primary h-4 w-4" />
                   </button>
                 </GenericTooltip>
               </div>

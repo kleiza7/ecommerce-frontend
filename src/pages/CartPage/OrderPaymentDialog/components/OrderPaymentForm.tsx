@@ -132,7 +132,7 @@ const OrderPaymentForm = ({
     <form onSubmit={onSubmit} className="relative flex flex-col gap-y-6">
       <div className="flex flex-col gap-y-1">
         <GenericDialogTitle>Payment</GenericDialogTitle>
-        <span className="text-s14-l20 text-gray-500">
+        <span className="text-s14-l20 text-gray-8">
           Please review your receiver and card details before completing the
           payment.
         </span>
@@ -323,7 +323,7 @@ const OrderPaymentForm = ({
                       </span>
                     </div>
 
-                    <div className="h-10 w-14 rounded-md bg-yellow-400/80" />
+                    <div className="bg-yellow-1/80 h-10 w-14 rounded-md" />
                   </div>
 
                   <div className="mt-4">

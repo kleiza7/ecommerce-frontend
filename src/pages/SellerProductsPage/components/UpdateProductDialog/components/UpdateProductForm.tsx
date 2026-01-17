@@ -159,7 +159,7 @@ const UpdateProductForm = ({
     >
       <div className="flex flex-col gap-y-1">
         <GenericDialogTitle>Update Product</GenericDialogTitle>
-        <span className="text-s14-l20 text-gray-500">
+        <span className="text-s14-l20 text-gray-8">
           Update the product details.
         </span>
       </div>
@@ -221,20 +221,20 @@ const UpdateProductForm = ({
                   <button
                     type="button"
                     onClick={() => setIsCategorySelectionDialogOpen(true)}
-                    className="border-gray-2 text-s14-l20 flex h-10 w-full items-center justify-center rounded-lg border px-2 text-gray-400 hover:bg-gray-50"
+                    className="border-gray-2 text-s14-l20 text-gray-7 hover:bg-gray-12 flex h-10 w-full items-center justify-center rounded-lg border px-2"
                   >
                     Select Category
                   </button>
                 ) : (
                   <div className="flex w-full items-center justify-between gap-x-4">
-                    <span className="text-s14-l20 truncate text-gray-900">
+                    <span className="text-s14-l20 text-gray-11 truncate">
                       {field.value.name}
                     </span>
 
                     <button
                       type="button"
                       onClick={() => setIsCategorySelectionDialogOpen(true)}
-                      className="border-gray-2 text-s14-l20 flex h-10 flex-1 items-center justify-center rounded-lg border px-2 text-gray-400 hover:bg-gray-50"
+                      className="border-gray-2 text-s14-l20 text-gray-7 hover:bg-gray-12 flex h-10 flex-1 items-center justify-center rounded-lg border px-2"
                     >
                       Change Category
                     </button>
@@ -358,7 +358,7 @@ const UpdateProductForm = ({
                     <button
                       type="button"
                       onClick={() => fileInputRef.current?.click()}
-                      className="border-gray-2 flex h-12 w-12 items-center justify-center rounded border hover:bg-gray-50"
+                      className="border-gray-2 hover:bg-gray-12 flex h-12 w-12 items-center justify-center rounded border"
                     >
                       <AddIcon className="fill-gray-2" />
                     </button>

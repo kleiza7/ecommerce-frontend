@@ -165,7 +165,7 @@ const ProductsFilterSidebar = ({
           ))}
 
           {filteredBrands.length === 0 && (
-            <div className="text-xs text-gray-400">No result found.</div>
+            <div className="text-gray-7 text-xs">No result found.</div>
           )}
         </div>
       </FilterSection>
@@ -197,7 +197,7 @@ const ProductsFilterSidebar = ({
           ))}
 
           {filteredSellers.length === 0 && (
-            <div className="text-xs text-gray-400">No result found.</div>
+            <div className="text-gray-7 text-xs">No result found.</div>
           )}
         </div>
       </FilterSection>

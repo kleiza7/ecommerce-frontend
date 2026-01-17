@@ -18,10 +18,10 @@ const GenericTooltip = ({
           <TooltipPrimitive.Content
             side={side}
             sideOffset={6}
-            className="animate-fade-in text-s12-l16 text-surface-primary z-50 rounded bg-gray-900 px-3 py-2 shadow-lg"
+            className="animate-fade-in text-s12-l16 text-surface-primary bg-gray-11 z-50 rounded px-3 py-2 shadow-lg"
           >
             {content}
-            <TooltipPrimitive.Arrow className="fill-gray-900" />
+            <TooltipPrimitive.Arrow className="fill-gray-11" />
           </TooltipPrimitive.Content>
         </TooltipPrimitive.Portal>
       )}

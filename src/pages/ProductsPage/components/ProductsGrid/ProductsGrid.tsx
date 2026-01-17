@@ -104,7 +104,7 @@ const ProductsGrid = ({
   if (allProducts.length === 0) {
     return (
       <div className="flex h-[300px] items-center justify-center">
-        <span className="text-s14-l20 text-gray-500">Hiç ürün bulunamadı</span>
+        <span className="text-s14-l20 text-gray-8">Hiç ürün bulunamadı</span>
       </div>
     );
   }
