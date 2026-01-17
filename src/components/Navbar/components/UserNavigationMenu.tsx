@@ -40,7 +40,7 @@ const UserNavigationMenu = () => {
       setOpen={setOpen}
       withOverlay={false}
       contentAlign="center"
-      className="border-orange border"
+      className="border-orange w-[200px] overflow-hidden border p-0"
       trigger={
         <button
           type="button"
@@ -65,32 +65,34 @@ const UserNavigationMenu = () => {
         </button>
       }
     >
-      <div className="flex min-w-40 flex-col">
-        <div className="border-gray-2 border-b px-4 py-3">
-          <span
-            className="text-s14-l20 text-orange block max-w-full truncate font-semibold"
-            title={user?.name}
-          >
-            {user?.name}
-          </span>
-        </div>
+      <div className="flex flex-col">
+        <span
+          className="text-s14-l20 text-orange block max-w-full truncate px-4 pt-3 pb-1 font-semibold"
+          title={user?.name}
+        >
+          {user?.name}
+        </span>
 
         <button
           type="button"
           onClick={handleNavigateMyOrders}
-          className="text-s14-l20 text-text-primary hover:bg-gray-1 flex cursor-pointer items-center gap-x-3 px-4 py-3 transition-colors"
+          className="hover:bg-orange/10 group flex cursor-pointer items-center gap-x-3 px-4 py-2.5 transition-colors"
         >
-          <PackageIcon className="fill-text-primary h-4 w-4" />
-          <span>My Orders</span>
+          <PackageIcon className="fill-text-primary group-hover:fill-orange h-4 w-4" />
+          <span className="text-s12-l16 text-text-primary group-hover:text-orange">
+            My Orders
+          </span>
         </button>
 
         <button
           type="button"
           onClick={handleLogout}
-          className="text-s14-l20 text-text-primary hover:bg-gray-1 flex cursor-pointer items-center gap-x-3 px-4 py-3 transition-colors"
+          className="hover:bg-orange/10 group flex cursor-pointer items-center gap-x-3 px-4 py-2.5 transition-colors"
         >
-          <LogoutIcon className="fill-text-primary h-4 w-4" />
-          <span>Log Out</span>
+          <LogoutIcon className="fill-text-primary group-hover:fill-orange h-4 w-4" />
+          <span className="text-s12-l16 text-text-primary group-hover:text-orange">
+            Log Out
+          </span>
         </button>
       </div>
     </GenericNavigationMenu>
