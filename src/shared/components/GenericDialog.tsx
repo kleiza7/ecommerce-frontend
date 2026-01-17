@@ -1,6 +1,7 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import type { ReactNode } from "react";
 import { CloseIcon } from "../../assets/icons";
+import { customTwMerge } from "../utils/Tailwind.util";
 
 export const GenericDialogTitle = ({ children }: { children: ReactNode }) => {
   return (
@@ -31,9 +32,10 @@ export const GenericDialog = ({
         <Dialog.Overlay className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" />
 
         <Dialog.Content
-          className={`bg-surface-primary fixed top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 rounded-xl p-6 shadow-xl ${
-            className ?? "w-full max-w-md"
-          }`}
+          className={customTwMerge(
+            "bg-surface-primary fixed top-1/2 left-1/2 z-50 max-h-[90vh] w-full max-w-md -translate-x-1/2 -translate-y-1/2 overflow-x-hidden overflow-y-auto rounded-xl p-6 shadow-xl",
+            className,
+          )}
         >
           <Dialog.Close asChild>
             <button

@@ -16,7 +16,7 @@ const UpdateProductDialog = ({
   }, [setOpen]);
 
   return (
-    <GenericDialog open={open} onOpenChange={setOpen}>
+    <GenericDialog open={open} onOpenChange={setOpen} className="h-[772px]">
       <UpdateProductForm productId={productId} close={close} />
     </GenericDialog>
   );
