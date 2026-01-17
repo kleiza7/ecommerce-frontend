@@ -5,7 +5,7 @@ import { customTwMerge } from "../utils/Tailwind.util";
 
 export const GenericDialogTitle = ({ children }: { children: ReactNode }) => {
   return (
-    <Dialog.Title className="text-lg font-semibold text-gray-900">
+    <Dialog.Title className="text-s18-l28 text-text-primary font-semibold">
       {children}
     </Dialog.Title>
   );
