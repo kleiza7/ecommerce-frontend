@@ -40,7 +40,7 @@ const GenericSelect = <T,>({
         if (option) onChange(option.value);
       }}
     >
-      <Select.Trigger className="flex h-10 w-full items-center justify-between rounded-md border border-gray-300 px-3 text-sm outline-none disabled:cursor-not-allowed disabled:bg-gray-100">
+      <Select.Trigger className="text-s14-l20 text-text-primary flex h-10 w-full items-center justify-between rounded-md border border-gray-300 px-3 outline-none disabled:cursor-not-allowed disabled:bg-gray-100">
         <Select.Value placeholder={placeholder}>
           {selectedOption
             ? renderValue
@@ -66,7 +66,7 @@ const GenericSelect = <T,>({
               <Select.Item
                 key={option.label}
                 value={option.label}
-                className="relative flex cursor-pointer items-center rounded px-8 py-2 text-sm outline-none select-none hover:bg-gray-100 data-[state=checked]:bg-gray-100"
+                className="text-s14-l20 text-text-primary relative flex cursor-pointer items-center rounded px-8 py-2 outline-none select-none hover:bg-gray-100 data-[state=checked]:bg-gray-100"
               >
                 <Select.ItemText className="truncate">
                   {option.label}

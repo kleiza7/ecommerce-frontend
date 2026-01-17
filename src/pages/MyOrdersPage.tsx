@@ -123,7 +123,7 @@ const MyOrdersPage = () => {
       <div className="flex items-center gap-3">
         <button
           onClick={() => setSelectedStatus("ALL")}
-          className={`h-8 rounded-full border px-4 text-sm ${
+          className={`text-s14-l20 h-8 rounded-full border px-4 ${
             selectedStatus === "ALL"
               ? "border-orange text-orange"
               : "text-gray-600"
@@ -136,7 +136,7 @@ const MyOrdersPage = () => {
           <button
             key={status}
             onClick={() => setSelectedStatus(status)}
-            className={`h-8 rounded-full border px-4 text-sm ${
+            className={`text-s14-l20 h-8 rounded-full border px-4 ${
               selectedStatus === status
                 ? "border-orange text-orange"
                 : "text-gray-600"
