@@ -78,7 +78,7 @@ const UserNavigationMenu = () => {
         <button
           type="button"
           onClick={handleNavigateMyOrders}
-          className="text-s14-l20 text-text-primary hover:bg-gray-1 flex items-center gap-x-3 px-4 py-3 transition-colors"
+          className="text-s14-l20 text-text-primary hover:bg-gray-1 flex cursor-pointer items-center gap-x-3 px-4 py-3 transition-colors"
         >
           <PackageIcon className="fill-text-primary h-4 w-4" />
           <span>My Orders</span>
@@ -87,7 +87,7 @@ const UserNavigationMenu = () => {
         <button
           type="button"
           onClick={handleLogout}
-          className="text-s14-l20 text-text-primary hover:bg-gray-1 flex items-center gap-x-3 px-4 py-3 transition-colors"
+          className="text-s14-l20 text-text-primary hover:bg-gray-1 flex cursor-pointer items-center gap-x-3 px-4 py-3 transition-colors"
         >
           <LogoutIcon className="fill-text-primary h-4 w-4" />
           <span>Log Out</span>
