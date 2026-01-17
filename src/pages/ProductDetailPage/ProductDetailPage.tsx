@@ -9,7 +9,6 @@ import { useCartActions } from "../../hooks/useCartActions";
 import { useProductsGetById } from "../../hooks/useProductsGetById";
 import FavoriteButton from "../../shared/components/FavoriteButton";
 import GenericTooltip from "../../shared/components/GenericTooltip";
-import LoadingSpinner from "../../shared/components/LoadingSpinner";
 import {
   BUTTON_PRIMARY,
   BUTTON_SIZE_X_LARGE,
@@ -17,6 +16,7 @@ import {
 import { customTwMerge } from "../../shared/utils/Tailwind.util";
 import { useCartStore } from "../../stores/CartStore";
 import CategoryBreadcrumb from "./components/CategoryBreadcrumb";
+import ProductDetailPageSkeleton from "./components/ProductDetailPageSkeleton";
 
 const ProductDetailPage = () => {
   const { id } = useParams();
@@ -28,9 +28,8 @@ const ProductDetailPage = () => {
 
   const cartItems = useCartStore((state) => state.items);
 
-  // TODO: fix this loading
   if (isLoading || !data) {
-    return <LoadingSpinner size={56} borderWidth={3} />;
+    return <ProductDetailPageSkeleton />;
   }
 
   const images = data.images;
@@ -155,6 +154,7 @@ const ProductDetailPage = () => {
           </div>
 
           <div className="flex items-center gap-4">
+            {/* TODO: add this button */}
             {/* <button
               className={customTwMerge(
                 BUTTON_PRIMARY_OUTLINED,
