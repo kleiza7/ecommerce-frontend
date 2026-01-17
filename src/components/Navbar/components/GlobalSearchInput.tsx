@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import type { ReqSearchResponse } from "../../../api/responses/ReqSearchResponse.model";
 import { CloseIcon, SearchIcon } from "../../../assets/icons";
@@ -405,20 +412,25 @@ const GlobalSearchInput = () => {
               {!isFetching ? (
                 items.length !== 0 ? (
                   <ul className="flex flex-col">
-                    {items.map((item) => (
-                      <li
-                        key={getSearchItemKey(item)}
-                        className="hover:bg-gray-1 flex h-10 cursor-pointer items-center justify-between rounded px-2"
-                        onClick={() => onClickSearchItem(item)}
-                      >
-                        <span className="text-s14-l20 text-text-primary">
-                          {getPrimaryLabel(item)}
-                        </span>
+                    {items.map((item, index) => (
+                      <Fragment key={getSearchItemKey(item)}>
+                        <li
+                          className="hover:bg-gray-1 flex h-10 cursor-pointer items-center justify-between rounded px-2"
+                          onClick={() => onClickSearchItem(item)}
+                        >
+                          <span className="text-s14-l20 text-text-primary">
+                            {getPrimaryLabel(item)}
+                          </span>
 
-                        <span className="text-s12-l16 text-gray-7">
-                          {getSecondaryLabel(item)}
-                        </span>
-                      </li>
+                          <span className="text-s12-l16 text-gray-7">
+                            {getSecondaryLabel(item)}
+                          </span>
+                        </li>
+
+                        {index !== items.length - 1 && (
+                          <div className="bg-gray-1 h-px w-full" />
+                        )}
+                      </Fragment>
                     ))}
                   </ul>
                 ) : (
@@ -448,20 +460,25 @@ const GlobalSearchInput = () => {
 
               {histories.length !== 0 ? (
                 <ul className="flex flex-col">
-                  {histories.map((item) => (
-                    <li
-                      key={`HISTORY-${getSearchItemKey(item)}`}
-                      className="hover:bg-gray-1 flex h-10 cursor-pointer items-center justify-between rounded px-2"
-                      onClick={() => onClickSearchItem(item)}
-                    >
-                      <span className="text-s14-l20 text-text-primary">
-                        {getPrimaryLabel(item)}
-                      </span>
+                  {histories.map((item, index) => (
+                    <Fragment key={`HISTORY-${getSearchItemKey(item)}`}>
+                      <li
+                        className="hover:bg-gray-1 flex h-10 cursor-pointer items-center justify-between rounded px-2"
+                        onClick={() => onClickSearchItem(item)}
+                      >
+                        <span className="text-s14-l20 text-text-primary">
+                          {getPrimaryLabel(item)}
+                        </span>
 
-                      <span className="text-s12-l16 text-gray-7">
-                        {getSecondaryLabel(item)}
-                      </span>
-                    </li>
+                        <span className="text-s12-l16 text-gray-7">
+                          {getSecondaryLabel(item)}
+                        </span>
+                      </li>
+
+                      {index !== histories.length - 1 && (
+                        <div className="bg-gray-1 h-px w-full" />
+                      )}
+                    </Fragment>
                   ))}
                 </ul>
               ) : (
