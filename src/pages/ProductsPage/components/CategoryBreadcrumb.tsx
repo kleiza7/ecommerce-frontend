@@ -84,7 +84,7 @@ const CategoryBreadcrumb = ({
 
       <button
         onClick={clearCategoryFilters}
-        className="text-orange cursor-pointer text-xs font-semibold hover:underline"
+        className="text-orange text-s12-l16 cursor-pointer font-semibold hover:underline"
       >
         Clear Filter
       </button>
