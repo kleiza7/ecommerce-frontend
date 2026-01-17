@@ -3,6 +3,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { EVENT_TYPE } from "../shared/enums/EventType.enum";
 import { TOAST_TYPE } from "../shared/enums/ToastType.enum";
 import type { ToastEventDetail } from "../shared/models/ToastEventDetail.model";
+import { customTwMerge } from "../shared/utils/Tailwind.util";
 
 type ToastItem = {
   id: string;
@@ -63,7 +64,7 @@ const ToastProvider = ({ children }: { children: ReactNode }) => {
             key={toast.id}
             defaultOpen={true}
             duration={5000}
-            className={`rounded-sm px-4 py-3 shadow-md ${bgClass} `}
+            className={customTwMerge("rounded-sm px-4 py-3 shadow-md", bgClass)}
           >
             <Toast.Title className="font-semibold">
               {toast.title || autoTitle}
