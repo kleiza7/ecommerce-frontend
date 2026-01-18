@@ -14,11 +14,12 @@ export const useCartRemove = (
     },
 
     onSuccess: (data) => {
-      showToast({
-        title: "Item removed",
-        description: "The item has been successfully removed from your cart.",
-        type: TOAST_TYPE.SUCCESS,
-      });
+      // INFO: commented for optimistic update
+      // showToast({
+      //   title: "Item removed",
+      //   description: "The item has been successfully removed from your cart.",
+      //   type: TOAST_TYPE.SUCCESS,
+      // });
 
       onSuccessCallback?.(data);
     },

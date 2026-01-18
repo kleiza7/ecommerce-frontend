@@ -24,11 +24,12 @@ export const useCartAdd = (
     },
 
     onSuccess: (data) => {
-      showToast({
-        title: "Added to cart",
-        description: "The item has been successfully added to your cart.",
-        type: TOAST_TYPE.SUCCESS,
-      });
+      // INFO: commented for optimistic update
+      // showToast({
+      //   title: "Added to cart",
+      //   description: "The item has been successfully added to your cart.",
+      //   type: TOAST_TYPE.SUCCESS,
+      // });
 
       onSuccessCallback?.(data);
     },

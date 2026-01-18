@@ -62,11 +62,11 @@ const CartItemsList = () => {
                     <button
                       disabled={isLoading || isMin}
                       onClick={() =>
-                        updateCart(
-                          cartItem.productId,
-                          cartItem.quantity - 1,
-                          cartItem.id,
-                        )
+                        updateCart({
+                          id: cartItem.id,
+                          productId: cartItem.productId,
+                          newQuantity: cartItem.quantity - 1,
+                        })
                       }
                       className="group cursor-pointer rounded p-1"
                     >
@@ -90,11 +90,11 @@ const CartItemsList = () => {
                     <button
                       disabled={isLoading || isMax}
                       onClick={() =>
-                        updateCart(
-                          cartItem.productId,
-                          cartItem.quantity + 1,
-                          cartItem.id,
-                        )
+                        updateCart({
+                          id: cartItem.id,
+                          productId: cartItem.productId,
+                          newQuantity: cartItem.quantity + 1,
+                        })
                       }
                       className="group cursor-pointer rounded p-1"
                     >
@@ -114,7 +114,10 @@ const CartItemsList = () => {
                   <button
                     disabled={isLoading}
                     onClick={() =>
-                      removeFromCart(cartItem.productId, cartItem.id)
+                      removeFromCart({
+                        id: cartItem.id,
+                        productId: cartItem.productId,
+                      })
                     }
                     className="hover:bg-red-1 shrink-0 cursor-pointer rounded p-2 disabled:opacity-40"
                   >
