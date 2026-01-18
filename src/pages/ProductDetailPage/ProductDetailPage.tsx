@@ -44,7 +44,7 @@ const ProductDetailPage = () => {
       <CategoryBreadcrumb categoryId={data.category.id} />
 
       <div className="flex gap-8">
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-6">
           <div
             className="border-gray-2 relative h-[500px] w-[400px] cursor-pointer overflow-hidden rounded-xl border"
             onClick={() => setLightboxOpen(true)}
@@ -86,7 +86,7 @@ const ProductDetailPage = () => {
             </button>
           </div>
 
-          <div className="mt-2 flex gap-3">
+          <div className="flex gap-3">
             {images.map((img, index) => (
               <button
                 key={img.id}
@@ -121,14 +121,14 @@ const ProductDetailPage = () => {
 
           <div className="text-text-primary text-s12-l16">
             {data.stockCount > 0 ? (
-              <>
+              <div className="flex flex-col gap-1">
                 <span>
                   Only <span className="font-bold">{data.stockCount}</span>{" "}
                   items are left in stock.
                 </span>
 
                 {data.stockCount < 5 && (
-                  <div className="mt-1 flex items-center gap-1">
+                  <div className="flex items-center gap-1">
                     <TimerArrowDownIcon
                       className={`h-4 w-4 ${
                         data.stockCount === 1
@@ -147,7 +147,7 @@ const ProductDetailPage = () => {
                     </span>
                   </div>
                 )}
-              </>
+              </div>
             ) : (
               <span>This product is out of stock.</span>
             )}

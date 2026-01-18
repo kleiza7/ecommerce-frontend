@@ -105,7 +105,7 @@ const CategorySelectionDialogContent = ({
             key={level}
             className="border-gray-2 w-56 shrink-0 border-r pr-4 last:border-r-0"
           >
-            <ul className="space-y-1">
+            <ul className="flex flex-col gap-1">
               {column.map((node) => (
                 <li
                   key={node.id}

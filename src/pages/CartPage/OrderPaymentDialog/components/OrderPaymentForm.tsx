@@ -129,8 +129,8 @@ const OrderPaymentForm = ({
   };
 
   return (
-    <form onSubmit={onSubmit} className="relative flex flex-col gap-y-6">
-      <div className="flex flex-col gap-y-1">
+    <form onSubmit={onSubmit} className="relative flex flex-col gap-6">
+      <div className="flex flex-col gap-1">
         <GenericDialogTitle>Payment</GenericDialogTitle>
         <span className="text-s14-l20 text-gray-8">
           Please review your receiver and card details before completing the
@@ -141,14 +141,14 @@ const OrderPaymentForm = ({
       {/* LEFT + RIGHT (no media queries) */}
       <div className="flex gap-x-6">
         {/* LEFT: all inputs same width */}
-        <div className="flex flex-1 flex-col gap-y-6">
+        <div className="flex flex-1 flex-col gap-6">
           {/* Receiver Information */}
-          <div className="flex flex-col gap-y-4">
+          <div className="flex flex-col gap-4">
             <span className="text-s14-l20 text-text-primary font-medium">
               Receiver Information
             </span>
 
-            <div className="flex flex-col gap-y-5">
+            <div className="flex flex-col gap-5">
               <div className="relative flex flex-col">
                 <InputLabel label="Full Name" hasAsterisk />
                 <input
@@ -192,12 +192,12 @@ const OrderPaymentForm = ({
           </div>
 
           {/* Card Owner Information */}
-          <div className="flex flex-col gap-y-4">
+          <div className="flex flex-col gap-4">
             <span className="text-s14-l20 text-text-primary font-medium">
               Card Owner Information
             </span>
 
-            <div className="flex flex-col gap-y-5">
+            <div className="flex flex-col gap-5">
               <div className="relative flex flex-col">
                 <InputLabel label="Card Holder Name" hasAsterisk />
                 <input
@@ -313,42 +313,46 @@ const OrderPaymentForm = ({
                     WebkitBackfaceVisibility: "hidden",
                   }}
                 >
-                  <div className="flex items-start justify-between">
-                    <div className="flex flex-col gap-y-1">
-                      <span className="text-s14-l20 font-medium text-white/90">
-                        Master Card
-                      </span>
-                      <span className="text-s14-l20 text-white/50">
-                        Card Number
-                      </span>
+                  <div className="flex flex-col gap-4">
+                    <div className="flex items-start justify-between">
+                      <div className="flex flex-col gap-1">
+                        <span className="text-s14-l20 font-medium text-white/90">
+                          Master Card
+                        </span>
+                        <span className="text-s14-l20 text-white/50">
+                          Card Number
+                        </span>
+                      </div>
+
+                      <div className="bg-yellow-1/80 h-10 w-14 rounded-md" />
                     </div>
 
-                    <div className="bg-yellow-1/80 h-10 w-14 rounded-md" />
-                  </div>
+                    <div className="flex flex-col gap-10">
+                      <div>
+                        <span className="text-s16-l24 tracking-widest text-white">
+                          {cardPreview.number}
+                        </span>
+                      </div>
 
-                  <div className="mt-4">
-                    <span className="text-s16-l24 tracking-widest text-white">
-                      {cardPreview.number}
-                    </span>
-                  </div>
+                      <div className="flex items-end justify-between">
+                        <div className="flex flex-col gap-1">
+                          <span className="text-s14-l20 text-white/50">
+                            Card Holder
+                          </span>
+                          <span className="text-s14-l20 text-white">
+                            {cardPreview.name}
+                          </span>
+                        </div>
 
-                  <div className="mt-10 flex items-end justify-between">
-                    <div className="flex flex-col gap-y-1">
-                      <span className="text-s14-l20 text-white/50">
-                        Card Holder
-                      </span>
-                      <span className="text-s14-l20 text-white">
-                        {cardPreview.name}
-                      </span>
-                    </div>
-
-                    <div className="flex flex-col items-end gap-y-1">
-                      <span className="text-s14-l20 text-white/50">
-                        Valid Thru
-                      </span>
-                      <span className="text-s14-l20 text-white">
-                        {cardPreview.expiry}
-                      </span>
+                        <div className="flex flex-col items-end gap-1">
+                          <span className="text-s14-l20 text-white/50">
+                            Valid Thru
+                          </span>
+                          <span className="text-s14-l20 text-white">
+                            {cardPreview.expiry}
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -362,23 +366,30 @@ const OrderPaymentForm = ({
                     transform: "rotateY(180deg)",
                   }}
                 >
-                  <div className="mt-2 h-10 w-full rounded bg-white/20" />
-                  <div className="mt-6 flex items-center justify-end">
-                    <div className="flex w-full max-w-[220px] items-center justify-between rounded bg-white/10 px-4 py-3">
-                      <span className="text-s14-l20 text-white/60">CVC</span>
-                      <span className="text-s14-l20 tracking-widest text-white">
-                        {cardPreview.cvc}
-                      </span>
-                    </div>
-                  </div>
+                  <div className="flex flex-col gap-6 pt-2">
+                    <div className="h-10 w-full rounded bg-white/20" />
 
-                  <div className="mt-10 flex items-end justify-between">
-                    <span className="text-s14-l20 text-white/50">
-                      {cardPreview.name}
-                    </span>
-                    <span className="text-s14-l20 text-white/50">
-                      {cardPreview.expiry}
-                    </span>
+                    <div className="flex flex-col gap-10">
+                      <div className="flex items-center justify-end">
+                        <div className="flex w-full max-w-[220px] items-center justify-between rounded bg-white/10 px-4 py-3">
+                          <span className="text-s14-l20 text-white/60">
+                            CVC
+                          </span>
+                          <span className="text-s14-l20 tracking-widest text-white">
+                            {cardPreview.cvc}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-end justify-between">
+                        <span className="text-s14-l20 text-white/50">
+                          {cardPreview.name}
+                        </span>
+                        <span className="text-s14-l20 text-white/50">
+                          {cardPreview.expiry}
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

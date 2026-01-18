@@ -6,12 +6,12 @@ const ProductDetailPageSkeleton = () => {
       <Skeleton withShimmer className="h-5 w-1/2" />
 
       <div className="flex gap-8">
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-6">
           <div className="border-gray-2 bg-surface-primary h-[500px] w-[400px] overflow-hidden rounded-xl border">
             <Skeleton withShimmer className="h-full w-full rounded-none" />
           </div>
 
-          <div className="mt-2 flex gap-3">
+          <div className="flex gap-3">
             {Array.from({ length: 4 }).map((_, index) => (
               <div
                 key={index}

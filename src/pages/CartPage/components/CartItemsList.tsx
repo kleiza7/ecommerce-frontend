@@ -22,7 +22,7 @@ const CartItemsList = () => {
 
   return (
     <div className="flex min-w-0 flex-1 flex-col">
-      <div className="max-h-[520px] overflow-y-auto pr-2">
+      <div className="flex max-h-[494px] flex-col gap-4 overflow-y-auto pr-2">
         {cartItems.map((cartItem) => {
           const thumb =
             cartItem.product.images.find((img) => img.isPrimary)?.thumbUrl ||
@@ -34,7 +34,7 @@ const CartItemsList = () => {
           return (
             <div
               key={cartItem.productId}
-              className="border-gray-2 bg-surface-primary mb-4 rounded-lg border p-5"
+              className="border-gray-2 bg-surface-primary rounded-lg border p-5"
             >
               <div className="flex items-center gap-x-6">
                 <div className="bg-gray-4 h-28 w-28 shrink-0 overflow-hidden rounded">
@@ -47,10 +47,10 @@ const CartItemsList = () => {
                   )}
                 </div>
 
-                <div className="flex min-w-0 flex-1 flex-col">
+                <div className="flex min-w-0 flex-1 flex-col gap-1">
                   <p className="font-semibold">{cartItem.product.name}</p>
 
-                  <p className="text-s14-l20 text-gray-9 mt-1">
+                  <p className="text-s14-l20 text-gray-9">
                     {cartItem.product.description}
                   </p>
                 </div>

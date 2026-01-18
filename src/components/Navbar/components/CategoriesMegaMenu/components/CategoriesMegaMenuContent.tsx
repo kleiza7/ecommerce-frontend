@@ -35,7 +35,7 @@ const CategoriesMegaMenuContent = ({
     <div className="flex min-w-[900px]">
       {/* LEFT */}
       <aside className="border-gray-2 w-56 border-r pr-4">
-        <ul className="space-y-1">
+        <ul className="flex flex-col gap-1">
           {parents.map((parent) => {
             const isActive = activeParent?.id === parent.id;
 
@@ -67,18 +67,18 @@ const CategoriesMegaMenuContent = ({
         <div className="grid grid-cols-3 gap-8">
           {activeParent.children?.map((child) => {
             return (
-              <div key={child.id}>
+              <div key={child.id} className="flex flex-col gap-2">
                 <NavLink
                   to={`/products?category=${child.slug}`}
                   onClick={closeMenu}
-                  className="text-s14-l20 text-orange mb-2 flex items-center gap-x-1 font-medium hover:underline"
+                  className="text-s14-l20 text-orange flex items-center gap-x-1 font-medium hover:underline"
                 >
                   <span>{child.label}</span>
                   <KeyboardArrowUpIcon className="fill-orange h-4 w-4 rotate-90" />
                 </NavLink>
 
                 {child.children && (
-                  <ul className="space-y-1">
+                  <ul className="flex flex-col gap-1">
                     {child.children.map((sub) => {
                       const isSubActive = activeCategorySlug === sub.slug;
 

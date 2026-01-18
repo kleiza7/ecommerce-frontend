@@ -5,24 +5,24 @@ const OrderCardSkeleton = () => {
     <div className="border-gray-1 bg-surface-primary overflow-hidden rounded-lg border">
       <div className="border-gray-1 bg-gray-3 flex items-center gap-x-5 border-b px-5 py-3">
         <div className="flex flex-1 gap-x-5">
-          <div className="flex-1">
+          <div className="flex flex-1 flex-col gap-2">
             <Skeleton withShimmer className="h-4 w-24" />
-            <Skeleton withShimmer className="mt-2 h-4 w-32" />
+            <Skeleton withShimmer className="h-4 w-32" />
           </div>
 
-          <div className="flex-1">
+          <div className="flex flex-1 flex-col gap-2">
             <Skeleton withShimmer className="h-4 w-28" />
-            <Skeleton withShimmer className="mt-2 h-4 w-20" />
-          </div>
-
-          <div className="flex-1">
             <Skeleton withShimmer className="h-4 w-20" />
-            <Skeleton withShimmer className="mt-2 h-4 w-28" />
           </div>
 
-          <div className="flex-1">
+          <div className="flex flex-1 flex-col gap-2">
+            <Skeleton withShimmer className="h-4 w-20" />
+            <Skeleton withShimmer className="h-4 w-28" />
+          </div>
+
+          <div className="flex flex-1 flex-col gap-2">
             <Skeleton withShimmer className="h-4 w-14" />
-            <Skeleton withShimmer className="mt-2 h-5 w-24" />
+            <Skeleton withShimmer className="h-5 w-24" />
           </div>
         </div>
 
