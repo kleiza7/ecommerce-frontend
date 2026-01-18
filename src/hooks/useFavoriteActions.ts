@@ -38,46 +38,69 @@ export const useFavoriteActions = () => {
   };
 
   const toggleFavorite = (product: FavoriteItemUI["product"]) => {
+    const items = useFavoriteStore.getState().items;
+
+    const snapshotIsFavorited = items.some(
+      (item) => item.productId === product.id,
+    );
+
+    const newIsFavorited = !snapshotIsFavorited;
+
+    /* ---------- OPTIMISTIC UI ---------- */
+    if (newIsFavorited) {
+      addItem({ productId: product.id, product });
+    } else {
+      removeItem(product.id);
+    }
+
+    /* ---------- AUTH ---------- */
     if (isAuthenticated) {
       toggleFavoriteMutation.mutate(
         { productId: product.id },
         {
           onSuccess: (res) => {
-            if (res.isFavorited) {
-              addItem({
-                id: undefined,
-                productId: product.id,
-                product,
-              });
+            // server authoritative
+            if (res.isFavorited !== newIsFavorited) {
+              if (res.isFavorited) {
+                addItem({ productId: product.id, product });
+              } else {
+                removeItem(product.id);
+              }
+            }
+          },
+          onError: () => {
+            // 🔥 PRODUCT-LEVEL ROLLBACK
+            if (snapshotIsFavorited) {
+              addItem({ productId: product.id, product });
             } else {
               removeItem(product.id);
             }
+
+            showToast({
+              description: "Failed to update favorites.",
+              type: TOAST_TYPE.ERROR,
+            });
           },
         },
       );
       return;
     }
 
+    /* ---------- GUEST ---------- */
     try {
-      const favorites = getGuestFavorites();
-
-      const exists = favorites.items.find(
-        (item) => item.productId === product.id,
-      );
-
-      if (exists) {
-        removeFavoriteFromGuestFavorites(product.id);
-        removeItem(product.id);
+      if (newIsFavorited) {
+        addFavoriteToGuestFavorites({ productId: product.id, product });
       } else {
-        const item: FavoriteItemUI = {
-          productId: product.id,
-          product,
-        };
-
-        addFavoriteToGuestFavorites(item);
-        addItem(item);
+        removeFavoriteFromGuestFavorites(product.id);
       }
     } catch {
+      // 🔥 PRODUCT-LEVEL ROLLBACK
+      if (snapshotIsFavorited) {
+        addItem({ productId: product.id, product });
+      } else {
+        removeItem(product.id);
+      }
+
       showToast({
         description: "Failed to update favorites.",
         type: TOAST_TYPE.ERROR,
@@ -91,8 +114,8 @@ export const useFavoriteActions = () => {
       return;
     }
 
-    clearGuestFavorites();
     clearStoreFavorites();
+    clearGuestFavorites();
   };
 
   return {

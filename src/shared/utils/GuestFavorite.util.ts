@@ -25,19 +25,15 @@ export const getGuestFavorites = (): FavoriteUI => {
   }
 };
 
-export const addFavoriteToGuestFavorites = (
-  item: FavoriteItemUI,
-): FavoriteItemUI => {
+export const addFavoriteToGuestFavorites = (item: FavoriteItemUI): void => {
   const favorites = getGuestFavorites();
 
-  const exists = favorites.items.find((i) => i.productId === item.productId);
+  const exists = favorites.items.some((i) => i.productId === item.productId);
 
   if (!exists) {
     favorites.items.push(item);
     saveGuestFavorites(favorites);
   }
-
-  return item;
 };
 
 export const removeFavoriteFromGuestFavorites = (productId: number): void => {

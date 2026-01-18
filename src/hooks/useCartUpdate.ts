@@ -24,11 +24,12 @@ export const useCartUpdate = (
     },
 
     onSuccess: (data) => {
-      showToast({
-        title: "Cart updated",
-        description: "The item quantity has been successfully updated.",
-        type: TOAST_TYPE.SUCCESS,
-      });
+      // INFO: commented for optimistic update
+      // showToast({
+      //   title: "Cart updated",
+      //   description: "The item quantity has been successfully updated.",
+      //   type: TOAST_TYPE.SUCCESS,
+      // });
 
       onSuccessCallback?.(data);
     },

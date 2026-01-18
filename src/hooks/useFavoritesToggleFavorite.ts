@@ -19,15 +19,16 @@ export const useFavoritesToggleFavorite = (
     },
 
     onSuccess: (data) => {
-      showToast({
-        title: data.isFavorited
-          ? "Added to favorites"
-          : "Removed from favorites",
-        description: data.isFavorited
-          ? "The product has been added to your favorites."
-          : "The product has been removed from your favorites.",
-        type: TOAST_TYPE.SUCCESS,
-      });
+      // INFO: commented for optimistic update
+      // showToast({
+      //   title: data.isFavorited
+      //     ? "Added to favorites"
+      //     : "Removed from favorites",
+      //   description: data.isFavorited
+      //     ? "The product has been added to your favorites."
+      //     : "The product has been removed from your favorites.",
+      //   type: TOAST_TYPE.SUCCESS,
+      // });
 
       onSuccessCallback?.(data);
     },

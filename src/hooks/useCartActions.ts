@@ -21,12 +21,12 @@ import { useCartUpdate } from "./useCartUpdate";
 export const useCartActions = () => {
   const queryClient = useQueryClient();
 
+  const cartCurrencyId = useCartStore((state) => state.currencyId);
   const setItems = useCartStore((state) => state.setItems);
   const addItem = useCartStore((state) => state.addItem);
   const updateItem = useCartStore((state) => state.updateItem);
   const removeItem = useCartStore((state) => state.removeItem);
   const clearStoreCart = useCartStore((state) => state.clearCart);
-  const cartCurrencyId = useCartStore((state) => state.currencyId);
 
   const user = useUserStore((state) => state.user);
 
@@ -62,25 +62,63 @@ export const useCartActions = () => {
       return;
     }
 
+    const snapshotItems = useCartStore.getState().items;
+
+    const existing = snapshotItems.find(
+      (item) => item.productId === product.id,
+    );
+
+    const newQuantity = (existing?.quantity ?? 0) + 1;
+
+    /* -------------------- OPTIMISTIC UI -------------------- */
+    addItem({
+      productId: product.id,
+      quantity: newQuantity,
+      priceSnapshot: product.price,
+      currencyId: product.currency.id,
+      product,
+    });
+
+    /* ==================== AUTH USER ==================== */
     if (isAuthenticated) {
       cartAddMutation.mutate(
         { productId: product.id, quantity: 1 },
         {
           onSuccess: (item) => {
-            addItem({
-              id: item.id,
-              productId: item.productId,
-              quantity: item.quantity,
-              priceSnapshot: item.priceSnapshot,
-              currencyId: item.currencyId,
-              product: item.product,
-            });
+            const current = useCartStore
+              .getState()
+              .items.find((i) => i.productId === product.id);
+
+            if (!current) {
+              return;
+            }
+
+            // quantity authoritative → UI sync
+            if (current.quantity !== item.quantity) {
+              updateItem(item.productId, item.quantity);
+            }
+
+            // id authoritative → UI sync
+            if (!current.id && item.id) {
+              setItems(
+                useCartStore
+                  .getState()
+                  .items.map((i) =>
+                    i.productId === product.id ? { ...i, id: item.id } : i,
+                  ),
+              );
+            }
           },
           onError: (error: AxiosError) => {
+            // ---- PRODUCT-LEVEL ROLLBACK ----
+            if (existing) {
+              updateItem(product.id, existing.quantity);
+            } else {
+              removeItem(product.id);
+            }
+
             if (error.response?.status === 409) {
-              queryClient.invalidateQueries({
-                queryKey: ["cart"],
-              });
+              queryClient.invalidateQueries({ queryKey: ["cart"] });
             }
           },
         },
@@ -88,24 +126,32 @@ export const useCartActions = () => {
       return;
     }
 
+    /* ==================== GUEST USER ==================== */
     try {
-      const item: CartItemUI = {
+      const addedItem = addCartItemToGuestCart({
         productId: product.id,
         quantity: 1,
         priceSnapshot: product.price,
         currencyId: product.currency.id,
         product,
-      };
-
-      const addedItem = addCartItemToGuestCart(item);
-      addItem(addedItem);
-
-      showToast({
-        title: "Added to cart",
-        description: "The item has been successfully added to your cart.",
-        type: TOAST_TYPE.SUCCESS,
       });
+
+      const current = useCartStore
+        .getState()
+        .items.find((i) => i.productId === product.id);
+
+      // guest cart authoritative → quantity sync
+      if (current && current.quantity !== addedItem.quantity) {
+        updateItem(addedItem.productId, addedItem.quantity);
+      }
     } catch {
+      // ---- PRODUCT-LEVEL ROLLBACK ----
+      if (existing) {
+        updateItem(product.id, existing.quantity);
+      } else {
+        removeItem(product.id);
+      }
+
       showToast({
         description: "Failed to add the item to the cart.",
         type: TOAST_TYPE.ERROR,
@@ -113,18 +159,40 @@ export const useCartActions = () => {
     }
   };
 
-  const updateCart = (productId: number, quantity: number, id?: number) => {
+  const updateCart = ({
+    id,
+    productId,
+    newQuantity,
+  }: {
+    id?: number;
+    productId: number;
+    newQuantity: number;
+  }) => {
+    const snapshotQuantity = useCartStore
+      .getState()
+      .items.find((item) => item.productId === productId)?.quantity;
+
+    if (snapshotQuantity === undefined) {
+      return;
+    }
+
+    updateItem(productId, newQuantity);
+
     if (isAuthenticated && !!id) {
       cartUpdateMutation.mutate(
         {
           itemId: id,
-          quantity,
+          quantity: newQuantity,
         },
         {
           onSuccess: (item) => {
-            updateItem(item.productId, item.quantity);
+            if (item.quantity !== newQuantity) {
+              updateItem(item.productId, item.quantity);
+            }
           },
           onError: (error: AxiosError) => {
+            updateItem(productId, snapshotQuantity);
+
             if (error.response?.status === 409) {
               queryClient.invalidateQueries({
                 queryKey: ["cart"],
@@ -137,18 +205,18 @@ export const useCartActions = () => {
     }
 
     try {
-      const updatedItem = updateGuestCartItem(productId, quantity);
+      const updatedItem = updateGuestCartItem(productId, newQuantity);
 
       if (updatedItem) {
-        updateItem(updatedItem.productId, updatedItem.quantity);
-
-        showToast({
-          title: "Cart updated",
-          description: "The item quantity has been successfully updated.",
-          type: TOAST_TYPE.SUCCESS,
-        });
+        if (updatedItem.quantity !== newQuantity) {
+          updateItem(updatedItem.productId, updatedItem.quantity);
+        }
+      } else {
+        updateItem(productId, snapshotQuantity);
       }
     } catch {
+      updateItem(productId, snapshotQuantity);
+
       showToast({
         description: "Failed to update the cart item.",
         type: TOAST_TYPE.ERROR,
@@ -156,11 +224,24 @@ export const useCartActions = () => {
     }
   };
 
-  const removeFromCart = (productId: number, id?: number) => {
+  const removeFromCart = ({
+    id,
+    productId,
+  }: {
+    id?: number;
+    productId: number;
+  }) => {
+    const snapshotItems = useCartStore.getState().items;
+
+    removeItem(productId);
+
     if (isAuthenticated && !!id) {
       cartRemoveMutation.mutate(id, {
         onSuccess: () => {
-          removeItem(productId);
+          queryClient.removeQueries({ queryKey: ["cart"] });
+        },
+        onError: () => {
+          setItems(snapshotItems);
         },
       });
       return;
@@ -168,14 +249,9 @@ export const useCartActions = () => {
 
     try {
       removeCartItemFromGuestCart(productId);
-      removeItem(productId);
-
-      showToast({
-        title: "Item removed",
-        description: "The item has been successfully removed from your cart.",
-        type: TOAST_TYPE.SUCCESS,
-      });
     } catch {
+      setItems(snapshotItems);
+
       showToast({
         description: "Failed to remove the item from your cart.",
         type: TOAST_TYPE.ERROR,
@@ -184,10 +260,17 @@ export const useCartActions = () => {
   };
 
   const clearCart = () => {
+    const snapshotItems = useCartStore.getState().items;
+
+    clearStoreCart();
+
     if (isAuthenticated) {
       cartClearMutation.mutate(undefined, {
         onSuccess: () => {
-          clearStoreCart();
+          queryClient.removeQueries({ queryKey: ["cart"] });
+        },
+        onError: () => {
+          setItems(snapshotItems);
         },
       });
       return;
@@ -195,14 +278,9 @@ export const useCartActions = () => {
 
     try {
       clearGuestCart();
-      clearStoreCart();
-
-      showToast({
-        title: "Cart cleared",
-        description: "All items have been removed from your cart.",
-        type: TOAST_TYPE.SUCCESS,
-      });
     } catch {
+      setItems(snapshotItems);
+
       showToast({
         description: "Failed to clear the cart.",
         type: TOAST_TYPE.ERROR,
