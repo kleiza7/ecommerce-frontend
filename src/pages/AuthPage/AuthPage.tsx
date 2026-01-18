@@ -16,15 +16,13 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center py-5">
-      <div className="mb-6 text-center">
+    <div className="flex flex-col items-center gap-6 py-5">
+      <div className="flex flex-col gap-1 text-center">
         <p className="text-s22-l28 text-text-primary">Hi,</p>
-        <p className="text-s14-l20 text-text-primary mt-1">
-          Log In or Register
-        </p>
+        <p className="text-s14-l20 text-text-primary">Log In or Register</p>
       </div>
 
-      <div className="border-gray-2 bg-surface-primary flex w-[600px] flex-col gap-y-6 rounded-[3px] border px-10 py-6">
+      <div className="border-gray-2 bg-surface-primary flex w-[600px] flex-col gap-6 rounded-[3px] border px-10 py-6">
         <div className="bg-gray-2 flex rounded-lg p-1">
           <button
             type="button"

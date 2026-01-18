@@ -53,8 +53,8 @@ const CartSummary = ({
   };
 
   return (
-    <div className="border-gray-2 bg-surface-primary w-[340px] shrink-0 rounded-lg border p-6">
-      <h2 className="text-s22-l28 mb-4 font-medium">Cart Summary</h2>
+    <div className="border-gray-2 bg-surface-primary flex w-[340px] shrink-0 flex-col gap-4 rounded-lg border p-6">
+      <h2 className="text-s22-l28 font-medium">Cart Summary</h2>
 
       <div className="text-s14-l20 text-gray-9 flex justify-between">
         <span>Subtotal</span>
@@ -63,9 +63,9 @@ const CartSummary = ({
         </span>
       </div>
 
-      <div className="bg-gray-5 my-4 h-px" />
+      <div className="bg-gray-5 h-px" />
 
-      <div className="mb-4 flex justify-between font-medium">
+      <div className="flex justify-between font-medium">
         <span>Total</span>
         <span className="text-orange">
           {totalPrice.toFixed(2)} {currencyCode}

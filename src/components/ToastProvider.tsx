@@ -64,14 +64,17 @@ const ToastProvider = ({ children }: { children: ReactNode }) => {
             key={toast.id}
             defaultOpen={true}
             duration={5000}
-            className={customTwMerge("rounded-sm px-4 py-3 shadow-md", bgClass)}
+            className={customTwMerge(
+              "flex flex-col gap-y-1 rounded-sm px-4 py-3 shadow-md",
+              bgClass,
+            )}
           >
             <Toast.Title className="font-semibold">
               {toast.title || autoTitle}
             </Toast.Title>
 
             {toast.description && (
-              <Toast.Description className="text-s14-l20 mt-1 opacity-90">
+              <Toast.Description className="text-s14-l20 opacity-90">
                 {toast.description}
               </Toast.Description>
             )}

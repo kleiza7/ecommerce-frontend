@@ -121,7 +121,7 @@ const ProductsFilterSidebar = ({
   return (
     <aside className="text-text-primary text-s14-l20">
       <FilterSection title="Category" defaultOpen>
-        <div className="flex flex-col gap-y-2 px-[5px]">
+        <div className="flex flex-col gap-2 px-[5px]">
           {visibleCategories.map((category) => (
             <button
               key={category.id}
@@ -139,66 +139,70 @@ const ProductsFilterSidebar = ({
       </FilterSection>
 
       <FilterSection title="Brand" defaultOpen>
-        <input
-          type="text"
-          placeholder="Search Brand"
-          value={brandSearch}
-          onChange={(e) => setBrandSearch(e.target.value)}
-          className={customTwMerge(
-            INPUT_BASE,
-            "text-s12-l16 mb-2.5 h-8 w-full rounded px-3",
-          )}
-        />
+        <div className="flex flex-col gap-2.5">
+          <input
+            type="text"
+            placeholder="Search Brand"
+            value={brandSearch}
+            onChange={(e) => setBrandSearch(e.target.value)}
+            className={customTwMerge(
+              INPUT_BASE,
+              "text-s12-l16 h-8 w-full rounded px-3",
+            )}
+          />
 
-        <div className="max-h-64 space-y-2 overflow-y-auto px-[5px] pr-1">
-          {filteredBrands.map((brand) => (
-            <label
-              key={brand.id}
-              className="flex cursor-pointer items-center gap-3"
-            >
-              <GenericCheckbox
-                checked={selectedBrandSlugs.includes(brand.slug)}
-                onCheckedChange={() => toggleBrand(brand.slug)}
-              />
-              <span className="select-none">{brand.name}</span>
-            </label>
-          ))}
+          <div className="flex max-h-64 flex-col gap-2 overflow-y-auto px-[5px] pr-1">
+            {filteredBrands.map((brand) => (
+              <label
+                key={brand.id}
+                className="flex cursor-pointer items-center gap-3"
+              >
+                <GenericCheckbox
+                  checked={selectedBrandSlugs.includes(brand.slug)}
+                  onCheckedChange={() => toggleBrand(brand.slug)}
+                />
+                <span className="select-none">{brand.name}</span>
+              </label>
+            ))}
 
-          {filteredBrands.length === 0 && (
-            <div className="text-gray-7 text-s12-l16">No result found.</div>
-          )}
+            {filteredBrands.length === 0 && (
+              <div className="text-gray-7 text-s12-l16">No result found.</div>
+            )}
+          </div>
         </div>
       </FilterSection>
 
       <FilterSection title="Seller" defaultOpen>
-        <input
-          type="text"
-          placeholder="Search Seller"
-          value={sellerSearch}
-          onChange={(e) => setSellerSearch(e.target.value)}
-          className={customTwMerge(
-            INPUT_BASE,
-            "text-s12-l16 mb-2.5 h-8 w-full rounded px-3",
-          )}
-        />
+        <div className="flex flex-col gap-2.5">
+          <input
+            type="text"
+            placeholder="Search Seller"
+            value={sellerSearch}
+            onChange={(e) => setSellerSearch(e.target.value)}
+            className={customTwMerge(
+              INPUT_BASE,
+              "text-s12-l16 h-8 w-full rounded px-3",
+            )}
+          />
 
-        <div className="max-h-64 space-y-2 overflow-y-auto px-[5px] pr-1">
-          {filteredSellers.map((seller) => (
-            <label
-              key={seller.id}
-              className="flex cursor-pointer items-center gap-3"
-            >
-              <GenericCheckbox
-                checked={selectedSellerIds.includes(seller.id)}
-                onCheckedChange={() => toggleSeller(seller.id)}
-              />
-              <span className="select-none">{seller.name}</span>
-            </label>
-          ))}
+          <div className="flex max-h-64 flex-col gap-2 overflow-y-auto px-[5px] pr-1">
+            {filteredSellers.map((seller) => (
+              <label
+                key={seller.id}
+                className="flex cursor-pointer items-center gap-3"
+              >
+                <GenericCheckbox
+                  checked={selectedSellerIds.includes(seller.id)}
+                  onCheckedChange={() => toggleSeller(seller.id)}
+                />
+                <span className="select-none">{seller.name}</span>
+              </label>
+            ))}
 
-          {filteredSellers.length === 0 && (
-            <div className="text-gray-7 text-s12-l16">No result found.</div>
-          )}
+            {filteredSellers.length === 0 && (
+              <div className="text-gray-7 text-s12-l16">No result found.</div>
+            )}
+          </div>
         </div>
       </FilterSection>
     </aside>

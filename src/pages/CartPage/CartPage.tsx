@@ -21,8 +21,8 @@ const CartPage = () => {
   return (
     <div className="mx-auto max-w-7xl px-6 py-10">
       {cartItems.length !== 0 ? (
-        <>
-          <h1 className="mb-8 text-2xl font-semibold">
+        <div className="flex flex-col gap-8">
+          <h1 className="text-2xl font-semibold">
             My Cart ({cartItems.length} Product)
           </h1>
 
@@ -30,7 +30,7 @@ const CartPage = () => {
             <CartItemsList />
             <CartSummary onOrderCreated={openOrderPaymentDialog} />
           </div>
-        </>
+        </div>
       ) : (
         <div className="border-gray-2 bg-surface-primary flex items-center justify-between rounded-xl border p-5">
           <div className="flex items-center gap-4">
