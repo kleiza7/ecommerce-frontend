@@ -1,19 +1,18 @@
-import { useRef, useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import type { ReqBrandsGetAllResponse } from "../../../../../api/responses/ReqBrandsGetAllResponse.model";
 import type { ReqCategoriesGetAllResponse } from "../../../../../api/responses/ReqCategoriesGetAllResponse.model";
 import type { ReqCurrenciesGetAllResponse } from "../../../../../api/responses/ReqCurrenciesGetAllResponse.model";
-import { AddIcon, CloseIcon } from "../../../../../assets/icons";
 import { useBrandsGetAll } from "../../../../../hooks/useBrandsGetAll";
 import { useCurrenciesGetAll } from "../../../../../hooks/useCurrenciesGetAll";
 import { useProductsCreate } from "../../../../../hooks/useProductsCreate";
-import CategorySelectionDialog from "../../../../../shared/components/CategorySelectionDialog/CategorySelectionDialog";
+import GenericCategoryPicker from "../../../../../shared/components/GenericCategoryPicker";
 import {
   GenericDialogClose,
   GenericDialogTitle,
 } from "../../../../../shared/components/GenericDialog";
 import GenericFormInput from "../../../../../shared/components/GenericFormInput";
 import GenericFormTextArea from "../../../../../shared/components/GenericFormTextArea";
+import GenericImageInput from "../../../../../shared/components/GenericImageInput";
 import GenericSelect from "../../../../../shared/components/GenericSelect";
 import InputErrorLabel from "../../../../../shared/components/InputErrorLabel";
 import InputLabel from "../../../../../shared/components/InputLabel";
@@ -34,11 +33,7 @@ type ProductCreateFormType = {
   images: File[];
 };
 
-const ACCEPTED_FILE_TYPES = ["image/jpeg", "image/png", "image/webp"];
-
 const NewProductForm = ({ close }: { close: () => void }) => {
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-
   const { data: brands = [] } = useBrandsGetAll();
   const { data: currencies = [] } = useCurrenciesGetAll();
   const { mutate: createProduct, isPending } = useProductsCreate();
@@ -53,9 +48,6 @@ const NewProductForm = ({ close }: { close: () => void }) => {
       images: [],
     },
   });
-
-  const [isCategorySelectionDialogOpen, setIsCategorySelectionDialogOpen] =
-    useState(false);
 
   const onSubmit: SubmitHandler<ProductCreateFormType> = (values) => {
     createProduct(
@@ -137,45 +129,20 @@ const NewProductForm = ({ close }: { close: () => void }) => {
 
         <div className="relative flex flex-col">
           <InputLabel label="Category" hasAsterisk />
+
           <Controller
             name="category"
             control={control}
             rules={{ required: "Category is required!" }}
             render={({ field }) => (
-              <>
-                {!field.value ? (
-                  <button
-                    type="button"
-                    onClick={() => setIsCategorySelectionDialogOpen(true)}
-                    className="border-gray-2 text-s14-l20 text-gray-7 hover:bg-gray-12 flex h-10 w-full cursor-pointer items-center justify-center rounded-lg border px-2"
-                  >
-                    Select Category
-                  </button>
-                ) : (
-                  <div className="flex w-full items-center justify-between gap-x-4">
-                    <span className="text-s14-l20 text-gray-11 truncate">
-                      {field.value.name}
-                    </span>
-
-                    <button
-                      type="button"
-                      onClick={() => setIsCategorySelectionDialogOpen(true)}
-                      className="border-gray-2 text-s14-l20 text-gray-7 hover:bg-gray-12 flex h-10 flex-1 cursor-pointer items-center justify-center rounded-lg border px-2"
-                    >
-                      Change Category
-                    </button>
-                  </div>
-                )}
-
-                <CategorySelectionDialog
-                  open={isCategorySelectionDialogOpen}
-                  setOpen={setIsCategorySelectionDialogOpen}
-                  initialSelectedCategory={field.value}
-                  onCategorySelected={field.onChange}
-                />
-              </>
+              <GenericCategoryPicker
+                value={field.value}
+                onChange={field.onChange}
+                disabled={isPending}
+              />
             )}
           />
+
           <InputErrorLabel message={errors.category?.message} />
         </div>
 
@@ -232,68 +199,11 @@ const NewProductForm = ({ close }: { close: () => void }) => {
         <div className="relative flex flex-col">
           <InputLabel label="Images" hasAsterisk />
 
-          <Controller
-            name="images"
+          <GenericImageInput
+            field="images"
             control={control}
-            rules={{
-              validate: (files) =>
-                files.length === 4 || "Exactly 4 images are required",
-            }}
-            render={({ field }) => (
-              <>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  hidden
-                  multiple
-                  accept={ACCEPTED_FILE_TYPES.join(",")}
-                  disabled={isPending}
-                  onChange={(e) => {
-                    const files = Array.from(e.target.files ?? []);
-                    const valid = files.filter((file) =>
-                      ACCEPTED_FILE_TYPES.includes(file.type),
-                    );
-                    field.onChange([...field.value, ...valid].slice(0, 4));
-                    e.target.value = "";
-                  }}
-                />
-
-                <div className="flex gap-3">
-                  {field.value.map((file, index) => (
-                    <div
-                      key={index}
-                      className="relative h-12 w-12 overflow-hidden rounded border"
-                    >
-                      <img
-                        src={URL.createObjectURL(file)}
-                        className="h-full w-full object-cover"
-                      />
-                      <button
-                        type="button"
-                        onClick={() =>
-                          field.onChange(
-                            field.value.filter((_, i) => i !== index),
-                          )
-                        }
-                        className="absolute top-0 right-0 cursor-pointer rounded-full bg-black/40 p-0.5"
-                      >
-                        <CloseIcon className="fill-surface-primary h-3 w-3" />
-                      </button>
-                    </div>
-                  ))}
-
-                  {field.value.length < 4 && (
-                    <button
-                      type="button"
-                      onClick={() => fileInputRef.current?.click()}
-                      className="border-gray-2 hover:bg-gray-12 flex h-12 w-12 cursor-pointer items-center justify-center rounded border"
-                    >
-                      <AddIcon className="fill-gray-2" />
-                    </button>
-                  )}
-                </div>
-              </>
-            )}
+            disabled={isPending}
+            exactFileCount={4}
           />
 
           <InputErrorLabel message={errors.images?.message} />

@@ -40,7 +40,7 @@ const GenericSelect = <T,>({
         if (option) onChange(option.value);
       }}
     >
-      <Select.Trigger className="text-s14-l20 text-text-primary disabled:bg-gray-4 border-gray-6 flex h-10 w-full items-center justify-between rounded-md border px-3 outline-none disabled:cursor-not-allowed">
+      <Select.Trigger className="text-s14-l20 text-text-primary disabled:bg-gray-3 border-gray-2 flex h-10 w-full cursor-pointer items-center justify-between rounded-md border px-3 outline-none disabled:cursor-not-allowed disabled:opacity-60">
         <Select.Value placeholder={placeholder}>
           {selectedOption
             ? renderValue
@@ -49,9 +49,11 @@ const GenericSelect = <T,>({
             : placeholder}
         </Select.Value>
 
-        <Select.Icon>
-          <KeyboardArrowUpIcon className="text-gray-8 h-4 w-4 rotate-180" />
-        </Select.Icon>
+        {!disabled && (
+          <Select.Icon>
+            <KeyboardArrowUpIcon className="text-gray-8 h-4 w-4 rotate-180" />
+          </Select.Icon>
+        )}
       </Select.Trigger>
 
       <Select.Portal>
@@ -59,20 +61,20 @@ const GenericSelect = <T,>({
           position="popper"
           align="start"
           sideOffset={4}
-          className="bg-surface-primary border-gray-6 z-50 min-w-(--radix-select-trigger-width) rounded-md border shadow-md"
+          className="bg-surface-primary border-gray-2 z-50 min-w-(--radix-select-trigger-width) rounded-md border shadow-md"
         >
           <Select.Viewport className="max-h-60 overflow-y-auto p-1">
             {options.map((option) => (
               <Select.Item
                 key={option.label}
                 value={option.label}
-                className="text-s14-l20 text-text-primary data-[state=checked]:bg-gray-4 hover:bg-gray-4 relative flex cursor-pointer items-center rounded px-8 py-2 outline-none select-none"
+                className="text-s14-l20 text-text-primary data-[state=checked]:bg-gray-4 hover:bg-gray-4 relative flex cursor-pointer items-center rounded p-2 outline-none select-none"
               >
                 <Select.ItemText className="truncate">
                   {option.label}
                 </Select.ItemText>
 
-                <Select.ItemIndicator className="absolute left-2 inline-flex items-center">
+                <Select.ItemIndicator className="absolute right-2 inline-flex items-center">
                   <CheckIcon className="h-4 w-4" />
                 </Select.ItemIndicator>
               </Select.Item>

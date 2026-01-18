@@ -1,23 +1,23 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
 import type { ReqBrandsGetAllResponse } from "../../../../../api/responses/ReqBrandsGetAllResponse.model";
 import type { ReqCategoriesGetAllResponse } from "../../../../../api/responses/ReqCategoriesGetAllResponse.model";
 import type { ReqCurrenciesGetAllResponse } from "../../../../../api/responses/ReqCurrenciesGetAllResponse.model";
 import type { ReqProductsGetByIdResponse } from "../../../../../api/responses/ReqProductsGetByIdResponse.model";
-import { AddIcon, CloseIcon } from "../../../../../assets/icons";
 import { useBrandsGetAll } from "../../../../../hooks/useBrandsGetAll";
 import { useCategoriesGetAll } from "../../../../../hooks/useCategoriesGetAll";
 import { useCurrenciesGetAll } from "../../../../../hooks/useCurrenciesGetAll";
 import { useProductsApprove } from "../../../../../hooks/useProductsApprove";
 import { useProductsGetById } from "../../../../../hooks/useProductsGetById";
 import { useProductsReject } from "../../../../../hooks/useProductsReject";
-import CategorySelectionDialog from "../../../../../shared/components/CategorySelectionDialog/CategorySelectionDialog";
+import GenericCategoryPicker from "../../../../../shared/components/GenericCategoryPicker";
 import {
   GenericDialogClose,
   GenericDialogTitle,
 } from "../../../../../shared/components/GenericDialog";
 import GenericFormInput from "../../../../../shared/components/GenericFormInput";
 import GenericFormTextArea from "../../../../../shared/components/GenericFormTextArea";
+import GenericImageInput from "../../../../../shared/components/GenericImageInput";
 import GenericSelect from "../../../../../shared/components/GenericSelect";
 import InputErrorLabel from "../../../../../shared/components/InputErrorLabel";
 import InputLabel from "../../../../../shared/components/InputLabel";
@@ -52,7 +52,6 @@ const ProductApprovalForm = ({
   productId: number;
   close: () => void;
 }) => {
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const productRef = useRef<ReqProductsGetByIdResponse | null>(null);
 
   const { data: brands = [] } = useBrandsGetAll();
@@ -75,9 +74,6 @@ const ProductApprovalForm = ({
     mode: "onChange",
     defaultValues: { images: [] },
   });
-
-  const [isCategorySelectionDialogOpen, setIsCategorySelectionDialogOpen] =
-    useState(false);
 
   const onApproveProduct = useCallback(() => {
     approveProduct(productId, {
@@ -184,44 +180,19 @@ const ProductApprovalForm = ({
 
         <div className="relative flex flex-col">
           <InputLabel label="Category" hasAsterisk />
+
           <Controller
             name="category"
             control={control}
             render={({ field }) => (
-              <>
-                {!field.value ? (
-                  <button
-                    type="button"
-                    disabled
-                    className="border-gray-2 text-s14-l20 text-gray-7 flex h-10 w-full items-center justify-center rounded-lg border px-2"
-                  >
-                    Select Category
-                  </button>
-                ) : (
-                  <div className="flex w-full items-center justify-between gap-x-4">
-                    <span className="text-s14-l20 text-gray-11 truncate">
-                      {field.value.name}
-                    </span>
-
-                    <button
-                      type="button"
-                      disabled
-                      className="border-gray-2 text-s14-l20 text-gray-7 flex h-10 flex-1 items-center justify-center rounded-lg border px-2"
-                    >
-                      Change Category
-                    </button>
-                  </div>
-                )}
-
-                <CategorySelectionDialog
-                  open={isCategorySelectionDialogOpen}
-                  setOpen={setIsCategorySelectionDialogOpen}
-                  initialSelectedCategory={field.value}
-                  onCategorySelected={field.onChange}
-                />
-              </>
+              <GenericCategoryPicker
+                value={field.value}
+                onChange={field.onChange}
+                disabled
+              />
             )}
           />
+
           <InputErrorLabel message={errors.category?.message} />
         </div>
 
@@ -271,44 +242,14 @@ const ProductApprovalForm = ({
 
         <div className="relative flex flex-col">
           <InputLabel label="Images" hasAsterisk />
-          <Controller
-            name="images"
+
+          <GenericImageInput
+            field="images"
             control={control}
-            render={({ field }) => (
-              <>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  hidden
-                  multiple
-                  disabled
-                />
-
-                <div className="flex gap-3">
-                  {field.value.map((file, index) => (
-                    <div
-                      key={index}
-                      className="relative h-12 w-12 overflow-hidden rounded border"
-                    >
-                      <img
-                        src={URL.createObjectURL(file)}
-                        className="h-full w-full object-cover"
-                      />
-                      <div className="absolute top-0 right-0 rounded-full bg-black/40 p-0.5">
-                        <CloseIcon className="fill-surface-primary h-3 w-3" />
-                      </div>
-                    </div>
-                  ))}
-
-                  {field.value.length < 4 && (
-                    <div className="border-gray-2 flex h-12 w-12 items-center justify-center rounded border">
-                      <AddIcon className="fill-gray-2" />
-                    </div>
-                  )}
-                </div>
-              </>
-            )}
+            disabled
+            exactFileCount={4}
           />
+
           <InputErrorLabel message={errors.images?.message} />
         </div>
       </div>
