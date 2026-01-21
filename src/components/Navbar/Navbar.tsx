@@ -19,11 +19,11 @@ const Navbar = () => {
 
   return (
     <header className="border-gray-1 border-b pt-5">
-      <div className="w-full px-10 2xl:mx-auto 2xl:max-w-[1536px] 2xl:px-0">
+      <div className="mx-auto w-full max-w-[1800px] px-10">
         <div className="flex h-[72px] items-center justify-between gap-x-16">
           <NavLink
             to="/"
-            className="text-s48-l56 text-text-primary shrink-0 select-none"
+            className="text-s28-l36 xl:text-s48-l56 text-text-primary shrink-0 select-none"
           >
             Ecommerce
           </NavLink>

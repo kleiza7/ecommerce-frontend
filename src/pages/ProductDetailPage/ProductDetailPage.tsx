@@ -40,7 +40,7 @@ const ProductDetailPage = () => {
   const isOutOfStock = cartQuantity >= data.stockCount;
 
   return (
-    <div className="flex flex-col gap-y-5">
+    <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-y-5 px-10 py-4">
       <CategoryBreadcrumb categoryId={data.category.id} />
 
       <div className="flex gap-8">

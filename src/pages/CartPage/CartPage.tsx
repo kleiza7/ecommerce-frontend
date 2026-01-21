@@ -19,14 +19,14 @@ const CartPage = () => {
   };
 
   return (
-    <div className="mx-auto max-w-7xl px-6 py-10">
+    <div className="mx-auto flex w-full max-w-[1380px] flex-col px-10 py-14">
       {cartItems.length !== 0 ? (
         <div className="flex flex-col gap-8">
-          <h1 className="text-2xl font-semibold">
+          <span className="text-s24-l32 font-semibold">
             My Cart ({cartItems.length} Product)
-          </h1>
+          </span>
 
-          <div className="flex gap-x-8">
+          <div className="flex items-start gap-x-5">
             <CartItemsList />
             <CartSummary onOrderCreated={openOrderPaymentDialog} />
           </div>

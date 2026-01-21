@@ -6,7 +6,9 @@ import {
   UserFilledIcon,
   UserIcon,
 } from "../../../assets/icons";
+import { useUserDomain } from "../../../hooks/useUserDomain";
 import GenericNavigationMenu from "../../../shared/components/GenericNavigationMenu";
+import { USER_DOMAIN } from "../../../shared/enums/UserDomain.enum";
 import { useCartStore } from "../../../stores/CartStore";
 import { useFavoriteStore } from "../../../stores/FavoriteStore";
 import { useUserStore } from "../../../stores/UserStore";
@@ -18,8 +20,11 @@ const UserNavigationMenu = () => {
   const logout = useUserStore((state) => state.logout);
   const clearCartStore = useCartStore((state) => state.clearCart);
   const clearFavoritesStore = useFavoriteStore((state) => state.clearFavorites);
+  const userDomain = useUserDomain();
 
   const [open, setOpen] = useState(false);
+
+  const isUser = userDomain === USER_DOMAIN.USER;
 
   const handleNavigateMyOrders = useCallback(() => {
     setOpen(false);
@@ -56,7 +61,7 @@ const UserNavigationMenu = () => {
           )}
 
           <span
-            className={`text-s14-l20 font-semibold transition-colors ${
+            className={`text-s14-l20 hidden font-semibold transition-colors xl:inline ${
               open ? "text-orange" : "text-text-primary group-hover:text-orange"
             }`}
           >
@@ -73,16 +78,18 @@ const UserNavigationMenu = () => {
           {user?.name}
         </span>
 
-        <button
-          type="button"
-          onClick={handleNavigateMyOrders}
-          className="hover:bg-orange/10 group flex cursor-pointer items-center gap-x-3 px-4 py-2.5 transition-colors"
-        >
-          <PackageIcon className="fill-text-primary group-hover:fill-orange h-4 w-4" />
-          <span className="text-s12-l16 text-text-primary group-hover:text-orange">
-            My Orders
-          </span>
-        </button>
+        {isUser && (
+          <button
+            type="button"
+            onClick={handleNavigateMyOrders}
+            className="hover:bg-orange/10 group flex cursor-pointer items-center gap-x-3 px-4 py-2.5 transition-colors"
+          >
+            <PackageIcon className="fill-text-primary group-hover:fill-orange h-4 w-4" />
+            <span className="text-s12-l16 text-text-primary group-hover:text-orange">
+              My Orders
+            </span>
+          </button>
+        )}
 
         <button
           type="button"

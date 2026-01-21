@@ -52,7 +52,6 @@ const CategoryBreadcrumb = ({
   const clearCategoryFilters = () => {
     const next = new URLSearchParams(params);
     next.delete("category");
-    next.delete("page");
     setParams(next);
   };
 
@@ -69,7 +68,6 @@ const CategoryBreadcrumb = ({
               onClick={() => {
                 const next = new URLSearchParams(params);
                 next.set("category", item.slug);
-                next.delete("page");
                 setParams(next);
               }}
               className={`cursor-pointer ${

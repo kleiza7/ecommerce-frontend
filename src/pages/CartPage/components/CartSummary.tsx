@@ -53,7 +53,7 @@ const CartSummary = ({
   };
 
   return (
-    <div className="border-gray-2 bg-surface-primary flex w-[340px] shrink-0 flex-col gap-4 rounded-lg border p-6">
+    <div className="border-gray-2 bg-surface-primary flex w-[350px] shrink-0 flex-col gap-4 rounded-lg border p-6">
       <h2 className="text-s22-l28 font-medium">Cart Summary</h2>
 
       <div className="text-s14-l20 text-gray-9 flex justify-between">

@@ -9,7 +9,7 @@ const ProductsPage = () => {
   const { data: brands = [] } = useBrandsGetAll();
 
   return (
-    <div className="flex h-full w-full flex-col gap-5">
+    <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-5 px-10 py-4">
       <CategoryBreadcrumb categories={categories} />
 
       <div className="flex gap-6">

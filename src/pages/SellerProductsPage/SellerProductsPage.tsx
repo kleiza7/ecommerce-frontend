@@ -152,14 +152,14 @@ const SellerProductsPage = () => {
 
   return (
     <>
-      <div className="flex h-full w-full flex-col gap-5 py-4">
+      <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-5 px-10 py-8">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-6">
-            <span className="text-s28-l36 text-text-primary font-semibold">
+            <span className="text-s24-l32 xl:text-s28-l36 text-text-primary font-semibold">
               My Products ({totalCount})
             </span>
 
-            <div className="text-s20-l28 text-gray-9 flex items-center gap-4">
+            <div className="text-s16-l24 xl:text-s20-l28 text-gray-9 flex items-center gap-4">
               <span>
                 {PRODUCT_STATUS_TEXT_PAIRS[PRODUCT_STATUS.APPROVED]} (
                 {statusCounts[PRODUCT_STATUS.APPROVED]})
@@ -182,7 +182,7 @@ const SellerProductsPage = () => {
           <button
             type="button"
             onClick={() => setIsNewProductDialogOpen(true)}
-            className={customTwMerge(BUTTON_PRIMARY, "px-6")}
+            className={customTwMerge(BUTTON_PRIMARY, "shrink-0 px-6")}
           >
             New Product
           </button>

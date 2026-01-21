@@ -48,7 +48,7 @@ const OrderDetailPage = () => {
   }
 
   return (
-    <div className="flex h-full w-full flex-col gap-5 py-5">
+    <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-5 px-10 py-9">
       <div className="flex items-center gap-x-2">
         <button
           type="button"

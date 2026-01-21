@@ -17,7 +17,7 @@ const CategorySelectionDialog = ({
     <GenericDialog
       open={open}
       onOpenChange={setOpen}
-      className="h-[80vh] w-[50vw] max-w-none"
+      className="h-[760px] w-[1000px] max-w-none"
     >
       <CategorySelectionDialogContent
         initialSelectedCategory={initialSelectedCategory}

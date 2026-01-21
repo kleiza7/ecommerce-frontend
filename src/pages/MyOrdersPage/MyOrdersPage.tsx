@@ -85,7 +85,7 @@ const MyOrdersPage = () => {
   }, [currencies]);
 
   return (
-    <div className="flex h-full w-full flex-col gap-5 py-5">
+    <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-5 px-10 py-9">
       <div className="border-gray-1 flex items-center justify-between rounded-md border px-5 py-4">
         <span className="text-s18-l28 text-text-primary">My Orders</span>
 

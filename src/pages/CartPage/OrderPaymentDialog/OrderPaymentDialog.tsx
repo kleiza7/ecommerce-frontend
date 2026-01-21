@@ -19,7 +19,7 @@ const OrderPaymentDialog = ({
     <GenericDialog
       open={open}
       onOpenChange={setOpen}
-      className="h-[760px] w-[50vw] max-w-none"
+      className="h-[760px] w-[1000px] max-w-none"
     >
       <OrderPaymentForm orderId={orderId} close={close} />
     </GenericDialog>

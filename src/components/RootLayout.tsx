@@ -7,9 +7,7 @@ const RootLayout = () => {
       <Navbar />
 
       <main className="flex flex-1">
-        <div className="flex w-full flex-col p-4 2xl:mx-auto 2xl:max-w-[1536px]">
-          <Outlet />
-        </div>
+        <Outlet />
       </main>
     </div>
   );

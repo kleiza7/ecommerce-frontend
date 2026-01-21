@@ -62,7 +62,6 @@ const CategoryBreadcrumb = ({ categoryId }: { categoryId: number }) => {
               onClick={() => {
                 const next = new URLSearchParams(params);
                 next.set("category", item.slug);
-                next.delete("page");
 
                 navigate(`/products?${next.toString()}`);
               }}

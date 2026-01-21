@@ -25,7 +25,7 @@ const ToastProvider = ({ children }: { children: ReactNode }) => {
   const [toasts, setToasts] = useState<ToastItem[]>([]);
 
   useEffect(() => {
-    const handler = (e: CustomEvent) => {
+    const handler = (e: CustomEvent<ToastEventDetail>) => {
       const id = crypto.randomUUID();
 
       setToasts((prev) => [
@@ -62,10 +62,10 @@ const ToastProvider = ({ children }: { children: ReactNode }) => {
         return (
           <Toast.Root
             key={toast.id}
-            defaultOpen={true}
+            defaultOpen
             duration={5000}
             className={customTwMerge(
-              "flex flex-col gap-y-1 rounded-sm px-4 py-3 shadow-md",
+              "z-9999 flex flex-col gap-y-1 rounded-sm px-4 py-3 shadow-md",
               bgClass,
             )}
           >
@@ -82,7 +82,7 @@ const ToastProvider = ({ children }: { children: ReactNode }) => {
         );
       })}
 
-      <Toast.Viewport className="fixed right-5 bottom-5 flex w-[300px] flex-col gap-3" />
+      <Toast.Viewport className="fixed right-5 bottom-5 z-9999 flex w-[300px] flex-col gap-3" />
     </Toast.Provider>
   );
 };

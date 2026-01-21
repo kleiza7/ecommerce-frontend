@@ -63,7 +63,6 @@ const ProductsFilterSidebar = ({
   const onSelectCategory = (slug: string) => {
     const params = new URLSearchParams(searchParams);
     params.set("category", slug);
-    params.delete("page");
     setSearchParams(params);
   };
 
@@ -82,7 +81,6 @@ const ProductsFilterSidebar = ({
       params.set("brands", next.join(","));
     }
 
-    params.delete("page");
     setSearchParams(params);
   };
 
@@ -108,7 +106,6 @@ const ProductsFilterSidebar = ({
       params.set("sellers", next.join(","));
     }
 
-    params.delete("page");
     setSearchParams(params);
   };
 

@@ -2,7 +2,7 @@ import Skeleton from "../../../shared/components/Skeleton";
 
 const ProductDetailPageSkeleton = () => {
   return (
-    <div className="flex flex-col gap-y-5">
+    <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-y-5 px-10 py-4">
       <Skeleton withShimmer className="h-5 w-1/2" />
 
       <div className="flex gap-8">
