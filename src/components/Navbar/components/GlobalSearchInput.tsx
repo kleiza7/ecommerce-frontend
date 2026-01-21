@@ -226,32 +226,25 @@ const GlobalSearchInput = () => {
 
   const getPrimaryLabel = (item: SearchItem) => {
     switch (item.type) {
-      case SEARCH_ITEM_TYPE.SUGGESTION: {
+      case SEARCH_ITEM_TYPE.SUGGESTION:
         return item.suggestion;
-      }
-      case SEARCH_ITEM_TYPE.CATEGORY: {
+      case SEARCH_ITEM_TYPE.CATEGORY:
         return item.category.name;
-      }
-      case SEARCH_ITEM_TYPE.BRAND: {
+      case SEARCH_ITEM_TYPE.BRAND:
         return item.brand.name;
-      }
-      default: {
+      default:
         return "";
-      }
     }
   };
 
   const getSecondaryLabel = (item: SearchItem) => {
     switch (item.type) {
-      case SEARCH_ITEM_TYPE.CATEGORY: {
+      case SEARCH_ITEM_TYPE.CATEGORY:
         return "Category";
-      }
-      case SEARCH_ITEM_TYPE.BRAND: {
+      case SEARCH_ITEM_TYPE.BRAND:
         return "Brand";
-      }
-      default: {
+      default:
         return "";
-      }
     }
   };
 
@@ -287,7 +280,7 @@ const GlobalSearchInput = () => {
           break;
         }
         case SEARCH_ITEM_TYPE.BRAND: {
-          params.set("sellers", item.brand.slug);
+          params.set("brands", item.brand.slug);
           break;
         }
         default: {
