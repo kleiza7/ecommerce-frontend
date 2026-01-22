@@ -78,7 +78,7 @@ const Navbar = () => {
           </div>
 
           {isGuestOrUser && (
-            <div className="flex h-8 items-center gap-x-6 overflow-hidden">
+            <div className="flex h-8 items-center gap-x-6 overflow-hidden lg:overflow-visible">
               <div className="hidden shrink-0 lg:flex">
                 <CategoriesMegaMenu />
               </div>
