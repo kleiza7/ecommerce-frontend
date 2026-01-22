@@ -2,7 +2,7 @@ import { Controller, type Control, type FieldErrors } from "react-hook-form";
 import type { ReqBrandsGetAllResponse } from "../../api/responses/ReqBrandsGetAllResponse.model";
 import type { ReqCategoriesGetAllResponse } from "../../api/responses/ReqCategoriesGetAllResponse.model";
 import type { ReqCurrenciesGetAllResponse } from "../../api/responses/ReqCurrenciesGetAllResponse.model";
-import GenericCategoryPicker from "./GenericCategoryPicker";
+import GenericCategoryPicker from "./GenericCategoryPicker/GenericCategoryPicker";
 import GenericFormInput from "./GenericFormInput";
 import GenericFormTextArea from "./GenericFormTextArea";
 import GenericImageInput from "./GenericImageInput";

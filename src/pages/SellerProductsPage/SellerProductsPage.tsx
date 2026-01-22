@@ -7,16 +7,20 @@ import { AgGridReact } from "ag-grid-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { PRODUCT_STATUS } from "../../api/enums/ProductStatus.enum";
 import type { ReqProductsGetProductsBySellerResponse } from "../../api/responses/ReqProductsGetProductsBySellerResponse.model";
+import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { useProductsGetProductsBySeller } from "../../hooks/useProductsGetProductsBySeller";
 import LoadingSpinner from "../../shared/components/LoadingSpinner";
 import { BUTTON_PRIMARY } from "../../shared/constants/CommonTailwindClasses.constants";
+import { MEDIA_QUERY } from "../../shared/constants/MediaQuery.constants";
 import { PRODUCT_STATUS_TEXT_PAIRS } from "../../shared/constants/Product.constants";
 import { EVENT_TYPE } from "../../shared/enums/EventType.enum";
 import { registerAgGridModules } from "../../shared/utils/AgGrid.util";
 import { customTwMerge } from "../../shared/utils/Tailwind.util";
 import "../../styles/agGrid.css";
-import NewProductDialog from "./components/NewProductDialog/NewProductDialog";
-import UpdateProductDialog from "./components/UpdateProductDialog/UpdateProductDialog";
+import NewProductDialog from "./components/NewProductDialog";
+import NewProductDrawer from "./components/NewProductDrawer";
+import UpdateProductDialog from "./components/UpdateProductDialog";
+import UpdateProductDrawer from "./components/UpdateProductDrawer";
 
 const SellerProductsPage = () => {
   const {
@@ -25,8 +29,10 @@ const SellerProductsPage = () => {
     refetch,
   } = useProductsGetProductsBySeller();
 
-  const [isNewProductDialogOpen, setIsNewProductDialogOpen] = useState(false);
-  const [isUpdateProductDialogOpen, setIsUpdateProductDialogOpen] =
+  const isMobileOrTablet = useMediaQuery(MEDIA_QUERY.BELOW_LG);
+
+  const [isNewProductPortalOpen, setIsNewProductPortalOpen] = useState(false);
+  const [isUpdateProductPortalOpen, setIsUpdateProductPortalOpen] =
     useState(false);
   const [selectedProductId, setSelectedProductId] = useState<number | null>(
     null,
@@ -120,7 +126,7 @@ const SellerProductsPage = () => {
       if (!event.data?.id) return;
 
       setSelectedProductId(event.data.id);
-      setIsUpdateProductDialogOpen(true);
+      setIsUpdateProductPortalOpen(true);
     },
     [],
   );
@@ -181,7 +187,7 @@ const SellerProductsPage = () => {
 
           <button
             type="button"
-            onClick={() => setIsNewProductDialogOpen(true)}
+            onClick={() => setIsNewProductPortalOpen(true)}
             className={customTwMerge(BUTTON_PRIMARY, "shrink-0 px-6")}
           >
             New Product
@@ -207,18 +213,32 @@ const SellerProductsPage = () => {
         </div>
       </div>
 
-      <NewProductDialog
-        open={isNewProductDialogOpen}
-        setOpen={setIsNewProductDialogOpen}
-      />
-
-      {selectedProductId && (
-        <UpdateProductDialog
-          open={isUpdateProductDialogOpen}
-          setOpen={setIsUpdateProductDialogOpen}
-          productId={selectedProductId}
+      {isMobileOrTablet ? (
+        <NewProductDrawer
+          open={isNewProductPortalOpen}
+          setOpen={setIsNewProductPortalOpen}
+        />
+      ) : (
+        <NewProductDialog
+          open={isNewProductPortalOpen}
+          setOpen={setIsNewProductPortalOpen}
         />
       )}
+
+      {selectedProductId &&
+        (isMobileOrTablet ? (
+          <UpdateProductDrawer
+            open={isUpdateProductPortalOpen}
+            setOpen={setIsUpdateProductPortalOpen}
+            productId={selectedProductId}
+          />
+        ) : (
+          <UpdateProductDialog
+            open={isUpdateProductPortalOpen}
+            setOpen={setIsUpdateProductPortalOpen}
+            productId={selectedProductId}
+          />
+        ))}
     </>
   );
 };

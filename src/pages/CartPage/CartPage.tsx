@@ -1,21 +1,26 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ShoppingCartIcon } from "../../assets/icons";
+import { useMediaQuery } from "../../hooks/useMediaQuery";
+import { MEDIA_QUERY } from "../../shared/constants/MediaQuery.constants";
 import { useCartStore } from "../../stores/CartStore";
 import CartItemsList from "./components/CartItemsList";
 import CartSummary from "./components/CartSummary";
-import OrderPaymentDialog from "./OrderPaymentDialog/OrderPaymentDialog";
+import OrderPaymentDialog from "./components/OrderPaymentDialog";
+import OrderPaymentDrawer from "./components/OrderPaymentDrawer";
 
 const CartPage = () => {
   const cartItems = useCartStore((state) => state.items);
 
+  const isMobileOrTablet = useMediaQuery(MEDIA_QUERY.BELOW_LG);
+
   const [orderId, setOrderId] = useState<number | null>(null);
-  const [isOrderPaymentDialogOpen, setIsOrderPaymentDialogOpen] =
+  const [isOrderPaymentPortalOpen, setIsOrderPaymentPortalOpen] =
     useState(false);
 
-  const openOrderPaymentDialog = (id: number) => {
+  const openOrderPaymentPortal = (id: number) => {
     setOrderId(id);
-    setIsOrderPaymentDialogOpen(true);
+    setIsOrderPaymentPortalOpen(true);
   };
 
   return (
@@ -28,7 +33,7 @@ const CartPage = () => {
 
           <div className="flex items-start gap-x-5">
             <CartItemsList />
-            <CartSummary onOrderCreated={openOrderPaymentDialog} />
+            <CartSummary onOrderCreated={openOrderPaymentPortal} />
           </div>
         </div>
       ) : (
@@ -52,13 +57,20 @@ const CartPage = () => {
         </div>
       )}
 
-      {orderId && (
-        <OrderPaymentDialog
-          orderId={orderId}
-          open={isOrderPaymentDialogOpen}
-          setOpen={setIsOrderPaymentDialogOpen}
-        />
-      )}
+      {orderId &&
+        (isMobileOrTablet ? (
+          <OrderPaymentDrawer
+            orderId={orderId}
+            open={isOrderPaymentPortalOpen}
+            setOpen={setIsOrderPaymentPortalOpen}
+          />
+        ) : (
+          <OrderPaymentDialog
+            orderId={orderId}
+            open={isOrderPaymentPortalOpen}
+            setOpen={setIsOrderPaymentPortalOpen}
+          />
+        ))}
     </div>
   );
 };

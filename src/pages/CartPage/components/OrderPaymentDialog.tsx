@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { GenericDialog } from "../../../shared/components/GenericDialog";
-import OrderPaymentForm from "./components/OrderPaymentForm";
+import OrderPaymentForm from "../../../shared/components/forms/OrderPaymentForm";
 
 const OrderPaymentDialog = ({
   orderId,
@@ -16,11 +16,7 @@ const OrderPaymentDialog = ({
   }, [setOpen]);
 
   return (
-    <GenericDialog
-      open={open}
-      onOpenChange={setOpen}
-      className="h-[760px] w-[1000px] max-w-none"
-    >
+    <GenericDialog open={open} onOpenChange={setOpen} className="h-[728px]">
       <OrderPaymentForm orderId={orderId} close={close} />
     </GenericDialog>
   );

@@ -12,6 +12,7 @@ export const GenericDrawer = ({
   children,
   className,
   showCloseButton = true,
+  showOverlay = true,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -19,11 +20,12 @@ export const GenericDrawer = ({
   children: ReactNode;
   className?: string;
   showCloseButton?: boolean;
+  showOverlay?: boolean;
 }) => {
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
-        <Dialog.Overlay className="drawer-overlay" />
+        {showOverlay && <Dialog.Overlay className="drawer-overlay" />}
 
         <Dialog.Content
           className={customTwMerge(

@@ -1,8 +1,8 @@
 import { useCallback } from "react";
-import { GenericDialog } from "../../../../shared/components/GenericDialog";
-import ProductApprovalForm from "./components/ProductApprovalForm";
+import { GenericDialog } from "../../../shared/components/GenericDialog";
+import UpdateProductForm from "../../../shared/components/forms/UpdateProductForm";
 
-const ProductApprovalDialog = ({
+const UpdateProductDialog = ({
   open,
   setOpen,
   productId,
@@ -17,9 +17,9 @@ const ProductApprovalDialog = ({
 
   return (
     <GenericDialog open={open} onOpenChange={setOpen} className="h-[772px]">
-      <ProductApprovalForm productId={productId} close={close} />
+      <UpdateProductForm productId={productId} close={close} />
     </GenericDialog>
   );
 };
 
-export default ProductApprovalDialog;
+export default UpdateProductDialog;

@@ -1,5 +1,5 @@
-import type { ReqCategoriesGetAllResponse } from "../../../api/responses/ReqCategoriesGetAllResponse.model";
-import { GenericDialog } from "../GenericDialog";
+import type { ReqCategoriesGetAllResponse } from "../../../../../api/responses/ReqCategoriesGetAllResponse.model";
+import { GenericDialog } from "../../../GenericDialog";
 import CategorySelectionDialogContent from "./components/CategorySelectionDialogContent";
 
 const CategorySelectionDialog = ({
@@ -17,7 +17,7 @@ const CategorySelectionDialog = ({
     <GenericDialog
       open={open}
       onOpenChange={setOpen}
-      className="h-[760px] w-[1000px] max-w-none"
+      className="h-[760px] w-3xl max-w-none"
     >
       <CategorySelectionDialogContent
         initialSelectedCategory={initialSelectedCategory}

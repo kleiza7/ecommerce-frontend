@@ -1,22 +1,21 @@
-import { useEffect, useRef } from "react";
-import { useForm, type SubmitHandler } from "react-hook-form";
-import type { ReqProductsGetByIdResponse } from "../../../../../api/responses/ReqProductsGetByIdResponse.model";
-import { useBrandsGetAll } from "../../../../../hooks/useBrandsGetAll";
-import { useCategoriesGetAll } from "../../../../../hooks/useCategoriesGetAll";
-import { useCurrenciesGetAll } from "../../../../../hooks/useCurrenciesGetAll";
-import { useProductsGetById } from "../../../../../hooks/useProductsGetById";
-import { useProductsUpdate } from "../../../../../hooks/useProductsUpdate";
+import { useCallback, useEffect, useRef } from "react";
+import { useForm } from "react-hook-form";
+import type { ReqProductsGetByIdResponse } from "../../../api/responses/ReqProductsGetByIdResponse.model";
+import { useBrandsGetAll } from "../../../hooks/useBrandsGetAll";
+import { useCategoriesGetAll } from "../../../hooks/useCategoriesGetAll";
+import { useCurrenciesGetAll } from "../../../hooks/useCurrenciesGetAll";
+import { useProductsApprove } from "../../../hooks/useProductsApprove";
+import { useProductsGetById } from "../../../hooks/useProductsGetById";
+import { useProductsReject } from "../../../hooks/useProductsReject";
 import {
-  GenericDialogClose,
-  GenericDialogTitle,
-} from "../../../../../shared/components/GenericDialog";
-import type { ProductFormType } from "../../../../../shared/components/ProductFormFields";
-import ProductFormFields from "../../../../../shared/components/ProductFormFields";
-import {
+  BUTTON_ERROR,
   BUTTON_PRIMARY,
   BUTTON_PRIMARY_OUTLINED,
-} from "../../../../../shared/constants/CommonTailwindClasses.constants";
-import { customTwMerge } from "../../../../../shared/utils/Tailwind.util";
+} from "../../constants/CommonTailwindClasses.constants";
+import { customTwMerge } from "../../utils/Tailwind.util";
+import { GenericDialogClose, GenericDialogTitle } from "../GenericDialog";
+import type { ProductFormType } from "../ProductFormFields";
+import ProductFormFields from "../ProductFormFields";
 
 const urlToFile = async (url: string, name: string) => {
   const res = await fetch(url);
@@ -24,7 +23,7 @@ const urlToFile = async (url: string, name: string) => {
   return new File([blob], name, { type: blob.type });
 };
 
-const UpdateProductForm = ({
+const ProductApprovalForm = ({
   productId,
   close,
 }: {
@@ -38,51 +37,37 @@ const UpdateProductForm = ({
   const { data: currencies = [] } = useCurrenciesGetAll();
   const { data: product, isLoading } = useProductsGetById(productId);
 
-  const { mutate: updateProduct, isPending } = useProductsUpdate();
+  const { mutate: approveProduct, isPending: isApprovePending } =
+    useProductsApprove();
+  const { mutate: rejectProduct, isPending: isRejectPending } =
+    useProductsReject();
+
+  const isPending = isApprovePending || isRejectPending;
 
   const {
     control,
-    handleSubmit,
     reset,
-    formState: { isValid, errors },
+    formState: { errors },
   } = useForm<ProductFormType>({
     mode: "onChange",
     defaultValues: { images: [] },
   });
 
-  const onSubmit: SubmitHandler<ProductFormType> = (values) => {
-    const originalImages = productRef.current?.images ?? [];
-
-    const deletedImageIds = originalImages
-      .filter(
-        (img) => !values.images.some((file) => file.name === img.originalUrl),
-      )
-      .map((img) => img.id);
-
-    const newAddedImages = values.images.filter(
-      (file) => !originalImages.some((img) => img.originalUrl === file.name),
-    );
-
-    updateProduct(
-      {
-        id: productId,
-        name: values.name,
-        description: values.description,
-        stockCount: values.stockCount,
-        price: values.price,
-        brandId: values.brand.id,
-        categoryId: values.category.id,
-        currencyId: values.currency.id,
-        newAddedImages,
-        deletedImageIds,
+  const onApproveProduct = useCallback(() => {
+    approveProduct(productId, {
+      onSuccess: () => {
+        close();
       },
-      {
-        onSuccess: () => {
-          close();
-        },
+    });
+  }, [approveProduct, productId, close]);
+
+  const onRejectProduct = useCallback(() => {
+    rejectProduct(productId, {
+      onSuccess: () => {
+        close();
       },
-    );
-  };
+    });
+  }, [rejectProduct, productId, close]);
 
   useEffect(() => {
     if (
@@ -125,17 +110,11 @@ const UpdateProductForm = ({
   if (isLoading || !product) return null;
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        handleSubmit(onSubmit)(e);
-      }}
-      className="relative flex flex-col gap-y-6"
-    >
+    <form className="relative flex flex-col gap-y-6">
       <div className="flex flex-col gap-y-1">
-        <GenericDialogTitle>Update Product</GenericDialogTitle>
+        <GenericDialogTitle>Product Approval</GenericDialogTitle>
         <span className="text-s14-l20 text-gray-8">
-          Update the product details.
+          Review the product details.
         </span>
       </div>
 
@@ -144,7 +123,7 @@ const UpdateProductForm = ({
         errors={errors}
         brands={brands}
         currencies={currencies}
-        disabled={isPending}
+        disabled
       />
 
       <div className="flex justify-end gap-x-2">
@@ -160,15 +139,25 @@ const UpdateProductForm = ({
         </GenericDialogClose>
 
         <button
-          type="submit"
-          disabled={!isValid || isPending}
+          type="button"
+          disabled={isPending}
+          onClick={onRejectProduct}
+          className={customTwMerge(BUTTON_ERROR, "px-4")}
+        >
+          Reject
+        </button>
+
+        <button
+          type="button"
+          disabled={isPending}
+          onClick={onApproveProduct}
           className={customTwMerge(BUTTON_PRIMARY, "px-4")}
         >
-          Update
+          Approve
         </button>
       </div>
     </form>
   );
 };
 
-export default UpdateProductForm;
+export default ProductApprovalForm;

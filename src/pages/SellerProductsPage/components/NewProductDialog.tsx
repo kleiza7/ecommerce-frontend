@@ -1,15 +1,13 @@
 import { useCallback } from "react";
-import { GenericDialog } from "../../../../shared/components/GenericDialog";
-import UpdateProductForm from "./components/UpdateProductForm";
+import { GenericDialog } from "../../../shared/components/GenericDialog";
+import NewProductForm from "../../../shared/components/forms/NewProductForm";
 
-const UpdateProductDialog = ({
+const NewProductDialog = ({
   open,
   setOpen,
-  productId,
 }: {
   open: boolean;
   setOpen: (open: boolean) => void;
-  productId: number;
 }) => {
   const close = useCallback(() => {
     setOpen(false);
@@ -17,9 +15,9 @@ const UpdateProductDialog = ({
 
   return (
     <GenericDialog open={open} onOpenChange={setOpen} className="h-[772px]">
-      <UpdateProductForm productId={productId} close={close} />
+      <NewProductForm close={close} />
     </GenericDialog>
   );
 };
 
-export default UpdateProductDialog;
+export default NewProductDialog;

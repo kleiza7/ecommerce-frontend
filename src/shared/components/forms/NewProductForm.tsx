@@ -1,18 +1,15 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { useBrandsGetAll } from "../../../../../hooks/useBrandsGetAll";
-import { useCurrenciesGetAll } from "../../../../../hooks/useCurrenciesGetAll";
-import { useProductsCreate } from "../../../../../hooks/useProductsCreate";
-import {
-  GenericDialogClose,
-  GenericDialogTitle,
-} from "../../../../../shared/components/GenericDialog";
-import type { ProductFormType } from "../../../../../shared/components/ProductFormFields";
-import ProductFormFields from "../../../../../shared/components/ProductFormFields";
+import { useBrandsGetAll } from "../../../hooks/useBrandsGetAll";
+import { useCurrenciesGetAll } from "../../../hooks/useCurrenciesGetAll";
+import { useProductsCreate } from "../../../hooks/useProductsCreate";
 import {
   BUTTON_PRIMARY,
   BUTTON_PRIMARY_OUTLINED,
-} from "../../../../../shared/constants/CommonTailwindClasses.constants";
-import { customTwMerge } from "../../../../../shared/utils/Tailwind.util";
+} from "../../constants/CommonTailwindClasses.constants";
+import { customTwMerge } from "../../utils/Tailwind.util";
+import { GenericDialogClose, GenericDialogTitle } from "../GenericDialog";
+import type { ProductFormType } from "../ProductFormFields";
+import ProductFormFields from "../ProductFormFields";
 
 const NewProductForm = ({ close }: { close: () => void }) => {
   const { data: brands = [] } = useBrandsGetAll();

@@ -1,16 +1,16 @@
 import { useMemo, useState } from "react";
-import type { ReqCategoriesGetAllResponse } from "../../../../api/responses/ReqCategoriesGetAllResponse.model";
-import { KeyboardArrowUpIcon } from "../../../../assets/icons";
-import { useCategoriesGetAll } from "../../../../hooks/useCategoriesGetAll";
-import {
-  GenericDialogClose,
-  GenericDialogTitle,
-} from "../../../../shared/components/GenericDialog";
+import type { ReqCategoriesGetAllResponse } from "../../../../../../api/responses/ReqCategoriesGetAllResponse.model";
+import { KeyboardArrowUpIcon } from "../../../../../../assets/icons";
+import { useCategoriesGetAll } from "../../../../../../hooks/useCategoriesGetAll";
 import {
   BUTTON_PRIMARY,
   BUTTON_PRIMARY_OUTLINED,
-} from "../../../constants/CommonTailwindClasses.constants";
-import { customTwMerge } from "../../../utils/Tailwind.util";
+} from "../../../../../constants/CommonTailwindClasses.constants";
+import { customTwMerge } from "../../../../../utils/Tailwind.util";
+import {
+  GenericDialogClose,
+  GenericDialogTitle,
+} from "../../../../GenericDialog";
 
 type CategoryNode = ReqCategoriesGetAllResponse[number] & {
   children?: CategoryNode[];

@@ -30,13 +30,15 @@ const Navbar = () => {
           <div className="flex flex-col gap-y-4 pb-4 lg:gap-y-0 lg:pb-0">
             <div className="flex items-center justify-between gap-x-16 lg:h-[72px]">
               <div className="flex shrink-0 items-center gap-x-1 select-none">
-                <button
-                  type="button"
-                  onClick={() => setIsCategoriesDrawerOpen(true)}
-                  className="lg:hidden"
-                >
-                  <MenuIcon className="fill-text-primary" />
-                </button>
+                {isGuestOrUser && (
+                  <button
+                    type="button"
+                    onClick={() => setIsCategoriesDrawerOpen(true)}
+                    className="lg:hidden"
+                  >
+                    <MenuIcon className="fill-text-primary" />
+                  </button>
+                )}
 
                 <NavLink
                   to="/"

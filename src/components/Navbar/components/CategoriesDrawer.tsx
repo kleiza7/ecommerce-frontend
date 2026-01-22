@@ -88,7 +88,7 @@ const CategoriesDrawer = ({
         )}
 
         <span className="text-s20-l28 font-semibold">
-          {currentParent?.label ?? "Kategoriler"}
+          {currentParent?.label ?? "Categories"}
         </span>
       </div>
 

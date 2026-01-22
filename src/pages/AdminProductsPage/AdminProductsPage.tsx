@@ -6,12 +6,15 @@ import type {
 import { AgGridReact } from "ag-grid-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { ReqProductsGetWaitingApprovalProductsResponse } from "../../api/responses/ReqProductsGetWaitingApprovalProductsResponse.model";
+import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { useProductsGetWaitingApprovalProducts } from "../../hooks/useProductsGetWaitingApprovalProducts";
 import LoadingSpinner from "../../shared/components/LoadingSpinner";
+import { MEDIA_QUERY } from "../../shared/constants/MediaQuery.constants";
 import { EVENT_TYPE } from "../../shared/enums/EventType.enum";
 import { registerAgGridModules } from "../../shared/utils/AgGrid.util";
 import "../../styles/agGrid.css";
-import ProductApprovalDialog from "./components/ProductApprovalDialog/ProductApprovalDialog";
+import ProductApprovalDialog from "./components/ProductApprovalDialog";
+import ProductApprovalDrawer from "./components/ProductApprovalDrawer";
 
 const AdminProductsPage = () => {
   const {
@@ -20,7 +23,9 @@ const AdminProductsPage = () => {
     refetch,
   } = useProductsGetWaitingApprovalProducts();
 
-  const [isProductApprovalDialogOpen, setIsProductApprovalDialogOpen] =
+  const isMobileOrTablet = useMediaQuery(MEDIA_QUERY.BELOW_LG);
+
+  const [isProductApprovalPortalOpen, setIsProductApprovalPortalOpen] =
     useState(false);
   const [selectedProductId, setSelectedProductId] = useState<number | null>(
     null,
@@ -97,7 +102,7 @@ const AdminProductsPage = () => {
       if (!event.data?.id) return;
 
       setSelectedProductId(event.data.id);
-      setIsProductApprovalDialogOpen(true);
+      setIsProductApprovalPortalOpen(true);
     },
     [],
   );
@@ -161,13 +166,21 @@ const AdminProductsPage = () => {
         </div>
       </div>
 
-      {selectedProductId && (
-        <ProductApprovalDialog
-          open={isProductApprovalDialogOpen}
-          setOpen={setIsProductApprovalDialogOpen}
-          productId={selectedProductId}
-        />
-      )}
+      {/* PRODUCT APPROVAL */}
+      {selectedProductId &&
+        (isMobileOrTablet ? (
+          <ProductApprovalDrawer
+            open={isProductApprovalPortalOpen}
+            setOpen={setIsProductApprovalPortalOpen}
+            productId={selectedProductId}
+          />
+        ) : (
+          <ProductApprovalDialog
+            open={isProductApprovalPortalOpen}
+            setOpen={setIsProductApprovalPortalOpen}
+            productId={selectedProductId}
+          />
+        ))}
     </>
   );
 };

@@ -1,6 +1,9 @@
 import { useState } from "react";
-import type { ReqCategoriesGetAllResponse } from "../../api/responses/ReqCategoriesGetAllResponse.model";
-import CategorySelectionDialog from "./CategorySelectionDialog/CategorySelectionDialog";
+import type { ReqCategoriesGetAllResponse } from "../../../api/responses/ReqCategoriesGetAllResponse.model";
+import { useMediaQuery } from "../../../hooks/useMediaQuery";
+import { MEDIA_QUERY } from "../../constants/MediaQuery.constants";
+import CategorySelectionDialog from "./components/CategorySelectionDialog/CategorySelectionDialog";
+import CategorySelectionDrawer from "./components/CategorySelectionDrawer/CategorySelectionDrawer";
 
 const GenericCategoryPicker = ({
   value,
@@ -11,8 +14,10 @@ const GenericCategoryPicker = ({
   onChange: (category: ReqCategoriesGetAllResponse[number]) => void;
   disabled?: boolean;
 }) => {
-  const [isCategorySelectionDialogOpen, setIsCategorySelectionDialogOpen] =
+  const [isCategorySelectionPortalOpen, setIsCategorySelectionPortalOpen] =
     useState(false);
+
+  const isMobileOrTablet = useMediaQuery(MEDIA_QUERY.BELOW_LG);
 
   if (disabled) {
     return (
@@ -27,7 +32,7 @@ const GenericCategoryPicker = ({
       {!value ? (
         <button
           type="button"
-          onClick={() => setIsCategorySelectionDialogOpen(true)}
+          onClick={() => setIsCategorySelectionPortalOpen(true)}
           className="border-gray-2 text-s14-l20 text-gray-7 hover:bg-gray-12 flex h-10 w-full cursor-pointer items-center justify-center rounded-lg border px-2"
         >
           Select Category
@@ -40,7 +45,7 @@ const GenericCategoryPicker = ({
 
           <button
             type="button"
-            onClick={() => setIsCategorySelectionDialogOpen(true)}
+            onClick={() => setIsCategorySelectionPortalOpen(true)}
             className="border-gray-2 text-s14-l20 text-gray-7 hover:bg-gray-12 flex h-10 flex-1 cursor-pointer items-center justify-center rounded-lg border px-2"
           >
             Change Category
@@ -48,12 +53,21 @@ const GenericCategoryPicker = ({
         </div>
       )}
 
-      <CategorySelectionDialog
-        open={isCategorySelectionDialogOpen}
-        setOpen={setIsCategorySelectionDialogOpen}
-        initialSelectedCategory={value}
-        onCategorySelected={onChange}
-      />
+      {isMobileOrTablet ? (
+        <CategorySelectionDrawer
+          open={isCategorySelectionPortalOpen}
+          setOpen={setIsCategorySelectionPortalOpen}
+          initialSelectedCategory={value}
+          onCategorySelected={onChange}
+        />
+      ) : (
+        <CategorySelectionDialog
+          open={isCategorySelectionPortalOpen}
+          setOpen={setIsCategorySelectionPortalOpen}
+          initialSelectedCategory={value}
+          onCategorySelected={onChange}
+        />
+      )}
     </>
   );
 };
