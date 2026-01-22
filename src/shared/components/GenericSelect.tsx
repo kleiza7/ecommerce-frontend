@@ -1,6 +1,7 @@
 import * as Select from "@radix-ui/react-select";
 import type { ReactNode } from "react";
 import { CheckIcon, KeyboardArrowUpIcon } from "../../assets/icons";
+import { customTwMerge } from "../utils/Tailwind.util";
 
 type GenericSelectOption<T> = {
   label: string;
@@ -14,6 +15,7 @@ type GenericSelectProps<T> = {
   disabled?: boolean;
   onChange: (value: T) => void;
   renderValue?: (value: T) => ReactNode;
+  className?: string;
 };
 
 const isSameValue = <T,>(a?: T, b?: T) =>
@@ -26,6 +28,7 @@ const GenericSelect = <T,>({
   disabled,
   onChange,
   renderValue,
+  className,
 }: GenericSelectProps<T>) => {
   const selectedOption = options.find((option) =>
     isSameValue(option.value, value),
@@ -40,7 +43,12 @@ const GenericSelect = <T,>({
         if (option) onChange(option.value);
       }}
     >
-      <Select.Trigger className="text-s14-l20 text-text-primary disabled:bg-gray-3 border-gray-2 flex h-10 w-full cursor-pointer items-center justify-between rounded-md border px-3 outline-none disabled:cursor-not-allowed disabled:opacity-60">
+      <Select.Trigger
+        className={customTwMerge(
+          "text-s14-l20 text-text-primary disabled:bg-gray-3 border-gray-2 flex h-10 w-full cursor-pointer items-center justify-between rounded-md border px-3 outline-none disabled:cursor-not-allowed disabled:opacity-60",
+          className,
+        )}
+      >
         <Select.Value placeholder={placeholder}>
           {selectedOption
             ? renderValue

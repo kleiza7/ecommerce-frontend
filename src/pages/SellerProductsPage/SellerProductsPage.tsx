@@ -6,6 +6,7 @@ import type { ReqProductsGetProductsBySellerResponse } from "../../api/responses
 import { EditNoteIcon } from "../../assets/icons";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { useProductsGetProductsBySeller } from "../../hooks/useProductsGetProductsBySeller";
+import GenericSelect from "../../shared/components/GenericSelect";
 import GenericTooltip from "../../shared/components/GenericTooltip";
 import LoadingSpinner from "../../shared/components/LoadingSpinner";
 import { BUTTON_PRIMARY } from "../../shared/constants/CommonTailwindClasses.constants";
@@ -19,6 +20,8 @@ import NewProductDialog from "./components/NewProductDialog";
 import NewProductDrawer from "./components/NewProductDrawer";
 import UpdateProductDialog from "./components/UpdateProductDialog";
 import UpdateProductDrawer from "./components/UpdateProductDrawer";
+
+type STATUS_FILTER = PRODUCT_STATUS | "ALL";
 
 const SellerProductsPage = () => {
   const {
@@ -35,8 +38,7 @@ const SellerProductsPage = () => {
   const [selectedProductId, setSelectedProductId] = useState<number | null>(
     null,
   );
-
-  const totalCount = products.length;
+  const [statusFilter, setStatusFilter] = useState<STATUS_FILTER>("ALL");
 
   const statusCounts = useMemo(() => {
     return products.reduce<Record<PRODUCT_STATUS, number>>(
@@ -52,6 +54,37 @@ const SellerProductsPage = () => {
       },
     );
   }, [products]);
+
+  const filteredProducts = useMemo(() => {
+    if (statusFilter === "ALL") return products;
+    return products.filter((product) => product.status === statusFilter);
+  }, [products, statusFilter]);
+
+  const statusFilterOptions = useMemo(
+    () => [
+      {
+        label: `All (${products.length})`,
+        value: "ALL" as const,
+      },
+      {
+        label: `${PRODUCT_STATUS_TEXT_PAIRS[PRODUCT_STATUS.APPROVED]} (${statusCounts[PRODUCT_STATUS.APPROVED]})`,
+        value: PRODUCT_STATUS.APPROVED,
+      },
+      {
+        label: `${PRODUCT_STATUS_TEXT_PAIRS[PRODUCT_STATUS.WAITING_FOR_APPROVE]} (${statusCounts[PRODUCT_STATUS.WAITING_FOR_APPROVE]})`,
+        value: PRODUCT_STATUS.WAITING_FOR_APPROVE,
+      },
+      {
+        label: `${PRODUCT_STATUS_TEXT_PAIRS[PRODUCT_STATUS.NOT_APPROVED]} (${statusCounts[PRODUCT_STATUS.NOT_APPROVED]})`,
+        value: PRODUCT_STATUS.NOT_APPROVED,
+      },
+      {
+        label: `${PRODUCT_STATUS_TEXT_PAIRS[PRODUCT_STATUS.DELETED]} (${statusCounts[PRODUCT_STATUS.DELETED]})`,
+        value: PRODUCT_STATUS.DELETED,
+      },
+    ],
+    [products.length, statusCounts],
+  );
 
   const openUpdateProductPortal = useCallback((productId: number) => {
     setSelectedProductId(productId);
@@ -185,27 +218,15 @@ const SellerProductsPage = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-6">
             <span className="text-s24-l32 xl:text-s28-l36 text-text-primary font-semibold">
-              My Products ({totalCount})
+              My Products ({products.length})
             </span>
 
-            <div className="text-s16-l24 xl:text-s20-l28 text-gray-9 flex items-center gap-4">
-              <span>
-                {PRODUCT_STATUS_TEXT_PAIRS[PRODUCT_STATUS.APPROVED]} (
-                {statusCounts[PRODUCT_STATUS.APPROVED]})
-              </span>
-              <span>
-                {PRODUCT_STATUS_TEXT_PAIRS[PRODUCT_STATUS.WAITING_FOR_APPROVE]}{" "}
-                ({statusCounts[PRODUCT_STATUS.WAITING_FOR_APPROVE]})
-              </span>
-              <span>
-                {PRODUCT_STATUS_TEXT_PAIRS[PRODUCT_STATUS.NOT_APPROVED]} (
-                {statusCounts[PRODUCT_STATUS.NOT_APPROVED]})
-              </span>
-              <span>
-                {PRODUCT_STATUS_TEXT_PAIRS[PRODUCT_STATUS.DELETED]} (
-                {statusCounts[PRODUCT_STATUS.DELETED]})
-              </span>
-            </div>
+            <GenericSelect
+              value={statusFilter}
+              options={statusFilterOptions}
+              onChange={setStatusFilter}
+              className="h-9 w-[220px]"
+            />
           </div>
 
           <button
@@ -220,7 +241,7 @@ const SellerProductsPage = () => {
         <div className="ag-theme-alpine flex-1">
           <AgGridReact<ReqProductsGetProductsBySellerResponse[number]>
             theme="legacy"
-            rowData={products}
+            rowData={filteredProducts}
             columnDefs={columnDefs}
             suppressCellFocus
             animateRows
