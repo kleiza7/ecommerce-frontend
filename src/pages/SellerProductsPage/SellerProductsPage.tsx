@@ -1,14 +1,12 @@
-import type {
-  ColDef,
-  ICellRendererParams,
-  RowDoubleClickedEvent,
-} from "ag-grid-community";
+import type { ColDef, ICellRendererParams } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { PRODUCT_STATUS } from "../../api/enums/ProductStatus.enum";
 import type { ReqProductsGetProductsBySellerResponse } from "../../api/responses/ReqProductsGetProductsBySellerResponse.model";
+import { EditNoteIcon } from "../../assets/icons";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { useProductsGetProductsBySeller } from "../../hooks/useProductsGetProductsBySeller";
+import GenericTooltip from "../../shared/components/GenericTooltip";
 import LoadingSpinner from "../../shared/components/LoadingSpinner";
 import { BUTTON_PRIMARY } from "../../shared/constants/CommonTailwindClasses.constants";
 import { MEDIA_QUERY } from "../../shared/constants/MediaQuery.constants";
@@ -55,13 +53,20 @@ const SellerProductsPage = () => {
     );
   }, [products]);
 
+  const openUpdateProductPortal = useCallback((productId: number) => {
+    setSelectedProductId(productId);
+    setIsUpdateProductPortalOpen(true);
+  }, []);
+
   const columnDefs = useMemo<
     ColDef<ReqProductsGetProductsBySellerResponse[number]>[]
   >(
     () => [
       {
         headerName: "Preview",
-        width: 80,
+        width: 100,
+        maxWidth: 100,
+        minWidth: 100,
         sortable: false,
         filter: false,
         cellRenderer: (
@@ -113,22 +118,40 @@ const SellerProductsPage = () => {
           PRODUCT_STATUS_TEXT_PAIRS[params.data?.status as PRODUCT_STATUS] ??
           params.data?.status,
       },
+      {
+        colId: "rowActions",
+        pinned: "right",
+        width: 80,
+        minWidth: 80,
+        maxWidth: 80,
+        sortable: false,
+        filter: false,
+        resizable: false,
+        suppressMenu: true,
+        cellRenderer: (
+          params: ICellRendererParams<
+            ReqProductsGetProductsBySellerResponse[number]
+          >,
+        ) => {
+          if (!params.data?.id) return null;
+
+          return (
+            <div className="flex h-full items-center justify-center">
+              <GenericTooltip content="Update">
+                <button
+                  type="button"
+                  onClick={() => openUpdateProductPortal(params.data!.id)}
+                  className="flex h-8 w-8 cursor-pointer items-center justify-center"
+                >
+                  <EditNoteIcon className="fill-orange" />
+                </button>
+              </GenericTooltip>
+            </div>
+          );
+        },
+      },
     ],
-    [],
-  );
-
-  const onRowDoubleClicked = useCallback(
-    (
-      event: RowDoubleClickedEvent<
-        ReqProductsGetProductsBySellerResponse[number]
-      >,
-    ) => {
-      if (!event.data?.id) return;
-
-      setSelectedProductId(event.data.id);
-      setIsUpdateProductPortalOpen(true);
-    },
-    [],
+    [openUpdateProductPortal],
   );
 
   useEffect(() => {
@@ -201,7 +224,6 @@ const SellerProductsPage = () => {
             columnDefs={columnDefs}
             suppressCellFocus
             animateRows
-            onRowDoubleClicked={onRowDoubleClicked}
             defaultColDef={{
               flex: 1,
               minWidth: 140,

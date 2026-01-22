@@ -1,13 +1,11 @@
-import type {
-  ColDef,
-  ICellRendererParams,
-  RowDoubleClickedEvent,
-} from "ag-grid-community";
+import type { ColDef, ICellRendererParams } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { ReqProductsGetWaitingApprovalProductsResponse } from "../../api/responses/ReqProductsGetWaitingApprovalProductsResponse.model";
+import { OrderApproveIcon } from "../../assets/icons";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { useProductsGetWaitingApprovalProducts } from "../../hooks/useProductsGetWaitingApprovalProducts";
+import GenericTooltip from "../../shared/components/GenericTooltip";
 import LoadingSpinner from "../../shared/components/LoadingSpinner";
 import { MEDIA_QUERY } from "../../shared/constants/MediaQuery.constants";
 import { EVENT_TYPE } from "../../shared/enums/EventType.enum";
@@ -33,13 +31,20 @@ const AdminProductsPage = () => {
 
   const totalCount = products.length;
 
+  const openProductApprovalPortal = useCallback((productId: number) => {
+    setSelectedProductId(productId);
+    setIsProductApprovalPortalOpen(true);
+  }, []);
+
   const columnDefs = useMemo<
     ColDef<ReqProductsGetWaitingApprovalProductsResponse[number]>[]
   >(
     () => [
       {
         headerName: "Preview",
-        width: 80,
+        width: 100,
+        maxWidth: 100,
+        minWidth: 100,
         sortable: false,
         filter: false,
         cellRenderer: (
@@ -89,22 +94,40 @@ const AdminProductsPage = () => {
         field: "stockCount",
         headerName: "Stock",
       },
+      {
+        colId: "rowActions",
+        pinned: "right",
+        width: 80,
+        minWidth: 80,
+        maxWidth: 80,
+        sortable: false,
+        filter: false,
+        resizable: false,
+        suppressMenu: true,
+        cellRenderer: (
+          params: ICellRendererParams<
+            ReqProductsGetWaitingApprovalProductsResponse[number]
+          >,
+        ) => {
+          if (!params.data?.id) return null;
+
+          return (
+            <div className="flex h-full items-center justify-center">
+              <GenericTooltip content="Approve / Reject">
+                <button
+                  type="button"
+                  onClick={() => openProductApprovalPortal(params.data!.id)}
+                  className="flex h-8 w-8 cursor-pointer items-center justify-center"
+                >
+                  <OrderApproveIcon className="fill-orange" />
+                </button>
+              </GenericTooltip>
+            </div>
+          );
+        },
+      },
     ],
-    [],
-  );
-
-  const onRowDoubleClicked = useCallback(
-    (
-      event: RowDoubleClickedEvent<
-        ReqProductsGetWaitingApprovalProductsResponse[number]
-      >,
-    ) => {
-      if (!event.data?.id) return;
-
-      setSelectedProductId(event.data.id);
-      setIsProductApprovalPortalOpen(true);
-    },
-    [],
+    [openProductApprovalPortal],
   );
 
   useEffect(() => {
@@ -154,7 +177,6 @@ const AdminProductsPage = () => {
             columnDefs={columnDefs}
             suppressCellFocus
             animateRows
-            onRowDoubleClicked={onRowDoubleClicked}
             defaultColDef={{
               flex: 1,
               minWidth: 140,
@@ -166,7 +188,6 @@ const AdminProductsPage = () => {
         </div>
       </div>
 
-      {/* PRODUCT APPROVAL */}
       {selectedProductId &&
         (isMobileOrTablet ? (
           <ProductApprovalDrawer
