@@ -19,9 +19,9 @@ const CartPage = () => {
   };
 
   return (
-    <div className="mx-auto flex w-full max-w-[1380px] flex-col px-10 py-14">
+    <div className="mx-auto flex w-full max-w-[1380px] flex-col px-10 pt-6 pb-64 lg:py-14">
       {cartItems.length !== 0 ? (
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-6 lg:gap-8">
           <span className="text-s24-l32 font-semibold">
             My Cart ({cartItems.length} Product)
           </span>

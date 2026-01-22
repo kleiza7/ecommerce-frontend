@@ -46,7 +46,7 @@ const CartItemsList = () => {
   );
 
   return (
-    <div className="flex min-w-0 flex-1 flex-col gap-6">
+    <div className="flex min-w-0 flex-1 flex-col gap-4 lg:gap-6">
       {groupedBySeller.map(({ seller, items }) => (
         <div
           key={seller.id}
