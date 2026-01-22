@@ -53,10 +53,10 @@ const CartSummary = ({
   return (
     <div
       className={customTwMerge(
-        "border-gray-2 bg-surface-primary flex flex-col gap-4 rounded-lg border p-6",
+        "bg-surface-primary border-gray-2 flex flex-col gap-4 border-t p-6",
         "w-full shrink-0 lg:w-[350px]",
-        "fixed right-0 bottom-0 left-0 z-50 lg:static",
-        "lg:border-gray-2 border-gray-2 rounded-t-lg border-t lg:rounded-lg lg:border",
+        "fixed inset-x-0 bottom-0 z-50 lg:static",
+        "lg:rounded-lg lg:border",
       )}
     >
       <h2 className="text-s22-l28 font-medium">Cart Summary</h2>
