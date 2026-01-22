@@ -31,11 +31,11 @@ const ProductDetailPageSkeleton = () => {
             <Skeleton withShimmer className="h-5 w-1/2" />
           </div>
 
-          <Skeleton withShimmer className="h-8 w-44" />
+          <Skeleton withShimmer className="h-8 w-7/12" />
 
           <div className="flex flex-col gap-2">
-            <Skeleton withShimmer className="h-4 w-72" />
-            <Skeleton withShimmer className="h-4 w-80" />
+            <Skeleton withShimmer className="h-4 w-5/6" />
+            <Skeleton withShimmer className="h-4 w-full" />
           </div>
 
           <div className="flex items-center gap-4">
