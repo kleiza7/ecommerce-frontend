@@ -37,16 +37,14 @@ const CartPage = () => {
           </div>
         </div>
       ) : (
-        <div className="border-gray-2 bg-surface-primary flex items-center justify-between rounded-xl border p-5">
-          <div className="flex items-center gap-4">
-            <div className="bg-orange/10 flex h-[68px] w-[68px] items-center justify-center rounded-full">
-              <ShoppingCartIcon className="fill-orange h-7 w-7" />
-            </div>
-
-            <span className="text-text-primary text-s24-l32 font-semibold">
-              Your cart is empty.
-            </span>
+        <div className="mx-auto flex flex-1 flex-col items-center justify-center gap-6 text-center">
+          <div className="bg-orange/10 flex h-18 w-18 items-center justify-center rounded-full">
+            <ShoppingCartIcon className="fill-orange h-9 w-9" />
           </div>
+
+          <span className="text-s18-l28 text-orange font-medium">
+            Your cart is empty.
+          </span>
 
           <Link
             to="/products"
