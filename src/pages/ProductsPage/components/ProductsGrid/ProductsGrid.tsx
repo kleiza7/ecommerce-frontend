@@ -140,7 +140,7 @@ const ProductsGrid = ({
       />
 
       {isLoading ? (
-        <div className="grid grid-cols-2 gap-6 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 md:gap-6 lg:grid-cols-3 xl:grid-cols-4">
           {Array.from({ length: 20 }).map((_, i) => (
             <ProductCardSkeleton key={i} />
           ))}
@@ -151,7 +151,7 @@ const ProductsGrid = ({
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-2 gap-6 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 md:gap-6 lg:grid-cols-3 xl:grid-cols-4">
             {allProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}

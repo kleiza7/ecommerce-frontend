@@ -9,11 +9,11 @@ const ProductsPage = () => {
   const { data: brands = [] } = useBrandsGetAll();
 
   return (
-    <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-5 px-10 py-4">
+    <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-5 px-3 py-4 md:px-10">
       <CategoryBreadcrumb categories={categories} />
 
       <div className="flex gap-6">
-        <aside className="w-[200px] shrink-0">
+        <aside className="hidden w-[200px] shrink-0 md:block">
           <ProductsFilterSidebar categories={categories} brands={brands} />
         </aside>
 

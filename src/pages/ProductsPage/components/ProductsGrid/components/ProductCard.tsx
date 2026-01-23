@@ -23,7 +23,7 @@ const ProductCard = ({
   return (
     <div
       onClick={handleNavigate}
-      className="border-gray-2 bg-surface-primary relative flex h-[460px] w-full cursor-pointer flex-col overflow-hidden rounded-xl border hover:shadow-md 2xl:h-[500px]"
+      className="border-gray-2 bg-surface-primary relative flex h-[380px] w-full cursor-pointer flex-col overflow-hidden rounded-xl border hover:shadow-md md:h-[460px] 2xl:h-[500px]"
     >
       <FavoriteButton
         product={{
@@ -37,7 +37,7 @@ const ProductCard = ({
         className="absolute top-3 right-3 z-10"
       />
 
-      <div className="bg-gray-4 relative h-80 w-full overflow-hidden 2xl:h-[360px]">
+      <div className="bg-gray-4 relative h-[260px] w-full overflow-hidden md:h-80 2xl:h-[360px]">
         <img
           src={activeImage}
           alt={product.name}

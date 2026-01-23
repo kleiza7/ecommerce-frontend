@@ -42,7 +42,7 @@ const Navbar = () => {
 
                 <NavLink
                   to="/"
-                  className="text-s28-l36 xl:text-s48-l56 text-text-primary"
+                  className="text-s20-l28 md:text-s28-l36 xl:text-s48-l56 text-text-primary"
                 >
                   Ecommerce
                 </NavLink>
