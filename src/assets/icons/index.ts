@@ -14,8 +14,10 @@ import RemoveIcon from "./remove.svg?react";
 import SearchIcon from "./search.svg?react";
 import ShoppingCartIcon from "./shopping_cart.svg?react";
 import ShoppingCartFilledIcon from "./shopping_cart_filled.svg?react";
+import SwapVertIcon from "./swap_vert.svg?react";
 import TimerArrowDownIcon from "./timer_arrow_down.svg?react";
 import TrashIcon from "./trash.svg?react";
+import TuneIcon from "./tune.svg?react";
 import UserIcon from "./user.svg?react";
 import UserFilledIcon from "./user_filled.svg?react";
 
@@ -36,8 +38,10 @@ export {
   SearchIcon,
   ShoppingCartFilledIcon,
   ShoppingCartIcon,
+  SwapVertIcon,
   TimerArrowDownIcon,
   TrashIcon,
+  TuneIcon,
   UserFilledIcon,
   UserIcon,
 };
