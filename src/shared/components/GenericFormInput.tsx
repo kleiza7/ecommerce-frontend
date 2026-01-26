@@ -84,22 +84,32 @@ const GenericFormInput = <TFieldValues extends FieldValues>({
 
         ...rules,
       }}
-      render={({ field, fieldState }) => (
-        <input
-          {...field}
-          type={type}
-          placeholder={placeholder}
-          disabled={disabled}
-          min={isNumber ? min : undefined}
-          max={isNumber ? max : undefined}
-          minLength={!isNumber ? minLength : undefined}
-          maxLength={!isNumber ? maxLength : undefined}
-          className={customTwMerge(
-            INPUT_BASE,
-            disabled ? INPUT_DISABLED : fieldState.error ? INPUT_ERROR : "",
-          )}
-        />
-      )}
+      render={({ field, fieldState }) => {
+        const value = isNumber
+          ? field.value == null ||
+            Number.isNaN(field.value as unknown as number)
+            ? ""
+            : field.value
+          : (field.value ?? "");
+
+        return (
+          <input
+            {...field}
+            value={value}
+            type={type}
+            placeholder={placeholder}
+            disabled={disabled}
+            min={isNumber ? min : undefined}
+            max={isNumber ? max : undefined}
+            minLength={!isNumber ? minLength : undefined}
+            maxLength={!isNumber ? maxLength : undefined}
+            className={customTwMerge(
+              INPUT_BASE,
+              disabled ? INPUT_DISABLED : fieldState.error ? INPUT_ERROR : "",
+            )}
+          />
+        );
+      }}
     />
   );
 };
