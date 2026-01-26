@@ -5,12 +5,12 @@ import { useAuthGetAllSellers } from "../../hooks/useAuthGetAllSellers";
 import { useBrandsGetAll } from "../../hooks/useBrandsGetAll";
 import { useCategoriesGetAll } from "../../hooks/useCategoriesGetAll";
 import { useProductsListInfinite } from "../../hooks/useProductsListInfinite";
+import CategoryBreadcrumb from "../../shared/components/CategoryBreadcrumb";
 import type { CategoryNode } from "../../shared/models/CategoryNode.model";
 import {
   buildCategorySlugMap,
   buildCategoryTree,
 } from "../../shared/utils/CategoryTree.util";
-import CategoryBreadcrumb from "./components/CategoryBreadcrumb";
 import ProductListHeader from "./components/ProductListHeader";
 import ProductsFilterDrawer from "./components/ProductsFilterDrawer/ProductsFilterDrawer";
 import ProductsFilterSidebar from "./components/ProductsFilterSidebar/ProductsFilterSidebar";
@@ -37,33 +37,28 @@ const ProductsPage = () => {
 
   const selectedCategorySlug = params.get("category");
 
+  const selectedCategoryNode = useMemo(() => {
+    if (!selectedCategorySlug || categories.length === 0) {
+      return undefined;
+    }
+
+    const tree = buildCategoryTree(categories);
+    const slugMap = buildCategorySlugMap(tree);
+
+    return slugMap.get(selectedCategorySlug);
+  }, [categories, selectedCategorySlug]);
+
+  const selectedCategoryId = selectedCategoryNode?.id;
+
   const categoryIds = useMemo(() => {
-    if (!selectedCategorySlug) {
+    if (!selectedCategoryNode) {
       return undefined;
     }
 
-    const tree = buildCategoryTree(categories);
-    const slugMap = buildCategorySlugMap(tree);
+    return collectLeafIds(selectedCategoryNode);
+  }, [selectedCategoryNode]);
 
-    const node = slugMap.get(selectedCategorySlug);
-    if (!node) {
-      return undefined;
-    }
-
-    return collectLeafIds(node);
-  }, [categories, selectedCategorySlug]);
-
-  const selectedCategoryName = useMemo(() => {
-    if (!selectedCategorySlug) {
-      return undefined;
-    }
-
-    const tree = buildCategoryTree(categories);
-    const slugMap = buildCategorySlugMap(tree);
-
-    const node = slugMap.get(selectedCategorySlug);
-    return node?.name;
-  }, [categories, selectedCategorySlug]);
+  const selectedCategoryName = selectedCategoryNode?.name;
 
   const selectedBrandSlugs = useMemo(() => {
     return params.get("brands")?.split(",") ?? [];
@@ -153,7 +148,7 @@ const ProductsPage = () => {
 
   return (
     <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-5 pb-4 md:px-10 md:py-4">
-      <CategoryBreadcrumb categories={categories} />
+      <CategoryBreadcrumb selectedCategoryId={selectedCategoryId} />
 
       <div className="flex gap-6">
         <aside className="hidden w-[200px] shrink-0 md:block">
@@ -172,6 +167,7 @@ const ProductsPage = () => {
               openProductsSortPortal={openProductsSortPortal}
               openProductsFilterPortal={openProductsFilterPortal}
             />
+
             <ProductsGrid
               allProducts={allProducts}
               fetchNextPage={fetchNextPage}
@@ -193,6 +189,7 @@ const ProductsPage = () => {
         open={isProductsSortPortalOpen}
         setOpen={setIsProductsSortPortalOpen}
       />
+
       <ProductsFilterDrawer
         open={isProductsFilterPortalOpen}
         setOpen={setIsProductsFilterPortalOpen}

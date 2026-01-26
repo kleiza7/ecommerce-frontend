@@ -7,6 +7,7 @@ import "yet-another-react-lightbox/styles.css";
 import { KeyboardArrowUpIcon, TimerArrowDownIcon } from "../../assets/icons";
 import { useCartActions } from "../../hooks/useCartActions";
 import { useProductsGetById } from "../../hooks/useProductsGetById";
+import CategoryBreadcrumb from "../../shared/components/CategoryBreadcrumb";
 import FavoriteButton from "../../shared/components/FavoriteButton";
 import GenericTooltip from "../../shared/components/GenericTooltip";
 import {
@@ -15,7 +16,6 @@ import {
 } from "../../shared/constants/CommonTailwindClasses.constants";
 import { customTwMerge } from "../../shared/utils/Tailwind.util";
 import { useCartStore } from "../../stores/CartStore";
-import CategoryBreadcrumb from "./components/CategoryBreadcrumb";
 import ProductDetailPageSkeleton from "./components/ProductDetailPageSkeleton";
 
 const ProductDetailPage = () => {
@@ -41,7 +41,7 @@ const ProductDetailPage = () => {
 
   return (
     <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-y-5 pb-4 md:px-10 md:py-4">
-      <CategoryBreadcrumb categoryId={data.category.id} />
+      <CategoryBreadcrumb selectedCategoryId={data.category.id} />
 
       <div className="flex flex-col gap-4 md:flex-row md:gap-8">
         <div className="flex flex-col gap-6">

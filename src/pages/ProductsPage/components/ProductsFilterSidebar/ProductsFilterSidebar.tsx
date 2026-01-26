@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import type { ReqAuthGetAllSellersResponse } from "../../../../api/responses/ReqAuthGetAllSellersResponse.model";
 import type { ReqBrandsGetAllResponse } from "../../../../api/responses/ReqBrandsGetAllResponse.model";
 import type { ReqCategoriesGetAllResponse } from "../../../../api/responses/ReqCategoriesGetAllResponse.model";
+import { KeyboardArrowUpIcon } from "../../../../assets/icons";
 import GenericCheckbox from "../../../../shared/components/GenericCheckbox";
 import { INPUT_BASE } from "../../../../shared/constants/CommonTailwindClasses.constants";
 import type { CategoryNode } from "../../../../shared/models/CategoryNode.model";
@@ -124,13 +125,29 @@ const ProductsFilterSidebar = ({
             <button
               key={category.id}
               onClick={() => onSelectCategory(category.slug)}
-              className={`block w-full cursor-pointer text-left ${
-                selectedCategorySlug === category.slug
-                  ? "text-orange font-semibold"
-                  : "hover:text-orange"
-              }`}
+              className="group flex w-full cursor-pointer items-center justify-between"
             >
-              {category.name}
+              <span
+                className={customTwMerge(
+                  "text-s14-l20 transition-colors",
+                  selectedCategorySlug === category.slug
+                    ? "text-orange font-semibold"
+                    : "text-text-primary group-hover:text-orange",
+                )}
+              >
+                {category.name}
+              </span>
+
+              {category.children.length > 0 && (
+                <KeyboardArrowUpIcon
+                  className={customTwMerge(
+                    "h-4 w-4 rotate-90 transition-colors",
+                    selectedCategorySlug === category.slug
+                      ? "fill-orange"
+                      : "fill-gray-7 group-hover:fill-orange",
+                  )}
+                />
+              )}
             </button>
           ))}
         </div>

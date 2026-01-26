@@ -1,12 +1,12 @@
 import { useMemo } from "react";
-import { useSearchParams } from "react-router-dom";
-import type { ReqCategoriesGetAllResponse } from "../../../api/responses/ReqCategoriesGetAllResponse.model";
-import { KeyboardArrowUpIcon } from "../../../assets/icons";
-import type { CategoryNode } from "../../../shared/models/CategoryNode.model";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { KeyboardArrowUpIcon } from "../../assets/icons";
+import { useCategoriesGetAll } from "../../hooks/useCategoriesGetAll";
+import type { CategoryNode } from "../models/CategoryNode.model";
 import {
   buildCategorySlugMap,
   buildCategoryTree,
-} from "../../../shared/utils/CategoryTree.util";
+} from "../utils/CategoryTree.util";
 
 const buildPath = (
   node: CategoryNode,
@@ -28,31 +28,47 @@ const buildPath = (
 };
 
 const CategoryBreadcrumb = ({
-  categories,
+  selectedCategoryId,
+  hasClearFilterButton = true,
 }: {
-  categories: ReqCategoriesGetAllResponse;
+  selectedCategoryId?: number;
+  hasClearFilterButton?: boolean;
 }) => {
-  const [params, setParams] = useSearchParams();
-  const selectedSlug = params.get("category");
+  const navigate = useNavigate();
+  const [params] = useSearchParams();
+  const { data: categories = [], isLoading } = useCategoriesGetAll();
 
   const breadcrumb = useMemo(() => {
-    if (!selectedSlug) return [];
+    if (!selectedCategoryId || categories.length === 0) {
+      return [];
+    }
 
     const tree = buildCategoryTree(categories);
     const slugMap = buildCategorySlugMap(tree);
 
-    const node = slugMap.get(selectedSlug);
+    const node = Array.from(slugMap.values()).find(
+      (categoryNode) => categoryNode.id === selectedCategoryId,
+    );
+
     if (!node) return [];
 
     return buildPath(node, slugMap);
-  }, [categories, selectedSlug]);
+  }, [categories, selectedCategoryId]);
 
-  if (breadcrumb.length === 0) return null;
+  if (isLoading || breadcrumb.length === 0) {
+    return null;
+  }
+
+  const handleNavigate = (slug: string) => {
+    const next = new URLSearchParams(params);
+    next.set("category", slug);
+    navigate(`/products?${next.toString()}`);
+  };
 
   const clearCategoryFilters = () => {
     const next = new URLSearchParams(params);
     next.delete("category");
-    setParams(next);
+    navigate(`/products?${next.toString()}`);
   };
 
   return (
@@ -65,11 +81,7 @@ const CategoryBreadcrumb = ({
             )}
 
             <button
-              onClick={() => {
-                const next = new URLSearchParams(params);
-                next.set("category", item.slug);
-                setParams(next);
-              }}
+              onClick={() => handleNavigate(item.slug)}
               className={`cursor-pointer ${
                 index === breadcrumb.length - 1 ? "font-medium" : "font-normal"
               }`}
@@ -80,12 +92,14 @@ const CategoryBreadcrumb = ({
         ))}
       </ol>
 
-      <button
-        onClick={clearCategoryFilters}
-        className="text-orange text-s12-l16 cursor-pointer font-semibold hover:underline"
-      >
-        Clear Filter
-      </button>
+      {hasClearFilterButton && (
+        <button
+          onClick={clearCategoryFilters}
+          className="text-orange text-s12-l16 cursor-pointer font-semibold hover:underline"
+        >
+          Clear Filter
+        </button>
+      )}
     </nav>
   );
 };
