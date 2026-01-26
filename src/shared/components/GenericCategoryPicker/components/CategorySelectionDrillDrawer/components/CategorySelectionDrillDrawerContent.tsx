@@ -1,6 +1,10 @@
 import { useMemo, useState } from "react";
 import type { ReqCategoriesGetAllResponse } from "../../../../../../api/responses/ReqCategoriesGetAllResponse.model";
-import { KeyboardArrowUpIcon } from "../../../../../../assets/icons";
+import {
+  ArrowLeftIcon,
+  CheckIcon,
+  KeyboardArrowUpIcon,
+} from "../../../../../../assets/icons";
 import { useCategoriesGetAll } from "../../../../../../hooks/useCategoriesGetAll";
 import {
   BUTTON_PRIMARY,
@@ -9,10 +13,10 @@ import {
 import { customTwMerge } from "../../../../../utils/Tailwind.util";
 
 type CategoryNode = ReqCategoriesGetAllResponse[number] & {
-  children?: CategoryNode[];
+  children: CategoryNode[];
 };
 
-const buildTree = (categories: ReqCategoriesGetAllResponse): CategoryNode[] => {
+const buildTreeWithMap = (categories: ReqCategoriesGetAllResponse) => {
   const map = new Map<number, CategoryNode>();
 
   categories.forEach((category) => {
@@ -23,13 +27,13 @@ const buildTree = (categories: ReqCategoriesGetAllResponse): CategoryNode[] => {
 
   map.forEach((node) => {
     if (node.parentId) {
-      map.get(node.parentId)?.children?.push(node);
+      map.get(node.parentId)?.children.push(node);
     } else {
       roots.push(node);
     }
   });
 
-  return roots;
+  return { tree: roots, map };
 };
 
 const CategorySelectionDrillDrawerContent = ({
@@ -43,85 +47,116 @@ const CategorySelectionDrillDrawerContent = ({
 }) => {
   const { data: categories = [] } = useCategoriesGetAll();
 
-  const tree = useMemo(() => buildTree(categories), [categories]);
+  const { tree, map } = useMemo(
+    () => buildTreeWithMap(categories),
+    [categories],
+  );
 
-  const [selectedPath, setSelectedPath] = useState<CategoryNode[]>(() => {
-    if (!initialSelectedCategory) return [];
+  /** 🔹 initial drill path + leaf */
+  const { initialDrillPath, initialLeaf } = useMemo(() => {
+    if (!initialSelectedCategory) {
+      return { initialDrillPath: [] as CategoryNode[], initialLeaf: null };
+    }
+
+    const leafNode = map.get(initialSelectedCategory.id) ?? null;
+    if (!leafNode) {
+      return { initialDrillPath: [] as CategoryNode[], initialLeaf: null };
+    }
 
     const path: CategoryNode[] = [];
-    let current = categories.find(
-      (category) => category.id === initialSelectedCategory.id,
-    );
+    let current = leafNode;
 
-    while (current) {
-      path.unshift(current);
-      current = categories.find(
-        (category) => category.id === current?.parentId,
-      );
+    while (current.parentId) {
+      const parent = map.get(current.parentId);
+      if (!parent) break;
+      path.unshift(parent);
+      current = parent;
     }
 
-    return path;
-  });
+    return {
+      initialDrillPath: path,
+      initialLeaf: leafNode.children.length === 0 ? leafNode : null,
+    };
+  }, [initialSelectedCategory, map]);
 
+  const [drillPath, setDrillPath] = useState<CategoryNode[]>(initialDrillPath);
+  const [selectedLeaf, setSelectedLeaf] = useState<CategoryNode | null>(
+    initialLeaf,
+  );
+
+  /** 🔹 gösterilecek liste */
   const currentNodes: CategoryNode[] = useMemo(() => {
-    if (selectedPath.length === 0) {
-      return tree;
-    }
-
-    const last = selectedPath[selectedPath.length - 1];
-    return last.children ?? [];
-  }, [tree, selectedPath]);
-
-  const finalSelectedCategory =
-    selectedPath.length > 0 &&
-    (!selectedPath[selectedPath.length - 1].children ||
-      selectedPath[selectedPath.length - 1].children?.length === 0)
-      ? selectedPath[selectedPath.length - 1]
-      : null;
+    if (drillPath.length === 0) return tree;
+    return drillPath[drillPath.length - 1].children;
+  }, [tree, drillPath]);
 
   return (
     <div className="flex h-full flex-col">
-      <div className="border-gray-2 shrink-0 border-b px-4 py-3">
-        <div className="text-s18-l28 text-text-primary font-semibold">
-          Select Category
-        </div>
-        <div className="text-s14-l20 text-gray-8">
-          Choose a category for this product.
+      {/* HEADER */}
+      <div className="border-gray-2 flex items-center gap-x-2 border-b px-4 py-3">
+        {drillPath.length > 0 && (
+          <button
+            type="button"
+            onClick={() => {
+              setSelectedLeaf(null);
+              setDrillPath((prev) => prev.slice(0, prev.length - 1));
+            }}
+            className="hover:bg-gray-1 flex h-8 w-8 items-center justify-center rounded-md"
+          >
+            <ArrowLeftIcon className="h-6 w-6 fill-current" />
+          </button>
+        )}
+
+        <div className="flex flex-col">
+          <span className="text-s18-l28 text-text-primary font-semibold">
+            Select Category
+          </span>
+          <span className="text-s14-l20 text-gray-8">
+            Choose a category for this product.
+          </span>
         </div>
       </div>
 
+      {/* LIST */}
       <ul className="flex flex-1 flex-col overflow-y-auto">
         {currentNodes.map((node) => {
-          const hasChildren = node.children && node.children.length > 0;
-          const isSelected =
-            selectedPath[selectedPath.length - 1]?.id === node.id;
+          const isLeaf = node.children.length === 0;
+          const isSelected = selectedLeaf?.id === node.id;
 
           return (
             <li
               key={node.id}
               onClick={() => {
-                if (hasChildren) {
-                  setSelectedPath((prev) => [...prev, node]);
+                if (isLeaf) {
+                  setSelectedLeaf(node);
                   return;
                 }
 
-                setSelectedPath((prev) => [...prev, node]);
+                setSelectedLeaf(null);
+                setDrillPath((prev) => [...prev, node]);
               }}
               className={customTwMerge(
                 "flex h-12 cursor-pointer items-center justify-between px-4 transition-colors",
-                isSelected ? "bg-orange/10 text-orange" : "text-text-primary",
+                isSelected
+                  ? "bg-orange/10 text-orange"
+                  : "text-text-primary hover:bg-orange/10 hover:text-orange",
               )}
             >
               <span className="text-s14-l20 font-medium">{node.name}</span>
 
-              {hasChildren && (
-                <KeyboardArrowUpIcon className="fill-gray-8 h-6 w-6 rotate-90" />
+              {isLeaf ? (
+                isSelected ? (
+                  <CheckIcon className="text-orange h-4 w-4 fill-current" />
+                ) : null
+              ) : (
+                <KeyboardArrowUpIcon className="text-gray-8 h-5 w-5 rotate-90 fill-current" />
               )}
             </li>
           );
         })}
       </ul>
 
+      {/* ACTIONS */}
       <div className="border-gray-2 shrink-0 border-t px-4 py-3">
         <div className="flex justify-end gap-x-2">
           <button
@@ -134,10 +169,10 @@ const CategorySelectionDrillDrawerContent = ({
 
           <button
             type="button"
-            disabled={!finalSelectedCategory}
+            disabled={!selectedLeaf}
             onClick={() => {
-              if (!finalSelectedCategory) return;
-              onCategorySelected(finalSelectedCategory);
+              if (!selectedLeaf) return;
+              onCategorySelected(selectedLeaf);
               close();
             }}
             className={customTwMerge(BUTTON_PRIMARY, "px-4")}

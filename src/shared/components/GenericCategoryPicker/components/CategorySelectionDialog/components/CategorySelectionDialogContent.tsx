@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import type { ReqCategoriesGetAllResponse } from "../../../../../../api/responses/ReqCategoriesGetAllResponse.model";
-import { KeyboardArrowUpIcon } from "../../../../../../assets/icons";
+import { CheckIcon, KeyboardArrowUpIcon } from "../../../../../../assets/icons";
 import { useCategoriesGetAll } from "../../../../../../hooks/useCategoriesGetAll";
 import {
   BUTTON_PRIMARY,
@@ -13,10 +13,10 @@ import {
 } from "../../../../GenericDialog";
 
 type CategoryNode = ReqCategoriesGetAllResponse[number] & {
-  children?: CategoryNode[];
+  children: CategoryNode[];
 };
 
-const buildTree = (categories: ReqCategoriesGetAllResponse): CategoryNode[] => {
+const buildTreeWithMap = (categories: ReqCategoriesGetAllResponse) => {
   const map = new Map<number, CategoryNode>();
 
   categories.forEach((category) => {
@@ -27,13 +27,45 @@ const buildTree = (categories: ReqCategoriesGetAllResponse): CategoryNode[] => {
 
   map.forEach((node) => {
     if (node.parentId) {
-      map.get(node.parentId)?.children?.push(node);
+      map.get(node.parentId)?.children.push(node);
     } else {
       roots.push(node);
     }
   });
 
-  return roots;
+  return { tree: roots };
+};
+
+const buildInitialPath = (
+  categories: ReqCategoriesGetAllResponse,
+  initialSelectedCategory: ReqCategoriesGetAllResponse[number] | null,
+): CategoryNode[] => {
+  if (!initialSelectedCategory || categories.length === 0) {
+    return [];
+  }
+
+  const map = new Map<number, CategoryNode>();
+
+  categories.forEach((category) => {
+    map.set(category.id, { ...category, children: [] });
+  });
+
+  categories.forEach((category) => {
+    if (category.parentId) {
+      map.get(category.parentId)?.children.push(map.get(category.id)!);
+    }
+  });
+
+  const path: CategoryNode[] = [];
+  let current = map.get(initialSelectedCategory.id);
+
+  while (current) {
+    path.unshift(current);
+    if (!current.parentId) break;
+    current = map.get(current.parentId);
+  }
+
+  return path;
 };
 
 const CategorySelectionDialogContent = ({
@@ -46,25 +78,12 @@ const CategorySelectionDialogContent = ({
   close: () => void;
 }) => {
   const { data: categories = [] } = useCategoriesGetAll();
-  const tree = useMemo(() => buildTree(categories), [categories]);
 
-  const [selectedPath, setSelectedPath] = useState<CategoryNode[]>(() => {
-    if (!initialSelectedCategory) return [];
+  const { tree } = useMemo(() => buildTreeWithMap(categories), [categories]);
 
-    const path: CategoryNode[] = [];
-    let current = categories.find(
-      (category) => category.id === initialSelectedCategory.id,
-    );
-
-    while (current) {
-      path.unshift(current);
-      current = categories.find(
-        (category) => category.id === current?.parentId,
-      );
-    }
-
-    return path;
-  });
+  const [selectedPath, setSelectedPath] = useState<CategoryNode[]>(() =>
+    buildInitialPath(categories, initialSelectedCategory),
+  );
 
   const handleSelect = (node: CategoryNode, level: number) => {
     setSelectedPath((prev) => {
@@ -74,15 +93,18 @@ const CategorySelectionDialogContent = ({
     });
   };
 
-  const finalSelectedCategory = selectedPath[selectedPath.length - 1] ?? null;
+  const lastSelectedNode = selectedPath[selectedPath.length - 1] ?? null;
+  const isLeafSelected =
+    !!lastSelectedNode && lastSelectedNode.children.length === 0;
+
+  const finalSelectedCategory = isLeafSelected ? lastSelectedNode : null;
 
   const columns: CategoryNode[][] = useMemo(() => {
     const result: CategoryNode[][] = [];
-
     result.push(tree);
 
     selectedPath.forEach((node) => {
-      if (node.children && node.children.length > 0) {
+      if (node.children.length > 0) {
         result.push(node.children);
       }
     });
@@ -100,34 +122,54 @@ const CategorySelectionDialogContent = ({
       </div>
 
       <div className="flex flex-1 gap-x-6 overflow-x-auto">
-        {columns.map((column, level) => (
-          <div
-            key={level}
-            className="border-gray-2 w-56 shrink-0 border-r pr-4 last:border-r-0"
-          >
-            <ul className="flex flex-col gap-1">
-              {column.map((node) => (
-                <li
-                  key={node.id}
-                  onClick={() => handleSelect(node, level)}
-                  className={`flex h-12 cursor-pointer items-center justify-between rounded-md px-3 transition-colors ${
-                    selectedPath[level]?.id === node.id
-                      ? "bg-orange/10 text-orange"
-                      : "text-text-primary hover:bg-orange/10 hover:text-orange"
-                  }`}
-                >
-                  <span className="text-s14-l20 font-semibold">
-                    {node.name}
-                  </span>
+        {columns.map((column, level) => {
+          const columnKey =
+            level === 0
+              ? "root"
+              : (selectedPath[level - 1]?.id ?? crypto.randomUUID());
 
-                  {node.children && node.children.length > 0 && (
-                    <KeyboardArrowUpIcon className="h-4 w-4 rotate-90 fill-current" />
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+          return (
+            <div key={columnKey} className="flex gap-x-4">
+              {/* 👇 w-56 → w-52 (UI telafisi) */}
+              <div className="w-52 shrink-0">
+                <ul className="flex flex-col gap-1">
+                  {column.map((node) => {
+                    const isSelected = selectedPath[level]?.id === node.id;
+                    const isLeaf = node.children.length === 0;
+
+                    return (
+                      <li
+                        key={node.id}
+                        onClick={() => handleSelect(node, level)}
+                        className={`flex h-12 cursor-pointer items-center justify-between rounded-md px-3 transition-colors ${
+                          isSelected
+                            ? "bg-orange/10 text-orange"
+                            : "text-text-primary hover:bg-orange/10 hover:text-orange"
+                        }`}
+                      >
+                        <span className="text-s14-l20 font-semibold">
+                          {node.name}
+                        </span>
+
+                        {isLeaf ? (
+                          isSelected ? (
+                            <CheckIcon className="text-orange h-4 w-4 fill-current" />
+                          ) : null
+                        ) : (
+                          <KeyboardArrowUpIcon className="h-4 w-4 rotate-90 fill-current" />
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+
+              {level < columns.length - 1 && (
+                <div className="bg-gray-2 h-full w-px" />
+              )}
+            </div>
+          );
+        })}
       </div>
 
       <div className="flex justify-end gap-x-2">
