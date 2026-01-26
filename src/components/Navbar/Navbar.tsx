@@ -1,12 +1,16 @@
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { MenuIcon } from "../../assets/icons";
 import { useUserDomain } from "../../hooks/useUserDomain";
 import { USER_DOMAIN } from "../../shared/enums/UserDomain.enum";
 import { useUserStore } from "../../stores/UserStore";
 import AuthNavigationMenu from "./components/AuthNavigationMenu";
+import CategoriesDrawer from "./components/CategoriesDrawer";
 import CategoriesMegaMenu from "./components/CategoriesMegaMenu/CategoriesMegaMenu";
 import GlobalSearchInput from "./components/GlobalSearchInput";
 import MyCartLink from "./components/MyCartLink";
 import MyFavoritesLink from "./components/MyFavoritesLink";
+import ParentCategories from "./components/ParentCategories";
 import UserNavigationMenu from "./components/UserNavigationMenu";
 
 const Navbar = () => {
@@ -17,34 +21,81 @@ const Navbar = () => {
   const isGuestOrUser =
     userDomain === USER_DOMAIN.GUEST || userDomain === USER_DOMAIN.USER;
 
+  const [isCategoriesDrawerOpen, setIsCategoriesDrawerOpen] = useState(false);
+
   return (
-    <header className="border-gray-1 border-b pt-5">
-      <div className="w-full px-10 2xl:mx-auto 2xl:max-w-[1536px] 2xl:px-0">
-        <div className="flex h-[72px] items-center justify-between gap-x-16">
-          <NavLink
-            to="/"
-            className="text-s48-l56 text-text-primary shrink-0 select-none"
-          >
-            Ecommerce
-          </NavLink>
+    <>
+      <header className="border-gray-1 border-b pt-4 md:pt-5">
+        <div className="mx-auto w-full max-w-[1800px] px-3 lg:px-10">
+          <div className="flex flex-col gap-y-4 pb-4 lg:gap-y-0 lg:pb-0">
+            <div className="flex items-center justify-between gap-x-16 lg:h-[72px]">
+              <div className="flex shrink-0 items-center gap-x-1 select-none">
+                {isGuestOrUser && (
+                  <button
+                    type="button"
+                    onClick={() => setIsCategoriesDrawerOpen(true)}
+                    className="lg:hidden"
+                  >
+                    <MenuIcon className="fill-text-primary" />
+                  </button>
+                )}
 
-          {isGuestOrUser && <GlobalSearchInput />}
+                <NavLink
+                  to="/"
+                  className="text-s20-l28 md:text-s28-l36 xl:text-s48-l56 text-text-primary"
+                >
+                  Ecommerce
+                </NavLink>
+              </div>
 
-          <div className="flex shrink-0 gap-x-6">
-            {isAuthenticated ? <UserNavigationMenu /> : <AuthNavigationMenu />}
+              {isGuestOrUser && (
+                <div className="hidden flex-1 lg:flex">
+                  <GlobalSearchInput />
+                </div>
+              )}
+
+              <div className="flex shrink-0 gap-x-6">
+                {isAuthenticated ? (
+                  <UserNavigationMenu />
+                ) : (
+                  <AuthNavigationMenu />
+                )}
+
+                {isGuestOrUser && (
+                  <>
+                    <MyFavoritesLink />
+                    <MyCartLink />
+                  </>
+                )}
+              </div>
+            </div>
 
             {isGuestOrUser && (
-              <>
-                <MyFavoritesLink />
-                <MyCartLink />
-              </>
+              <div className="lg:hidden">
+                <GlobalSearchInput />
+              </div>
             )}
           </div>
-        </div>
 
-        {isGuestOrUser && <CategoriesMegaMenu />}
-      </div>
-    </header>
+          {isGuestOrUser && (
+            <div className="flex h-8 items-center gap-x-6 overflow-hidden lg:overflow-visible">
+              <div className="hidden shrink-0 lg:flex">
+                <CategoriesMegaMenu />
+              </div>
+
+              <ParentCategories />
+            </div>
+          )}
+        </div>
+      </header>
+
+      {isGuestOrUser && (
+        <CategoriesDrawer
+          open={isCategoriesDrawerOpen}
+          onOpenChange={setIsCategoriesDrawerOpen}
+        />
+      )}
+    </>
   );
 };
 

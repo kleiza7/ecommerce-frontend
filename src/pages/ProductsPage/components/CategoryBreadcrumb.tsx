@@ -52,12 +52,11 @@ const CategoryBreadcrumb = ({
   const clearCategoryFilters = () => {
     const next = new URLSearchParams(params);
     next.delete("category");
-    next.delete("page");
     setParams(next);
   };
 
   return (
-    <nav className="text-s14-l20 text-text-primary flex items-center gap-x-4 px-[120px]">
+    <nav className="text-s14-l20 text-text-primary hidden items-center gap-x-4 md:flex">
       <ol className="flex flex-wrap items-center gap-1">
         {breadcrumb.map((item, index) => (
           <li key={item.id} className="flex items-center gap-1">
@@ -69,7 +68,6 @@ const CategoryBreadcrumb = ({
               onClick={() => {
                 const next = new URLSearchParams(params);
                 next.set("category", item.slug);
-                next.delete("page");
                 setParams(next);
               }}
               className={`cursor-pointer ${

@@ -13,7 +13,7 @@ import {
 import {
   EMAIL_REGEX,
   PASSWORD_REGEX,
-} from "../../../shared/constants/Form.constants";
+} from "../../../shared/constants/Regex.constants";
 import { AUTH_PAGE_MODE } from "../../../shared/enums/AuthPageMode.enum";
 import { customTwMerge } from "../../../shared/utils/Tailwind.util";
 

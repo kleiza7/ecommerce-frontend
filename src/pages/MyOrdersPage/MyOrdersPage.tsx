@@ -31,6 +31,17 @@ const DATE_FILTER_OPTIONS: { label: string; value: DATE_FILTER }[] = [
   { label: "Last 1 Year", value: DATE_FILTER.LAST_1_YEAR },
 ];
 
+const STATUS_FILTER_OPTIONS: {
+  label: string;
+  value: ORDER_STATUS | "ALL";
+}[] = [
+  { label: "All", value: "ALL" },
+  ...Object.values(ORDER_STATUS).map((status) => ({
+    label: ORDER_STATUS_TEXT_PAIRS[status],
+    value: status,
+  })),
+];
+
 const MyOrdersPage = () => {
   const navigate = useNavigate();
   const { data: orders = [], isLoading } = useOrdersGetOrdersListByUser();
@@ -85,11 +96,11 @@ const MyOrdersPage = () => {
   }, [currencies]);
 
   return (
-    <div className="flex h-full w-full flex-col gap-5 py-5">
-      <div className="border-gray-1 flex items-center justify-between rounded-md border px-5 py-4">
+    <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-3 p-3 md:gap-5 md:px-10 md:py-6 lg:py-9">
+      <div className="border-gray-1 flex flex-col gap-y-2 md:flex-row md:items-center md:justify-between md:gap-y-0 md:rounded-md md:border md:px-5 md:py-4">
         <span className="text-s18-l28 text-text-primary">My Orders</span>
 
-        <div className="relative w-[330px]">
+        <div className="relative w-full md:w-[330px]">
           <SearchIcon className="fill-orange absolute top-1/2 left-3 h-6 w-6 -translate-y-1/2" />
 
           <input
@@ -114,49 +125,57 @@ const MyOrdersPage = () => {
         </div>
       </div>
 
-      <div className="flex items-center gap-3">
-        <button
-          onClick={() => setSelectedStatus("ALL")}
-          className={`text-s14-l20 h-8 cursor-pointer rounded-full border px-4 ${
-            selectedStatus === "ALL"
-              ? "border-orange text-orange"
-              : "text-gray-9"
-          }`}
-        >
-          All
-        </button>
-
-        {Object.values(ORDER_STATUS).map((status) => (
+      <div className="flex items-center justify-between gap-2">
+        <div className="hidden items-center gap-3 md:flex">
           <button
-            key={status}
-            onClick={() => setSelectedStatus(status)}
+            onClick={() => setSelectedStatus("ALL")}
             className={`text-s14-l20 h-8 cursor-pointer rounded-full border px-4 ${
-              selectedStatus === status
+              selectedStatus === "ALL"
                 ? "border-orange text-orange"
                 : "text-gray-9"
             }`}
           >
-            {ORDER_STATUS_TEXT_PAIRS[status]}
+            All
           </button>
-        ))}
 
-        <div className="ml-auto w-[180px]">
-          <GenericSelect<DATE_FILTER>
-            value={dateFilter}
-            options={DATE_FILTER_OPTIONS}
-            onChange={setDateFilter}
-          />
+          {Object.values(ORDER_STATUS).map((status) => (
+            <button
+              key={status}
+              onClick={() => setSelectedStatus(status)}
+              className={`text-s14-l20 h-8 cursor-pointer rounded-full border px-4 ${
+                selectedStatus === status
+                  ? "border-orange text-orange"
+                  : "text-gray-9"
+              }`}
+            >
+              {ORDER_STATUS_TEXT_PAIRS[status]}
+            </button>
+          ))}
         </div>
+
+        <GenericSelect<ORDER_STATUS | "ALL">
+          value={selectedStatus}
+          options={STATUS_FILTER_OPTIONS}
+          onChange={setSelectedStatus}
+          className="w-full md:hidden"
+        />
+
+        <GenericSelect<DATE_FILTER>
+          value={dateFilter}
+          options={DATE_FILTER_OPTIONS}
+          onChange={setDateFilter}
+          className="w-full md:w-[200px]"
+        />
       </div>
 
       {isLoading ? (
-        <div className="flex min-h-0 flex-1 flex-col gap-y-5 overflow-y-auto">
+        <div className="flex min-h-0 flex-1 flex-col gap-y-3 overflow-y-auto md:gap-y-5">
           {Array.from({ length: 5 }).map((_, index) => (
             <OrderCardSkeleton key={index} />
           ))}
         </div>
       ) : filteredOrders.length > 0 ? (
-        <div className="flex min-h-0 flex-1 flex-col gap-y-5 overflow-y-auto">
+        <div className="flex min-h-0 flex-1 flex-col gap-y-3 overflow-y-auto md:gap-y-5">
           {filteredOrders.map((order) => (
             <OrderCard
               key={order.id}

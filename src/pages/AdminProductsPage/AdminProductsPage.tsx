@@ -1,17 +1,18 @@
-import type {
-  ColDef,
-  ICellRendererParams,
-  RowDoubleClickedEvent,
-} from "ag-grid-community";
+import type { ColDef, ICellRendererParams } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { ReqProductsGetWaitingApprovalProductsResponse } from "../../api/responses/ReqProductsGetWaitingApprovalProductsResponse.model";
+import { OrderApproveIcon } from "../../assets/icons";
+import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { useProductsGetWaitingApprovalProducts } from "../../hooks/useProductsGetWaitingApprovalProducts";
+import GenericTooltip from "../../shared/components/GenericTooltip";
 import LoadingSpinner from "../../shared/components/LoadingSpinner";
+import { MEDIA_QUERY } from "../../shared/constants/MediaQuery.constants";
 import { EVENT_TYPE } from "../../shared/enums/EventType.enum";
 import { registerAgGridModules } from "../../shared/utils/AgGrid.util";
 import "../../styles/agGrid.css";
-import ProductApprovalDialog from "./components/ProductApprovalDialog/ProductApprovalDialog";
+import ProductApprovalDialog from "./components/ProductApprovalDialog";
+import ProductApprovalDrawer from "./components/ProductApprovalDrawer";
 
 const AdminProductsPage = () => {
   const {
@@ -20,7 +21,9 @@ const AdminProductsPage = () => {
     refetch,
   } = useProductsGetWaitingApprovalProducts();
 
-  const [isProductApprovalDialogOpen, setIsProductApprovalDialogOpen] =
+  const isMobileOrTablet = useMediaQuery(MEDIA_QUERY.BELOW_LG);
+
+  const [isProductApprovalPortalOpen, setIsProductApprovalPortalOpen] =
     useState(false);
   const [selectedProductId, setSelectedProductId] = useState<number | null>(
     null,
@@ -28,13 +31,20 @@ const AdminProductsPage = () => {
 
   const totalCount = products.length;
 
+  const openProductApprovalPortal = useCallback((productId: number) => {
+    setSelectedProductId(productId);
+    setIsProductApprovalPortalOpen(true);
+  }, []);
+
   const columnDefs = useMemo<
     ColDef<ReqProductsGetWaitingApprovalProductsResponse[number]>[]
   >(
     () => [
       {
         headerName: "Preview",
-        width: 80,
+        width: 100,
+        maxWidth: 100,
+        minWidth: 100,
         sortable: false,
         filter: false,
         cellRenderer: (
@@ -84,22 +94,40 @@ const AdminProductsPage = () => {
         field: "stockCount",
         headerName: "Stock",
       },
+      {
+        colId: "rowActions",
+        pinned: "right",
+        width: 80,
+        minWidth: 80,
+        maxWidth: 80,
+        sortable: false,
+        filter: false,
+        resizable: false,
+        suppressMenu: true,
+        cellRenderer: (
+          params: ICellRendererParams<
+            ReqProductsGetWaitingApprovalProductsResponse[number]
+          >,
+        ) => {
+          if (!params.data?.id) return null;
+
+          return (
+            <div className="flex h-full items-center justify-center">
+              <GenericTooltip content="Approve / Reject">
+                <button
+                  type="button"
+                  onClick={() => openProductApprovalPortal(params.data!.id)}
+                  className="flex h-8 w-8 cursor-pointer items-center justify-center"
+                >
+                  <OrderApproveIcon className="fill-orange" />
+                </button>
+              </GenericTooltip>
+            </div>
+          );
+        },
+      },
     ],
-    [],
-  );
-
-  const onRowDoubleClicked = useCallback(
-    (
-      event: RowDoubleClickedEvent<
-        ReqProductsGetWaitingApprovalProductsResponse[number]
-      >,
-    ) => {
-      if (!event.data?.id) return;
-
-      setSelectedProductId(event.data.id);
-      setIsProductApprovalDialogOpen(true);
-    },
-    [],
+    [openProductApprovalPortal],
   );
 
   useEffect(() => {
@@ -135,9 +163,9 @@ const AdminProductsPage = () => {
 
   return (
     <>
-      <div className="flex h-full w-full flex-col gap-5 py-4">
+      <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-5 p-3 md:px-10 md:py-8">
         <div className="flex items-center justify-between">
-          <span className="text-s28-l36 text-text-primary font-semibold">
+          <span className="text-s24-l32 xl:text-s28-l36 text-text-primary font-semibold">
             My Waiting Approvals ({totalCount})
           </span>
         </div>
@@ -149,7 +177,6 @@ const AdminProductsPage = () => {
             columnDefs={columnDefs}
             suppressCellFocus
             animateRows
-            onRowDoubleClicked={onRowDoubleClicked}
             defaultColDef={{
               flex: 1,
               minWidth: 140,
@@ -161,13 +188,20 @@ const AdminProductsPage = () => {
         </div>
       </div>
 
-      {selectedProductId && (
-        <ProductApprovalDialog
-          open={isProductApprovalDialogOpen}
-          setOpen={setIsProductApprovalDialogOpen}
-          productId={selectedProductId}
-        />
-      )}
+      {selectedProductId &&
+        (isMobileOrTablet ? (
+          <ProductApprovalDrawer
+            open={isProductApprovalPortalOpen}
+            setOpen={setIsProductApprovalPortalOpen}
+            productId={selectedProductId}
+          />
+        ) : (
+          <ProductApprovalDialog
+            open={isProductApprovalPortalOpen}
+            setOpen={setIsProductApprovalPortalOpen}
+            productId={selectedProductId}
+          />
+        ))}
     </>
   );
 };

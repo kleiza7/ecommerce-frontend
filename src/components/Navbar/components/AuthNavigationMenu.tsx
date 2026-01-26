@@ -43,7 +43,7 @@ const AuthNavigationMenu = () => {
           )}
 
           <span
-            className={`text-s14-l20 font-semibold transition-colors duration-200 ${
+            className={`text-s14-l20 hidden font-semibold transition-colors duration-200 xl:inline ${
               open ? "text-orange" : "text-text-primary group-hover:text-orange"
             }`}
           >

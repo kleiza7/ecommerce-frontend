@@ -24,7 +24,7 @@ const MyFavoritesPage = () => {
 
   if (favorites.length === 0) {
     return (
-      <div className="flex h-full w-full flex-col items-center justify-center gap-6 text-center">
+      <div className="mx-auto flex w-full max-w-[1480px] flex-col items-center justify-center gap-6 text-center">
         <div className="bg-orange/10 flex h-18 w-18 items-center justify-center rounded-full">
           <FavoriteFilledIcon className="fill-orange h-9 w-9" />
         </div>
@@ -44,9 +44,9 @@ const MyFavoritesPage = () => {
   }
 
   return (
-    <div className="flex h-full w-full flex-col gap-y-5 py-5">
-      <div className="sticky top-0 z-10 px-[90px]">
-        <div className="relative w-[330px]">
+    <div className="flex w-full flex-col">
+      <div className="top-0 mx-auto flex h-[70px] w-full max-w-[1480px] shrink-0 items-center px-3 md:px-10">
+        <div className="relative w-full md:w-[330px]">
           <SearchIcon className="fill-orange absolute top-1/2 left-3 h-6 w-6 -translate-y-1/2" />
 
           <input
@@ -73,7 +73,7 @@ const MyFavoritesPage = () => {
 
       <div className="bg-gray-1 h-px w-full" />
 
-      <div className="flex-1 overflow-y-auto px-[90px]">
+      <div className="mx-auto max-w-[1480px] flex-1 overflow-y-auto px-3 py-5 md:px-10">
         {filteredFavoriteProducts.length === 0 ? (
           <div className="flex h-[300px] items-center justify-center">
             <span className="text-s14-l20 text-gray-8">
@@ -81,7 +81,7 @@ const MyFavoritesPage = () => {
             </span>
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 md:gap-6 lg:grid-cols-3 xl:grid-cols-4">
             {filteredFavoriteProducts.map((product) => (
               <FavoriteProductCard key={product.id} product={product} />
             ))}

@@ -18,29 +18,28 @@ const OrderCard = ({
 }) => {
   // TODO: remove it
   const userName = useUserStore((state) => state.user?.name);
-
   const navigate = useNavigate();
 
   return (
     <div className="border-gray-1 rounded-lg border">
-      <div className="border-gray-1 bg-gray-3 flex items-center gap-x-5 border-b px-5 py-3">
-        <div className="text-text-primary flex flex-1 gap-x-5">
-          <div className="text-s14-l20 flex-1">
+      <div className="border-gray-1 bg-gray-3 flex flex-col gap-3 border-b px-5 py-3 md:flex-row md:items-center md:gap-x-5">
+        <div className="text-text-primary flex flex-1 flex-wrap gap-y-3 md:flex-nowrap md:gap-x-5">
+          <div className="text-s14-l20 w-1/2 md:w-auto md:flex-1">
             <div className="font-medium">Order Date</div>
             {new Date(order.createdAt).toLocaleDateString()}
           </div>
 
-          <div className="text-s14-l20 flex-1">
+          <div className="text-s14-l20 w-1/2 md:w-auto md:flex-1">
             <div className="font-medium">Order Summary</div>
             {order.items.length} Items
           </div>
 
-          <div className="text-s14-l20 flex-1">
+          <div className="text-s14-l20 w-1/2 md:w-auto md:flex-1">
             <div className="font-medium">Recipient</div>
             {userName ?? ""}
           </div>
 
-          <div className="text-s14-l20 flex-1">
+          <div className="text-s14-l20 w-1/2 md:w-auto md:flex-1">
             <div className="font-medium">Total</div>
             <span className="text-orange">
               {order.totalPrice.toFixed(2)} {currencyCode}
@@ -50,15 +49,19 @@ const OrderCard = ({
 
         <button
           onClick={() => navigate(`/order-detail/${order.id}`)}
-          className={customTwMerge(BUTTON_PRIMARY, BUTTON_SIZE_SMALL, "px-6")}
+          className={customTwMerge(
+            BUTTON_PRIMARY,
+            BUTTON_SIZE_SMALL,
+            "w-full px-6 md:w-auto",
+          )}
         >
           Details
         </button>
       </div>
 
       <div className="p-5">
-        <div className="border-gray-1 flex items-center gap-x-6 rounded-md border px-5 py-3">
-          <div className="text-s14-l20 w-[30%] shrink-0 font-semibold">
+        <div className="border-gray-1 flex flex-col gap-y-3 rounded-md border px-5 py-3 md:flex-row md:items-center md:gap-x-6 md:gap-y-0">
+          <div className="text-s14-l20 font-semibold md:w-[30%] md:shrink-0">
             {ORDER_STATUS_TEXT_PAIRS[order.status]}
           </div>
 

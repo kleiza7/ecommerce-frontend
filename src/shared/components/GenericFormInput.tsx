@@ -21,6 +21,8 @@ type GenericFormInputProps<TFieldValues extends FieldValues> = {
   disabled?: boolean;
   min?: number;
   max?: number;
+  minLength?: number;
+  maxLength?: number;
   rules?: RegisterOptions<TFieldValues, FieldPath<TFieldValues>>;
 };
 
@@ -33,6 +35,8 @@ const GenericFormInput = <TFieldValues extends FieldValues>({
   disabled = false,
   min,
   max,
+  minLength,
+  maxLength,
   rules,
 }: GenericFormInputProps<TFieldValues>) => {
   const isNumber = type === "number";
@@ -62,22 +66,50 @@ const GenericFormInput = <TFieldValues extends FieldValues>({
             },
           }),
 
+        ...(!isNumber &&
+          minLength !== undefined && {
+            minLength: {
+              value: minLength,
+              message: `Minimum length is ${minLength}`,
+            },
+          }),
+
+        ...(!isNumber &&
+          maxLength !== undefined && {
+            maxLength: {
+              value: maxLength,
+              message: `Maximum length is ${maxLength}`,
+            },
+          }),
+
         ...rules,
       }}
-      render={({ field, fieldState }) => (
-        <input
-          {...field}
-          type={type}
-          placeholder={placeholder}
-          disabled={disabled}
-          min={isNumber ? min : undefined}
-          max={isNumber ? max : undefined}
-          className={customTwMerge(
-            INPUT_BASE,
-            disabled ? INPUT_DISABLED : fieldState.error ? INPUT_ERROR : "",
-          )}
-        />
-      )}
+      render={({ field, fieldState }) => {
+        const value = isNumber
+          ? field.value == null ||
+            Number.isNaN(field.value as unknown as number)
+            ? ""
+            : field.value
+          : (field.value ?? "");
+
+        return (
+          <input
+            {...field}
+            value={value}
+            type={type}
+            placeholder={placeholder}
+            disabled={disabled}
+            min={isNumber ? min : undefined}
+            max={isNumber ? max : undefined}
+            minLength={!isNumber ? minLength : undefined}
+            maxLength={!isNumber ? maxLength : undefined}
+            className={customTwMerge(
+              INPUT_BASE,
+              disabled ? INPUT_DISABLED : fieldState.error ? INPUT_ERROR : "",
+            )}
+          />
+        );
+      }}
     />
   );
 };

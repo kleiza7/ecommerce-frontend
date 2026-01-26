@@ -1,6 +1,7 @@
 import { QueryClientProvider } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { RouterProvider } from "react-router-dom";
+import ScrollToTopButton from "./components/ScrollToTopButton";
 import ToastProvider from "./components/ToastProvider";
 import TooltipProvider from "./components/TooltipProvider";
 import { useCartHydrate } from "./hooks/useCartHydrate";
@@ -24,6 +25,7 @@ const App = () => {
       <TooltipProvider>
         <ToastProvider>
           <RouterProvider router={router} />
+          <ScrollToTopButton />
         </ToastProvider>
       </TooltipProvider>
     </QueryClientProvider>

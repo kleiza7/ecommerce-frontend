@@ -48,7 +48,7 @@ const OrderDetailPage = () => {
   }
 
   return (
-    <div className="flex h-full w-full flex-col gap-5 py-5">
+    <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-3 p-3 md:gap-5 md:px-10 md:py-9">
       <div className="flex items-center gap-x-2">
         <button
           type="button"
@@ -60,25 +60,27 @@ const OrderDetailPage = () => {
         </button>
       </div>
 
-      <div className="border-gray-1 rounded-md border px-5 py-4">
-        <div className="flex items-center justify-between">
-          <div className="text-s16-l24 font-semibold">Order Summary:</div>
+      <div className="border-gray-1 flex flex-col gap-y-2 rounded-md border px-5 py-4 md:flex-row md:items-center md:justify-between md:gap-y-0">
+        <span className="text-s16-l24 font-semibold">Order Summary:</span>
 
-          <div className="text-s12-l16 flex gap-x-20">
-            <div>
-              <div className="font-medium">Order Date</div>
-              <div>{new Date(order.createdAt).toLocaleDateString()}</div>
-            </div>
+        <div className="flex justify-between md:justify-start md:gap-x-20">
+          <div className="flex flex-col">
+            <span className="text-s12-l16 font-medium">Order Date</span>
+            <span className="text-s12-l16">
+              {new Date(order.createdAt).toLocaleDateString()}
+            </span>
+          </div>
 
-            <div>
-              <div className="font-medium">Order Summary</div>
-              <div>{order.items.length} items</div>
-            </div>
+          <div className="flex flex-col">
+            <span className="text-s12-l16 font-medium">Order Summary</span>
+            <span className="text-s12-l16">{order.items.length} items</span>
+          </div>
 
-            <div>
-              <div className="font-medium">Order Status</div>
-              <div>{ORDER_STATUS_TEXT_PAIRS[order.status]}</div>
-            </div>
+          <div className="flex flex-col">
+            <span className="text-s12-l16 font-medium">Order Status</span>
+            <span className="text-s12-l16">
+              {ORDER_STATUS_TEXT_PAIRS[order.status]}
+            </span>
           </div>
         </div>
       </div>
@@ -94,7 +96,7 @@ const OrderDetailPage = () => {
           </div>
 
           <div className="overflow-x-auto">
-            <div className="flex min-w-max gap-x-5">
+            <div className="flex min-w-max gap-x-3 md:gap-x-5">
               {items.map((item) => {
                 const img = item.product.images.find((img) => img.isPrimary);
                 if (!img) return null;
@@ -102,7 +104,7 @@ const OrderDetailPage = () => {
                 return (
                   <div
                     key={item.id}
-                    className="border-gray-1 flex w-[470px] shrink-0 gap-x-4 rounded-md border p-3"
+                    className="border-gray-1 flex w-[280px] shrink-0 gap-x-4 rounded-md border p-3 md:w-[360px] 2xl:w-[470px]"
                   >
                     <img
                       src={img.thumbUrl}
@@ -110,23 +112,23 @@ const OrderDetailPage = () => {
                       className="h-[110px] rounded object-cover"
                     />
 
-                    <div className="flex flex-col py-2">
-                      <div className="text-s14-l20 text-text-primary">
+                    <div className="flex min-w-0 flex-col py-2">
+                      <span className="text-s14-l20 text-text-primary truncate">
                         {item.product.brand.name}
-                      </div>
+                      </span>
 
-                      <div className="text-s14-l20 text-text-primary">
+                      <span className="text-s14-l20 text-text-primary truncate">
                         {item.product.name}
-                      </div>
+                      </span>
 
-                      <div className="text-s14-l20 text-text-primary">
+                      <span className="text-s14-l20 text-text-primary truncate">
                         Quantity: {item.quantity}
-                      </div>
+                      </span>
 
-                      <div className="text-s14-l20 text-orange mt-auto font-medium">
+                      <span className="text-s14-l20 text-orange mt-auto truncate font-medium">
                         {item.priceSnapshot.toFixed(2)}{" "}
                         {currencyMap.get(item.currencyId) ?? ""}
-                      </div>
+                      </span>
                     </div>
                   </div>
                 );

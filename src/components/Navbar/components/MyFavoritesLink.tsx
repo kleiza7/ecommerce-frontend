@@ -10,7 +10,7 @@ const MyFavoritesLink = () => {
       <FavoriteIcon className="fill-text-primary h-5 w-5 group-hover:hidden" />
       <FavoriteFilledIcon className="fill-orange hidden h-5 w-5 group-hover:block" />
 
-      <span className="text-s14-l20 text-text-primary group-hover:text-orange font-semibold transition-colors">
+      <span className="text-s14-l20 text-text-primary group-hover:text-orange hidden font-semibold transition-colors xl:inline">
         My Favorites
       </span>
     </NavLink>

@@ -1,6 +1,7 @@
 import * as Select from "@radix-ui/react-select";
 import type { ReactNode } from "react";
 import { CheckIcon, KeyboardArrowUpIcon } from "../../assets/icons";
+import { customTwMerge } from "../utils/Tailwind.util";
 
 type GenericSelectOption<T> = {
   label: string;
@@ -14,6 +15,8 @@ type GenericSelectProps<T> = {
   disabled?: boolean;
   onChange: (value: T) => void;
   renderValue?: (value: T) => ReactNode;
+  className?: string;
+  triggerIcon?: ReactNode;
 };
 
 const isSameValue = <T,>(a?: T, b?: T) =>
@@ -26,6 +29,8 @@ const GenericSelect = <T,>({
   disabled,
   onChange,
   renderValue,
+  className,
+  triggerIcon,
 }: GenericSelectProps<T>) => {
   const selectedOption = options.find((option) =>
     isSameValue(option.value, value),
@@ -40,7 +45,12 @@ const GenericSelect = <T,>({
         if (option) onChange(option.value);
       }}
     >
-      <Select.Trigger className="text-s14-l20 text-text-primary disabled:bg-gray-3 border-gray-2 flex h-10 w-full cursor-pointer items-center justify-between rounded-md border px-3 outline-none disabled:cursor-not-allowed disabled:opacity-60">
+      <Select.Trigger
+        className={customTwMerge(
+          "text-s14-l20 text-text-primary disabled:bg-gray-3 border-gray-2 flex h-10 w-full cursor-pointer items-center justify-between rounded-md border px-3 outline-none disabled:cursor-not-allowed disabled:opacity-60",
+          className,
+        )}
+      >
         <Select.Value placeholder={placeholder}>
           {selectedOption
             ? renderValue
@@ -51,7 +61,9 @@ const GenericSelect = <T,>({
 
         {!disabled && (
           <Select.Icon>
-            <KeyboardArrowUpIcon className="text-gray-8 h-4 w-4 rotate-180" />
+            {triggerIcon ?? (
+              <KeyboardArrowUpIcon className="text-gray-8 h-4 w-4 rotate-180" />
+            )}
           </Select.Icon>
         )}
       </Select.Trigger>
@@ -68,7 +80,7 @@ const GenericSelect = <T,>({
               <Select.Item
                 key={option.label}
                 value={option.label}
-                className="text-s14-l20 text-text-primary data-[state=checked]:bg-gray-4 hover:bg-gray-4 relative flex cursor-pointer items-center rounded p-2 outline-none select-none"
+                className="text-s14-l20 text-text-primary data-[state=checked]:bg-gray-3 hover:bg-gray-3 relative flex cursor-pointer items-center rounded p-2 outline-none select-none"
               >
                 <Select.ItemText className="truncate">
                   {option.label}

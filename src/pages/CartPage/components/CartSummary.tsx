@@ -28,11 +28,9 @@ const CartSummary = ({
 
   const currencyMap = useMemo(() => {
     const map = new Map<number, string>();
-
     for (const currency of currencies) {
       map.set(currency.id, currency.code);
     }
-
     return map;
   }, [currencies]);
 
@@ -53,7 +51,14 @@ const CartSummary = ({
   };
 
   return (
-    <div className="border-gray-2 bg-surface-primary flex w-[340px] shrink-0 flex-col gap-4 rounded-lg border p-6">
+    <div
+      className={customTwMerge(
+        "bg-surface-primary border-gray-2 flex flex-col gap-4 border-t p-6",
+        "w-full shrink-0 lg:w-[350px]",
+        "fixed inset-x-0 bottom-0 z-50 lg:static",
+        "lg:rounded-lg lg:border",
+      )}
+    >
       <h2 className="text-s22-l28 font-medium">Cart Summary</h2>
 
       <div className="text-s14-l20 text-gray-9 flex justify-between">
