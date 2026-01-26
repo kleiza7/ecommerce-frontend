@@ -1,5 +1,6 @@
 import * as Toast from "@radix-ui/react-toast";
 import { useEffect, useState, type ReactNode } from "react";
+import { CloseIcon } from "../assets/icons";
 import { EVENT_TYPE } from "../shared/enums/EventType.enum";
 import { TOAST_TYPE } from "../shared/enums/ToastType.enum";
 import type { ToastEventDetail } from "../shared/models/ToastEventDetail.model";
@@ -64,11 +65,25 @@ const ToastProvider = ({ children }: { children: ReactNode }) => {
             key={toast.id}
             defaultOpen
             duration={5000}
+            onOpenChange={(open) => {
+              if (!open) {
+                setToasts((prev) => prev.filter((t) => t.id !== toast.id));
+              }
+            }}
             className={customTwMerge(
-              "z-9999 flex flex-col gap-y-1 rounded-sm px-4 py-3 shadow-md",
+              "relative z-9999 flex flex-col gap-y-1 rounded-sm px-4 py-3 shadow-md",
               bgClass,
             )}
           >
+            <Toast.Close asChild>
+              <button
+                type="button"
+                className="absolute top-2 right-2 cursor-pointer"
+              >
+                <CloseIcon className="fill-text-primary h-4 w-4" />
+              </button>
+            </Toast.Close>
+
             <Toast.Title className="font-semibold">
               {toast.title || autoTitle}
             </Toast.Title>

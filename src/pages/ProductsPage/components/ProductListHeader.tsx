@@ -1,6 +1,6 @@
 import { useSearchParams } from "react-router-dom";
-import { SwapVertIcon } from "../../../../../assets/icons";
-import GenericSelect from "../../../../../shared/components/GenericSelect";
+import { SwapVertIcon, TuneIcon } from "../../../assets/icons";
+import GenericSelect from "../../../shared/components/GenericSelect";
 
 const SORT_OPTIONS: { label: string; value: string }[] = [
   { label: "Recommended", value: "recommended" },
@@ -39,9 +39,13 @@ const formatProductCount = (count: number): string => {
 const ProductListHeader = ({
   selectedCategoryName,
   totalCount,
+  openProductsSortPortal,
+  openProductsFilterPortal,
 }: {
   selectedCategoryName?: string;
   totalCount: number;
+  openProductsSortPortal: () => void;
+  openProductsFilterPortal: () => void;
 }) => {
   const [params, setSearchParams] = useSearchParams();
 
@@ -60,23 +64,51 @@ const ProductListHeader = ({
   const selectedValue = params.get("sortBy") ?? "recommended";
   const formattedTotalCount = formatProductCount(totalCount);
 
+  const selectedSortLabel =
+    SORT_OPTIONS.find((option) => option.value === selectedValue)?.label ??
+    "Recommended";
+
   return (
-    <div className="flex items-center justify-between">
-      <div className="flex items-center gap-x-2">
-        <span className="text-s18-l28 text-text-primary font-medium">
+    <div className="flex flex-col items-center justify-center md:flex-row md:justify-between">
+      <div className="flex flex-col items-center gap-x-2 py-2 md:flex-row md:py-0">
+        <span className="text-s16-l24 md:text-s18-l28 text-text-primary font-medium">
           {selectedCategoryName ?? "Products"}
         </span>
 
-        <span className="text-s14-l20 text-gray-8">
+        <span className="text-s12-l16 md:text-s14-l20 text-gray-8 font-medium md:font-normal">
           {formattedTotalCount} Products
         </span>
+      </div>
+
+      <div className="border-gray-2 flex h-[42px] w-full items-center border-y md:hidden">
+        <button
+          onClick={openProductsSortPortal}
+          className="flex h-full flex-1 items-center justify-center gap-x-2"
+        >
+          <SwapVertIcon className="fill-orange h-5 w-5" />
+          <span className="text-s14-l20 text-text-primary font-medium">
+            {selectedSortLabel}
+          </span>
+        </button>
+
+        <div className="bg-gray-2 h-full w-px" />
+
+        <button
+          onClick={openProductsFilterPortal}
+          className="flex h-full flex-1 items-center justify-center gap-x-2"
+        >
+          <TuneIcon className="fill-orange h-5 w-5" />
+          <span className="text-s14-l20 text-text-primary font-medium">
+            Filter
+          </span>
+        </button>
       </div>
 
       <GenericSelect
         value={selectedValue}
         options={SORT_OPTIONS}
         onChange={handleSortChange}
-        className="hover:border-orange h-8 w-[220px] rounded-full"
+        className="hover:border-orange hidden h-8 w-[220px] rounded-full md:flex"
         triggerIcon={<SwapVertIcon className="fill-orange h-5 w-5" />}
       />
     </div>

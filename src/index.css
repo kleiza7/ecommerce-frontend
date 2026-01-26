@@ -11,6 +11,11 @@ body,
   padding: 0;
 }
 
+/* INFO: bunu layoutta sürekli scroll için yer ayrılsın diye ekledin, ui da gözüne çarpan bir bozulma olursa kaldır */
+html {
+  scrollbar-gutter: stable;
+}
+
 body {
   font-family: var(--font-sans);
   background-color: #fff;
@@ -194,7 +199,7 @@ input[type="number"] {
   left: 0;
   height: 100%;
   width: 100%;
-  max-width: 360px;
+  max-width: 100%;
   animation-name: drawer-slide-in-left;
 }
 .drawer-left[data-state="closed"] {
@@ -206,7 +211,7 @@ input[type="number"] {
   right: 0;
   height: 100%;
   width: 100%;
-  max-width: 360px;
+  max-width: 100%;
   animation-name: drawer-slide-in-right;
 }
 .drawer-right[data-state="closed"] {
@@ -217,7 +222,7 @@ input[type="number"] {
   left: 0;
   bottom: 0;
   width: 100%;
-  max-height: 90vh;
+  max-height: 100svh;
   animation-name: drawer-slide-in-bottom;
 }
 .drawer-bottom[data-state="closed"] {
@@ -228,7 +233,7 @@ input[type="number"] {
   left: 0;
   top: 0;
   width: 100%;
-  max-height: 90vh;
+  max-height: 100svh;
   animation-name: drawer-slide-in-top;
 }
 .drawer-top[data-state="closed"] {

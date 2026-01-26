@@ -24,11 +24,12 @@ const CartPage = () => {
   };
 
   return (
-    <div className="mx-auto flex w-full max-w-[1380px] flex-col px-10 pt-6 pb-64 lg:py-14">
+    <div className="mx-auto flex w-full max-w-[1380px] flex-col px-3 pt-3 pb-64 md:px-10 md:pt-6 lg:py-14">
       {cartItems.length !== 0 ? (
-        <div className="flex flex-col gap-6 lg:gap-8">
+        <div className="flex flex-col gap-4 md:gap-6 lg:gap-8">
           <span className="text-s24-l32 font-semibold">
-            My Cart ({cartItems.length} Product)
+            My Cart ({cartItems.length}{" "}
+            {cartItems.length > 1 ? "Products" : "Product"})
           </span>
 
           <div className="flex items-start gap-x-5">

@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import type { ReqAuthGetAllSellersResponse } from "../../../../api/responses/ReqAuthGetAllSellersResponse.model";
 import type { ReqBrandsGetAllResponse } from "../../../../api/responses/ReqBrandsGetAllResponse.model";
 import type { ReqCategoriesGetAllResponse } from "../../../../api/responses/ReqCategoriesGetAllResponse.model";
-import { useAuthGetAllSellers } from "../../../../hooks/useAuthGetAllSellers";
 import GenericCheckbox from "../../../../shared/components/GenericCheckbox";
 import { INPUT_BASE } from "../../../../shared/constants/CommonTailwindClasses.constants";
 import type { CategoryNode } from "../../../../shared/models/CategoryNode.model";
@@ -16,12 +16,13 @@ import FilterSection from "./components/FilterSection";
 const ProductsFilterSidebar = ({
   categories,
   brands,
+  sellers,
 }: {
   categories: ReqCategoriesGetAllResponse;
   brands: ReqBrandsGetAllResponse;
+  sellers: ReqAuthGetAllSellersResponse;
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { data: sellers = [] } = useAuthGetAllSellers();
 
   const [brandSearch, setBrandSearch] = useState("");
   const [sellerSearch, setSellerSearch] = useState("");

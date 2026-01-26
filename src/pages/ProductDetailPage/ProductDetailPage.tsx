@@ -40,15 +40,20 @@ const ProductDetailPage = () => {
   const isOutOfStock = cartQuantity >= data.stockCount;
 
   return (
-    <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-y-5 px-10 py-4">
+    <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-y-5 pb-4 md:px-10 md:py-4">
       <CategoryBreadcrumb categoryId={data.category.id} />
 
-      <div className="flex gap-8">
+      <div className="flex flex-col gap-4 md:flex-row md:gap-8">
         <div className="flex flex-col gap-6">
           <div
-            className="border-gray-2 relative h-[500px] w-[400px] cursor-pointer overflow-hidden rounded-xl border"
+            className="border-gray-2 relative h-[450px] w-full cursor-pointer overflow-hidden md:h-[500px] md:w-[400px] md:rounded-xl md:border"
             onClick={() => setLightboxOpen(true)}
           >
+            <FavoriteButton
+              product={data}
+              className="absolute top-3 right-3 z-10 md:hidden"
+            />
+
             <img
               src={images[activeIndex].largeUrl}
               alt={data.name}
@@ -84,9 +89,22 @@ const ProductDetailPage = () => {
             >
               <KeyboardArrowUpIcon className="fill-text-primary h-8 w-8 rotate-90" />
             </button>
+
+            <div className="bg-surface-primary/80 absolute bottom-3 left-1/2 z-10 -translate-x-1/2 rounded-full p-[5px] md:hidden">
+              <div className="flex items-center gap-3">
+                {Array.from({ length: images.length }).map((_, i) => (
+                  <span
+                    key={i}
+                    className={`h-2 w-2 rounded-full transition ${
+                      i === activeIndex ? "bg-orange" : "bg-[#999999]"
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
 
-          <div className="flex gap-3">
+          <div className="hidden gap-3 md:flex">
             {images.map((img, index) => (
               <button
                 key={img.id}
@@ -105,18 +123,14 @@ const ProductDetailPage = () => {
           </div>
         </div>
 
-        <div className="flex flex-1 flex-col gap-4">
-          <div className="text-text-primary text-s20-l28 flex flex-wrap gap-2">
+        <div className="flex flex-1 flex-col gap-2 px-4 md:gap-4 md:px-0">
+          <div className="text-text-primary text-s16-l24 md:text-s20-l28 flex flex-wrap gap-2">
             <span className="font-bold">{data.brand.name}</span>
             <span>{data.name}</span>
           </div>
 
-          <span className="text-text-primary text-s16-l24">
+          <span className="text-text-primary text-s14-l20 md:text-s16-l24">
             {data.description}
-          </span>
-
-          <span className="text-orange text-s24-l32 font-bold">
-            {data.price.toFixed(2)} {data.currency.code}
           </span>
 
           <div className="text-text-primary text-s12-l16">
@@ -153,7 +167,11 @@ const ProductDetailPage = () => {
             )}
           </div>
 
-          <div className="flex items-center gap-4">
+          <span className="text-orange text-s24-l32 hidden font-bold md:inline">
+            {data.price.toFixed(2)} {data.currency.code}
+          </span>
+
+          <div className="hidden items-center gap-4 md:flex">
             {/* TODO: add this button */}
             {/* <button
               className={customTwMerge(
@@ -191,10 +209,40 @@ const ProductDetailPage = () => {
 
             <FavoriteButton
               product={data}
-              className="border-gray-2 h-12 w-12 border shadow-none hover:shadow-md"
+              className="border-gray-2 hidden h-12 w-12 border shadow-none hover:shadow-md md:flex"
             />
           </div>
         </div>
+      </div>
+
+      <div className="border-gray-2 bg-surface-primary fixed bottom-0 left-0 z-40 flex w-full items-end justify-between gap-3 border-t p-2.5 md:hidden">
+        <span className="text-orange text-s16-l24 font-semibold">
+          {data.price.toFixed(2)} {data.currency.code}
+        </span>
+
+        <GenericTooltip
+          content={
+            isOutOfStock
+              ? "You have reached the maximum available stock for this product."
+              : ""
+          }
+        >
+          <button
+            disabled={isCartLoading || isOutOfStock}
+            onClick={() =>
+              addToCart({
+                ...data,
+                images: data.images.map((img) => ({
+                  thumbUrl: img.thumbUrl,
+                  isPrimary: img.isPrimary,
+                })),
+              })
+            }
+            className={customTwMerge(BUTTON_PRIMARY, BUTTON_SIZE_X_LARGE)}
+          >
+            Add to Cart
+          </button>
+        </GenericTooltip>
       </div>
 
       <Lightbox

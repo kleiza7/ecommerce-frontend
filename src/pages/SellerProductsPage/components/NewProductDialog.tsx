@@ -14,7 +14,7 @@ const NewProductDialog = ({
   }, [setOpen]);
 
   return (
-    <GenericDialog open={open} onOpenChange={setOpen} className="h-[772px]">
+    <GenericDialog open={open} onOpenChange={setOpen}>
       <NewProductForm close={close} />
     </GenericDialog>
   );

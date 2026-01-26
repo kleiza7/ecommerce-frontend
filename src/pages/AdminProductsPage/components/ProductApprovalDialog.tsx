@@ -16,7 +16,7 @@ const ProductApprovalDialog = ({
   }, [setOpen]);
 
   return (
-    <GenericDialog open={open} onOpenChange={setOpen} className="h-[772px]">
+    <GenericDialog open={open} onOpenChange={setOpen}>
       <ProductApprovalForm productId={productId} close={close} />
     </GenericDialog>
   );

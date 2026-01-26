@@ -6,7 +6,7 @@ const ProductCardSkeleton = () => {
       <div className="flex w-full flex-col">
         <Skeleton
           withShimmer
-          className="h-[260px] w-full rounded-none md:h-80 2xl:h-[360px]"
+          className="h-[260px] w-full shrink-0 rounded-none md:h-80 2xl:h-[360px]"
         />
 
         <div className="flex flex-1 flex-col gap-2 p-3">

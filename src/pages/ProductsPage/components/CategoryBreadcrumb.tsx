@@ -56,7 +56,7 @@ const CategoryBreadcrumb = ({
   };
 
   return (
-    <nav className="text-s14-l20 text-text-primary flex items-center gap-x-4">
+    <nav className="text-s14-l20 text-text-primary hidden items-center gap-x-4 md:flex">
       <ol className="flex flex-wrap items-center gap-1">
         {breadcrumb.map((item, index) => (
           <li key={item.id} className="flex items-center gap-1">

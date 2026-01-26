@@ -80,7 +80,7 @@ const CartItemsList = () => {
                   key={cartItem.productId}
                   className={`relative py-4 ${index !== items.length - 1 ? "border-gray-2 border-b" : ""}`}
                 >
-                  <div className="flex items-center gap-x-6">
+                  <div className="flex flex-col items-center gap-y-4 md:flex-row md:gap-x-6 md:gap-y-0">
                     <div className="bg-gray-4 h-[120px] w-[120px] shrink-0 overflow-hidden rounded">
                       {thumb && (
                         <img
@@ -91,8 +91,8 @@ const CartItemsList = () => {
                       )}
                     </div>
 
-                    <div className="flex min-w-0 flex-1 flex-col gap-y-2 xl:flex-row xl:items-center xl:gap-x-6">
-                      <div className="flex min-w-0 flex-1 flex-col gap-1">
+                    <div className="flex min-w-0 flex-1 flex-col items-center gap-y-2 md:items-start xl:flex-row xl:items-center xl:gap-x-6">
+                      <div className="flex min-w-0 flex-1 flex-col items-center gap-1 md:items-start">
                         <span className="text-s16-l24 text-text-primary font-semibold">
                           {cartItem.product.name}
                         </span>

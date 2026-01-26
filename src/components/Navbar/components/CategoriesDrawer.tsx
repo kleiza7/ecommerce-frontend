@@ -73,7 +73,7 @@ const CategoriesDrawer = ({
       onOpenChange={handleOpenChange}
       side="left"
       showCloseButton={true}
-      className="w-full max-w-sm"
+      className="h-svh"
     >
       {/* HEADER */}
       <div className="border-gray-2 flex h-14 items-center gap-3 border-b px-4">

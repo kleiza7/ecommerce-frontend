@@ -16,7 +16,7 @@ const OrderPaymentDialog = ({
   }, [setOpen]);
 
   return (
-    <GenericDialog open={open} onOpenChange={setOpen} className="h-[728px]">
+    <GenericDialog open={open} onOpenChange={setOpen}>
       <OrderPaymentForm orderId={orderId} close={close} />
     </GenericDialog>
   );

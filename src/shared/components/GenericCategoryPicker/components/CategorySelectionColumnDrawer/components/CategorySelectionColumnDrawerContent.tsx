@@ -32,7 +32,7 @@ const buildTree = (categories: ReqCategoriesGetAllResponse): CategoryNode[] => {
   return roots;
 };
 
-const CategorySelectionDrawerContent = ({
+const CategorySelectionColumnDrawerContent = ({
   initialSelectedCategory,
   onCategorySelected,
   close,
@@ -156,4 +156,4 @@ const CategorySelectionDrawerContent = ({
   );
 };
 
-export default CategorySelectionDrawerContent;
+export default CategorySelectionColumnDrawerContent;

@@ -163,7 +163,7 @@ const AdminProductsPage = () => {
 
   return (
     <>
-      <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-5 px-10 py-8">
+      <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-5 p-3 md:px-10 md:py-8">
         <div className="flex items-center justify-between">
           <span className="text-s24-l32 xl:text-s28-l36 text-text-primary font-semibold">
             My Waiting Approvals ({totalCount})

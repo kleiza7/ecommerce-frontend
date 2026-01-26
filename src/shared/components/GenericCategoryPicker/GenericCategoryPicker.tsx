@@ -2,8 +2,9 @@ import { useState } from "react";
 import type { ReqCategoriesGetAllResponse } from "../../../api/responses/ReqCategoriesGetAllResponse.model";
 import { useMediaQuery } from "../../../hooks/useMediaQuery";
 import { MEDIA_QUERY } from "../../constants/MediaQuery.constants";
+import CategorySelectionColumnDrawer from "./components/CategorySelectionColumnDrawer/CategorySelectionColumnDrawer";
 import CategorySelectionDialog from "./components/CategorySelectionDialog/CategorySelectionDialog";
-import CategorySelectionDrawer from "./components/CategorySelectionDrawer/CategorySelectionDrawer";
+import CategorySelectionDrillDrawer from "./components/CategorySelectionDrillDrawer/CategorySelectionDrillDrawer";
 
 const GenericCategoryPicker = ({
   value,
@@ -17,7 +18,8 @@ const GenericCategoryPicker = ({
   const [isCategorySelectionPortalOpen, setIsCategorySelectionPortalOpen] =
     useState(false);
 
-  const isMobileOrTablet = useMediaQuery(MEDIA_QUERY.BELOW_LG);
+  const isMobile = useMediaQuery(MEDIA_QUERY.BELOW_MD);
+  const isTablet = useMediaQuery(MEDIA_QUERY.BELOW_LG) && !isMobile;
 
   if (disabled) {
     return (
@@ -53,14 +55,25 @@ const GenericCategoryPicker = ({
         </div>
       )}
 
-      {isMobileOrTablet ? (
-        <CategorySelectionDrawer
+      {isMobile && (
+        <CategorySelectionDrillDrawer
           open={isCategorySelectionPortalOpen}
           setOpen={setIsCategorySelectionPortalOpen}
           initialSelectedCategory={value}
           onCategorySelected={onChange}
         />
-      ) : (
+      )}
+
+      {isTablet && (
+        <CategorySelectionColumnDrawer
+          open={isCategorySelectionPortalOpen}
+          setOpen={setIsCategorySelectionPortalOpen}
+          initialSelectedCategory={value}
+          onCategorySelected={onChange}
+        />
+      )}
+
+      {!isMobile && !isTablet && (
         <CategorySelectionDialog
           open={isCategorySelectionPortalOpen}
           setOpen={setIsCategorySelectionPortalOpen}

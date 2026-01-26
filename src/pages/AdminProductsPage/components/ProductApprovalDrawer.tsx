@@ -20,7 +20,7 @@ const ProductApprovalDrawer = ({
       open={open}
       onOpenChange={setOpen}
       side="bottom"
-      className="max-h-svh rounded-t-xl p-6"
+      className="h-svh p-6 md:h-auto md:rounded-t-xl"
     >
       <ProductApprovalForm productId={productId} close={close} />
     </GenericDrawer>

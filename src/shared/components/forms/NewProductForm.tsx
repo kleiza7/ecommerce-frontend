@@ -50,24 +50,26 @@ const NewProductForm = ({ close }: { close: () => void }) => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="relative flex flex-col gap-y-6"
+      className="relative flex h-full flex-col gap-y-6"
     >
-      <div className="flex flex-col gap-y-1">
+      <div className="flex shrink-0 flex-col gap-y-1">
         <GenericDialogTitle>Add New Product</GenericDialogTitle>
         <span className="text-s14-l20 text-gray-8">
           Please fill in the details to create a new product.
         </span>
       </div>
 
-      <ProductFormFields
-        control={control}
-        errors={errors}
-        brands={brands}
-        currencies={currencies}
-        disabled={isPending}
-      />
+      <div className="flex-1 overflow-y-auto">
+        <ProductFormFields
+          control={control}
+          errors={errors}
+          brands={brands}
+          currencies={currencies}
+          disabled={isPending}
+        />
+      </div>
 
-      <div className="flex justify-end gap-x-2">
+      <div className="flex shrink-0 justify-end gap-x-2">
         <GenericDialogClose>
           <button
             type="button"

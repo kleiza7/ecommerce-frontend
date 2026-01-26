@@ -214,9 +214,9 @@ const SellerProductsPage = () => {
 
   return (
     <>
-      <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-5 px-10 py-8">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-6">
+      <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-5 p-3 md:px-10 md:py-8">
+        <div className="flex items-end justify-between md:items-center">
+          <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-6">
             <span className="text-s24-l32 xl:text-s28-l36 text-text-primary font-semibold">
               My Products ({products.length})
             </span>

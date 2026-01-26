@@ -1,8 +1,8 @@
 import type { ReqCategoriesGetAllResponse } from "../../../../../api/responses/ReqCategoriesGetAllResponse.model";
 import { GenericDrawer } from "../../../GenericDrawer";
-import CategorySelectionDrawerContent from "./components/CategorySelectionDrawerContent";
+import CategorySelectionDrillDrawerContent from "./components/CategorySelectionDrillDrawerContent";
 
-const CategorySelectionDrawer = ({
+const CategorySelectionDrillDrawer = ({
   open,
   setOpen,
   initialSelectedCategory,
@@ -18,10 +18,10 @@ const CategorySelectionDrawer = ({
       open={open}
       onOpenChange={setOpen}
       side="bottom"
-      className="h-[70svh] max-h-[70svh] overflow-hidden rounded-t-xl p-6"
+      className="h-svh"
       showOverlay={false}
     >
-      <CategorySelectionDrawerContent
+      <CategorySelectionDrillDrawerContent
         initialSelectedCategory={initialSelectedCategory}
         onCategorySelected={onCategorySelected}
         close={() => setOpen(false)}
@@ -30,4 +30,4 @@ const CategorySelectionDrawer = ({
   );
 };
 
-export default CategorySelectionDrawer;
+export default CategorySelectionDrillDrawer;
