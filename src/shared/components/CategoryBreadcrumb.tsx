@@ -3,29 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { KeyboardArrowUpIcon } from "../../assets/icons";
 import { useCategoriesGetAll } from "../../hooks/useCategoriesGetAll";
 import type { CategoryNode } from "../models/CategoryNode.model";
-import {
-  buildCategorySlugMap,
-  buildCategoryTree,
-} from "../utils/CategoryTree.util";
-
-const buildPath = (
-  node: CategoryNode,
-  slugMap: Map<string, CategoryNode>,
-): CategoryNode[] => {
-  const path: CategoryNode[] = [];
-  let current: CategoryNode | undefined = node;
-
-  while (current) {
-    path.unshift(current);
-    current = current.parentId
-      ? Array.from(slugMap.values()).find(
-          (categoryNode) => categoryNode.id === current!.parentId,
-        )
-      : undefined;
-  }
-
-  return path;
-};
+import { buildCategoryPath } from "../utils/CategoryTree.util";
 
 const CategoryBreadcrumb = ({
   selectedCategoryId,
@@ -38,21 +16,15 @@ const CategoryBreadcrumb = ({
   const [params] = useSearchParams();
   const { data: categories = [], isLoading } = useCategoriesGetAll();
 
-  const breadcrumb = useMemo(() => {
+  const breadcrumb: CategoryNode[] = useMemo(() => {
     if (!selectedCategoryId || categories.length === 0) {
       return [];
     }
 
-    const tree = buildCategoryTree(categories);
-    const slugMap = buildCategorySlugMap(tree);
-
-    const node = Array.from(slugMap.values()).find(
-      (categoryNode) => categoryNode.id === selectedCategoryId,
+    return buildCategoryPath(
+      categories,
+      categories.find((c) => c.id === selectedCategoryId) ?? null,
     );
-
-    if (!node) return [];
-
-    return buildPath(node, slugMap);
   }, [categories, selectedCategoryId]);
 
   if (isLoading || breadcrumb.length === 0) {

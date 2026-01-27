@@ -9,10 +9,6 @@ import {
   BUTTON_PRIMARY,
   BUTTON_SIZE_LARGE,
 } from "../../../../shared/constants/CommonTailwindClasses.constants";
-import {
-  buildCategorySlugMap,
-  buildCategoryTree,
-} from "../../../../shared/utils/CategoryTree.util";
 import { customTwMerge } from "../../../../shared/utils/Tailwind.util";
 import BrandsSelectionDrawer from "./components/BrandsSelectionDrawer/BrandsSelectionDrawer";
 import CategorySelectionDrawer from "./components/CategorySelectionDrawer/CategorySelectionDrawer";
@@ -66,23 +62,26 @@ const ProductsFilterDrawer = ({
   ======================= */
 
   const initialFilters: FiltersState = useMemo(() => {
-    let category: FiltersState["category"] = null;
+    let selectedCategory: FiltersState["category"] = null;
 
     const categorySlug = searchParams.get("category");
     if (categorySlug) {
-      const tree = buildCategoryTree(categories);
-      const slugMap = buildCategorySlugMap(tree);
-      category = slugMap.get(categorySlug) ?? null;
+      selectedCategory =
+        categories.find((category) => category.slug === categorySlug) ?? null;
     }
 
     const brandSlugs = searchParams.get("brands")?.split(",") ?? [];
-    const selectedBrands = brands.filter((b) => brandSlugs.includes(b.slug));
+    const selectedBrands = brands.filter((brand) =>
+      brandSlugs.includes(brand.slug),
+    );
 
     const sellerIds = searchParams.get("sellers")?.split(",").map(Number) ?? [];
-    const selectedSellers = sellers.filter((s) => sellerIds.includes(s.id));
+    const selectedSellers = sellers.filter((seller) =>
+      sellerIds.includes(seller.id),
+    );
 
     return {
-      category,
+      category: selectedCategory,
       brands: selectedBrands,
       sellers: selectedSellers,
     };
@@ -95,7 +94,7 @@ const ProductsFilterDrawer = ({
   const [filters, setFilters] = useState<FiltersState>(initialFilters);
 
   /* =======================
-     HANDLERS (⬅️ İSTEDİĞİN KISIM)
+     HANDLERS
   ======================= */
 
   const onCategorySelected = (
@@ -153,18 +152,23 @@ const ProductsFilterDrawer = ({
   const removeAppliedFilter = (filter: AppliedFilter) => {
     setFilters((prev) => {
       switch (filter.key) {
-        case "category":
+        case "category": {
           return { ...prev, category: null };
-        case "brand":
+        }
+        case "brand": {
           return {
             ...prev,
-            brands: prev.brands.filter((b) => b.slug !== filter.value),
+            brands: prev.brands.filter((brand) => brand.slug !== filter.value),
           };
-        case "seller":
+        }
+        case "seller": {
           return {
             ...prev,
-            sellers: prev.sellers.filter((s) => s.id !== Number(filter.value)),
+            sellers: prev.sellers.filter(
+              (seller) => seller.id !== Number(filter.value),
+            ),
           };
+        }
       }
     });
   };
@@ -181,11 +185,14 @@ const ProductsFilterDrawer = ({
     }
 
     if (filters.brands.length > 0) {
-      params.set("brands", filters.brands.map((b) => b.slug).join(","));
+      params.set("brands", filters.brands.map((brand) => brand.slug).join(","));
     }
 
     if (filters.sellers.length > 0) {
-      params.set("sellers", filters.sellers.map((s) => String(s.id)).join(","));
+      params.set(
+        "sellers",
+        filters.sellers.map((seller) => String(seller.id)).join(","),
+      );
     }
 
     setSearchParams(params);

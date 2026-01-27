@@ -9,7 +9,7 @@ import { INPUT_BASE } from "../../../../shared/constants/CommonTailwindClasses.c
 import type { CategoryNode } from "../../../../shared/models/CategoryNode.model";
 import {
   buildCategorySlugMap,
-  buildCategoryTree,
+  buildCategoryTreeWithMap,
 } from "../../../../shared/utils/CategoryTree.util";
 import { customTwMerge } from "../../../../shared/utils/Tailwind.util";
 import FilterSection from "./components/FilterSection";
@@ -30,21 +30,18 @@ const ProductsFilterSidebar = ({
 
   const selectedCategorySlug = searchParams.get("category");
 
-  const categoryTree = useMemo(
-    () => buildCategoryTree(categories),
+  const { tree } = useMemo(
+    () => buildCategoryTreeWithMap(categories),
     [categories],
   );
 
-  const slugMap = useMemo(
-    () => buildCategorySlugMap(categoryTree),
-    [categoryTree],
-  );
+  const slugMap = useMemo(() => buildCategorySlugMap(categories), [categories]);
 
   const visibleCategories: CategoryNode[] = useMemo(() => {
-    if (!selectedCategorySlug) return categoryTree;
+    if (!selectedCategorySlug) return tree;
 
     const current = slugMap.get(selectedCategorySlug);
-    if (!current) return categoryTree;
+    if (!current) return tree;
 
     if (current.children.length > 0) {
       return current.children;
@@ -54,13 +51,11 @@ const ProductsFilterSidebar = ({
       const parent = categories.find(
         (category) => category.id === current.parentId,
       );
-      return parent
-        ? (slugMap.get(parent.slug)?.children ?? categoryTree)
-        : categoryTree;
+      return parent ? (slugMap.get(parent.slug)?.children ?? tree) : tree;
     }
 
-    return categoryTree;
-  }, [selectedCategorySlug, categoryTree, slugMap, categories]);
+    return tree;
+  }, [selectedCategorySlug, tree, slugMap, categories]);
 
   const onSelectCategory = (slug: string) => {
     const params = new URLSearchParams(searchParams);
