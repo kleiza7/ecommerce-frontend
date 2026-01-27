@@ -14,7 +14,10 @@ import { useDebouncedValue } from "../../../hooks/useDebouncedValue";
 import { useSearch } from "../../../hooks/useSearch";
 import LoadingSpinner from "../../../shared/components/LoadingSpinner";
 import { INPUT_BASE } from "../../../shared/constants/CommonTailwindClasses.constants";
-import { buildCategorySlugMap } from "../../../shared/utils/CategoryTree.util";
+import {
+  buildCategorySlugMap,
+  buildCategoryTreeWithMap,
+} from "../../../shared/utils/CategoryTree.util";
 import { customTwMerge } from "../../../shared/utils/Tailwind.util";
 
 const STORAGE_KEY = "search_histories";
@@ -201,9 +204,13 @@ const GlobalSearchInput = () => {
     ];
   }, [data]);
 
-  const slugMap = useMemo(() => {
-    return buildCategorySlugMap(categories);
+  const { tree } = useMemo(() => {
+    return buildCategoryTreeWithMap(categories);
   }, [categories]);
+
+  const slugMap = useMemo(() => {
+    return buildCategorySlugMap(tree);
+  }, [tree]);
 
   const shortToFullCategorySlugMap = useMemo(() => {
     const map = new Map<string, string>();

@@ -35,7 +35,7 @@ const ProductsFilterSidebar = ({
     [categories],
   );
 
-  const slugMap = useMemo(() => buildCategorySlugMap(categories), [categories]);
+  const slugMap = useMemo(() => buildCategorySlugMap(tree), [tree]);
 
   const visibleCategories: CategoryNode[] = useMemo(() => {
     if (!selectedCategorySlug) return tree;

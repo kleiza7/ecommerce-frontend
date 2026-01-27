@@ -7,7 +7,10 @@ import { useCategoriesGetAll } from "../../hooks/useCategoriesGetAll";
 import { useProductsListInfinite } from "../../hooks/useProductsListInfinite";
 import CategoryBreadcrumb from "../../shared/components/CategoryBreadcrumb";
 import type { CategoryNode } from "../../shared/models/CategoryNode.model";
-import { buildCategorySlugMap } from "../../shared/utils/CategoryTree.util";
+import {
+  buildCategorySlugMap,
+  buildCategoryTreeWithMap,
+} from "../../shared/utils/CategoryTree.util";
 import ProductListHeader from "./components/ProductListHeader";
 import ProductsFilterDrawer from "./components/ProductsFilterDrawer/ProductsFilterDrawer";
 import ProductsFilterSidebar from "./components/ProductsFilterSidebar/ProductsFilterSidebar";
@@ -39,7 +42,8 @@ const ProductsPage = () => {
       return undefined;
     }
 
-    const slugMap = buildCategorySlugMap(categories);
+    const { tree } = buildCategoryTreeWithMap(categories);
+    const slugMap = buildCategorySlugMap(tree);
 
     return slugMap.get(selectedCategorySlug);
   }, [categories, selectedCategorySlug]);

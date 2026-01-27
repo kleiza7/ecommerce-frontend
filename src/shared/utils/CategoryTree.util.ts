@@ -23,18 +23,15 @@ export const buildCategoryTreeWithMap = (
   return { tree, map };
 };
 
-export const buildCategorySlugMap = (
-  categories: ReqCategoriesGetAllResponse,
-): Map<string, CategoryNode> => {
+export const buildCategorySlugMap = (tree: CategoryNode[]) => {
   const map = new Map<string, CategoryNode>();
 
-  categories.forEach((category) => {
-    map.set(category.slug, {
-      ...category,
-      children: [],
-    });
-  });
+  const walk = (node: CategoryNode) => {
+    map.set(node.slug, node);
+    node.children.forEach(walk);
+  };
 
+  tree.forEach(walk);
   return map;
 };
 
