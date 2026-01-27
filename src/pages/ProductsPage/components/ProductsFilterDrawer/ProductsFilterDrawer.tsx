@@ -14,15 +14,29 @@ import {
   buildCategoryTree,
 } from "../../../../shared/utils/CategoryTree.util";
 import { customTwMerge } from "../../../../shared/utils/Tailwind.util";
-import BrandsSelectionDrawer from "./components/BrandsSelectionDrawer";
-import CategorySelectionDrawer from "./components/CategorySelectionDrawer";
-import SellersSelectionDrawer from "./components/SellersSelectionDrawer";
+import BrandsSelectionDrawer from "./components/BrandsSelectionDrawer/BrandsSelectionDrawer";
+import CategorySelectionDrawer from "./components/CategorySelectionDrawer/CategorySelectionDrawer";
+import SellersSelectionDrawer from "./components/SellersSelectionDrawer/SellersSelectionDrawer";
+
+/* =======================
+   TYPES
+======================= */
+
+type FiltersState = {
+  category: ReqCategoriesGetAllResponse[number] | null;
+  brands: ReqBrandsGetAllResponse;
+  sellers: ReqAuthGetAllSellersResponse;
+};
 
 type AppliedFilter = {
   key: "category" | "brand" | "seller";
   label: string;
   value: string;
 };
+
+/* =======================
+   COMPONENT
+======================= */
 
 const ProductsFilterDrawer = ({
   open,
@@ -39,6 +53,7 @@ const ProductsFilterDrawer = ({
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
+  /* drawer open states */
   const [isCategorySelectionDrawerOpen, setIsCategorySelectionDrawerOpen] =
     useState(false);
   const [isBrandsSelectionDrawerOpen, setIsBrandsSelectionDrawerOpen] =
@@ -46,93 +61,140 @@ const ProductsFilterDrawer = ({
   const [isSellersSelectionDrawerOpen, setIsSellersSelectionDrawerOpen] =
     useState(false);
 
-  const appliedFilters: AppliedFilter[] = useMemo(() => {
-    const result: AppliedFilter[] = [];
+  /* =======================
+     INITIAL FILTERS
+  ======================= */
+
+  const initialFilters: FiltersState = useMemo(() => {
+    let category: FiltersState["category"] = null;
 
     const categorySlug = searchParams.get("category");
     if (categorySlug) {
       const tree = buildCategoryTree(categories);
       const slugMap = buildCategorySlugMap(tree);
-      const node = slugMap.get(categorySlug);
-
-      if (node) {
-        result.push({
-          key: "category",
-          label: node.name,
-          value: categorySlug,
-        });
-      }
+      category = slugMap.get(categorySlug) ?? null;
     }
 
     const brandSlugs = searchParams.get("brands")?.split(",") ?? [];
-    brandSlugs.forEach((slug) => {
-      const brand = brands.find((b) => b.slug === slug);
-      if (brand) {
-        result.push({
-          key: "brand",
-          label: brand.name,
-          value: slug,
-        });
-      }
-    });
+    const selectedBrands = brands.filter((b) => brandSlugs.includes(b.slug));
 
     const sellerIds = searchParams.get("sellers")?.split(",").map(Number) ?? [];
-    sellerIds.forEach((id) => {
-      const seller = sellers.find((s) => s.id === id);
-      if (seller) {
-        result.push({
-          key: "seller",
-          label: seller.name,
-          value: String(id),
-        });
-      }
+    const selectedSellers = sellers.filter((s) => sellerIds.includes(s.id));
+
+    return {
+      category,
+      brands: selectedBrands,
+      sellers: selectedSellers,
+    };
+  }, [searchParams, categories, brands, sellers]);
+
+  /* =======================
+     SINGLE SOURCE OF TRUTH
+  ======================= */
+
+  const [filters, setFilters] = useState<FiltersState>(initialFilters);
+
+  /* =======================
+     HANDLERS (⬅️ İSTEDİĞİN KISIM)
+  ======================= */
+
+  const onCategorySelected = (
+    category: ReqCategoriesGetAllResponse[number],
+  ) => {
+    setFilters((prev) => ({ ...prev, category }));
+  };
+
+  const onBrandsSelected = (selectedBrands: ReqBrandsGetAllResponse) => {
+    setFilters((prev) => ({ ...prev, brands: selectedBrands }));
+  };
+
+  const onSellersSelected = (selectedSellers: ReqAuthGetAllSellersResponse) => {
+    setFilters((prev) => ({ ...prev, sellers: selectedSellers }));
+  };
+
+  /* =======================
+     APPLIED FILTERS
+  ======================= */
+
+  const appliedFilters: AppliedFilter[] = useMemo(() => {
+    const result: AppliedFilter[] = [];
+
+    if (filters.category) {
+      result.push({
+        key: "category",
+        label: filters.category.name,
+        value: filters.category.slug,
+      });
+    }
+
+    filters.brands.forEach((brand) => {
+      result.push({
+        key: "brand",
+        label: brand.name,
+        value: brand.slug,
+      });
+    });
+
+    filters.sellers.forEach((seller) => {
+      result.push({
+        key: "seller",
+        label: seller.name,
+        value: String(seller.id),
+      });
     });
 
     return result;
-  }, [searchParams, categories, brands, sellers]);
+  }, [filters]);
+
+  /* =======================
+     REMOVE FILTER
+  ======================= */
 
   const removeAppliedFilter = (filter: AppliedFilter) => {
-    const params = new URLSearchParams(searchParams);
-
-    switch (filter.key) {
-      case "category": {
-        params.delete("category");
-        break;
+    setFilters((prev) => {
+      switch (filter.key) {
+        case "category":
+          return { ...prev, category: null };
+        case "brand":
+          return {
+            ...prev,
+            brands: prev.brands.filter((b) => b.slug !== filter.value),
+          };
+        case "seller":
+          return {
+            ...prev,
+            sellers: prev.sellers.filter((s) => s.id !== Number(filter.value)),
+          };
       }
+    });
+  };
 
-      case "brand": {
-        const next =
-          params
-            .get("brands")
-            ?.split(",")
-            .filter((slug) => slug !== filter.value) ?? [];
+  /* =======================
+     APPLY TO URL
+  ======================= */
 
-        if (next.length === 0) {
-          params.delete("brands");
-        } else {
-          params.set("brands", next.join(","));
-        }
-        break;
-      }
+  const applyFiltersToParams = () => {
+    const params = new URLSearchParams();
 
-      case "seller": {
-        const next =
-          params
-            .get("sellers")
-            ?.split(",")
-            .filter((id) => id !== filter.value) ?? [];
+    if (filters.category) {
+      params.set("category", filters.category.slug);
+    }
 
-        if (next.length === 0) {
-          params.delete("sellers");
-        } else {
-          params.set("sellers", next.join(","));
-        }
-        break;
-      }
+    if (filters.brands.length > 0) {
+      params.set("brands", filters.brands.map((b) => b.slug).join(","));
+    }
+
+    if (filters.sellers.length > 0) {
+      params.set("sellers", filters.sellers.map((s) => String(s.id)).join(","));
     }
 
     setSearchParams(params);
+    setOpen(false);
   };
+
+  /* =======================
+     RENDER
+  ======================= */
 
   return (
     <>
@@ -208,6 +270,7 @@ const ProductsFilterDrawer = ({
           <div className="border-gray-2 mt-auto border-t p-2.5">
             <button
               type="button"
+              onClick={applyFiltersToParams}
               className={customTwMerge(
                 BUTTON_PRIMARY,
                 BUTTON_SIZE_LARGE,
@@ -223,19 +286,22 @@ const ProductsFilterDrawer = ({
       <CategorySelectionDrawer
         open={isCategorySelectionDrawerOpen}
         setOpen={setIsCategorySelectionDrawerOpen}
-        categories={categories}
+        initialSelectedCategory={filters.category}
+        onCategorySelected={onCategorySelected}
       />
 
       <BrandsSelectionDrawer
         open={isBrandsSelectionDrawerOpen}
         setOpen={setIsBrandsSelectionDrawerOpen}
-        brands={brands}
+        initialSelectedBrands={filters.brands}
+        onBrandsSelected={onBrandsSelected}
       />
 
       <SellersSelectionDrawer
         open={isSellersSelectionDrawerOpen}
         setOpen={setIsSellersSelectionDrawerOpen}
-        sellers={sellers}
+        initialSelectedSellers={filters.sellers}
+        onSellersSelected={onSellersSelected}
       />
     </>
   );

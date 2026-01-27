@@ -38,7 +38,7 @@ export const GenericDrawer = ({
           )}
         >
           {showCloseButton && (
-            <Dialog.Close asChild>
+            <Dialog.Close asChild className="z-50">
               <button
                 type="button"
                 aria-label="Close"
