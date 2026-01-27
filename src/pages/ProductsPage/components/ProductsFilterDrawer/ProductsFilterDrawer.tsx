@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
 import type { ReqAuthGetAllSellersResponse } from "../../../../api/responses/ReqAuthGetAllSellersResponse.model";
 import type { ReqBrandsGetAllResponse } from "../../../../api/responses/ReqBrandsGetAllResponse.model";
 import type { ReqCategoriesGetAllResponse } from "../../../../api/responses/ReqCategoriesGetAllResponse.model";
 import { CloseIcon, KeyboardArrowUpIcon } from "../../../../assets/icons";
+import { useProductsNavigation } from "../../../../hooks/useProductsNavigation";
 import { GenericDrawer } from "../../../../shared/components/GenericDrawer";
 import {
   BUTTON_PRIMARY,
@@ -47,7 +47,12 @@ const ProductsFilterDrawer = ({
   brands: ReqBrandsGetAllResponse;
   sellers: ReqAuthGetAllSellersResponse;
 }) => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const {
+    selectedCategorySlug,
+    selectedBrandSlugs,
+    selectedSellerIds,
+    goToProductsPage,
+  } = useProductsNavigation();
 
   /* drawer open states */
   const [isCategorySelectionDrawerOpen, setIsCategorySelectionDrawerOpen] =
@@ -64,20 +69,18 @@ const ProductsFilterDrawer = ({
   const initialFilters: FiltersState = useMemo(() => {
     let selectedCategory: FiltersState["category"] = null;
 
-    const categorySlug = searchParams.get("category");
-    if (categorySlug) {
+    if (selectedCategorySlug) {
       selectedCategory =
-        categories.find((category) => category.slug === categorySlug) ?? null;
+        categories.find((category) => category.slug === selectedCategorySlug) ??
+        null;
     }
 
-    const brandSlugs = searchParams.get("brands")?.split(",") ?? [];
     const selectedBrands = brands.filter((brand) =>
-      brandSlugs.includes(brand.slug),
+      selectedBrandSlugs.includes(brand.slug),
     );
 
-    const sellerIds = searchParams.get("sellers")?.split(",").map(Number) ?? [];
     const selectedSellers = sellers.filter((seller) =>
-      sellerIds.includes(seller.id),
+      selectedSellerIds.includes(seller.id),
     );
 
     return {
@@ -85,7 +88,14 @@ const ProductsFilterDrawer = ({
       brands: selectedBrands,
       sellers: selectedSellers,
     };
-  }, [searchParams, categories, brands, sellers]);
+  }, [
+    selectedCategorySlug,
+    selectedBrandSlugs,
+    selectedSellerIds,
+    categories,
+    brands,
+    sellers,
+  ]);
 
   /* =======================
      SINGLE SOURCE OF TRUTH
@@ -178,24 +188,13 @@ const ProductsFilterDrawer = ({
   ======================= */
 
   const applyFiltersToParams = () => {
-    const params = new URLSearchParams();
+    goToProductsPage({
+      categorySlug: filters.category?.slug ?? null,
+      brandSlugs: filters.brands.map((brand) => brand.slug),
+      sellerIds: filters.sellers.map((seller) => seller.id),
+      overrideParams: true,
+    });
 
-    if (filters.category) {
-      params.set("category", filters.category.slug);
-    }
-
-    if (filters.brands.length > 0) {
-      params.set("brands", filters.brands.map((brand) => brand.slug).join(","));
-    }
-
-    if (filters.sellers.length > 0) {
-      params.set(
-        "sellers",
-        filters.sellers.map((seller) => String(seller.id)).join(","),
-      );
-    }
-
-    setSearchParams(params);
     setOpen(false);
   };
 

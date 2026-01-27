@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { KeyboardArrowUpIcon } from "../../../../../assets/icons";
 import { useCategoriesGetAll } from "../../../../../hooks/useCategoriesGetAll";
+import { useProductsNavigation } from "../../../../../hooks/useProductsNavigation";
 import type { CategoryNode } from "../../../../../shared/models/CategoryNode.model";
 import { buildCategoryTreeWithMap } from "../../../../../shared/utils/CategoryTree.util";
 import { customTwMerge } from "../../../../../shared/utils/Tailwind.util";
@@ -11,7 +11,7 @@ const CategoriesNavigationDrawerContent = ({
 }: {
   close: () => void;
 }) => {
-  const navigate = useNavigate();
+  const { goToProductsPage } = useProductsNavigation();
 
   const { data: categories = [] } = useCategoriesGetAll();
 
@@ -67,7 +67,10 @@ const CategoriesNavigationDrawerContent = ({
               type="button"
               onClick={() => {
                 if (isLeaf) {
-                  navigate(`/products?category=${node.slug}`);
+                  goToProductsPage({
+                    categorySlug: node.slug,
+                    overrideParams: true,
+                  });
                   close();
                   return;
                 }

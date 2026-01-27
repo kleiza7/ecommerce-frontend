@@ -6,11 +6,11 @@ import {
   useRef,
   useState,
 } from "react";
-import { useNavigate } from "react-router-dom";
 import type { ReqSearchResponse } from "../../../api/responses/ReqSearchResponse.model";
 import { CloseIcon, SearchIcon } from "../../../assets/icons";
 import { useCategoriesGetAll } from "../../../hooks/useCategoriesGetAll";
 import { useDebouncedValue } from "../../../hooks/useDebouncedValue";
+import { useProductsNavigation } from "../../../hooks/useProductsNavigation";
 import { useSearch } from "../../../hooks/useSearch";
 import LoadingSpinner from "../../../shared/components/LoadingSpinner";
 import { INPUT_BASE } from "../../../shared/constants/CommonTailwindClasses.constants";
@@ -164,7 +164,7 @@ const GlobalSearchInput = () => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const navigate = useNavigate();
+  const { goToProductsPage } = useProductsNavigation();
 
   const { data: categories = [] } = useCategoriesGetAll();
 
@@ -265,38 +265,42 @@ const GlobalSearchInput = () => {
     (item: SearchItem) => {
       pushHistoryToFront(item);
 
-      const params = new URLSearchParams();
-
       switch (item.type) {
         case SEARCH_ITEM_TYPE.SUGGESTION: {
-          params.set("q", item.suggestion);
+          goToProductsPage({
+            q: item.suggestion,
+            overrideParams: true,
+          });
           break;
         }
+
         case SEARCH_ITEM_TYPE.CATEGORY: {
-          const fullPathSlug = shortToFullCategorySlugMap.get(
-            item.category.slug,
-          );
-          params.set("category", fullPathSlug ?? item.category.slug);
+          const fullPathSlug =
+            shortToFullCategorySlugMap.get(item.category.slug) ??
+            item.category.slug;
+
+          goToProductsPage({
+            categorySlug: fullPathSlug,
+            overrideParams: true,
+          });
           break;
         }
+
         case SEARCH_ITEM_TYPE.BRAND: {
-          params.set("brands", item.brand.slug);
-          break;
-        }
-        default: {
+          goToProductsPage({
+            brandSlugs: [item.brand.slug],
+            overrideParams: true,
+          });
           break;
         }
       }
 
-      navigate(`/products?${params.toString()}`);
-
       setSearchText("");
-
       closePortalAndBlur();
     },
     [
       closePortalAndBlur,
-      navigate,
+      goToProductsPage,
       pushHistoryToFront,
       shortToFullCategorySlugMap,
     ],

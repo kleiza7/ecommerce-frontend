@@ -1,7 +1,7 @@
-import { useMemo } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useCallback, useMemo } from "react";
 import { KeyboardArrowUpIcon } from "../../assets/icons";
 import { useCategoriesGetAll } from "../../hooks/useCategoriesGetAll";
+import { useProductsNavigation } from "../../hooks/useProductsNavigation";
 import type { CategoryNode } from "../models/CategoryNode.model";
 import { buildCategoryPath } from "../utils/CategoryTree.util";
 
@@ -12,9 +12,8 @@ const CategoryBreadcrumb = ({
   selectedCategoryId?: number;
   hasClearFilterButton?: boolean;
 }) => {
-  const navigate = useNavigate();
-  const [params] = useSearchParams();
   const { data: categories = [], isLoading } = useCategoriesGetAll();
+  const { goToProductsPage } = useProductsNavigation();
 
   const breadcrumb: CategoryNode[] = useMemo(() => {
     if (!selectedCategoryId || categories.length === 0) {
@@ -23,25 +22,34 @@ const CategoryBreadcrumb = ({
 
     return buildCategoryPath(
       categories,
-      categories.find((c) => c.id === selectedCategoryId) ?? null,
+      categories.find((category) => category.id === selectedCategoryId) ?? null,
     );
   }, [categories, selectedCategoryId]);
+
+  /* =======================
+     NAVIGATION
+  ======================= */
+
+  const handleNavigate = useCallback(
+    (slug: string) => {
+      goToProductsPage({
+        categorySlug: slug,
+        overrideParams: true,
+      });
+    },
+    [goToProductsPage],
+  );
+
+  const clearCategoryFilters = useCallback(() => {
+    goToProductsPage({
+      categorySlug: null,
+      overrideParams: true,
+    });
+  }, [goToProductsPage]);
 
   if (isLoading || breadcrumb.length === 0) {
     return null;
   }
-
-  const handleNavigate = (slug: string) => {
-    const next = new URLSearchParams(params);
-    next.set("category", slug);
-    navigate(`/products?${next.toString()}`);
-  };
-
-  const clearCategoryFilters = () => {
-    const next = new URLSearchParams(params);
-    next.delete("category");
-    navigate(`/products?${next.toString()}`);
-  };
 
   return (
     <nav className="text-s14-l20 text-text-primary hidden items-center gap-x-4 md:flex">
@@ -53,9 +61,12 @@ const CategoryBreadcrumb = ({
             )}
 
             <button
+              type="button"
               onClick={() => handleNavigate(item.slug)}
               className={`cursor-pointer ${
-                index === breadcrumb.length - 1 ? "font-medium" : "font-normal"
+                index === breadcrumb.length - 1
+                  ? "font-medium"
+                  : "font-normal hover:underline"
               }`}
             >
               {item.name}
@@ -66,6 +77,7 @@ const CategoryBreadcrumb = ({
 
       {hasClearFilterButton && (
         <button
+          type="button"
           onClick={clearCategoryFilters}
           className="text-orange text-s12-l16 cursor-pointer font-semibold hover:underline"
         >

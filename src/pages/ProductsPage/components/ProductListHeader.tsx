@@ -1,5 +1,5 @@
-import { useSearchParams } from "react-router-dom";
 import { SwapVertIcon, TuneIcon } from "../../../assets/icons";
+import { useProductsNavigation } from "../../../hooks/useProductsNavigation";
 import GenericSelect from "../../../shared/components/GenericSelect";
 
 const SORT_OPTIONS: { label: string; value: string }[] = [
@@ -47,21 +47,15 @@ const ProductListHeader = ({
   openProductsSortPortal: () => void;
   openProductsFilterPortal: () => void;
 }) => {
-  const [params, setSearchParams] = useSearchParams();
+  const { sortBy, goToProductsPage } = useProductsNavigation();
 
   const handleSortChange = (value: string) => {
-    const nextParams = new URLSearchParams(params);
-
-    if (value === "recommended") {
-      nextParams.delete("sortBy");
-    } else {
-      nextParams.set("sortBy", value);
-    }
-
-    setSearchParams(nextParams);
+    goToProductsPage({
+      sortBy: value === "recommended" ? undefined : value,
+    });
   };
 
-  const selectedValue = params.get("sortBy") ?? "recommended";
+  const selectedValue = sortBy ?? "recommended";
   const formattedTotalCount = formatProductCount(totalCount);
 
   const selectedSortLabel =

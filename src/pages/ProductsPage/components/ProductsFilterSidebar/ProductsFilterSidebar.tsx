@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
 import type { ReqAuthGetAllSellersResponse } from "../../../../api/responses/ReqAuthGetAllSellersResponse.model";
 import type { ReqBrandsGetAllResponse } from "../../../../api/responses/ReqBrandsGetAllResponse.model";
 import type { ReqCategoriesGetAllResponse } from "../../../../api/responses/ReqCategoriesGetAllResponse.model";
 import { KeyboardArrowUpIcon } from "../../../../assets/icons";
+import { useProductsNavigation } from "../../../../hooks/useProductsNavigation";
 import GenericCheckbox from "../../../../shared/components/GenericCheckbox";
 import { INPUT_BASE } from "../../../../shared/constants/CommonTailwindClasses.constants";
 import type { CategoryNode } from "../../../../shared/models/CategoryNode.model";
@@ -23,12 +23,15 @@ const ProductsFilterSidebar = ({
   brands: ReqBrandsGetAllResponse;
   sellers: ReqAuthGetAllSellersResponse;
 }) => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const {
+    selectedCategorySlug,
+    selectedBrandSlugs,
+    selectedSellerIds,
+    goToProductsPage,
+  } = useProductsNavigation();
 
   const [brandSearch, setBrandSearch] = useState("");
   const [sellerSearch, setSellerSearch] = useState("");
-
-  const selectedCategorySlug = searchParams.get("category");
 
   const { tree } = useMemo(
     () => buildCategoryTreeWithMap(categories),
@@ -38,10 +41,14 @@ const ProductsFilterSidebar = ({
   const slugMap = useMemo(() => buildCategorySlugMap(tree), [tree]);
 
   const visibleCategories: CategoryNode[] = useMemo(() => {
-    if (!selectedCategorySlug) return tree;
+    if (!selectedCategorySlug) {
+      return tree;
+    }
 
     const current = slugMap.get(selectedCategorySlug);
-    if (!current) return tree;
+    if (!current) {
+      return tree;
+    }
 
     if (current.children.length > 0) {
       return current.children;
@@ -51,6 +58,7 @@ const ProductsFilterSidebar = ({
       const parent = categories.find(
         (category) => category.id === current.parentId,
       );
+
       return parent ? (slugMap.get(parent.slug)?.children ?? tree) : tree;
     }
 
@@ -58,27 +66,23 @@ const ProductsFilterSidebar = ({
   }, [selectedCategorySlug, tree, slugMap, categories]);
 
   const onSelectCategory = (slug: string) => {
-    const params = new URLSearchParams(searchParams);
-    params.set("category", slug);
-    setSearchParams(params);
+    goToProductsPage({ categorySlug: slug });
   };
-
-  const selectedBrandSlugs = searchParams.get("brands")?.split(",") ?? [];
 
   const toggleBrand = (slug: string) => {
     const next = selectedBrandSlugs.includes(slug)
       ? selectedBrandSlugs.filter((brandSlug) => brandSlug !== slug)
       : [...selectedBrandSlugs, slug];
 
-    const params = new URLSearchParams(searchParams);
+    goToProductsPage({ brandSlugs: next });
+  };
 
-    if (next.length === 0) {
-      params.delete("brands");
-    } else {
-      params.set("brands", next.join(","));
-    }
+  const toggleSeller = (id: number) => {
+    const next = selectedSellerIds.includes(id)
+      ? selectedSellerIds.filter((sellerId) => sellerId !== id)
+      : [...selectedSellerIds, id];
 
-    setSearchParams(params);
+    goToProductsPage({ sellerIds: next });
   };
 
   const filteredBrands = useMemo(() => {
@@ -86,25 +90,6 @@ const ProductsFilterSidebar = ({
       brand.name.toLowerCase().includes(brandSearch.toLowerCase()),
     );
   }, [brands, brandSearch]);
-
-  const selectedSellerIds =
-    searchParams.get("sellers")?.split(",").map(Number) ?? [];
-
-  const toggleSeller = (id: number) => {
-    const next = selectedSellerIds.includes(id)
-      ? selectedSellerIds.filter((sellerId) => sellerId !== id)
-      : [...selectedSellerIds, id];
-
-    const params = new URLSearchParams(searchParams);
-
-    if (next.length === 0) {
-      params.delete("sellers");
-    } else {
-      params.set("sellers", next.join(","));
-    }
-
-    setSearchParams(params);
-  };
 
   const filteredSellers = useMemo(() => {
     return sellers.filter((seller) =>
