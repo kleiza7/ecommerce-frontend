@@ -1,6 +1,6 @@
 import { useCallback } from "react";
-import { useSearchParams } from "react-router-dom";
 import { CheckIcon } from "../../../assets/icons";
+import { useProductsNavigation } from "../../../hooks/useProductsNavigation";
 import { GenericDrawer } from "../../../shared/components/GenericDrawer";
 
 const SORT_OPTIONS: { label: string; value: string }[] = [
@@ -17,26 +17,24 @@ const ProductsSortDrawer = ({
   open: boolean;
   setOpen: (open: boolean) => void;
 }) => {
-  const [params, setSearchParams] = useSearchParams();
+  const { sortBy, goToProductsPage } = useProductsNavigation();
 
-  const selectedValue = params.get("sortBy") ?? "recommended";
+  const selectedValue = sortBy ?? "recommended";
 
   const close = useCallback(() => {
     setOpen(false);
   }, [setOpen]);
 
-  const handleSelect = (value: string) => {
-    const nextParams = new URLSearchParams(params);
+  const handleSelect = useCallback(
+    (value: string) => {
+      goToProductsPage({
+        sortBy: value === "recommended" ? undefined : value,
+      });
 
-    if (value === "recommended") {
-      nextParams.delete("sortBy");
-    } else {
-      nextParams.set("sortBy", value);
-    }
-
-    setSearchParams(nextParams);
-    close();
-  };
+      close();
+    },
+    [close, goToProductsPage],
+  );
 
   return (
     <GenericDrawer
@@ -62,7 +60,9 @@ const ProductsSortDrawer = ({
               className="flex items-center justify-between py-1.5"
             >
               <span
-                className={`text-s14-l20 text-text-primary ${isActive ? "font-semibold" : ""}`}
+                className={`text-s14-l20 text-text-primary ${
+                  isActive ? "font-semibold" : ""
+                }`}
               >
                 {option.label}
               </span>

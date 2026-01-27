@@ -6,63 +6,12 @@ import {
   BUTTON_PRIMARY,
   BUTTON_PRIMARY_OUTLINED,
 } from "../../../../../constants/CommonTailwindClasses.constants";
+import type { CategoryNode } from "../../../../../models/CategoryNode.model";
+import {
+  buildCategoryPath,
+  buildCategoryTreeWithMap,
+} from "../../../../../utils/CategoryTree.util";
 import { customTwMerge } from "../../../../../utils/Tailwind.util";
-
-type CategoryNode = ReqCategoriesGetAllResponse[number] & {
-  children: CategoryNode[];
-};
-
-const buildTree = (categories: ReqCategoriesGetAllResponse): CategoryNode[] => {
-  const map = new Map<number, CategoryNode>();
-
-  categories.forEach((category) => {
-    map.set(category.id, { ...category, children: [] });
-  });
-
-  const roots: CategoryNode[] = [];
-
-  map.forEach((node) => {
-    if (node.parentId) {
-      map.get(node.parentId)?.children.push(node);
-    } else {
-      roots.push(node);
-    }
-  });
-
-  return roots;
-};
-
-const buildInitialPath = (
-  categories: ReqCategoriesGetAllResponse,
-  initialSelectedCategory: ReqCategoriesGetAllResponse[number] | null,
-): CategoryNode[] => {
-  if (!initialSelectedCategory || categories.length === 0) {
-    return [];
-  }
-
-  const map = new Map<number, CategoryNode>();
-
-  categories.forEach((category) => {
-    map.set(category.id, { ...category, children: [] });
-  });
-
-  categories.forEach((category) => {
-    if (category.parentId) {
-      map.get(category.parentId)?.children.push(map.get(category.id)!);
-    }
-  });
-
-  const path: CategoryNode[] = [];
-  let current = map.get(initialSelectedCategory.id);
-
-  while (current) {
-    path.unshift(current);
-    if (!current.parentId) break;
-    current = map.get(current.parentId);
-  }
-
-  return path;
-};
 
 const CategorySelectionColumnDrawerContent = ({
   initialSelectedCategory,
@@ -74,10 +23,14 @@ const CategorySelectionColumnDrawerContent = ({
   close: () => void;
 }) => {
   const { data: categories = [] } = useCategoriesGetAll();
-  const tree = useMemo(() => buildTree(categories), [categories]);
+
+  const { tree } = useMemo(
+    () => buildCategoryTreeWithMap(categories),
+    [categories],
+  );
 
   const [selectedPath, setSelectedPath] = useState<CategoryNode[]>(() =>
-    buildInitialPath(categories, initialSelectedCategory),
+    buildCategoryPath(categories, initialSelectedCategory),
   );
 
   const handleSelect = (node: CategoryNode, level: number) => {
@@ -89,10 +42,11 @@ const CategorySelectionColumnDrawerContent = ({
   };
 
   const lastSelectedNode = selectedPath[selectedPath.length - 1] ?? null;
-  const isLeafSelected =
-    !!lastSelectedNode && lastSelectedNode.children.length === 0;
 
-  const finalSelectedCategory = isLeafSelected ? lastSelectedNode : null;
+  const selectedLeafId =
+    lastSelectedNode && lastSelectedNode.children.length === 0
+      ? lastSelectedNode.id
+      : null;
 
   const columns: CategoryNode[][] = useMemo(() => {
     const result: CategoryNode[][] = [];
@@ -109,7 +63,6 @@ const CategorySelectionColumnDrawerContent = ({
 
   return (
     <div className="flex h-full flex-col gap-y-4">
-      {/* HEADER */}
       <div className="flex shrink-0 flex-col gap-y-1">
         <span className="text-s18-l28 text-text-primary font-semibold">
           Select Category
@@ -119,7 +72,6 @@ const CategorySelectionColumnDrawerContent = ({
         </span>
       </div>
 
-      {/* COLUMNS */}
       <div className="flex flex-1 gap-x-6 overflow-x-auto overflow-y-hidden">
         {columns.map((column, level) => {
           const columnKey =
@@ -129,7 +81,6 @@ const CategorySelectionColumnDrawerContent = ({
 
           return (
             <div key={columnKey} className="flex gap-x-4">
-              {/* 👇 w-56 → w-52 (UI telafisi) */}
               <div className="w-52 shrink-0">
                 <ul className="flex flex-col gap-1">
                   {column.map((node) => {
@@ -171,7 +122,6 @@ const CategorySelectionColumnDrawerContent = ({
         })}
       </div>
 
-      {/* ACTIONS */}
       <div className="bg-surface-primary sticky bottom-0 flex shrink-0 justify-end gap-x-2">
         <button
           type="button"
@@ -183,10 +133,21 @@ const CategorySelectionColumnDrawerContent = ({
 
         <button
           type="button"
-          disabled={!finalSelectedCategory}
+          disabled={selectedLeafId === null}
           onClick={() => {
-            if (!finalSelectedCategory) return;
-            onCategorySelected(finalSelectedCategory);
+            if (selectedLeafId === null) {
+              return;
+            }
+
+            const selectedCategory = categories.find(
+              (category) => category.id === selectedLeafId,
+            );
+
+            if (!selectedCategory) {
+              return;
+            }
+
+            onCategorySelected(selectedCategory);
             close();
           }}
           className={customTwMerge(BUTTON_PRIMARY, "px-4")}

@@ -6,67 +6,16 @@ import {
   BUTTON_PRIMARY,
   BUTTON_PRIMARY_OUTLINED,
 } from "../../../../../constants/CommonTailwindClasses.constants";
+import type { CategoryNode } from "../../../../../models/CategoryNode.model";
+import {
+  buildCategoryPath,
+  buildCategoryTreeWithMap,
+} from "../../../../../utils/CategoryTree.util";
 import { customTwMerge } from "../../../../../utils/Tailwind.util";
 import {
   GenericDialogClose,
   GenericDialogTitle,
 } from "../../../../GenericDialog";
-
-type CategoryNode = ReqCategoriesGetAllResponse[number] & {
-  children: CategoryNode[];
-};
-
-const buildTreeWithMap = (categories: ReqCategoriesGetAllResponse) => {
-  const map = new Map<number, CategoryNode>();
-
-  categories.forEach((category) => {
-    map.set(category.id, { ...category, children: [] });
-  });
-
-  const roots: CategoryNode[] = [];
-
-  map.forEach((node) => {
-    if (node.parentId) {
-      map.get(node.parentId)?.children.push(node);
-    } else {
-      roots.push(node);
-    }
-  });
-
-  return { tree: roots };
-};
-
-const buildInitialPath = (
-  categories: ReqCategoriesGetAllResponse,
-  initialSelectedCategory: ReqCategoriesGetAllResponse[number] | null,
-): CategoryNode[] => {
-  if (!initialSelectedCategory || categories.length === 0) {
-    return [];
-  }
-
-  const map = new Map<number, CategoryNode>();
-
-  categories.forEach((category) => {
-    map.set(category.id, { ...category, children: [] });
-  });
-
-  categories.forEach((category) => {
-    if (category.parentId) {
-      map.get(category.parentId)?.children.push(map.get(category.id)!);
-    }
-  });
-
-  const path: CategoryNode[] = [];
-  let current = map.get(initialSelectedCategory.id);
-
-  while (current) {
-    path.unshift(current);
-    if (!current.parentId) break;
-    current = map.get(current.parentId);
-  }
-
-  return path;
-};
 
 const CategorySelectionDialogContent = ({
   initialSelectedCategory,
@@ -79,10 +28,13 @@ const CategorySelectionDialogContent = ({
 }) => {
   const { data: categories = [] } = useCategoriesGetAll();
 
-  const { tree } = useMemo(() => buildTreeWithMap(categories), [categories]);
+  const { tree } = useMemo(
+    () => buildCategoryTreeWithMap(categories),
+    [categories],
+  );
 
   const [selectedPath, setSelectedPath] = useState<CategoryNode[]>(() =>
-    buildInitialPath(categories, initialSelectedCategory),
+    buildCategoryPath(categories, initialSelectedCategory),
   );
 
   const handleSelect = (node: CategoryNode, level: number) => {
@@ -94,10 +46,11 @@ const CategorySelectionDialogContent = ({
   };
 
   const lastSelectedNode = selectedPath[selectedPath.length - 1] ?? null;
-  const isLeafSelected =
-    !!lastSelectedNode && lastSelectedNode.children.length === 0;
 
-  const finalSelectedCategory = isLeafSelected ? lastSelectedNode : null;
+  const selectedLeafId =
+    lastSelectedNode && lastSelectedNode.children.length === 0
+      ? lastSelectedNode.id
+      : null;
 
   const columns: CategoryNode[][] = useMemo(() => {
     const result: CategoryNode[][] = [];
@@ -130,7 +83,6 @@ const CategorySelectionDialogContent = ({
 
           return (
             <div key={columnKey} className="flex gap-x-4">
-              {/* 👇 w-56 → w-52 (UI telafisi) */}
               <div className="w-52 shrink-0">
                 <ul className="flex flex-col gap-1">
                   {column.map((node) => {
@@ -185,10 +137,21 @@ const CategorySelectionDialogContent = ({
 
         <button
           type="button"
-          disabled={!finalSelectedCategory}
+          disabled={selectedLeafId === null}
           onClick={() => {
-            if (!finalSelectedCategory) return;
-            onCategorySelected(finalSelectedCategory);
+            if (selectedLeafId === null) {
+              return;
+            }
+
+            const selectedCategory = categories.find(
+              (category) => category.id === selectedLeafId,
+            );
+
+            if (!selectedCategory) {
+              return;
+            }
+
+            onCategorySelected(selectedCategory);
             close();
           }}
           className={customTwMerge(BUTTON_PRIMARY, "px-4")}

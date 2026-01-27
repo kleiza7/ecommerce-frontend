@@ -1,14 +1,13 @@
 import { useCallback, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
 import { AddIcon, RemoveIcon, TrashIcon } from "../../../assets/icons";
 import { useCartActions } from "../../../hooks/useCartActions";
 import { useCurrenciesGetAll } from "../../../hooks/useCurrenciesGetAll";
+import { useProductsNavigation } from "../../../hooks/useProductsNavigation";
 import GenericTooltip from "../../../shared/components/GenericTooltip";
 import { useCartStore } from "../../../stores/CartStore";
 
 const CartItemsList = () => {
-  const navigate = useNavigate();
-
+  const { goToProductsPage } = useProductsNavigation();
   const cartItems = useCartStore((state) => state.items);
   const { updateCart, removeFromCart, isLoading } = useCartActions();
   const { data: currencies = [] } = useCurrenciesGetAll();
@@ -40,9 +39,12 @@ const CartItemsList = () => {
 
   const onSellerClick = useCallback(
     (sellerId: number) => {
-      navigate(`/products?sellers=${sellerId}`);
+      goToProductsPage({
+        sellerIds: [sellerId],
+        overrideParams: true,
+      });
     },
-    [navigate],
+    [goToProductsPage],
   );
 
   return (

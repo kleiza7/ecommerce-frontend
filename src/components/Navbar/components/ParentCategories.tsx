@@ -1,11 +1,10 @@
-import { NavLink, useSearchParams } from "react-router-dom";
 import { useCategoriesGetAll } from "../../../hooks/useCategoriesGetAll";
+import { useProductsNavigation } from "../../../hooks/useProductsNavigation";
 
 const ParentCategories = () => {
   const { data: categories = [] } = useCategoriesGetAll();
-  const [searchParams] = useSearchParams();
 
-  const activeCategorySlug = searchParams.get("category");
+  const { selectedCategorySlug, goToProductsPage } = useProductsNavigation();
 
   const parentCategories = categories
     .filter((category) => category.parentId === null)
@@ -20,13 +19,19 @@ const ParentCategories = () => {
       <div className="no-scrollbar flex h-8 items-center gap-x-6 overflow-x-auto pr-10 whitespace-nowrap">
         {parentCategories.map((parent) => {
           const isActive =
-            activeCategorySlug === parent.slug ||
-            activeCategorySlug?.startsWith(`${parent.slug}-`);
+            selectedCategorySlug === parent.slug ||
+            selectedCategorySlug?.startsWith(`${parent.slug}-`);
 
           return (
-            <NavLink
+            <button
               key={parent.id}
-              to={`/products?category=${parent.slug}`}
+              type="button"
+              onClick={() => {
+                goToProductsPage({
+                  categorySlug: parent.slug,
+                  overrideParams: true,
+                });
+              }}
               className={`text-s14-l20 relative flex h-8 shrink-0 items-center font-medium transition-colors ${
                 isActive ? "text-orange" : "hover:text-orange text-text-primary"
               }`}
@@ -36,7 +41,7 @@ const ParentCategories = () => {
               {isActive && (
                 <div className="bg-orange absolute bottom-0 left-0 h-0.5 w-full rounded-full" />
               )}
-            </NavLink>
+            </button>
           );
         })}
       </div>

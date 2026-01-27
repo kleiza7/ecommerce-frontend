@@ -1,16 +1,16 @@
 import { useCallback, useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
 import type { ReqProductsListPayload } from "../../api/payloads/ReqProductsListPayload.model";
 import { useAuthGetAllSellers } from "../../hooks/useAuthGetAllSellers";
 import { useBrandsGetAll } from "../../hooks/useBrandsGetAll";
 import { useCategoriesGetAll } from "../../hooks/useCategoriesGetAll";
 import { useProductsListInfinite } from "../../hooks/useProductsListInfinite";
+import { useProductsNavigation } from "../../hooks/useProductsNavigation";
+import CategoryBreadcrumb from "../../shared/components/CategoryBreadcrumb";
 import type { CategoryNode } from "../../shared/models/CategoryNode.model";
 import {
   buildCategorySlugMap,
-  buildCategoryTree,
+  buildCategoryTreeWithMap,
 } from "../../shared/utils/CategoryTree.util";
-import CategoryBreadcrumb from "./components/CategoryBreadcrumb";
 import ProductListHeader from "./components/ProductListHeader";
 import ProductsFilterDrawer from "./components/ProductsFilterDrawer/ProductsFilterDrawer";
 import ProductsFilterSidebar from "./components/ProductsFilterSidebar/ProductsFilterSidebar";
@@ -29,45 +29,47 @@ const collectLeafIds = (node: CategoryNode): number[] => {
 };
 
 const ProductsPage = () => {
-  const [params] = useSearchParams();
+  const {
+    selectedCategorySlug,
+    selectedBrandSlugs,
+    selectedSellerIds,
+    query,
+    sortBy,
+  } = useProductsNavigation();
 
   const { data: categories = [] } = useCategoriesGetAll();
   const { data: brands = [] } = useBrandsGetAll();
   const { data: sellers = [] } = useAuthGetAllSellers();
 
-  const selectedCategorySlug = params.get("category");
+  /* =======================
+     CATEGORY
+  ======================= */
+
+  const selectedCategoryNode = useMemo(() => {
+    if (!selectedCategorySlug || categories.length === 0) {
+      return undefined;
+    }
+
+    const { tree } = buildCategoryTreeWithMap(categories);
+    const slugMap = buildCategorySlugMap(tree);
+
+    return slugMap.get(selectedCategorySlug);
+  }, [categories, selectedCategorySlug]);
+
+  const selectedCategoryId = selectedCategoryNode?.id;
+  const selectedCategoryName = selectedCategoryNode?.name;
 
   const categoryIds = useMemo(() => {
-    if (!selectedCategorySlug) {
+    if (!selectedCategoryNode) {
       return undefined;
     }
 
-    const tree = buildCategoryTree(categories);
-    const slugMap = buildCategorySlugMap(tree);
+    return collectLeafIds(selectedCategoryNode);
+  }, [selectedCategoryNode]);
 
-    const node = slugMap.get(selectedCategorySlug);
-    if (!node) {
-      return undefined;
-    }
-
-    return collectLeafIds(node);
-  }, [categories, selectedCategorySlug]);
-
-  const selectedCategoryName = useMemo(() => {
-    if (!selectedCategorySlug) {
-      return undefined;
-    }
-
-    const tree = buildCategoryTree(categories);
-    const slugMap = buildCategorySlugMap(tree);
-
-    const node = slugMap.get(selectedCategorySlug);
-    return node?.name;
-  }, [categories, selectedCategorySlug]);
-
-  const selectedBrandSlugs = useMemo(() => {
-    return params.get("brands")?.split(",") ?? [];
-  }, [params]);
+  /* =======================
+     BRAND / SELLER
+  ======================= */
 
   const brandIds = useMemo(() => {
     if (selectedBrandSlugs.length === 0) {
@@ -81,26 +83,20 @@ const ProductsPage = () => {
     return ids.length > 0 ? ids : undefined;
   }, [brands, selectedBrandSlugs]);
 
-  const selectedSellerIds = useMemo(() => {
-    return params.get("sellers")?.split(",").map(Number) ?? [];
-  }, [params]);
-
   const sellerIds = useMemo(() => {
     return selectedSellerIds.length > 0 ? selectedSellerIds : undefined;
   }, [selectedSellerIds]);
 
-  const query = useMemo(() => {
-    const raw = params.get("q")?.trim() ?? "";
-    return raw.length > 0 ? raw : undefined;
-  }, [params]);
+  /* =======================
+     SORT
+  ======================= */
 
   const sort = useMemo<ReqProductsListPayload["sort"]>(() => {
-    const raw = params.get("sortBy");
-    if (!raw) {
+    if (!sortBy) {
       return undefined;
     }
 
-    const [field, order] = raw.split("-");
+    const [field, order] = sortBy.split("-");
 
     if (
       (field === "id" || field === "createdAt" || field === "price") &&
@@ -110,7 +106,11 @@ const ProductsPage = () => {
     }
 
     return undefined;
-  }, [params]);
+  }, [sortBy]);
+
+  /* =======================
+     PAYLOAD
+  ======================= */
 
   const payload: Omit<ReqProductsListPayload, "page"> = {
     limit: PAGE_LIMIT,
@@ -132,6 +132,10 @@ const ProductsPage = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useProductsListInfinite(payload);
 
+  /* =======================
+     UI STATE
+  ======================= */
+
   const [isProductsSortPortalOpen, setIsProductsSortPortalOpen] =
     useState(false);
   const [isProductsFilterPortalOpen, setIsProductsFilterPortalOpen] =
@@ -145,15 +149,23 @@ const ProductsPage = () => {
     setIsProductsFilterPortalOpen(true);
   }, []);
 
+  /* =======================
+     DATA
+  ======================= */
+
   const allProducts = data?.pages.flatMap((page) => page.items) ?? [];
   const totalCount = data?.pages[0]?.pagination.total ?? 0;
 
   const rangeEnd = allProducts.length;
   const rangeStart = Math.max(1, rangeEnd - PAGE_LIMIT + 1);
 
+  /* =======================
+     RENDER
+  ======================= */
+
   return (
     <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-5 pb-4 md:px-10 md:py-4">
-      <CategoryBreadcrumb categories={categories} />
+      <CategoryBreadcrumb selectedCategoryId={selectedCategoryId} />
 
       <div className="flex gap-6">
         <aside className="hidden w-[200px] shrink-0 md:block">
@@ -172,6 +184,7 @@ const ProductsPage = () => {
               openProductsSortPortal={openProductsSortPortal}
               openProductsFilterPortal={openProductsFilterPortal}
             />
+
             <ProductsGrid
               allProducts={allProducts}
               fetchNextPage={fetchNextPage}
@@ -193,6 +206,7 @@ const ProductsPage = () => {
         open={isProductsSortPortalOpen}
         setOpen={setIsProductsSortPortalOpen}
       />
+
       <ProductsFilterDrawer
         open={isProductsFilterPortalOpen}
         setOpen={setIsProductsFilterPortalOpen}

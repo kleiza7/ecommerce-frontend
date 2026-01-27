@@ -1,43 +1,46 @@
-import { useState } from "react";
-import { NavLink, useSearchParams } from "react-router-dom";
+import { useMemo, useState } from "react";
 import { KeyboardArrowUpIcon } from "../../../../../assets/icons";
+import { useCategoriesGetAll } from "../../../../../hooks/useCategoriesGetAll";
+import { useProductsNavigation } from "../../../../../hooks/useProductsNavigation";
+import type { CategoryNode } from "../../../../../shared/models/CategoryNode.model";
+import { buildCategoryTreeWithMap } from "../../../../../shared/utils/CategoryTree.util";
 
-type CategoryNode = {
-  id: number;
-  label: string;
-  slug: string;
-  children?: CategoryNode[];
-};
+const CategoriesMegaMenuContent = ({ close }: { close: () => void }) => {
+  const { data: categories = [] } = useCategoriesGetAll();
 
-const CategoriesMegaMenuContent = ({
-  parents,
-  closeMenu,
-}: {
-  parents: CategoryNode[];
-  closeMenu: () => void;
-}) => {
-  const [searchParams] = useSearchParams();
-  const activeCategorySlug = searchParams.get("category");
+  const { selectedCategorySlug, goToProductsPage } = useProductsNavigation();
 
-  const [activeParent, setActiveParent] = useState<CategoryNode | null>(
-    parents.find(
-      (parent) =>
-        activeCategorySlug === parent.slug ||
-        activeCategorySlug?.startsWith(`${parent.slug}-`),
-    ) ??
-      parents[0] ??
-      null,
-  );
+  const { tree } = useMemo(() => {
+    return buildCategoryTreeWithMap(categories);
+  }, [categories]);
 
-  if (!activeParent) return null;
+  const [activeParent, setActiveParent] = useState<CategoryNode | null>(() => {
+    if (!selectedCategorySlug) {
+      return tree[0] ?? null;
+    }
+
+    return (
+      tree.find(
+        (parent) =>
+          selectedCategorySlug === parent.slug ||
+          selectedCategorySlug.startsWith(`${parent.slug}-`),
+      ) ??
+      tree[0] ??
+      null
+    );
+  });
+
+  if (!activeParent) {
+    return null;
+  }
 
   return (
     <div className="flex min-w-[900px]">
       {/* LEFT */}
       <aside className="border-gray-2 w-56 border-r pr-4">
         <ul className="flex flex-col gap-1">
-          {parents.map((parent) => {
-            const isActive = activeParent?.id === parent.id;
+          {tree.map((parent) => {
+            const isActive = activeParent.id === parent.id;
 
             return (
               <li
@@ -50,7 +53,7 @@ const CategoriesMegaMenuContent = ({
                 }`}
               >
                 <span className="text-s14-l20 font-semibold">
-                  {parent.label}
+                  {parent.name}
                 </span>
 
                 {isActive && (
@@ -65,36 +68,48 @@ const CategoriesMegaMenuContent = ({
       {/* RIGHT */}
       <section className="flex-1 pl-6">
         <div className="grid grid-cols-3 gap-8">
-          {activeParent.children?.map((child) => {
+          {activeParent.children.map((child) => {
             return (
               <div key={child.id} className="flex flex-col gap-2">
-                <NavLink
-                  to={`/products?category=${child.slug}`}
-                  onClick={closeMenu}
+                <button
+                  type="button"
+                  onClick={() => {
+                    goToProductsPage({
+                      categorySlug: child.slug,
+                      overrideParams: true,
+                    });
+                    close();
+                  }}
                   className="text-s14-l20 text-orange flex items-center gap-x-1 font-medium hover:underline"
                 >
-                  <span>{child.label}</span>
+                  <span>{child.name}</span>
                   <KeyboardArrowUpIcon className="fill-orange h-4 w-4 rotate-90" />
-                </NavLink>
+                </button>
 
-                {child.children && (
+                {child.children.length > 0 && (
                   <ul className="flex flex-col gap-1">
                     {child.children.map((sub) => {
-                      const isSubActive = activeCategorySlug === sub.slug;
+                      const isSubActive = selectedCategorySlug === sub.slug;
 
                       return (
                         <li key={sub.id}>
-                          <NavLink
-                            to={`/products?category=${sub.slug}`}
-                            onClick={closeMenu}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              goToProductsPage({
+                                categorySlug: sub.slug,
+                                overrideParams: true,
+                              });
+                              close();
+                            }}
                             className={`text-s14-l20 block transition-colors ${
                               isSubActive
                                 ? "text-orange underline"
                                 : "text-text-primary hover:text-orange hover:underline"
                             }`}
                           >
-                            {sub.label}
-                          </NavLink>
+                            {sub.name}
+                          </button>
                         </li>
                       );
                     })}

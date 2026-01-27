@@ -5,8 +5,8 @@ import { useUserDomain } from "../../hooks/useUserDomain";
 import { USER_DOMAIN } from "../../shared/enums/UserDomain.enum";
 import { useUserStore } from "../../stores/UserStore";
 import AuthNavigationMenu from "./components/AuthNavigationMenu";
-import CategoriesDrawer from "./components/CategoriesDrawer";
 import CategoriesMegaMenu from "./components/CategoriesMegaMenu/CategoriesMegaMenu";
+import CategoriesNavigationDrawer from "./components/CategoriesNavigationDrawer/CategoriesNavigationDrawer";
 import GlobalSearchInput from "./components/GlobalSearchInput";
 import MyCartLink from "./components/MyCartLink";
 import MyFavoritesLink from "./components/MyFavoritesLink";
@@ -90,9 +90,9 @@ const Navbar = () => {
       </header>
 
       {isGuestOrUser && (
-        <CategoriesDrawer
+        <CategoriesNavigationDrawer
           open={isCategoriesDrawerOpen}
-          onOpenChange={setIsCategoriesDrawerOpen}
+          setOpen={setIsCategoriesDrawerOpen}
         />
       )}
     </>

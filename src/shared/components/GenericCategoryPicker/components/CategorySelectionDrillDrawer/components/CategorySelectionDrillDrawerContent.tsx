@@ -10,31 +10,9 @@ import {
   BUTTON_PRIMARY,
   BUTTON_PRIMARY_OUTLINED,
 } from "../../../../../constants/CommonTailwindClasses.constants";
+import type { CategoryNode } from "../../../../../models/CategoryNode.model";
+import { buildCategoryTreeWithMap } from "../../../../../utils/CategoryTree.util";
 import { customTwMerge } from "../../../../../utils/Tailwind.util";
-
-type CategoryNode = ReqCategoriesGetAllResponse[number] & {
-  children: CategoryNode[];
-};
-
-const buildTreeWithMap = (categories: ReqCategoriesGetAllResponse) => {
-  const map = new Map<number, CategoryNode>();
-
-  categories.forEach((category) => {
-    map.set(category.id, { ...category, children: [] });
-  });
-
-  const roots: CategoryNode[] = [];
-
-  map.forEach((node) => {
-    if (node.parentId) {
-      map.get(node.parentId)?.children.push(node);
-    } else {
-      roots.push(node);
-    }
-  });
-
-  return { tree: roots, map };
-};
 
 const CategorySelectionDrillDrawerContent = ({
   initialSelectedCategory,
@@ -48,45 +26,48 @@ const CategorySelectionDrillDrawerContent = ({
   const { data: categories = [] } = useCategoriesGetAll();
 
   const { tree, map } = useMemo(
-    () => buildTreeWithMap(categories),
+    () => buildCategoryTreeWithMap(categories),
     [categories],
   );
 
-  /** 🔹 initial drill path + leaf */
-  const { initialDrillPath, initialLeaf } = useMemo(() => {
+  const { initialDrillPath, initialLeafId } = useMemo(() => {
     if (!initialSelectedCategory) {
-      return { initialDrillPath: [] as CategoryNode[], initialLeaf: null };
+      return { initialDrillPath: [] as CategoryNode[], initialLeafId: null };
     }
 
     const leafNode = map.get(initialSelectedCategory.id) ?? null;
     if (!leafNode) {
-      return { initialDrillPath: [] as CategoryNode[], initialLeaf: null };
+      return { initialDrillPath: [] as CategoryNode[], initialLeafId: null };
     }
 
     const path: CategoryNode[] = [];
     let current = leafNode;
 
-    while (current.parentId) {
+    while (current.parentId !== null) {
       const parent = map.get(current.parentId);
-      if (!parent) break;
+      if (!parent) {
+        break;
+      }
       path.unshift(parent);
       current = parent;
     }
 
     return {
       initialDrillPath: path,
-      initialLeaf: leafNode.children.length === 0 ? leafNode : null,
+      initialLeafId: leafNode.children.length === 0 ? leafNode.id : null,
     };
   }, [initialSelectedCategory, map]);
 
   const [drillPath, setDrillPath] = useState<CategoryNode[]>(initialDrillPath);
-  const [selectedLeaf, setSelectedLeaf] = useState<CategoryNode | null>(
-    initialLeaf,
+  const [selectedLeafId, setSelectedLeafId] = useState<number | null>(
+    initialLeafId,
   );
 
-  /** 🔹 gösterilecek liste */
   const currentNodes: CategoryNode[] = useMemo(() => {
-    if (drillPath.length === 0) return tree;
+    if (drillPath.length === 0) {
+      return tree;
+    }
+
     return drillPath[drillPath.length - 1].children;
   }, [tree, drillPath]);
 
@@ -98,7 +79,7 @@ const CategorySelectionDrillDrawerContent = ({
           <button
             type="button"
             onClick={() => {
-              setSelectedLeaf(null);
+              setSelectedLeafId(null);
               setDrillPath((prev) => prev.slice(0, prev.length - 1));
             }}
             className="hover:bg-gray-1 flex h-8 w-8 items-center justify-center rounded-md"
@@ -121,18 +102,18 @@ const CategorySelectionDrillDrawerContent = ({
       <ul className="flex flex-1 flex-col overflow-y-auto">
         {currentNodes.map((node) => {
           const isLeaf = node.children.length === 0;
-          const isSelected = selectedLeaf?.id === node.id;
+          const isSelected = selectedLeafId === node.id;
 
           return (
             <li
               key={node.id}
               onClick={() => {
                 if (isLeaf) {
-                  setSelectedLeaf(node);
+                  setSelectedLeafId(node.id);
                   return;
                 }
 
-                setSelectedLeaf(null);
+                setSelectedLeafId(null);
                 setDrillPath((prev) => [...prev, node]);
               }}
               className={customTwMerge(
@@ -169,10 +150,21 @@ const CategorySelectionDrillDrawerContent = ({
 
           <button
             type="button"
-            disabled={!selectedLeaf}
+            disabled={selectedLeafId === null}
             onClick={() => {
-              if (!selectedLeaf) return;
-              onCategorySelected(selectedLeaf);
+              if (selectedLeafId === null) {
+                return;
+              }
+
+              const selectedCategory = categories.find(
+                (category) => category.id === selectedLeafId,
+              );
+
+              if (!selectedCategory) {
+                return;
+              }
+
+              onCategorySelected(selectedCategory);
               close();
             }}
             className={customTwMerge(BUTTON_PRIMARY, "px-4")}

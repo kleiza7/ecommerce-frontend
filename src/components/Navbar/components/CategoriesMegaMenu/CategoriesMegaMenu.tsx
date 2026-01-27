@@ -1,39 +1,14 @@
 import { useState } from "react";
 import { MenuIcon } from "../../../../assets/icons";
-import { useCategoriesGetAll } from "../../../../hooks/useCategoriesGetAll";
 import GenericNavigationMenu from "../../../../shared/components/GenericNavigationMenu";
 import CategoriesMegaMenuContent from "./components/CategoriesMegaMenuContent";
 
 const CategoriesMegaMenu = () => {
-  const { data: categories = [] } = useCategoriesGetAll();
-
   const [isNavigationMenuOpen, setIsNavigationMenuOpen] = useState(false);
 
-  const closeMenu = () => {
+  const close = () => {
     setIsNavigationMenuOpen(false);
   };
-
-  const parentCategories = categories
-    .filter((category) => category.parentId === null)
-    .map((category) => ({
-      id: category.id,
-      label: category.name,
-      slug: category.slug,
-      children: categories
-        .filter((categoryItem) => categoryItem.parentId === category.id)
-        .map((child) => ({
-          id: child.id,
-          label: child.name,
-          slug: child.slug,
-          children: categories
-            .filter((sub) => sub.parentId === child.id)
-            .map((subItem) => ({
-              id: subItem.id,
-              label: subItem.name,
-              slug: subItem.slug,
-            })),
-        })),
-    }));
 
   return (
     <GenericNavigationMenu
@@ -46,10 +21,7 @@ const CategoriesMegaMenu = () => {
         </span>
       }
     >
-      <CategoriesMegaMenuContent
-        parents={parentCategories}
-        closeMenu={closeMenu}
-      />
+      <CategoriesMegaMenuContent close={close} />
     </GenericNavigationMenu>
   );
 };
