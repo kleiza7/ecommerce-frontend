@@ -4,24 +4,20 @@ import type { ReqCartClearResponse } from "../api/responses/ReqCartClearResponse
 import { TOAST_TYPE } from "../shared/enums/ToastType.enum";
 import { showToast } from "../shared/utils/Toast.util";
 
-export const useCartClear = (
-  onSuccessCallback?: (data: ReqCartClearResponse) => void,
-) => {
+export const useCartClear = () => {
   return useMutation<ReqCartClearResponse, Error, void>({
     mutationFn: async () => {
       const res = await reqCartClear();
       return res.data;
     },
 
-    onSuccess: (data) => {
+    onSuccess: () => {
       // INFO: commented for optimistic update
       // showToast({
       //   title: "Cart cleared",
       //   description: "All items have been removed from your cart.",
       //   type: TOAST_TYPE.SUCCESS,
       // });
-
-      onSuccessCallback?.(data);
     },
 
     onError: () => {

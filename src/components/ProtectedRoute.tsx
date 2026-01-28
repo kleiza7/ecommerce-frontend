@@ -9,6 +9,10 @@ const ProtectedRoute = ({
 }) => {
   const userDomain = useUserDomain();
 
+  if (userDomain === null) {
+    return null;
+  }
+
   return allowedDomains.includes(userDomain) ? (
     <Outlet />
   ) : (

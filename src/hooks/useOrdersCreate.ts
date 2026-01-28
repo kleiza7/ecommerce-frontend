@@ -1,14 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { reqOrdersCreate } from "../api/controllers/Orders.controller";
+import type { ApiErrorResponse } from "../api/responses/ApiErrorResponse.model";
 import type { ReqOrdersCreateResponse } from "../api/responses/ReqOrdersCreateResponse.model";
 import { EVENT_TYPE } from "../shared/enums/EventType.enum";
 import { TOAST_TYPE } from "../shared/enums/ToastType.enum";
 import { showToast } from "../shared/utils/Toast.util";
-
-type ApiErrorResponse = {
-  message?: string;
-};
 
 export const useOrdersCreate = () => {
   const queryClient = useQueryClient();

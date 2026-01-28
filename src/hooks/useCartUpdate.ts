@@ -2,17 +2,12 @@ import { useMutation } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { reqCartUpdate } from "../api/controllers/Cart.controller";
 import type { ReqCartUpdatePayload } from "../api/payloads/ReqCartUpdatePayload.model";
+import type { ApiErrorResponse } from "../api/responses/ApiErrorResponse.model";
 import type { ReqCartUpdateResponse } from "../api/responses/ReqCartUpdateResponse.model";
 import { TOAST_TYPE } from "../shared/enums/ToastType.enum";
 import { showToast } from "../shared/utils/Toast.util";
 
-type ApiErrorResponse = {
-  message?: string;
-};
-
-export const useCartUpdate = (
-  onSuccessCallback?: (data: ReqCartUpdateResponse) => void,
-) => {
+export const useCartUpdate = () => {
   return useMutation<
     ReqCartUpdateResponse,
     AxiosError<ApiErrorResponse>,
@@ -23,15 +18,13 @@ export const useCartUpdate = (
       return res.data;
     },
 
-    onSuccess: (data) => {
+    onSuccess: () => {
       // INFO: commented for optimistic update
       // showToast({
       //   title: "Cart updated",
       //   description: "The item quantity has been successfully updated.",
       //   type: TOAST_TYPE.SUCCESS,
       // });
-
-      onSuccessCallback?.(data);
     },
 
     onError: (error) => {

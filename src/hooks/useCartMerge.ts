@@ -5,17 +5,11 @@ import type { ReqCartMergeResponse } from "../api/responses/ReqCartMergeResponse
 import { TOAST_TYPE } from "../shared/enums/ToastType.enum";
 import { showToast } from "../shared/utils/Toast.util";
 
-export const useCartMerge = (
-  onSuccessCallback?: (data: ReqCartMergeResponse) => void,
-) => {
+export const useCartMerge = () => {
   return useMutation<ReqCartMergeResponse, Error, ReqCartMergePayload>({
     mutationFn: async (payload) => {
       const res = await reqCartMerge(payload);
       return res.data;
-    },
-
-    onSuccess: (data) => {
-      onSuccessCallback?.(data);
     },
 
     onError: () => {

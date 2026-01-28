@@ -5,9 +5,7 @@ import type { ReqAuthRegisterSellerResponse } from "../api/responses/ReqAuthRegi
 import { TOAST_TYPE } from "../shared/enums/ToastType.enum";
 import { showToast } from "../shared/utils/Toast.util";
 
-export const useAuthRegisterSeller = (
-  onSuccessCallback?: (data: ReqAuthRegisterSellerResponse) => void,
-) => {
+export const useAuthRegisterSeller = () => {
   return useMutation<
     ReqAuthRegisterSellerResponse,
     Error,
@@ -18,14 +16,12 @@ export const useAuthRegisterSeller = (
       return response.data;
     },
 
-    onSuccess: (data) => {
+    onSuccess: () => {
       showToast({
         title: "Registered successfully",
         description: "Your account has been created.",
         type: TOAST_TYPE.SUCCESS,
       });
-
-      onSuccessCallback?.(data);
     },
 
     onError: () => {

@@ -5,9 +5,7 @@ import type { ReqFavoritesToggleFavoriteResponse } from "../api/responses/ReqFav
 import { TOAST_TYPE } from "../shared/enums/ToastType.enum";
 import { showToast } from "../shared/utils/Toast.util";
 
-export const useFavoritesToggleFavorite = (
-  onSuccessCallback?: (data: ReqFavoritesToggleFavoriteResponse) => void,
-) => {
+export const useFavoritesToggleFavorite = () => {
   return useMutation<
     ReqFavoritesToggleFavoriteResponse,
     Error,
@@ -18,7 +16,7 @@ export const useFavoritesToggleFavorite = (
       return res.data;
     },
 
-    onSuccess: (data) => {
+    onSuccess: () => {
       // INFO: commented for optimistic update
       // showToast({
       //   title: data.isFavorited
@@ -29,8 +27,6 @@ export const useFavoritesToggleFavorite = (
       //     : "The product has been removed from your favorites.",
       //   type: TOAST_TYPE.SUCCESS,
       // });
-
-      onSuccessCallback?.(data);
     },
 
     onError: () => {

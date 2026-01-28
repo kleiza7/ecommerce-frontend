@@ -1,18 +1,12 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { USER_ROLE } from "../../../api/enums/UserRole.enum";
 import { useAuthLogin } from "../../../hooks/useAuthLogin";
 import { useCartMerge } from "../../../hooks/useCartMerge";
+import { useFavoritesMerge } from "../../../hooks/useFavoritesMerge";
 import GenericFormInput from "../../../shared/components/GenericFormInput";
 import InputErrorLabel from "../../../shared/components/InputErrorLabel";
 import InputLabel from "../../../shared/components/InputLabel";
-import {
-  clearGuestCart,
-  getGuestCart,
-} from "../../../shared/utils/GuestCart.util";
-import { useCartStore } from "../../../stores/CartStore";
-import { useUserStore } from "../../../stores/UserStore";
-
-import { useFavoritesMerge } from "../../../hooks/useFavoritesMerge";
 import {
   BUTTON_PRIMARY,
   BUTTON_SIZE_X_LARGE,
@@ -22,11 +16,17 @@ import {
   PASSWORD_REGEX,
 } from "../../../shared/constants/Regex.constants";
 import {
+  clearGuestCart,
+  getGuestCart,
+} from "../../../shared/utils/GuestCart.util";
+import {
   clearGuestFavorites,
   getGuestFavorites,
 } from "../../../shared/utils/GuestFavorite.util";
 import { customTwMerge } from "../../../shared/utils/Tailwind.util";
+import { useCartStore } from "../../../stores/CartStore";
 import { useFavoriteStore } from "../../../stores/FavoriteStore";
+import { useUserStore } from "../../../stores/UserStore";
 
 type LoginFormValues = {
   email: string;
@@ -39,6 +39,10 @@ const LoginForm = () => {
   const setCartItems = useCartStore((state) => state.setItems);
   const setFavoriteItems = useFavoriteStore((state) => state.setItems);
 
+  const { mutateAsync: login, isPending } = useAuthLogin();
+  const { mutateAsync: mergeCart } = useCartMerge();
+  const { mutateAsync: mergeFavorites } = useFavoritesMerge();
+
   const {
     control,
     handleSubmit,
@@ -48,43 +52,43 @@ const LoginForm = () => {
     defaultValues: { email: "", password: "" },
   });
 
-  const cartMergeMutation = useCartMerge((data) => {
-    setCartItems(data.items);
-    clearGuestCart();
-  });
+  const onSubmit: SubmitHandler<LoginFormValues> = async (values) => {
+    const data = await login(values);
 
-  const favoritesMergeMutation = useFavoritesMerge((data) => {
-    setFavoriteItems(data);
-    clearGuestFavorites();
-  });
-
-  const { mutate: login, isPending } = useAuthLogin((data) => {
     loginUser(data.user, data.accessToken);
+
+    if (data.user.role !== USER_ROLE.USER) {
+      navigate("/", { replace: true });
+      return;
+    }
 
     const guestCart = getGuestCart();
 
     if (guestCart.items.length > 0) {
-      cartMergeMutation.mutate({
+      const cartRes = await mergeCart({
         items: guestCart.items.map((item) => ({
           productId: item.productId,
           quantity: item.quantity,
         })),
       });
+
+      setCartItems(cartRes.items);
+      clearGuestCart();
     }
 
     const guestFavorites = getGuestFavorites();
 
     if (guestFavorites.items.length > 0) {
-      favoritesMergeMutation.mutate({
+      const favRes = await mergeFavorites({
         productIds: guestFavorites.items.map((item) => item.productId),
       });
+
+      setFavoriteItems(favRes);
+      clearGuestFavorites();
     }
 
+    // 🔥 HER ŞEY BİTTİKTEN SONRA
     navigate("/", { replace: true });
-  });
-
-  const onSubmit: SubmitHandler<LoginFormValues> = (values) => {
-    login(values);
   };
 
   return (
@@ -92,7 +96,6 @@ const LoginForm = () => {
       onSubmit={handleSubmit(onSubmit)}
       className="relative flex flex-col gap-y-5"
     >
-      {/* TODO: loading spinner */}
       {isPending && (
         <div className="bg-surface-primary/70 absolute inset-0 z-20 flex items-center justify-center rounded-lg">
           <div className="border-t-orange border-gray-6 h-12 w-12 animate-spin rounded-full border-4" />
