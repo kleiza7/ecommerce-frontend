@@ -5,23 +5,19 @@ import type { ReqAuthLoginResponse } from "../api/responses/ReqAuthLoginResponse
 import { TOAST_TYPE } from "../shared/enums/ToastType.enum";
 import { showToast } from "../shared/utils/Toast.util";
 
-export const useAuthLogin = (
-  onSuccessCallback?: (data: ReqAuthLoginResponse) => void,
-) => {
+export const useAuthLogin = () => {
   return useMutation<ReqAuthLoginResponse, Error, ReqAuthLoginPayload>({
     mutationFn: async (payload) => {
       const response = await reqAuthLogin(payload);
       return response.data;
     },
 
-    onSuccess: (data) => {
+    onSuccess: () => {
       showToast({
         title: "Logged in successfully",
         description: "Welcome back!",
         type: TOAST_TYPE.SUCCESS,
       });
-
-      onSuccessCallback?.(data);
     },
 
     onError: () => {

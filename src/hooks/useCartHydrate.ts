@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { reqCartGetCart } from "../api/controllers/Cart.controller";
 import { getGuestCart } from "../shared/utils/GuestCart.util";
 import { useCartStore } from "../stores/CartStore";
@@ -8,14 +8,13 @@ export const useCartHydrate = () => {
   const { user, isHydrated } = useUserStore();
   const setItems = useCartStore((state) => state.setItems);
 
-  const hydratedRef = useRef(false);
+  const userId = user?.id;
 
   useEffect(() => {
     if (!isHydrated) return;
-    if (hydratedRef.current) return;
 
     const hydrate = async () => {
-      if (user) {
+      if (userId) {
         const res = await reqCartGetCart();
         if (res.data) {
           setItems(res.data.items);
@@ -24,10 +23,8 @@ export const useCartHydrate = () => {
         const cart = getGuestCart();
         setItems(cart.items);
       }
-
-      hydratedRef.current = true;
     };
 
     hydrate();
-  }, [isHydrated, user, setItems]);
+  }, [isHydrated, userId, setItems]);
 };

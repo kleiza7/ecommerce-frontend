@@ -2,17 +2,12 @@ import { useMutation } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { reqCartAdd } from "../api/controllers/Cart.controller";
 import type { ReqCartAddPayload } from "../api/payloads/ReqCartAddPayload.model";
+import type { ApiErrorResponse } from "../api/responses/ApiErrorResponse.model";
 import type { ReqCartAddResponse } from "../api/responses/ReqCartAddResponse.model";
 import { TOAST_TYPE } from "../shared/enums/ToastType.enum";
 import { showToast } from "../shared/utils/Toast.util";
 
-type ApiErrorResponse = {
-  message?: string;
-};
-
-export const useCartAdd = (
-  onSuccessCallback?: (data: ReqCartAddResponse) => void,
-) => {
+export const useCartAdd = () => {
   return useMutation<
     ReqCartAddResponse,
     AxiosError<ApiErrorResponse>,
@@ -23,15 +18,13 @@ export const useCartAdd = (
       return res.data;
     },
 
-    onSuccess: (data) => {
+    onSuccess: () => {
       // INFO: commented for optimistic update
       // showToast({
       //   title: "Added to cart",
       //   description: "The item has been successfully added to your cart.",
       //   type: TOAST_TYPE.SUCCESS,
       // });
-
-      onSuccessCallback?.(data);
     },
 
     onError: (error) => {

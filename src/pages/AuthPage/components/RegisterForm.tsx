@@ -30,6 +30,12 @@ const RegisterForm = ({
 }) => {
   const [isSeller, setIsSeller] = useState(false);
 
+  const { mutate: registerUser, isPending: isUserPending } =
+    useAuthRegisterUser();
+
+  const { mutate: registerSeller, isPending: isSellerPending } =
+    useAuthRegisterSeller();
+
   const {
     control,
     handleSubmit,
@@ -43,25 +49,17 @@ const RegisterForm = ({
     },
   });
 
-  const onSuccess = () => {
-    changeMode(AUTH_PAGE_MODE.LOGIN);
+  const onSubmit: SubmitHandler<RegisterFormValues> = (values) => {
+    const mutate = isSeller ? registerSeller : registerUser;
+
+    mutate(values, {
+      onSuccess: () => {
+        changeMode(AUTH_PAGE_MODE.LOGIN);
+      },
+    });
   };
-
-  const { mutate: registerUser, isPending: isUserPending } =
-    useAuthRegisterUser(onSuccess);
-
-  const { mutate: registerSeller, isPending: isSellerPending } =
-    useAuthRegisterSeller(onSuccess);
 
   const isPending = isUserPending || isSellerPending;
-
-  const onSubmit: SubmitHandler<RegisterFormValues> = (values) => {
-    if (isSeller) {
-      registerSeller(values);
-    } else {
-      registerUser(values);
-    }
-  };
 
   return (
     <form
@@ -118,8 +116,8 @@ const RegisterForm = ({
             field="password"
             control={control}
             required
-            disabled={isPending}
             type="password"
+            disabled={isPending}
             placeholder="••••••••"
             rules={{
               pattern: {

@@ -38,6 +38,9 @@ const LoginForm = () => {
   const loginUser = useUserStore((state) => state.login);
   const setCartItems = useCartStore((state) => state.setItems);
   const setFavoriteItems = useFavoriteStore((state) => state.setItems);
+  const cartMergeMutation = useCartMerge();
+  const favoritesMergeMutation = useFavoritesMerge();
+  const { mutate: login, isPending } = useAuthLogin();
 
   const {
     control,
@@ -48,43 +51,49 @@ const LoginForm = () => {
     defaultValues: { email: "", password: "" },
   });
 
-  const cartMergeMutation = useCartMerge((data) => {
-    setCartItems(data.items);
-    clearGuestCart();
-  });
-
-  const favoritesMergeMutation = useFavoritesMerge((data) => {
-    setFavoriteItems(data);
-    clearGuestFavorites();
-  });
-
-  const { mutate: login, isPending } = useAuthLogin((data) => {
-    loginUser(data.user, data.accessToken);
-
-    const guestCart = getGuestCart();
-
-    if (guestCart.items.length > 0) {
-      cartMergeMutation.mutate({
-        items: guestCart.items.map((item) => ({
-          productId: item.productId,
-          quantity: item.quantity,
-        })),
-      });
-    }
-
-    const guestFavorites = getGuestFavorites();
-
-    if (guestFavorites.items.length > 0) {
-      favoritesMergeMutation.mutate({
-        productIds: guestFavorites.items.map((item) => item.productId),
-      });
-    }
-
-    navigate("/", { replace: true });
-  });
-
   const onSubmit: SubmitHandler<LoginFormValues> = (values) => {
-    login(values);
+    login(values, {
+      onSuccess: (data) => {
+        loginUser(data.user, data.accessToken);
+
+        const guestCart = getGuestCart();
+
+        if (guestCart.items.length > 0) {
+          cartMergeMutation.mutate(
+            {
+              items: guestCart.items.map((item) => ({
+                productId: item.productId,
+                quantity: item.quantity,
+              })),
+            },
+            {
+              onSuccess: (data) => {
+                setCartItems(data.items);
+                clearGuestCart();
+              },
+            },
+          );
+        }
+
+        const guestFavorites = getGuestFavorites();
+
+        if (guestFavorites.items.length > 0) {
+          favoritesMergeMutation.mutate(
+            {
+              productIds: guestFavorites.items.map((item) => item.productId),
+            },
+            {
+              onSuccess: (data) => {
+                setFavoriteItems(data);
+                clearGuestFavorites();
+              },
+            },
+          );
+        }
+
+        navigate("/", { replace: true });
+      },
+    });
   };
 
   return (
