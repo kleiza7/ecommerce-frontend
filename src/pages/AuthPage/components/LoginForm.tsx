@@ -38,9 +38,10 @@ const LoginForm = () => {
   const loginUser = useUserStore((state) => state.login);
   const setCartItems = useCartStore((state) => state.setItems);
   const setFavoriteItems = useFavoriteStore((state) => state.setItems);
-  const cartMergeMutation = useCartMerge();
-  const favoritesMergeMutation = useFavoritesMerge();
-  const { mutate: login, isPending } = useAuthLogin();
+
+  const { mutateAsync: login, isPending } = useAuthLogin();
+  const { mutateAsync: mergeCart } = useCartMerge();
+  const { mutateAsync: mergeFavorites } = useFavoritesMerge();
 
   const {
     control,
@@ -51,54 +52,43 @@ const LoginForm = () => {
     defaultValues: { email: "", password: "" },
   });
 
-  const onSubmit: SubmitHandler<LoginFormValues> = (values) => {
-    login(values, {
-      onSuccess: (data) => {
-        loginUser(data.user, data.accessToken);
+  const onSubmit: SubmitHandler<LoginFormValues> = async (values) => {
+    const data = await login(values);
 
-        if (data.user.role !== USER_ROLE.USER) {
-          navigate("/", { replace: true });
-          return;
-        }
+    loginUser(data.user, data.accessToken);
 
-        const guestCart = getGuestCart();
+    if (data.user.role !== USER_ROLE.USER) {
+      navigate("/", { replace: true });
+      return;
+    }
 
-        if (guestCart.items.length > 0) {
-          cartMergeMutation.mutate(
-            {
-              items: guestCart.items.map((item) => ({
-                productId: item.productId,
-                quantity: item.quantity,
-              })),
-            },
-            {
-              onSuccess: (data) => {
-                setCartItems(data.items);
-                clearGuestCart();
-              },
-            },
-          );
-        }
+    const guestCart = getGuestCart();
 
-        const guestFavorites = getGuestFavorites();
+    if (guestCart.items.length > 0) {
+      const cartRes = await mergeCart({
+        items: guestCart.items.map((item) => ({
+          productId: item.productId,
+          quantity: item.quantity,
+        })),
+      });
 
-        if (guestFavorites.items.length > 0) {
-          favoritesMergeMutation.mutate(
-            {
-              productIds: guestFavorites.items.map((item) => item.productId),
-            },
-            {
-              onSuccess: (data) => {
-                setFavoriteItems(data);
-                clearGuestFavorites();
-              },
-            },
-          );
-        }
+      setCartItems(cartRes.items);
+      clearGuestCart();
+    }
 
-        navigate("/", { replace: true });
-      },
-    });
+    const guestFavorites = getGuestFavorites();
+
+    if (guestFavorites.items.length > 0) {
+      const favRes = await mergeFavorites({
+        productIds: guestFavorites.items.map((item) => item.productId),
+      });
+
+      setFavoriteItems(favRes);
+      clearGuestFavorites();
+    }
+
+    // 🔥 HER ŞEY BİTTİKTEN SONRA
+    navigate("/", { replace: true });
   };
 
   return (
