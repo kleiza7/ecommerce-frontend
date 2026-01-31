@@ -164,6 +164,7 @@ const UpdateProductForm = ({
               field="name"
               control={control}
               required
+              hasError={!!errors.name}
               disabled={isPending}
             />
 
@@ -178,6 +179,7 @@ const UpdateProductForm = ({
               control={control}
               required
               rows={4}
+              hasError={!!errors.description}
               disabled={isPending}
             />
             <InputErrorLabel message={errors.description?.message} />
@@ -235,6 +237,7 @@ const UpdateProductForm = ({
               required
               type="number"
               min={1}
+              hasError={!!errors.stockCount}
               disabled={isPending}
             />
 
@@ -251,6 +254,7 @@ const UpdateProductForm = ({
                 required
                 type="number"
                 min={1}
+                hasError={!!errors.price}
                 disabled={isPending}
               />
 

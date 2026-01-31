@@ -146,6 +146,7 @@ const ProductApprovalForm = ({
               field="name"
               control={control}
               required
+              hasError={!!errors.name}
               disabled
             />
 
@@ -160,6 +161,7 @@ const ProductApprovalForm = ({
               control={control}
               required
               rows={4}
+              hasError={!!errors.description}
               disabled
             />
             <InputErrorLabel message={errors.description?.message} />
@@ -217,6 +219,7 @@ const ProductApprovalForm = ({
               required
               type="number"
               min={1}
+              hasError={!!errors.stockCount}
               disabled
             />
 
@@ -233,6 +236,7 @@ const ProductApprovalForm = ({
                 required
                 type="number"
                 min={1}
+                hasError={!!errors.price}
                 disabled
               />
 

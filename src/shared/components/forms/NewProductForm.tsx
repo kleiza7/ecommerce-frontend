@@ -87,6 +87,7 @@ const NewProductForm = ({ close }: { close: () => void }) => {
               field="name"
               control={control}
               required
+              hasError={!!errors.name}
               disabled={isPending}
             />
 
@@ -101,6 +102,7 @@ const NewProductForm = ({ close }: { close: () => void }) => {
               control={control}
               required
               rows={4}
+              hasError={!!errors.description}
               disabled={isPending}
             />
             <InputErrorLabel message={errors.description?.message} />
@@ -158,6 +160,7 @@ const NewProductForm = ({ close }: { close: () => void }) => {
               required
               type="number"
               min={1}
+              hasError={!!errors.stockCount}
               disabled={isPending}
             />
 
@@ -174,6 +177,7 @@ const NewProductForm = ({ close }: { close: () => void }) => {
                 required
                 type="number"
                 min={1}
+                hasError={!!errors.price}
                 disabled={isPending}
               />
 
