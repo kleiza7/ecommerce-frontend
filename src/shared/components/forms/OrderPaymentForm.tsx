@@ -122,7 +122,7 @@ const OrderPaymentForm = ({
         </div>
 
         {/* CARD INFO */}
-        <div className="flex flex-col gap-y-3">
+        <div className="flex flex-col gap-y-3 pb-4">
           <span className="text-s16-l24 text-text-primary font-medium">
             Card Information
           </span>

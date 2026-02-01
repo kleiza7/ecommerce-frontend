@@ -36,7 +36,7 @@ const ProductFormFields = ({
 
   return (
     <div className="flex-1 overflow-y-auto">
-      <div className="flex flex-col gap-y-5">
+      <div className="flex flex-col gap-y-5 pb-4">
         <div className="relative flex flex-col">
           <InputLabel label="Name" hasAsterisk />
 
