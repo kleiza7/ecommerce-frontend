@@ -111,7 +111,6 @@ const LoginForm = () => {
             control={control}
             required
             type="email"
-            disabled={isPending}
             placeholder="example@gmail.com"
             rules={{
               pattern: {
@@ -119,12 +118,14 @@ const LoginForm = () => {
                 message: "Please enter a valid email address!",
               },
             }}
+            hasError={!!errors.email}
+            disabled={isPending}
           />
 
           <InputErrorLabel message={errors.email?.message} />
         </div>
 
-        <div className="relative flex flex-col">
+        <div className="relative flex flex-col pb-4 md:pb-0">
           <InputLabel label="Password" hasAsterisk />
 
           <GenericFormInput
@@ -132,7 +133,6 @@ const LoginForm = () => {
             control={control}
             required
             type="password"
-            disabled={isPending}
             placeholder="••••••••"
             rules={{
               pattern: {
@@ -141,9 +141,14 @@ const LoginForm = () => {
                   "Password must be at least 8 characters, with uppercase, lowercase, and a number.",
               },
             }}
+            hasError={!!errors.password}
+            disabled={isPending}
           />
 
-          <InputErrorLabel message={errors.password?.message} />
+          <InputErrorLabel
+            message={errors.password?.message}
+            className="top-[60px] md:top-auto"
+          />
         </div>
       </div>
 

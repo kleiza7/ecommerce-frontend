@@ -11,11 +11,6 @@ body,
   padding: 0;
 }
 
-/* INFO: bunu layoutta sürekli scroll için yer ayrılsın diye ekledin, ui da gözüne çarpan bir bozulma olursa kaldır */
-html {
-  scrollbar-gutter: stable;
-}
-
 body {
   font-family: var(--font-sans);
   background-color: #fff;

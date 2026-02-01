@@ -24,6 +24,7 @@ type GenericFormInputProps<TFieldValues extends FieldValues> = {
   minLength?: number;
   maxLength?: number;
   rules?: RegisterOptions<TFieldValues, FieldPath<TFieldValues>>;
+  hasError?: boolean;
 };
 
 const GenericFormInput = <TFieldValues extends FieldValues>({
@@ -38,6 +39,7 @@ const GenericFormInput = <TFieldValues extends FieldValues>({
   minLength,
   maxLength,
   rules,
+  hasError = false,
 }: GenericFormInputProps<TFieldValues>) => {
   const isNumber = type === "number";
 
@@ -84,7 +86,7 @@ const GenericFormInput = <TFieldValues extends FieldValues>({
 
         ...rules,
       }}
-      render={({ field, fieldState }) => {
+      render={({ field }) => {
         const value = isNumber
           ? field.value == null ||
             Number.isNaN(field.value as unknown as number)
@@ -105,7 +107,7 @@ const GenericFormInput = <TFieldValues extends FieldValues>({
             maxLength={!isNumber ? maxLength : undefined}
             className={customTwMerge(
               INPUT_BASE,
-              disabled ? INPUT_DISABLED : fieldState.error ? INPUT_ERROR : "",
+              disabled ? INPUT_DISABLED : hasError ? INPUT_ERROR : "",
             )}
           />
         );

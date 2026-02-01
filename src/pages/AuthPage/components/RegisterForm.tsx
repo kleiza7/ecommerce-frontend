@@ -81,8 +81,9 @@ const RegisterForm = ({
             field="name"
             control={control}
             required
-            disabled={isPending}
             placeholder="Mahfuzul Nabil"
+            hasError={!!errors.name}
+            disabled={isPending}
           />
 
           <InputErrorLabel message={errors.name?.message} />
@@ -96,7 +97,6 @@ const RegisterForm = ({
             control={control}
             required
             type="email"
-            disabled={isPending}
             placeholder="example@gmail.com"
             rules={{
               pattern: {
@@ -104,12 +104,14 @@ const RegisterForm = ({
                 message: "Please enter a valid email address!",
               },
             }}
+            hasError={!!errors.email}
+            disabled={isPending}
           />
 
           <InputErrorLabel message={errors.email?.message} />
         </div>
 
-        <div className="relative flex flex-col">
+        <div className="relative flex flex-col pb-4 md:pb-0">
           <InputLabel label="Password" hasAsterisk />
 
           <GenericFormInput
@@ -117,7 +119,6 @@ const RegisterForm = ({
             control={control}
             required
             type="password"
-            disabled={isPending}
             placeholder="••••••••"
             rules={{
               pattern: {
@@ -126,9 +127,14 @@ const RegisterForm = ({
                   "Password must be at least 8 characters, with uppercase, lowercase, and a number.",
               },
             }}
+            hasError={!!errors.password}
+            disabled={isPending}
           />
 
-          <InputErrorLabel message={errors.password?.message} />
+          <InputErrorLabel
+            message={errors.password?.message}
+            className="top-[60px] md:top-auto"
+          />
         </div>
 
         <label className="flex cursor-pointer items-center gap-3">

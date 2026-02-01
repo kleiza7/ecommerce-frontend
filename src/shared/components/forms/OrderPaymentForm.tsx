@@ -89,6 +89,7 @@ const OrderPaymentForm = ({
               field="receiverFullName"
               control={control}
               required
+              hasError={!!errors.receiverFullName}
               disabled={isPending}
             />
             <InputErrorLabel message={errors.receiverFullName?.message} />
@@ -100,6 +101,7 @@ const OrderPaymentForm = ({
               field="receiverPhoneNumber"
               control={control}
               required
+              hasError={!!errors.receiverPhoneNumber}
               disabled={isPending}
             />
             <InputErrorLabel message={errors.receiverPhoneNumber?.message} />
@@ -112,6 +114,7 @@ const OrderPaymentForm = ({
               control={control}
               required
               rows={3}
+              hasError={!!errors.receiverAddress}
               disabled={isPending}
             />
             <InputErrorLabel message={errors.receiverAddress?.message} />
@@ -119,7 +122,7 @@ const OrderPaymentForm = ({
         </div>
 
         {/* CARD INFO */}
-        <div className="flex flex-col gap-y-3">
+        <div className="flex flex-col gap-y-3 pb-4">
           <span className="text-s16-l24 text-text-primary font-medium">
             Card Information
           </span>
@@ -130,6 +133,7 @@ const OrderPaymentForm = ({
               field="cardHolderName"
               control={control}
               required
+              hasError={!!errors.cardHolderName}
               disabled={isPending}
             />
             <InputErrorLabel message={errors.cardHolderName?.message} />
@@ -149,6 +153,7 @@ const OrderPaymentForm = ({
                   message: "Card number must be 16 digits",
                 },
               }}
+              hasError={!!errors.cardNumber}
               disabled={isPending}
             />
             <InputErrorLabel message={errors.cardNumber?.message} />
@@ -169,6 +174,7 @@ const OrderPaymentForm = ({
                     message: "Invalid expiry format",
                   },
                 }}
+                hasError={!!errors.cardExpiry}
                 disabled={isPending}
               />
               <InputErrorLabel message={errors.cardExpiry?.message} />
@@ -188,6 +194,7 @@ const OrderPaymentForm = ({
                     message: "CVC must be 3 digits",
                   },
                 }}
+                hasError={!!errors.cardCvc}
                 disabled={isPending}
               />
               <InputErrorLabel message={errors.cardCvc?.message} />
