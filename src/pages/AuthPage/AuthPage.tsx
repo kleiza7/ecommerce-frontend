@@ -22,7 +22,7 @@ const AuthPage = () => {
         <p className="text-s14-l20 text-text-primary">Log In or Register</p>
       </div>
 
-      <div className="border-gray-2 bg-surface-primary flex w-full flex-col gap-6 px-5 py-2 md:w-[600px] md:rounded-lg md:border md:px-10 md:py-6">
+      <div className="border-gray-2 bg-surface-primary flex w-full flex-col gap-y-3 px-5 py-2 md:w-[600px] md:gap-y-6 md:rounded-lg md:border md:px-10 md:py-6">
         <div className="bg-gray-2 flex rounded-lg p-1">
           <button
             type="button"

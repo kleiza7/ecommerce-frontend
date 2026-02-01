@@ -125,7 +125,7 @@ const LoginForm = () => {
           <InputErrorLabel message={errors.email?.message} />
         </div>
 
-        <div className="relative flex flex-col">
+        <div className="relative flex flex-col pb-4 md:pb-0">
           <InputLabel label="Password" hasAsterisk />
 
           <GenericFormInput
@@ -145,7 +145,10 @@ const LoginForm = () => {
             disabled={isPending}
           />
 
-          <InputErrorLabel message={errors.password?.message} />
+          <InputErrorLabel
+            message={errors.password?.message}
+            className="top-[60px] md:top-auto"
+          />
         </div>
       </div>
 
