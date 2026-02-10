@@ -1,5 +1,6 @@
 /// <reference types="vite/client" />
 
+import type { ReqBrandsCreateResponse } from "./api/responses/ReqBrandsCreateResponse.model";
 import type { ReqOrdersCreateResponse } from "./api/responses/ReqOrdersCreateResponse.model";
 import type { ReqProductsCreateResponse } from "./api/responses/ReqProductsCreateResponse.model";
 import type { ReqProductsUpdateResponse } from "./api/responses/ReqProductsUpdateResponse.model";
@@ -20,5 +21,9 @@ declare global {
     [EVENT_TYPE.ORDER_CREATED]: CustomEvent<ReqOrdersCreateResponse>;
     [EVENT_TYPE.ORDER_PAID]: CustomEvent<{ orderId: number }>;
     [EVENT_TYPE.ORDER_CANCELED]: CustomEvent<{ orderId: number }>;
+
+    // BRANDS
+    [EVENT_TYPE.BRAND_CREATED]: CustomEvent<ReqBrandsCreateResponse>;
+    [EVENT_TYPE.BRAND_UPDATED]: CustomEvent<ReqBrandsUpdateResponse>;
   }
 }

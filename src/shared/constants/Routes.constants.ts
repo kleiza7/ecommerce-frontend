@@ -9,4 +9,8 @@ export const ADMIN_ROUTES = [
     label: "Products",
     path: "/admin/products",
   },
+  {
+    label: "Brands",
+    path: "/admin/brands",
+  },
 ];

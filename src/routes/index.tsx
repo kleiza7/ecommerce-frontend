@@ -19,12 +19,16 @@ const MyFavoritesPage = lazy(
 );
 const MyOrdersPage = lazy(() => import("../pages/MyOrdersPage/MyOrdersPage"));
 const OrderDetailPage = lazy(() => import("../pages/OrderDetailPage"));
+
 const SellerProductsPage = lazy(
   () => import("../pages/SellerProductsPage/SellerProductsPage"),
 );
+
 const AdminProductsPage = lazy(
   () => import("../pages/AdminProductsPage/AdminProductsPage"),
 );
+const BrandsPage = lazy(() => import("../pages/BrandsPage/BrandsPage"));
+
 const AuthPage = lazy(() => import("../pages/AuthPage/AuthPage"));
 const NotFoundPage = lazy(() => import("../pages/NotFoundPage"));
 
@@ -86,6 +90,10 @@ const router = createBrowserRouter([
               {
                 path: "admin/products",
                 element: <AdminProductsPage />,
+              },
+              {
+                path: "admin/brands",
+                element: <BrandsPage />,
               },
             ],
           },
