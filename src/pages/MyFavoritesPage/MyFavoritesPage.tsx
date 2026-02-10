@@ -44,8 +44,8 @@ const MyFavoritesPage = () => {
   }
 
   return (
-    <div className="flex w-full flex-col">
-      <div className="top-0 mx-auto flex h-[70px] w-full max-w-[1480px] shrink-0 items-center px-3 md:px-10">
+    <div className="mx-auto flex w-full max-w-[1480px] flex-col">
+      <div className="top-0 flex h-[70px] w-full shrink-0 items-center px-3 md:px-10">
         <div className="relative w-full md:w-[330px]">
           <SearchIcon className="fill-orange absolute top-1/2 left-3 h-6 w-6 -translate-y-1/2" />
 
@@ -73,7 +73,7 @@ const MyFavoritesPage = () => {
 
       <div className="bg-gray-1 h-px w-full" />
 
-      <div className="mx-auto max-w-[1480px] flex-1 overflow-y-auto px-3 py-5 md:px-10">
+      <div className="flex-1 overflow-y-auto px-3 py-5 md:px-10">
         <FavoriteProductsGrid favoriteProducts={filteredFavoriteProducts} />
       </div>
     </div>
