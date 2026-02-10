@@ -1,8 +1,8 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useMediaQuery } from "../../../../hooks/useMediaQuery";
-import { MEDIA_QUERY } from "../../../../shared/constants/MediaQuery.constants";
-import type { FavoriteItemUI } from "../../../../shared/models/FavoriteItemUI.model";
+import { useMediaQuery } from "../../../../../../hooks/useMediaQuery";
+import { MEDIA_QUERY } from "../../../../../../shared/constants/MediaQuery.constants";
+import type { FavoriteItemUI } from "../../../../../../shared/models/FavoriteItemUI.model";
 import FavoriteRemoveButton from "./components/FavoriteRemoveButton";
 
 const DRAG_THRESHOLD = 40;

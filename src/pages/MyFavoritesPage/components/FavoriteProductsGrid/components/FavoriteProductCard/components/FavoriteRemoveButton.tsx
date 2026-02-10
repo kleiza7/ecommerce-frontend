@@ -1,7 +1,7 @@
-import { CloseIcon } from "../../../../../assets/icons";
-import { useFavoriteActions } from "../../../../../hooks/useFavoriteActions";
-import type { FavoriteItemUI } from "../../../../../shared/models/FavoriteItemUI.model";
-import { customTwMerge } from "../../../../../shared/utils/Tailwind.util";
+import { CloseIcon } from "../../../../../../../assets/icons";
+import { useFavoriteActions } from "../../../../../../../hooks/useFavoriteActions";
+import type { FavoriteItemUI } from "../../../../../../../shared/models/FavoriteItemUI.model";
+import { customTwMerge } from "../../../../../../../shared/utils/Tailwind.util";
 
 const FavoriteRemoveButton = ({
   product,
