@@ -1,9 +1,11 @@
 import { Suspense, lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
+import AdminLayout from "../components/AdminLayout";
 import ErrorBoundary from "../components/ErrorBoundary";
 import PageFallback from "../components/PageFallback";
 import ProtectedRoute from "../components/ProtectedRoute";
 import RootLayout from "../components/RootLayout";
+import SellerLayout from "../components/SellerLayout";
 import { USER_DOMAIN } from "../shared/enums/UserDomain.enum";
 
 const DashboardPage = lazy(() => import("../pages/DashboardPage"));
@@ -63,13 +65,31 @@ const router = createBrowserRouter([
       {
         element: <ProtectedRoute allowedDomains={[USER_DOMAIN.SELLER]} />,
         children: [
-          { path: "seller/products", element: <SellerProductsPage /> },
+          {
+            element: <SellerLayout />,
+            children: [
+              {
+                path: "seller/products",
+                element: <SellerProductsPage />,
+              },
+            ],
+          },
         ],
       },
 
       {
         element: <ProtectedRoute allowedDomains={[USER_DOMAIN.ADMIN]} />,
-        children: [{ path: "admin/products", element: <AdminProductsPage /> }],
+        children: [
+          {
+            element: <AdminLayout />,
+            children: [
+              {
+                path: "admin/products",
+                element: <AdminProductsPage />,
+              },
+            ],
+          },
+        ],
       },
 
       { path: "auth", element: <AuthPage /> },
