@@ -16,7 +16,7 @@ const BaseNavigationDrawer = ({
       open={open}
       onOpenChange={setOpen}
       side="left"
-      className="h-svh"
+      className="h-svh sm:w-1/2!"
       showOverlay={false}
     >
       <BaseNavigationDrawerContent
