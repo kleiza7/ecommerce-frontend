@@ -13,7 +13,7 @@ const CategoriesNavigationDrawer = ({
       open={open}
       onOpenChange={setOpen}
       side="left"
-      className="h-svh md:w-1/2!"
+      className="h-svh sm:w-1/2!"
       showOverlay={false}
     >
       <CategoriesNavigationDrawerContent close={() => setOpen(false)} />
