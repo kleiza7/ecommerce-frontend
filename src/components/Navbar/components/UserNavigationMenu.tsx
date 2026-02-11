@@ -8,6 +8,7 @@ import {
 } from "../../../assets/icons";
 import { useUserDomain } from "../../../hooks/useUserDomain";
 import GenericNavigationMenu from "../../../shared/components/GenericNavigationMenu";
+import { ROUTES } from "../../../shared/constants/Routes.constants";
 import { USER_DOMAIN } from "../../../shared/enums/UserDomain.enum";
 import { useCartStore } from "../../../stores/CartStore";
 import { useFavoriteStore } from "../../../stores/FavoriteStore";
@@ -28,7 +29,7 @@ const UserNavigationMenu = () => {
 
   const handleNavigateMyOrders = useCallback(() => {
     setOpen(false);
-    navigate("/my-orders");
+    navigate(ROUTES.MY_ORDERS_PAGE.build());
   }, [navigate]);
 
   const handleLogout = useCallback(() => {
@@ -36,7 +37,7 @@ const UserNavigationMenu = () => {
     logout();
     clearCartStore();
     clearFavoritesStore();
-    navigate("/", { replace: true });
+    navigate(ROUTES.HOME_PAGE.build(), { replace: true });
   }, [logout, clearCartStore, clearFavoritesStore, navigate]);
 
   return (

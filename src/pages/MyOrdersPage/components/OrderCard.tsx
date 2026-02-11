@@ -5,6 +5,7 @@ import {
   BUTTON_SIZE_SMALL,
 } from "../../../shared/constants/CommonTailwindClasses.constants";
 import { ORDER_STATUS_TEXT_PAIRS } from "../../../shared/constants/Order.constants";
+import { ROUTES } from "../../../shared/constants/Routes.constants";
 import { customTwMerge } from "../../../shared/utils/Tailwind.util";
 import { useUserStore } from "../../../stores/UserStore";
 
@@ -48,7 +49,7 @@ const OrderCard = ({
         </div>
 
         <button
-          onClick={() => navigate(`/order-detail/${order.id}`)}
+          onClick={() => navigate(ROUTES.ORDER_DETAIL_PAGE.build(order.id))}
           className={customTwMerge(
             BUTTON_PRIMARY,
             BUTTON_SIZE_SMALL,
@@ -80,7 +81,9 @@ const OrderCard = ({
                     src={img.thumbUrl}
                     alt={item.product.name}
                     onClick={() =>
-                      navigate(`/product-detail/${item.product.id}`)
+                      navigate(
+                        ROUTES.PRODUCT_DETAIL_PAGE.build(item.product.id),
+                      )
                     }
                     className="h-20 w-20 cursor-pointer rounded object-cover"
                   />

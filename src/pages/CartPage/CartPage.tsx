@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ShoppingCartIcon } from "../../assets/icons";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { MEDIA_QUERY } from "../../shared/constants/MediaQuery.constants";
+import { ROUTES } from "../../shared/constants/Routes.constants";
 import { useCartStore } from "../../stores/CartStore";
 import CartItemsList from "./components/CartItemsList";
 import CartSummary from "./components/CartSummary";
@@ -48,7 +49,7 @@ const CartPage = () => {
           </span>
 
           <Link
-            to="/products"
+            to={ROUTES.PRODUCTS_PAGE.build()}
             className="bg-orange hover:bg-orange-dark text-surface-primary rounded-lg px-6 py-3 font-semibold transition"
           >
             Start Shopping

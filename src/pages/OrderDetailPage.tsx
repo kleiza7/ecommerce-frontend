@@ -4,6 +4,7 @@ import { ArrowLeftIcon } from "../assets/icons";
 import { useCurrenciesGetAll } from "../hooks/useCurrenciesGetAll";
 import { useOrdersGetById } from "../hooks/useOrdersGetById";
 import { ORDER_STATUS_TEXT_PAIRS } from "../shared/constants/Order.constants";
+import { ROUTES } from "../shared/constants/Routes.constants";
 
 const OrderDetailPage = () => {
   const navigate = useNavigate();
@@ -52,7 +53,7 @@ const OrderDetailPage = () => {
       <div className="flex items-center gap-x-2">
         <button
           type="button"
-          onClick={() => navigate("/my-orders")}
+          onClick={() => navigate(ROUTES.MY_ORDERS_PAGE.build())}
           className="flex cursor-pointer items-center gap-x-2"
         >
           <ArrowLeftIcon className="h-4 w-4" />

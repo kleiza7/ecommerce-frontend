@@ -6,6 +6,7 @@ import PageFallback from "../components/PageFallback";
 import ProtectedRoute from "../components/ProtectedRoute";
 import RootLayout from "../components/RootLayout";
 import SellerLayout from "../components/SellerLayout";
+import { ROUTES } from "../shared/constants/Routes.constants";
 import { USER_DOMAIN } from "../shared/enums/UserDomain.enum";
 
 const DashboardPage = lazy(() => import("../pages/DashboardPage"));
@@ -42,7 +43,7 @@ const router = createBrowserRouter([
       </ErrorBoundary>
     ),
     children: [
-      { path: "/", element: <DashboardPage /> },
+      { path: ROUTES.HOME_PAGE.path, element: <DashboardPage /> },
 
       {
         element: (
@@ -51,18 +52,30 @@ const router = createBrowserRouter([
           />
         ),
         children: [
-          { path: "products", element: <ProductsPage /> },
-          { path: "product-detail/:id", element: <ProductDetailPage /> },
-          { path: "cart", element: <CartPage /> },
-          { path: "my-favorites", element: <MyFavoritesPage /> },
+          { path: ROUTES.PRODUCTS_PAGE.path, element: <ProductsPage /> },
+          {
+            path: ROUTES.PRODUCT_DETAIL_PAGE.path,
+            element: <ProductDetailPage />,
+          },
+          { path: ROUTES.CART_PAGE.path, element: <CartPage /> },
+          {
+            path: ROUTES.MY_FAVORITES_PAGE.path,
+            element: <MyFavoritesPage />,
+          },
         ],
       },
 
       {
         element: <ProtectedRoute allowedDomains={[USER_DOMAIN.USER]} />,
         children: [
-          { path: "my-orders", element: <MyOrdersPage /> },
-          { path: "order-detail/:id", element: <OrderDetailPage /> },
+          {
+            path: ROUTES.MY_ORDERS_PAGE.path,
+            element: <MyOrdersPage />,
+          },
+          {
+            path: ROUTES.ORDER_DETAIL_PAGE.path,
+            element: <OrderDetailPage />,
+          },
         ],
       },
 
@@ -70,10 +83,11 @@ const router = createBrowserRouter([
         element: <ProtectedRoute allowedDomains={[USER_DOMAIN.SELLER]} />,
         children: [
           {
+            path: ROUTES.SELLER_PAGE.path,
             element: <SellerLayout />,
             children: [
               {
-                path: "seller/products",
+                path: ROUTES.SELLER_PRODUCTS_PAGE.path,
                 element: <SellerProductsPage />,
               },
             ],
@@ -85,14 +99,15 @@ const router = createBrowserRouter([
         element: <ProtectedRoute allowedDomains={[USER_DOMAIN.ADMIN]} />,
         children: [
           {
+            path: ROUTES.ADMIN_PAGE.path,
             element: <AdminLayout />,
             children: [
               {
-                path: "admin/products",
+                path: ROUTES.ADMIN_PRODUCTS_PAGE.path,
                 element: <AdminProductsPage />,
               },
               {
-                path: "admin/brands",
+                path: ROUTES.ADMIN_BRANDS_PAGE.path,
                 element: <BrandsPage />,
               },
             ],
@@ -100,7 +115,7 @@ const router = createBrowserRouter([
         ],
       },
 
-      { path: "auth", element: <AuthPage /> },
+      { path: ROUTES.AUTH_PAGE.path, element: <AuthPage /> },
     ],
   },
 

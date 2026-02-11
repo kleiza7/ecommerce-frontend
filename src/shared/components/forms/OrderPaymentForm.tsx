@@ -10,6 +10,7 @@ import {
   CARD_EXPIRY_REGEX,
   CARD_NUMBER_REGEX,
 } from "../../constants/Regex.constants";
+import { ROUTES } from "../../constants/Routes.constants";
 import { customTwMerge } from "../../utils/Tailwind.util";
 import { GenericDialogClose, GenericDialogTitle } from "../GenericDialog";
 import GenericFormInput from "../GenericFormInput";
@@ -59,7 +60,7 @@ const OrderPaymentForm = ({
     completePayment(orderId, {
       onSuccess: () => {
         close();
-        navigate(`/order-detail/${orderId}`);
+        navigate(ROUTES.ORDER_DETAIL_PAGE.build(orderId));
       },
     });
   };

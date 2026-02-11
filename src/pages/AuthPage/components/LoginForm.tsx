@@ -15,6 +15,7 @@ import {
   EMAIL_REGEX,
   PASSWORD_REGEX,
 } from "../../../shared/constants/Regex.constants";
+import { ROUTES } from "../../../shared/constants/Routes.constants";
 import {
   clearGuestCart,
   getGuestCart,
@@ -58,7 +59,7 @@ const LoginForm = () => {
     loginUser(data.user, data.accessToken);
 
     if (data.user.role !== USER_ROLE.USER) {
-      navigate("/", { replace: true });
+      navigate(ROUTES.HOME_PAGE.build(), { replace: true });
       return;
     }
 
@@ -87,8 +88,7 @@ const LoginForm = () => {
       clearGuestFavorites();
     }
 
-    // 🔥 HER ŞEY BİTTİKTEN SONRA
-    navigate("/", { replace: true });
+    navigate(ROUTES.HOME_PAGE.build(), { replace: true });
   };
 
   return (

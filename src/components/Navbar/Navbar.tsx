@@ -2,6 +2,7 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { MenuIcon } from "../../assets/icons";
 import { useUserDomain } from "../../hooks/useUserDomain";
+import { ROUTES } from "../../shared/constants/Routes.constants";
 import { USER_DOMAIN } from "../../shared/enums/UserDomain.enum";
 import { useUserStore } from "../../stores/UserStore";
 import AdminNavigationDrawer from "./components/AdminNavigationDrawer";
@@ -66,7 +67,7 @@ const Navbar = () => {
                 </button>
 
                 <NavLink
-                  to="/"
+                  to={ROUTES.HOME_PAGE.build()}
                   className="text-s20-l28 md:text-s28-l36 xl:text-s48-l56 text-text-primary"
                 >
                   Ecommerce

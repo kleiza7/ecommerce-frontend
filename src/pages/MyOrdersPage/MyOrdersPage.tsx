@@ -11,6 +11,7 @@ import {
   INPUT_BASE,
 } from "../../shared/constants/CommonTailwindClasses.constants";
 import { ORDER_STATUS_TEXT_PAIRS } from "../../shared/constants/Order.constants";
+import { ROUTES } from "../../shared/constants/Routes.constants";
 import { customTwMerge } from "../../shared/utils/Tailwind.util";
 import OrderCard from "./components/OrderCard";
 import OrderCardSkeleton from "./components/OrderCardSkeleton";
@@ -193,7 +194,7 @@ const MyOrdersPage = () => {
           </div>
 
           <button
-            onClick={() => navigate("/products")}
+            onClick={() => navigate(ROUTES.PRODUCTS_PAGE.build())}
             className={customTwMerge(BUTTON_PRIMARY, BUTTON_SIZE_X_LARGE)}
           >
             Start Shopping

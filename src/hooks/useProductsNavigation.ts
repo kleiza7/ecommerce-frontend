@@ -1,16 +1,13 @@
 import { useCallback, useMemo } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { ROUTES } from "../shared/constants/Routes.constants";
 
-const PRODUCTS_PATH = "/products";
+const PRODUCTS_PATH = ROUTES.PRODUCTS_PAGE.build();
 
 export const useProductsNavigation = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-
-  /* =======================
-     PARSED URL STATE
-  ======================= */
 
   const selectedCategorySlug = searchParams.get("category");
 

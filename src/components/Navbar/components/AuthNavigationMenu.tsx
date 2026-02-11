@@ -6,6 +6,7 @@ import {
   BUTTON_PRIMARY,
   BUTTON_PRIMARY_OUTLINED,
 } from "../../../shared/constants/CommonTailwindClasses.constants";
+import { ROUTES } from "../../../shared/constants/Routes.constants";
 import { AUTH_PAGE_MODE } from "../../../shared/enums/AuthPageMode.enum";
 import { customTwMerge } from "../../../shared/utils/Tailwind.util";
 
@@ -16,7 +17,7 @@ const AuthNavigationMenu = () => {
   const goToAuthPage = useCallback(
     (mode: AUTH_PAGE_MODE) => {
       setOpen(false);
-      navigate(`/auth?mode=${mode}`);
+      navigate(ROUTES.AUTH_PAGE.build(mode));
     },
     [navigate],
   );

@@ -3,6 +3,7 @@ import {
   ShoppingCartFilledIcon,
   ShoppingCartIcon,
 } from "../../../assets/icons";
+import { ROUTES } from "../../../shared/constants/Routes.constants";
 import { useCartStore } from "../../../stores/CartStore";
 
 const MyCartLink = () => {
@@ -10,7 +11,7 @@ const MyCartLink = () => {
 
   return (
     <NavLink
-      to="/cart"
+      to={ROUTES.CART_PAGE.build()}
       className="group relative flex items-center gap-x-2 transition-colors"
     >
       <ShoppingCartIcon className="fill-text-primary h-5 w-5 group-hover:hidden" />

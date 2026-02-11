@@ -4,6 +4,7 @@ import type { ReqProductsListResponse } from "../../../../../api/responses/ReqPr
 import { useMediaQuery } from "../../../../../hooks/useMediaQuery";
 import FavoriteButton from "../../../../../shared/components/FavoriteButton";
 import { MEDIA_QUERY } from "../../../../../shared/constants/MediaQuery.constants";
+import { ROUTES } from "../../../../../shared/constants/Routes.constants";
 
 const DRAG_THRESHOLD = 40;
 const CLICK_CANCEL_THRESHOLD = 5;
@@ -41,7 +42,7 @@ const ProductCard = ({
       hasDraggedRef.current = false;
       return;
     }
-    navigate(`/product-detail/${product.id}`);
+    navigate(ROUTES.PRODUCT_DETAIL_PAGE.build(product.id));
   };
 
   const handlePrev = () => {

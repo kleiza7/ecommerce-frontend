@@ -7,6 +7,7 @@ import {
   BUTTON_PRIMARY,
   BUTTON_SIZE_X_LARGE,
 } from "../../../shared/constants/CommonTailwindClasses.constants";
+import { ROUTES } from "../../../shared/constants/Routes.constants";
 import { USER_DOMAIN } from "../../../shared/enums/UserDomain.enum";
 import { customTwMerge } from "../../../shared/utils/Tailwind.util";
 import { useCartStore } from "../../../stores/CartStore";
@@ -38,7 +39,7 @@ const CartSummary = ({
 
   const handleConfirmCart = () => {
     if (userDomain === USER_DOMAIN.GUEST) {
-      navigate("/auth");
+      navigate(ROUTES.AUTH_PAGE.build());
       return;
     }
 

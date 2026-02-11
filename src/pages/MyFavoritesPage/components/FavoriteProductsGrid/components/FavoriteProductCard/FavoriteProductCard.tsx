@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "../../../../../../hooks/useMediaQuery";
 import { MEDIA_QUERY } from "../../../../../../shared/constants/MediaQuery.constants";
+import { ROUTES } from "../../../../../../shared/constants/Routes.constants";
 import type { FavoriteItemUI } from "../../../../../../shared/models/FavoriteItemUI.model";
 import FavoriteRemoveButton from "./components/FavoriteRemoveButton";
 
@@ -41,7 +42,7 @@ const FavoriteProductCard = ({
       hasDraggedRef.current = false;
       return;
     }
-    navigate(`/product-detail/${product.id}`);
+    navigate(ROUTES.PRODUCT_DETAIL_PAGE.build(product.id));
   };
 
   const handlePrev = () => {
