@@ -39,9 +39,10 @@ const RegisterForm = ({
   const {
     control,
     handleSubmit,
-    formState: { isValid, errors },
+    formState: { errors },
   } = useForm<RegisterFormValues>({
-    mode: "onChange",
+    mode: "onSubmit",
+    reValidateMode: "onChange",
     defaultValues: {
       name: "",
       email: "",
@@ -150,7 +151,7 @@ const RegisterForm = ({
 
       <button
         type="submit"
-        disabled={!isValid || isPending}
+        disabled={isPending}
         className={customTwMerge(BUTTON_PRIMARY, BUTTON_SIZE_X_LARGE)}
       >
         Register

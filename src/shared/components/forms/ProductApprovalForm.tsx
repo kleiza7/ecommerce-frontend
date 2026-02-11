@@ -45,7 +45,6 @@ const ProductApprovalForm = ({
   const isPending = isApprovePending || isRejectPending;
 
   const { control, reset } = useForm<ProductFormType>({
-    mode: "onChange",
     defaultValues: { images: [] },
   });
 
@@ -103,7 +102,9 @@ const ProductApprovalForm = ({
     initializeForm();
   }, [product, brands, categories, currencies, reset]);
 
-  if (isLoading || !product) return null;
+  if (isLoading || !product) {
+    return null;
+  }
 
   return (
     <form className="relative flex h-full flex-col gap-y-6">

@@ -21,13 +21,9 @@ const UpdateBrandForm = ({
   const { data: brand, isLoading } = useBrandsGetById(brandId);
   const { mutate: updateBrand, isPending } = useBrandsUpdate();
 
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { isValid },
-  } = useForm<BrandFormType>({
-    mode: "onChange",
+  const { control, handleSubmit, reset } = useForm<BrandFormType>({
+    mode: "onBlur",
+    reValidateMode: "onChange",
     defaultValues: {
       name: "",
     },
@@ -48,21 +44,22 @@ const UpdateBrandForm = ({
   };
 
   useEffect(() => {
-    if (!brand) return;
+    if (!brand) {
+      return;
+    }
 
     reset({
       name: brand.name,
     });
   }, [brand, reset]);
 
-  if (isLoading || !brand) return null;
+  if (isLoading || !brand) {
+    return null;
+  }
 
   return (
     <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        handleSubmit(onSubmit)(e);
-      }}
+      onSubmit={handleSubmit(onSubmit)}
       className="relative flex h-full flex-col gap-y-6"
     >
       <div className="flex shrink-0 flex-col gap-y-1">
@@ -88,7 +85,7 @@ const UpdateBrandForm = ({
 
         <button
           type="submit"
-          disabled={!isValid || isPending}
+          disabled={isPending}
           className={customTwMerge(BUTTON_PRIMARY, "px-4")}
         >
           Update

@@ -47,9 +47,10 @@ const LoginForm = () => {
   const {
     control,
     handleSubmit,
-    formState: { isValid, errors },
+    formState: { errors },
   } = useForm<LoginFormValues>({
-    mode: "onChange",
+    mode: "onSubmit",
+    reValidateMode: "onChange",
     defaultValues: { email: "", password: "" },
   });
 
@@ -154,7 +155,7 @@ const LoginForm = () => {
 
       <button
         type="submit"
-        disabled={!isValid || isPending}
+        disabled={isPending}
         className={customTwMerge(BUTTON_PRIMARY, BUTTON_SIZE_X_LARGE)}
       >
         Log In

@@ -37,13 +37,9 @@ const UpdateProductForm = ({
 
   const { mutate: updateProduct, isPending } = useProductsUpdate();
 
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { isValid },
-  } = useForm<ProductFormType>({
-    mode: "onChange",
+  const { control, handleSubmit, reset } = useForm<ProductFormType>({
+    mode: "onBlur",
+    reValidateMode: "onChange",
     defaultValues: { images: [] },
   });
 
@@ -119,14 +115,13 @@ const UpdateProductForm = ({
     initializeForm();
   }, [product, brands, categories, currencies, reset]);
 
-  if (isLoading || !product) return null;
+  if (isLoading || !product) {
+    return null;
+  }
 
   return (
     <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        handleSubmit(onSubmit)(e);
-      }}
+      onSubmit={(e) => handleSubmit(onSubmit)(e)}
       className="relative flex h-full flex-col gap-y-6"
     >
       <div className="flex shrink-0 flex-col gap-y-1">
@@ -157,7 +152,7 @@ const UpdateProductForm = ({
 
         <button
           type="submit"
-          disabled={!isValid || isPending}
+          disabled={isPending}
           className={customTwMerge(BUTTON_PRIMARY, "px-4")}
         >
           Update

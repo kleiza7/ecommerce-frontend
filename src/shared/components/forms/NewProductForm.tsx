@@ -16,12 +16,9 @@ const NewProductForm = ({ close }: { close: () => void }) => {
   const { data: currencies = [] } = useCurrenciesGetAll();
   const { mutate: createProduct, isPending } = useProductsCreate();
 
-  const {
-    control,
-    handleSubmit,
-    formState: { isValid },
-  } = useForm<ProductFormType>({
-    mode: "onChange",
+  const { control, handleSubmit } = useForm<ProductFormType>({
+    mode: "onBlur",
+    reValidateMode: "onChange",
     defaultValues: {
       images: [],
     },
@@ -80,7 +77,7 @@ const NewProductForm = ({ close }: { close: () => void }) => {
 
         <button
           type="submit"
-          disabled={!isValid || isPending}
+          disabled={isPending}
           className={customTwMerge(BUTTON_PRIMARY, "px-4")}
         >
           Create

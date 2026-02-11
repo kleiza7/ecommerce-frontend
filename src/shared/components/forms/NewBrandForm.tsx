@@ -12,12 +12,9 @@ import { GenericDialogClose, GenericDialogTitle } from "../GenericDialog";
 const NewBrandForm = ({ close }: { close: () => void }) => {
   const { mutate: createBrand, isPending } = useBrandsCreate();
 
-  const {
-    control,
-    handleSubmit,
-    formState: { isValid },
-  } = useForm<BrandFormType>({
-    mode: "onChange",
+  const { control, handleSubmit } = useForm<BrandFormType>({
+    mode: "onBlur",
+    reValidateMode: "onChange",
     defaultValues: {
       name: "",
     },
@@ -64,7 +61,7 @@ const NewBrandForm = ({ close }: { close: () => void }) => {
 
         <button
           type="submit"
-          disabled={!isValid || isPending}
+          disabled={isPending}
           className={customTwMerge(BUTTON_PRIMARY, "px-4")}
         >
           Create

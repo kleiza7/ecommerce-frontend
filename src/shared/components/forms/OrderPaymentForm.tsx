@@ -42,9 +42,10 @@ const OrderPaymentForm = ({
   const {
     control,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<OrderPaymentFormType>({
-    mode: "onChange",
+    mode: "onBlur",
+    reValidateMode: "onChange",
     defaultValues: {
       receiverFullName: "",
       receiverPhoneNumber: "",
@@ -70,7 +71,6 @@ const OrderPaymentForm = ({
       onSubmit={handleSubmit(onSubmit)}
       className="relative flex h-full flex-col gap-y-6"
     >
-      {/* HEADER */}
       <div className="flex shrink-0 flex-col gap-y-1">
         <GenericDialogTitle>Payment</GenericDialogTitle>
         <span className="text-s14-l20 text-gray-8">
@@ -79,6 +79,7 @@ const OrderPaymentForm = ({
       </div>
 
       <div className="flex flex-1 flex-col gap-y-6 overflow-y-auto">
+        {/* Receiver Information */}
         <div className="flex flex-col gap-y-3">
           <span className="text-s16-l24 text-text-primary font-medium">
             Receiver Information
@@ -122,7 +123,7 @@ const OrderPaymentForm = ({
           </div>
         </div>
 
-        {/* CARD INFO */}
+        {/* Card Information */}
         <div className="flex flex-col gap-y-3 pb-4">
           <span className="text-s16-l24 text-text-primary font-medium">
             Card Information
@@ -204,7 +205,6 @@ const OrderPaymentForm = ({
         </div>
       </div>
 
-      {/* ACTIONS */}
       <div className="flex shrink-0 justify-end gap-x-2">
         <GenericDialogClose>
           <button
@@ -219,7 +219,7 @@ const OrderPaymentForm = ({
 
         <button
           type="submit"
-          disabled={!isValid || isPending}
+          disabled={isPending}
           className={customTwMerge(BUTTON_PRIMARY, "px-4")}
         >
           Pay
