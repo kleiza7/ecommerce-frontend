@@ -52,7 +52,7 @@ const CartSummary = () => {
       className={customTwMerge(
         "bg-surface-primary border-gray-2 flex flex-col gap-4 border-t p-6",
         "w-full shrink-0 lg:w-[350px]",
-        "fixed inset-x-0 bottom-0 z-50 lg:static",
+        "fixed inset-x-0 bottom-0 z-10 lg:static",
         "lg:rounded-lg lg:border",
       )}
     >
