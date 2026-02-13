@@ -19,7 +19,9 @@ const MyFavoritesPage = lazy(
   () => import("../pages/MyFavoritesPage/MyFavoritesPage"),
 );
 const MyOrdersPage = lazy(() => import("../pages/MyOrdersPage/MyOrdersPage"));
-const OrderDetailPage = lazy(() => import("../pages/OrderDetailPage"));
+const OrderDetailPage = lazy(
+  () => import("../pages/OrderDetailPage/OrderDetailPage"),
+);
 const CheckoutPage = lazy(() => import("../pages/CheckoutPage/CheckoutPage"));
 
 const SellerProductsPage = lazy(
@@ -122,6 +124,15 @@ const router = createBrowserRouter([
 
       { path: ROUTES.AUTH_PAGE.path, element: <AuthPage /> },
     ],
+  },
+
+  {
+    path: ROUTES.NOT_FOUND_PAGE.path,
+    element: (
+      <Suspense fallback={<PageFallback />}>
+        <NotFoundPage />
+      </Suspense>
+    ),
   },
 
   {

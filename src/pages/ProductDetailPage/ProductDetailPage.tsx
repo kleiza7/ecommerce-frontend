@@ -1,5 +1,6 @@
-import { useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { isAxiosError } from "axios";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Lightbox from "yet-another-react-lightbox";
 import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
@@ -14,6 +15,7 @@ import {
   BUTTON_PRIMARY,
   BUTTON_SIZE_X_LARGE,
 } from "../../shared/constants/CommonTailwindClasses.constants";
+import { ROUTES } from "../../shared/constants/Routes.constants";
 import { customTwMerge } from "../../shared/utils/Tailwind.util";
 import { useCartStore } from "../../stores/CartStore";
 import ProductDetailPageSkeleton from "./components/ProductDetailPageSkeleton";
@@ -22,7 +24,9 @@ const DRAG_THRESHOLD = 60;
 const CLICK_CANCEL_THRESHOLD = 5;
 
 const ProductDetailPage = () => {
-  const { id } = useParams();
+  const navigate = useNavigate();
+  const { productId } = useParams();
+  const parsedProductId = Number(productId);
 
   const [activeIndex, setActiveIndex] = useState(1);
   const [enableTransition, setEnableTransition] = useState(true);
@@ -34,22 +38,50 @@ const ProductDetailPage = () => {
   const isDraggingRef = useRef(false);
   const hasDraggedRef = useRef(false);
 
-  const { data, isLoading } = useProductsGetById(Number(id));
+  const {
+    data: product,
+    isLoading,
+    isError,
+    error,
+  } = useProductsGetById(parsedProductId);
+
   const { addToCart, isLoading: isCartLoading } = useCartActions();
   const cartItems = useCartStore((state) => state.items);
 
-  if (isLoading || !data) {
+  useEffect(() => {
+    if (isNaN(parsedProductId)) {
+      navigate(ROUTES.NOT_FOUND_PAGE.build(), { replace: true });
+    }
+  }, [parsedProductId, navigate]);
+
+  useEffect(() => {
+    if (!isError || !isAxiosError(error)) return;
+
+    const status = error.response?.status;
+
+    switch (status) {
+      case 404: {
+        navigate(ROUTES.NOT_FOUND_PAGE.build(), { replace: true });
+        break;
+      }
+    }
+  }, [isError, error, navigate]);
+
+  if (isLoading) {
     return <ProductDetailPageSkeleton />;
   }
 
-  const images = data.images;
-  const sliderImages = [images[images.length - 1], ...images, images[0]];
+  if (!product) {
+    return null;
+  }
 
+  const images = product.images;
+  const sliderImages = [images[images.length - 1], ...images, images[0]];
   const currentRealIndex = (activeIndex - 1 + images.length) % images.length;
 
-  const cartItem = cartItems.find((item) => item.productId === data.id);
+  const cartItem = cartItems.find((item) => item.productId === product.id);
   const cartQuantity = cartItem?.quantity ?? 0;
-  const isOutOfStock = cartQuantity >= data.stockCount;
+  const isOutOfStock = cartQuantity >= product.stockCount;
 
   const handlePrev = () => {
     if (isAnimating) return;
@@ -85,10 +117,6 @@ const ProductDetailPage = () => {
       setIsAnimating(false);
     });
   }
-
-  /* ======================
-     DRAG HANDLERS
-  ====================== */
 
   const handlePointerDown = (e: React.PointerEvent) => {
     if (isAnimating) return;
@@ -129,7 +157,7 @@ const ProductDetailPage = () => {
 
   return (
     <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-y-5 pb-4 md:px-10 md:py-4">
-      <CategoryBreadcrumb selectedCategoryId={data.category.id} />
+      <CategoryBreadcrumb selectedCategoryId={product.category.id} />
 
       <div className="flex flex-col gap-4 md:flex-row md:gap-8">
         <div className="flex flex-col gap-6">
@@ -148,7 +176,7 @@ const ProductDetailPage = () => {
             onPointerLeave={handlePointerUp}
           >
             <FavoriteButton
-              product={data}
+              product={product}
               className="absolute top-3 right-3 z-10 md:hidden"
             />
 
@@ -165,7 +193,7 @@ const ProductDetailPage = () => {
                   <div key={`${img.id}-${index}`} className="image-slide">
                     <img
                       src={img.largeUrl}
-                      alt={data.name}
+                      alt={product.name}
                       draggable={false}
                       className="h-full w-full object-cover select-none"
                     />
@@ -233,34 +261,34 @@ const ProductDetailPage = () => {
 
         <div className="flex flex-1 flex-col gap-2 px-4 md:gap-4 md:px-0">
           <div className="text-text-primary text-s16-l24 md:text-s20-l28 flex flex-wrap gap-2">
-            <span className="font-bold">{data.brand.name}</span>
-            <span>{data.name}</span>
+            <span className="font-bold">{product.brand.name}</span>
+            <span>{product.name}</span>
           </div>
 
           <span className="text-text-primary text-s14-l20 md:text-s16-l24">
-            {data.description}
+            {product.description}
           </span>
 
           <div className="text-text-primary text-s12-l16">
-            {data.stockCount > 0 ? (
+            {product.stockCount > 0 ? (
               <div className="flex flex-col gap-1">
                 <span>
-                  Only <span className="font-bold">{data.stockCount}</span>{" "}
+                  Only <span className="font-bold">{product.stockCount}</span>{" "}
                   items are left in stock.
                 </span>
 
-                {data.stockCount < 5 && (
+                {product.stockCount < 5 && (
                   <div className="flex items-center gap-1">
                     <TimerArrowDownIcon
                       className={`h-4 w-4 ${
-                        data.stockCount === 1
+                        product.stockCount === 1
                           ? "fill-error-primary"
                           : "fill-warning-primary"
                       }`}
                     />
                     <span
                       className={
-                        data.stockCount === 1
+                        product.stockCount === 1
                           ? "text-error-primary"
                           : "text-warning-primary"
                       }
@@ -276,21 +304,10 @@ const ProductDetailPage = () => {
           </div>
 
           <span className="text-orange text-s24-l32 hidden font-bold md:inline">
-            {data.price.toFixed(2)} {data.currency.code}
+            {product.price.toFixed(2)} {product.currency.code}
           </span>
 
           <div className="hidden items-center gap-4 md:flex">
-            {/* TODO: add this button */}
-            {/* <button
-              className={customTwMerge(
-                BUTTON_PRIMARY_OUTLINED,
-                BUTTON_SIZE_X_LARGE,
-                "border-2",
-              )}
-            >
-              Buy Now
-            </button> */}
-
             <GenericTooltip
               content={
                 isOutOfStock
@@ -302,8 +319,8 @@ const ProductDetailPage = () => {
                 disabled={isCartLoading || isOutOfStock}
                 onClick={() =>
                   addToCart({
-                    ...data,
-                    images: data.images.map((img) => ({
+                    ...product,
+                    images: product.images.map((img) => ({
                       thumbUrl: img.thumbUrl,
                       isPrimary: img.isPrimary,
                     })),
@@ -316,7 +333,7 @@ const ProductDetailPage = () => {
             </GenericTooltip>
 
             <FavoriteButton
-              product={data}
+              product={product}
               className="border-gray-2 hidden h-12 w-12 border shadow-none hover:shadow-md md:flex"
             />
           </div>
@@ -325,7 +342,7 @@ const ProductDetailPage = () => {
 
       <div className="border-gray-2 bg-surface-primary fixed bottom-0 left-0 z-40 flex w-full items-end justify-between gap-3 border-t p-2.5 md:hidden">
         <span className="text-orange text-s16-l24 font-semibold">
-          {data.price.toFixed(2)} {data.currency.code}
+          {product.price.toFixed(2)} {product.currency.code}
         </span>
 
         <GenericTooltip
@@ -339,8 +356,8 @@ const ProductDetailPage = () => {
             disabled={isCartLoading || isOutOfStock}
             onClick={() =>
               addToCart({
-                ...data,
-                images: data.images.map((img) => ({
+                ...product,
+                images: product.images.map((img) => ({
                   thumbUrl: img.thumbUrl,
                   isPrimary: img.isPrimary,
                 })),

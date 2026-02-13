@@ -12,8 +12,8 @@ export const ROUTES = {
   },
 
   PRODUCT_DETAIL_PAGE: {
-    path: "product-detail/:id",
-    build: (id: string | number) => `/product-detail/${id}`,
+    path: "product-detail/:productId",
+    build: (productId: string | number) => `/product-detail/${productId}`,
   },
 
   CART_PAGE: {
@@ -32,8 +32,8 @@ export const ROUTES = {
   },
 
   ORDER_DETAIL_PAGE: {
-    path: "order-detail/:id",
-    build: (id: string | number) => `/order-detail/${id}`,
+    path: "order-detail/:orderId",
+    build: (orderId: string | number) => `/order-detail/${orderId}`,
   },
 
   CHECKOUT_PAGE: {
@@ -69,6 +69,11 @@ export const ROUTES = {
   AUTH_PAGE: {
     path: "auth",
     build: (mode?: AUTH_PAGE_MODE) => (mode ? `/auth?mode=${mode}` : "/auth"),
+  },
+
+  NOT_FOUND_PAGE: {
+    path: "not-found",
+    build: () => "/not-found",
   },
 } as const;
 

@@ -97,11 +97,11 @@ const MyOrdersPage = () => {
   }, [currencies]);
 
   return (
-    <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-3 p-3 md:gap-5 md:px-10 md:py-6 lg:py-9">
-      <div className="border-gray-1 flex flex-col gap-y-2 md:flex-row md:items-center md:justify-between md:gap-y-0 md:rounded-md md:border md:px-5 md:py-4">
+    <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-3 p-3 lg:gap-5 lg:px-10 lg:py-6">
+      <div className="border-gray-1 flex flex-col gap-y-2 lg:flex-row lg:items-center lg:justify-between lg:gap-y-0 lg:rounded-md lg:border lg:px-5 lg:py-4">
         <span className="text-s18-l28 text-text-primary">My Orders</span>
 
-        <div className="relative w-full md:w-[330px]">
+        <div className="relative w-full lg:w-[330px]">
           <SearchIcon className="fill-orange absolute top-1/2 left-3 h-6 w-6 -translate-y-1/2" />
 
           <input
@@ -127,7 +127,7 @@ const MyOrdersPage = () => {
       </div>
 
       <div className="flex items-center justify-between gap-2">
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="hidden items-center gap-3 lg:flex">
           <button
             onClick={() => setSelectedStatus("ALL")}
             className={`text-s14-l20 h-8 cursor-pointer rounded-full border px-4 ${
@@ -158,25 +158,25 @@ const MyOrdersPage = () => {
           value={selectedStatus}
           options={STATUS_FILTER_OPTIONS}
           onChange={setSelectedStatus}
-          className="w-full md:hidden"
+          className="w-full lg:hidden"
         />
 
         <GenericSelect<DATE_FILTER>
           value={dateFilter}
           options={DATE_FILTER_OPTIONS}
           onChange={setDateFilter}
-          className="w-full md:w-[200px]"
+          className="w-full lg:w-[200px]"
         />
       </div>
 
       {isLoading ? (
-        <div className="flex min-h-0 flex-1 flex-col gap-y-3 overflow-y-auto md:gap-y-5">
+        <div className="flex min-h-0 flex-1 flex-col gap-y-3 overflow-y-auto lg:gap-y-5">
           {Array.from({ length: 5 }).map((_, index) => (
             <OrderCardSkeleton key={index} />
           ))}
         </div>
       ) : filteredOrders.length > 0 ? (
-        <div className="flex min-h-0 flex-1 flex-col gap-y-3 overflow-y-auto md:gap-y-5">
+        <div className="flex min-h-0 flex-1 flex-col gap-y-3 overflow-y-auto lg:gap-y-5">
           {filteredOrders.map((order) => (
             <OrderCard
               key={order.id}
