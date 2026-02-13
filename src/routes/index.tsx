@@ -20,6 +20,7 @@ const MyFavoritesPage = lazy(
 );
 const MyOrdersPage = lazy(() => import("../pages/MyOrdersPage/MyOrdersPage"));
 const OrderDetailPage = lazy(() => import("../pages/OrderDetailPage"));
+const CheckoutPage = lazy(() => import("../pages/CheckoutPage/CheckoutPage"));
 
 const SellerProductsPage = lazy(
   () => import("../pages/SellerProductsPage/SellerProductsPage"),
@@ -75,6 +76,10 @@ const router = createBrowserRouter([
           {
             path: ROUTES.ORDER_DETAIL_PAGE.path,
             element: <OrderDetailPage />,
+          },
+          {
+            path: ROUTES.CHECKOUT_PAGE.path,
+            element: <CheckoutPage />,
           },
         ],
       },

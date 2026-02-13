@@ -1,49 +1,36 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import { useOrdersCompletePayment } from "../../../hooks/useOrdersCompletePayment";
-import {
-  BUTTON_PRIMARY,
-  BUTTON_PRIMARY_OUTLINED,
-} from "../../constants/CommonTailwindClasses.constants";
+import GenericFormInput from "../../../shared/components/GenericFormInput";
+import GenericFormTextArea from "../../../shared/components/GenericFormTextArea";
+import InputErrorLabel from "../../../shared/components/InputErrorLabel";
+import InputLabel from "../../../shared/components/InputLabel";
 import {
   CARD_CVC_REGEX,
   CARD_EXPIRY_REGEX,
   CARD_NUMBER_REGEX,
-} from "../../constants/Regex.constants";
-import { ROUTES } from "../../constants/Routes.constants";
-import { customTwMerge } from "../../utils/Tailwind.util";
-import { GenericDialogClose, GenericDialogTitle } from "../GenericDialog";
-import GenericFormInput from "../GenericFormInput";
-import GenericFormTextArea from "../GenericFormTextArea";
-import InputErrorLabel from "../InputErrorLabel";
-import InputLabel from "../InputLabel";
+} from "../../../shared/constants/Regex.constants";
 
-type OrderPaymentFormType = {
+export type CheckoutFormType = {
   receiverFullName: string;
   receiverPhoneNumber: string;
   receiverAddress: string;
-
   cardHolderName: string;
   cardNumber: string;
   cardExpiry: string;
   cardCvc: string;
 };
 
-const OrderPaymentForm = ({
-  orderId,
-  close,
+const CheckoutForm = ({
+  onSubmit,
+  isPending,
 }: {
-  orderId: number;
-  close: () => void;
+  onSubmit: SubmitHandler<CheckoutFormType>;
+  isPending: boolean;
 }) => {
-  const navigate = useNavigate();
-  const { mutate: completePayment, isPending } = useOrdersCompletePayment();
-
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<OrderPaymentFormType>({
+  } = useForm<CheckoutFormType>({
     mode: "onBlur",
     reValidateMode: "onChange",
     defaultValues: {
@@ -57,34 +44,20 @@ const OrderPaymentForm = ({
     },
   });
 
-  const onSubmit: SubmitHandler<OrderPaymentFormType> = () => {
-    completePayment(orderId, {
-      onSuccess: () => {
-        close();
-        navigate(ROUTES.ORDER_DETAIL_PAGE.build(orderId));
-      },
-    });
-  };
-
   return (
     <form
+      id="checkout-form"
       onSubmit={handleSubmit(onSubmit)}
-      className="relative flex h-full flex-col gap-y-6"
+      className="relative flex flex-col gap-y-6"
     >
-      <div className="flex shrink-0 flex-col gap-y-1">
-        <GenericDialogTitle>Payment</GenericDialogTitle>
-        <span className="text-s14-l20 text-gray-8">
-          Please review your details before payment.
-        </span>
-      </div>
-
-      <div className="flex flex-1 flex-col gap-y-6 overflow-y-auto">
-        {/* Receiver Information */}
-        <div className="flex flex-col gap-y-3">
-          <span className="text-s16-l24 text-text-primary font-medium">
+      <div className="border-gray-2 flex flex-col rounded-md border">
+        <div className="border-gray-2 bg-gray-3 border-b px-5 py-3">
+          <span className="text-s18-l28 text-text-primary font-medium">
             Receiver Information
           </span>
+        </div>
 
+        <div className="flex flex-col gap-y-3 px-5 py-4">
           <div className="relative flex flex-col">
             <InputLabel label="Full Name" hasAsterisk />
             <GenericFormInput
@@ -122,13 +95,16 @@ const OrderPaymentForm = ({
             <InputErrorLabel message={errors.receiverAddress?.message} />
           </div>
         </div>
+      </div>
 
-        {/* Card Information */}
-        <div className="flex flex-col gap-y-3 pb-4">
-          <span className="text-s16-l24 text-text-primary font-medium">
+      <div className="border-gray-2 flex flex-col rounded-md border">
+        <div className="border-gray-2 bg-gray-3 border-b px-5 py-3">
+          <span className="text-s18-l28 text-text-primary font-medium">
             Card Information
           </span>
+        </div>
 
+        <div className="flex flex-col gap-y-3 px-5 py-4">
           <div className="relative flex flex-col">
             <InputLabel label="Card Holder Name" hasAsterisk />
             <GenericFormInput
@@ -162,7 +138,7 @@ const OrderPaymentForm = ({
           </div>
 
           <div className="flex gap-x-4">
-            <div className="relative flex min-w-0 flex-1 flex-col">
+            <div className="relative flex flex-1 flex-col">
               <InputLabel label="Expiry (MM/YY)" hasAsterisk />
               <GenericFormInput
                 field="cardExpiry"
@@ -182,7 +158,7 @@ const OrderPaymentForm = ({
               <InputErrorLabel message={errors.cardExpiry?.message} />
             </div>
 
-            <div className="relative flex min-w-0 flex-1 flex-col">
+            <div className="relative flex flex-1 flex-col">
               <InputLabel label="CVC" hasAsterisk />
               <GenericFormInput
                 field="cardCvc"
@@ -204,29 +180,8 @@ const OrderPaymentForm = ({
           </div>
         </div>
       </div>
-
-      <div className="flex shrink-0 justify-end gap-x-2">
-        <GenericDialogClose>
-          <button
-            type="button"
-            disabled={isPending}
-            onClick={close}
-            className={customTwMerge(BUTTON_PRIMARY_OUTLINED, "px-4")}
-          >
-            Cancel
-          </button>
-        </GenericDialogClose>
-
-        <button
-          type="submit"
-          disabled={isPending}
-          className={customTwMerge(BUTTON_PRIMARY, "px-4")}
-        >
-          Pay
-        </button>
-      </div>
     </form>
   );
 };
 
-export default OrderPaymentForm;
+export default CheckoutForm;

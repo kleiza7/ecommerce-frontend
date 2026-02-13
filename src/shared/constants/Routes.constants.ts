@@ -36,6 +36,11 @@ export const ROUTES = {
     build: (id: string | number) => `/order-detail/${id}`,
   },
 
+  CHECKOUT_PAGE: {
+    path: "checkout/:orderId",
+    build: (orderId: string | number) => `/checkout/${orderId}`,
+  },
+
   SELLER_PAGE: {
     path: "seller",
     build: () => "/seller",

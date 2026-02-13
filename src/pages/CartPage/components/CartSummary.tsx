@@ -12,11 +12,7 @@ import { USER_DOMAIN } from "../../../shared/enums/UserDomain.enum";
 import { customTwMerge } from "../../../shared/utils/Tailwind.util";
 import { useCartStore } from "../../../stores/CartStore";
 
-const CartSummary = ({
-  onOrderCreated,
-}: {
-  onOrderCreated: (orderId: number) => void;
-}) => {
+const CartSummary = () => {
   const navigate = useNavigate();
   const userDomain = useUserDomain();
 
@@ -45,8 +41,8 @@ const CartSummary = ({
 
     createOrder(undefined, {
       onSuccess: (data) => {
-        onOrderCreated(data.id);
         clearCart();
+        navigate(ROUTES.CHECKOUT_PAGE.build(data.id));
       },
     });
   };
@@ -60,7 +56,7 @@ const CartSummary = ({
         "lg:rounded-lg lg:border",
       )}
     >
-      <h2 className="text-s22-l28 font-medium">Cart Summary</h2>
+      <span className="text-s22-l28 font-medium">Cart Summary</span>
 
       <div className="text-s14-l20 text-gray-9 flex justify-between">
         <span>Subtotal</span>
