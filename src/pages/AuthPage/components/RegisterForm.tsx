@@ -6,6 +6,7 @@ import GenericCheckbox from "../../../shared/components/GenericCheckbox";
 import GenericFormInput from "../../../shared/components/GenericFormInput";
 import InputErrorLabel from "../../../shared/components/InputErrorLabel";
 import InputLabel from "../../../shared/components/InputLabel";
+import LoadingSpinner from "../../../shared/components/LoadingSpinner";
 import {
   BUTTON_PRIMARY,
   BUTTON_SIZE_X_LARGE,
@@ -67,10 +68,9 @@ const RegisterForm = ({
       onSubmit={handleSubmit(onSubmit)}
       className="relative flex flex-col gap-y-5"
     >
-      {/* TODO: loading spiiner */}
       {isPending && (
         <div className="bg-surface-primary/70 absolute inset-0 z-20 flex items-center justify-center rounded-lg">
-          <div className="border-t-orange border-gray-6 h-12 w-12 animate-spin rounded-full border-4" />
+          <LoadingSpinner size={48} borderWidth={4} />
         </div>
       )}
 
