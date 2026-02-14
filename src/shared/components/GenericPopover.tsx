@@ -31,7 +31,7 @@ export const GenericPopover = ({
           side={side}
           align={align}
           sideOffset={sideOffset}
-          className={`data-[state=open]:animate-popover-in data-[state=closed]:animate-popover-out data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 bg-surface-primary z-50 rounded-xl p-4 shadow-lg outline-none ${className} `}
+          className={`data-[state=open]:animate-popover-in data-[state=closed]:animate-popover-out data-[side=bottom]:animate-popover-from-top data-[side=top]:animate-popover-from-bottom data-[side=left]:animate-popover-from-right data-[side=right]:animate-popover-from-left bg-surface-primary z-50 rounded-xl p-4 shadow-lg outline-none ${className} `}
         >
           {children}
           <Popover.Arrow className="fill-surface-primary" />
