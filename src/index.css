@@ -41,6 +41,11 @@ body,
   padding: 0;
 }
 
+html {
+  scrollbar-gutter: stable;
+  overflow-y: scroll;
+}
+
 body {
   font-family: var(--font-sans);
   background-color: #fff;
@@ -428,7 +433,7 @@ input[type="number"] {
 }
 
 *::-webkit-scrollbar-track {
-  background: var(--color-gray-2);
+  background: transparent;
   border-radius: 0;
 }
 
