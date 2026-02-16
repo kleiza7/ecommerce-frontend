@@ -14,10 +14,6 @@ import BrandsSelectionDrawer from "./components/BrandsSelectionDrawer/BrandsSele
 import CategorySelectionDrawer from "./components/CategorySelectionDrawer/CategorySelectionDrawer";
 import SellersSelectionDrawer from "./components/SellersSelectionDrawer/SellersSelectionDrawer";
 
-/* =======================
-   TYPES
-======================= */
-
 type FiltersState = {
   category: ReqCategoriesGetAllResponse[number] | null;
   brands: ReqBrandsGetAllResponse;
@@ -29,10 +25,6 @@ type AppliedFilter = {
   label: string;
   value: string;
 };
-
-/* =======================
-   COMPONENT
-======================= */
 
 const ProductsFilterDrawer = ({
   open,
@@ -54,17 +46,12 @@ const ProductsFilterDrawer = ({
     goToProductsPage,
   } = useProductsNavigation();
 
-  /* drawer open states */
   const [isCategorySelectionDrawerOpen, setIsCategorySelectionDrawerOpen] =
     useState(false);
   const [isBrandsSelectionDrawerOpen, setIsBrandsSelectionDrawerOpen] =
     useState(false);
   const [isSellersSelectionDrawerOpen, setIsSellersSelectionDrawerOpen] =
     useState(false);
-
-  /* =======================
-     INITIAL FILTERS
-  ======================= */
 
   const initialFilters: FiltersState = useMemo(() => {
     let selectedCategory: FiltersState["category"] = null;
@@ -97,15 +84,7 @@ const ProductsFilterDrawer = ({
     sellers,
   ]);
 
-  /* =======================
-     SINGLE SOURCE OF TRUTH
-  ======================= */
-
   const [filters, setFilters] = useState<FiltersState>(initialFilters);
-
-  /* =======================
-     HANDLERS
-  ======================= */
 
   const onCategorySelected = (
     category: ReqCategoriesGetAllResponse[number],
@@ -120,10 +99,6 @@ const ProductsFilterDrawer = ({
   const onSellersSelected = (selectedSellers: ReqAuthGetAllSellersResponse) => {
     setFilters((prev) => ({ ...prev, sellers: selectedSellers }));
   };
-
-  /* =======================
-     APPLIED FILTERS
-  ======================= */
 
   const appliedFilters: AppliedFilter[] = useMemo(() => {
     const result: AppliedFilter[] = [];
@@ -155,10 +130,6 @@ const ProductsFilterDrawer = ({
     return result;
   }, [filters]);
 
-  /* =======================
-     REMOVE FILTER
-  ======================= */
-
   const removeAppliedFilter = (filter: AppliedFilter) => {
     setFilters((prev) => {
       switch (filter.key) {
@@ -183,10 +154,6 @@ const ProductsFilterDrawer = ({
     });
   };
 
-  /* =======================
-     APPLY TO URL
-  ======================= */
-
   const applyFiltersToParams = () => {
     goToProductsPage({
       categorySlug: filters.category?.slug ?? null,
@@ -197,10 +164,6 @@ const ProductsFilterDrawer = ({
 
     setOpen(false);
   };
-
-  /* =======================
-     RENDER
-  ======================= */
 
   return (
     <>

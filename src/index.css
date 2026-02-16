@@ -112,7 +112,6 @@ body {
   --animate-popover-in: popover-in 150ms ease-out;
   --animate-popover-out: popover-out 120ms ease-in;
 
-  /* 🆕 Popover slide tokens (drawer ile aynı mantık) */
   --animate-popover-from-top: popover-slide-from-top 150ms ease-out both;
   --animate-popover-from-bottom: popover-slide-from-bottom 150ms ease-out both;
   --animate-popover-from-left: popover-slide-from-left 150ms ease-out both;
@@ -147,7 +146,7 @@ body {
     cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* KEYFRAMES (UNCHANGED) */
+/* KEYFRAMES */
 
 @keyframes popover-in {
   0% {
@@ -171,7 +170,6 @@ body {
   }
 }
 
-/* 🆕 Popover slide keyframes */
 @keyframes popover-slide-from-top {
   from {
     transform: translateY(-8px);
@@ -225,8 +223,6 @@ body {
     transform: scale(1);
   }
 }
-
-/* DRAWER KEYFRAMES (UNCHANGED) */
 
 @keyframes drawer-overlay-show {
   from {
@@ -409,8 +405,6 @@ input[type="number"]::-webkit-outer-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
-
-/* IMAGE SLIDER */
 
 .image-slider {
   display: flex;

@@ -70,7 +70,6 @@ export const useCartActions = () => {
 
     const newQuantity = (existing?.quantity ?? 0) + 1;
 
-    /* -------------------- OPTIMISTIC UI -------------------- */
     addItem({
       productId: product.id,
       quantity: newQuantity,
@@ -79,7 +78,6 @@ export const useCartActions = () => {
       product,
     });
 
-    /* ==================== AUTH USER ==================== */
     if (isAuthenticated) {
       cartAddMutation.mutate(
         { productId: product.id, quantity: 1 },
@@ -93,12 +91,10 @@ export const useCartActions = () => {
               return;
             }
 
-            // quantity authoritative → UI sync
             if (current.quantity !== item.quantity) {
               updateItem(item.productId, item.quantity);
             }
 
-            // id authoritative → UI sync
             if (!current.id && item.id) {
               setItems(
                 useCartStore
@@ -110,7 +106,6 @@ export const useCartActions = () => {
             }
           },
           onError: (error: AxiosError) => {
-            // ---- PRODUCT-LEVEL ROLLBACK ----
             if (existing) {
               updateItem(product.id, existing.quantity);
             } else {
@@ -126,7 +121,6 @@ export const useCartActions = () => {
       return;
     }
 
-    /* ==================== GUEST USER ==================== */
     try {
       const addedItem = addCartItemToGuestCart({
         productId: product.id,
@@ -140,12 +134,10 @@ export const useCartActions = () => {
         .getState()
         .items.find((i) => i.productId === product.id);
 
-      // guest cart authoritative → quantity sync
       if (current && current.quantity !== addedItem.quantity) {
         updateItem(addedItem.productId, addedItem.quantity);
       }
     } catch {
-      // ---- PRODUCT-LEVEL ROLLBACK ----
       if (existing) {
         updateItem(product.id, existing.quantity);
       } else {

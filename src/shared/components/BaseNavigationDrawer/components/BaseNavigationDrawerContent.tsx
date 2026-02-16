@@ -12,7 +12,6 @@ const BaseNavigationDrawerContent = ({
 }) => {
   return (
     <div className="bg-surface-primary flex h-full flex-col">
-      {/* Header */}
       <div className="border-gray-2 flex items-center justify-between gap-3 border-b px-4 py-3">
         <button
           type="button"
@@ -27,7 +26,6 @@ const BaseNavigationDrawerContent = ({
         <div />
       </div>
 
-      {/* Routes */}
       <div className="flex flex-1 flex-col overflow-y-auto">
         {routes.map((route) => (
           <NavLink

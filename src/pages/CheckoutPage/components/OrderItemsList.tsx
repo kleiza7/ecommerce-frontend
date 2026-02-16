@@ -33,14 +33,12 @@ const OrderItemsList = ({
                 key={item.id}
                 className="relative flex w-[89px] shrink-0 flex-col items-center gap-2"
               >
-                {/* BADGE */}
                 <div className="bg-surface-primary border-gray-2 absolute top-0 left-0 z-10 flex items-center justify-center rounded border px-1">
                   <span className="text-s12-l16 text-[#666666]">
                     x{item.quantity}
                   </span>
                 </div>
 
-                {/* IMAGE WRAPPER */}
                 <div className="border-gray-2 box-border w-[89px] rounded border">
                   <img
                     src={primaryImage.thumbUrl}
@@ -49,7 +47,6 @@ const OrderItemsList = ({
                   />
                 </div>
 
-                {/* TOTAL PRICE */}
                 <span className="text-s16-l24 text-orange w-full text-center font-medium wrap-break-word">
                   {totalPrice.toFixed(2)}{" "}
                   {currencyMap.get(item.currencyId) ?? ""}

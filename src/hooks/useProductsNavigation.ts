@@ -29,10 +29,6 @@ export const useProductsNavigation = () => {
     return value && value.length > 0 ? value : undefined;
   }, [searchParams]);
 
-  /* =======================
-     NAVIGATION
-  ======================= */
-
   const goToProductsPage = useCallback(
     ({
       categorySlug,

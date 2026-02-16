@@ -46,20 +46,17 @@ export const useFavoriteActions = () => {
 
     const newIsFavorited = !snapshotIsFavorited;
 
-    /* ---------- OPTIMISTIC UI ---------- */
     if (newIsFavorited) {
       addItem({ productId: product.id, product });
     } else {
       removeItem(product.id);
     }
 
-    /* ---------- AUTH ---------- */
     if (isAuthenticated) {
       toggleFavoriteMutation.mutate(
         { productId: product.id },
         {
           onSuccess: (res) => {
-            // server authoritative
             if (res.isFavorited !== newIsFavorited) {
               if (res.isFavorited) {
                 addItem({ productId: product.id, product });
@@ -69,7 +66,6 @@ export const useFavoriteActions = () => {
             }
           },
           onError: () => {
-            // 🔥 PRODUCT-LEVEL ROLLBACK
             if (snapshotIsFavorited) {
               addItem({ productId: product.id, product });
             } else {
@@ -86,7 +82,6 @@ export const useFavoriteActions = () => {
       return;
     }
 
-    /* ---------- GUEST ---------- */
     try {
       if (newIsFavorited) {
         addFavoriteToGuestFavorites({ productId: product.id, product });
@@ -94,7 +89,6 @@ export const useFavoriteActions = () => {
         removeFavoriteFromGuestFavorites(product.id);
       }
     } catch {
-      // 🔥 PRODUCT-LEVEL ROLLBACK
       if (snapshotIsFavorited) {
         addItem({ productId: product.id, product });
       } else {
