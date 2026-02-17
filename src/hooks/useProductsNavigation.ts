@@ -1,16 +1,13 @@
 import { useCallback, useMemo } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { ROUTES } from "../shared/constants/Routes.constants";
 
-const PRODUCTS_PATH = "/products";
+const PRODUCTS_PATH = ROUTES.PRODUCTS_PAGE.build();
 
 export const useProductsNavigation = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-
-  /* =======================
-     PARSED URL STATE
-  ======================= */
 
   const selectedCategorySlug = searchParams.get("category");
 
@@ -31,10 +28,6 @@ export const useProductsNavigation = () => {
     const value = searchParams.get("sortBy")?.trim();
     return value && value.length > 0 ? value : undefined;
   }, [searchParams]);
-
-  /* =======================
-     NAVIGATION
-  ======================= */
 
   const goToProductsPage = useCallback(
     ({

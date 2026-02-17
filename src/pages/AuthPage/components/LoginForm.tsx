@@ -7,6 +7,7 @@ import { useFavoritesMerge } from "../../../hooks/useFavoritesMerge";
 import GenericFormInput from "../../../shared/components/GenericFormInput";
 import InputErrorLabel from "../../../shared/components/InputErrorLabel";
 import InputLabel from "../../../shared/components/InputLabel";
+import LoadingSpinner from "../../../shared/components/LoadingSpinner";
 import {
   BUTTON_PRIMARY,
   BUTTON_SIZE_X_LARGE,
@@ -15,6 +16,7 @@ import {
   EMAIL_REGEX,
   PASSWORD_REGEX,
 } from "../../../shared/constants/Regex.constants";
+import { ROUTES } from "../../../shared/constants/Routes.constants";
 import {
   clearGuestCart,
   getGuestCart,
@@ -46,9 +48,10 @@ const LoginForm = () => {
   const {
     control,
     handleSubmit,
-    formState: { isValid, errors },
+    formState: { errors },
   } = useForm<LoginFormValues>({
-    mode: "onChange",
+    mode: "onSubmit",
+    reValidateMode: "onChange",
     defaultValues: { email: "", password: "" },
   });
 
@@ -58,7 +61,7 @@ const LoginForm = () => {
     loginUser(data.user, data.accessToken);
 
     if (data.user.role !== USER_ROLE.USER) {
-      navigate("/", { replace: true });
+      navigate(ROUTES.HOME_PAGE.build(), { replace: true });
       return;
     }
 
@@ -87,8 +90,7 @@ const LoginForm = () => {
       clearGuestFavorites();
     }
 
-    // 🔥 HER ŞEY BİTTİKTEN SONRA
-    navigate("/", { replace: true });
+    navigate(ROUTES.HOME_PAGE.build(), { replace: true });
   };
 
   return (
@@ -98,7 +100,7 @@ const LoginForm = () => {
     >
       {isPending && (
         <div className="bg-surface-primary/70 absolute inset-0 z-20 flex items-center justify-center rounded-lg">
-          <div className="border-t-orange border-gray-6 h-12 w-12 animate-spin rounded-full border-4" />
+          <LoadingSpinner size={48} borderWidth={4} />
         </div>
       )}
 
@@ -111,7 +113,6 @@ const LoginForm = () => {
             control={control}
             required
             type="email"
-            disabled={isPending}
             placeholder="example@gmail.com"
             rules={{
               pattern: {
@@ -119,12 +120,14 @@ const LoginForm = () => {
                 message: "Please enter a valid email address!",
               },
             }}
+            hasError={!!errors.email}
+            disabled={isPending}
           />
 
           <InputErrorLabel message={errors.email?.message} />
         </div>
 
-        <div className="relative flex flex-col">
+        <div className="relative flex flex-col pb-4 md:pb-0">
           <InputLabel label="Password" hasAsterisk />
 
           <GenericFormInput
@@ -132,7 +135,6 @@ const LoginForm = () => {
             control={control}
             required
             type="password"
-            disabled={isPending}
             placeholder="••••••••"
             rules={{
               pattern: {
@@ -141,15 +143,20 @@ const LoginForm = () => {
                   "Password must be at least 8 characters, with uppercase, lowercase, and a number.",
               },
             }}
+            hasError={!!errors.password}
+            disabled={isPending}
           />
 
-          <InputErrorLabel message={errors.password?.message} />
+          <InputErrorLabel
+            message={errors.password?.message}
+            className="top-[60px] md:top-auto"
+          />
         </div>
       </div>
 
       <button
         type="submit"
-        disabled={!isValid || isPending}
+        disabled={isPending}
         className={customTwMerge(BUTTON_PRIMARY, BUTTON_SIZE_X_LARGE)}
       >
         Log In

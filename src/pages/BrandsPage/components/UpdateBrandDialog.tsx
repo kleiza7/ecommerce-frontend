@@ -1,15 +1,15 @@
 import { useCallback } from "react";
 import { GenericDialog } from "../../../shared/components/GenericDialog";
-import OrderPaymentForm from "../../../shared/components/forms/OrderPaymentForm";
+import UpdateBrandForm from "../../../shared/components/forms/UpdateBrandForm";
 
-const OrderPaymentDialog = ({
-  orderId,
+const UpdateBrandDialog = ({
   open,
   setOpen,
+  brandId,
 }: {
-  orderId: number;
   open: boolean;
   setOpen: (open: boolean) => void;
+  brandId: number;
 }) => {
   const close = useCallback(() => {
     setOpen(false);
@@ -17,9 +17,9 @@ const OrderPaymentDialog = ({
 
   return (
     <GenericDialog open={open} onOpenChange={setOpen}>
-      <OrderPaymentForm orderId={orderId} close={close} />
+      <UpdateBrandForm brandId={brandId} close={close} />
     </GenericDialog>
   );
 };
 
-export default OrderPaymentDialog;
+export default UpdateBrandDialog;

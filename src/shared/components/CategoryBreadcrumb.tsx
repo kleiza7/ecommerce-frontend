@@ -26,10 +26,6 @@ const CategoryBreadcrumb = ({
     );
   }, [categories, selectedCategoryId]);
 
-  /* =======================
-     NAVIGATION
-  ======================= */
-
   const handleNavigate = useCallback(
     (slug: string) => {
       goToProductsPage({

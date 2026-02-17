@@ -7,15 +7,12 @@ import {
   BUTTON_PRIMARY,
   BUTTON_SIZE_X_LARGE,
 } from "../../../shared/constants/CommonTailwindClasses.constants";
+import { ROUTES } from "../../../shared/constants/Routes.constants";
 import { USER_DOMAIN } from "../../../shared/enums/UserDomain.enum";
 import { customTwMerge } from "../../../shared/utils/Tailwind.util";
 import { useCartStore } from "../../../stores/CartStore";
 
-const CartSummary = ({
-  onOrderCreated,
-}: {
-  onOrderCreated: (orderId: number) => void;
-}) => {
+const CartSummary = () => {
   const navigate = useNavigate();
   const userDomain = useUserDomain();
 
@@ -38,14 +35,14 @@ const CartSummary = ({
 
   const handleConfirmCart = () => {
     if (userDomain === USER_DOMAIN.GUEST) {
-      navigate("/auth");
+      navigate(ROUTES.AUTH_PAGE.build());
       return;
     }
 
     createOrder(undefined, {
       onSuccess: (data) => {
-        onOrderCreated(data.id);
         clearCart();
+        navigate(ROUTES.CHECKOUT_PAGE.build(data.id));
       },
     });
   };
@@ -55,11 +52,11 @@ const CartSummary = ({
       className={customTwMerge(
         "bg-surface-primary border-gray-2 flex flex-col gap-4 border-t p-6",
         "w-full shrink-0 lg:w-[350px]",
-        "fixed inset-x-0 bottom-0 z-50 lg:static",
+        "fixed inset-x-0 bottom-0 z-10 lg:static",
         "lg:rounded-lg lg:border",
       )}
     >
-      <h2 className="text-s22-l28 font-medium">Cart Summary</h2>
+      <span className="text-s22-l28 font-medium">Cart Summary</span>
 
       <div className="text-s14-l20 text-gray-9 flex justify-between">
         <span>Subtotal</span>

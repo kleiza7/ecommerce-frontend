@@ -22,6 +22,7 @@ type GenericFormTextAreaProps<TFieldValues extends FieldValues> = {
   minLength?: number;
   maxLength?: number;
   rules?: RegisterOptions<TFieldValues, FieldPath<TFieldValues>>;
+  hasError?: boolean;
 };
 
 const GenericFormTextArea = <TFieldValues extends FieldValues>({
@@ -34,6 +35,7 @@ const GenericFormTextArea = <TFieldValues extends FieldValues>({
   minLength,
   maxLength,
   rules,
+  hasError = false,
 }: GenericFormTextAreaProps<TFieldValues>) => {
   return (
     <Controller
@@ -58,7 +60,7 @@ const GenericFormTextArea = <TFieldValues extends FieldValues>({
 
         ...rules,
       }}
-      render={({ field, fieldState }) => (
+      render={({ field }) => (
         <textarea
           {...field}
           rows={rows}
@@ -68,11 +70,7 @@ const GenericFormTextArea = <TFieldValues extends FieldValues>({
           maxLength={maxLength}
           className={customTwMerge(
             TEXT_AREA_BASE,
-            disabled
-              ? TEXT_AREA_DISABLED
-              : fieldState.error
-                ? TEXT_AREA_ERROR
-                : "",
+            disabled ? TEXT_AREA_DISABLED : hasError ? TEXT_AREA_ERROR : "",
           )}
         />
       )}

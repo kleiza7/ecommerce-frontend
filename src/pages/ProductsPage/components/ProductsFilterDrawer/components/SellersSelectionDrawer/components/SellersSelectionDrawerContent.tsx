@@ -41,7 +41,6 @@ const SellersSelectionDrawerContent = ({
 
   return (
     <div className="bg-surface-primary flex h-full flex-col">
-      {/* HEADER */}
       <div className="border-gray-2 flex items-center justify-between gap-3 border-b px-4 py-3">
         <button type="button" onClick={close} className="flex items-center">
           <KeyboardArrowUpIcon className="fill-orange h-8 w-8 -rotate-90" />
@@ -60,7 +59,6 @@ const SellersSelectionDrawerContent = ({
         </button>
       </div>
 
-      {/* LIST */}
       <div className="flex flex-1 flex-col overflow-y-auto">
         {sellers.map((seller) => (
           <label
@@ -78,7 +76,6 @@ const SellersSelectionDrawerContent = ({
         ))}
       </div>
 
-      {/* FOOTER */}
       <div className="border-gray-2 border-t p-3">
         <button
           type="button"

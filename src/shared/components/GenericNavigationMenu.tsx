@@ -10,7 +10,7 @@ const GenericNavigationMenu = ({
   className,
   withOverlay = true,
   contentAlign = "left",
-  contentOffsetY = 8, // px
+  contentOffsetY = 8,
   delayDuration = 0,
 }: {
   trigger: ReactNode;
@@ -20,7 +20,7 @@ const GenericNavigationMenu = ({
   className?: string;
   withOverlay?: boolean;
   contentAlign?: "left" | "center" | "right";
-  contentOffsetY?: number; // px
+  contentOffsetY?: number;
   delayDuration?: number;
 }) => {
   const alignClass =
@@ -55,7 +55,7 @@ const GenericNavigationMenu = ({
           </NavigationMenu.Trigger>
 
           <NavigationMenu.Content
-            style={{ marginTop: contentOffsetY }} // ✅ dynamic offset
+            style={{ marginTop: contentOffsetY }}
             className={customTwMerge(
               "bg-surface-primary absolute top-full z-50 rounded-xl p-4 shadow-lg",
               alignClass,

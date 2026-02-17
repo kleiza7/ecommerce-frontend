@@ -3,6 +3,7 @@ import {
   BUTTON_PRIMARY,
   BUTTON_SIZE_X_LARGE,
 } from "../shared/constants/CommonTailwindClasses.constants";
+import { ROUTES } from "../shared/constants/Routes.constants";
 import { customTwMerge } from "../shared/utils/Tailwind.util";
 
 const NotFoundPage = () => {
@@ -25,7 +26,7 @@ const NotFoundPage = () => {
 
         <button
           type="button"
-          onClick={() => navigate("/products")}
+          onClick={() => navigate(ROUTES.PRODUCTS_PAGE.build())}
           className={customTwMerge(BUTTON_PRIMARY, BUTTON_SIZE_X_LARGE, "px-8")}
         >
           Continue Shopping

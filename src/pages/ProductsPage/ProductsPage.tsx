@@ -41,10 +41,6 @@ const ProductsPage = () => {
   const { data: brands = [] } = useBrandsGetAll();
   const { data: sellers = [] } = useAuthGetAllSellers();
 
-  /* =======================
-     CATEGORY
-  ======================= */
-
   const selectedCategoryNode = useMemo(() => {
     if (!selectedCategorySlug || categories.length === 0) {
       return undefined;
@@ -67,10 +63,6 @@ const ProductsPage = () => {
     return collectLeafIds(selectedCategoryNode);
   }, [selectedCategoryNode]);
 
-  /* =======================
-     BRAND / SELLER
-  ======================= */
-
   const brandIds = useMemo(() => {
     if (selectedBrandSlugs.length === 0) {
       return undefined;
@@ -86,10 +78,6 @@ const ProductsPage = () => {
   const sellerIds = useMemo(() => {
     return selectedSellerIds.length > 0 ? selectedSellerIds : undefined;
   }, [selectedSellerIds]);
-
-  /* =======================
-     SORT
-  ======================= */
 
   const sort = useMemo<ReqProductsListPayload["sort"]>(() => {
     if (!sortBy) {
@@ -107,10 +95,6 @@ const ProductsPage = () => {
 
     return undefined;
   }, [sortBy]);
-
-  /* =======================
-     PAYLOAD
-  ======================= */
 
   const payload: Omit<ReqProductsListPayload, "page"> = {
     limit: PAGE_LIMIT,
@@ -132,10 +116,6 @@ const ProductsPage = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useProductsListInfinite(payload);
 
-  /* =======================
-     UI STATE
-  ======================= */
-
   const [isProductsSortPortalOpen, setIsProductsSortPortalOpen] =
     useState(false);
   const [isProductsFilterPortalOpen, setIsProductsFilterPortalOpen] =
@@ -149,19 +129,11 @@ const ProductsPage = () => {
     setIsProductsFilterPortalOpen(true);
   }, []);
 
-  /* =======================
-     DATA
-  ======================= */
-
   const allProducts = data?.pages.flatMap((page) => page.items) ?? [];
   const totalCount = data?.pages[0]?.pagination.total ?? 0;
 
   const rangeEnd = allProducts.length;
   const rangeStart = Math.max(1, rangeEnd - PAGE_LIMIT + 1);
-
-  /* =======================
-     RENDER
-  ======================= */
 
   return (
     <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-5 pb-4 md:px-10 md:py-4">

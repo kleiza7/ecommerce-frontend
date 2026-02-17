@@ -1,5 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useUserDomain } from "../hooks/useUserDomain";
+import { ROUTES } from "../shared/constants/Routes.constants";
 import { USER_DOMAIN } from "../shared/enums/UserDomain.enum";
 
 const ProtectedRoute = ({
@@ -16,7 +17,7 @@ const ProtectedRoute = ({
   return allowedDomains.includes(userDomain) ? (
     <Outlet />
   ) : (
-    <Navigate to="/auth" replace />
+    <Navigate to={ROUTES.AUTH_PAGE.build()} replace />
   );
 };
 

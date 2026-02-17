@@ -3,9 +3,10 @@ import { Link } from "react-router-dom";
 
 import { CloseIcon, FavoriteFilledIcon, SearchIcon } from "../../assets/icons";
 import { INPUT_BASE } from "../../shared/constants/CommonTailwindClasses.constants";
+import { ROUTES } from "../../shared/constants/Routes.constants";
 import { customTwMerge } from "../../shared/utils/Tailwind.util";
 import { useFavoriteStore } from "../../stores/FavoriteStore";
-import FavoriteProductCard from "./components/FavoriteProductCard/FavoriteProductCard";
+import FavoriteProductsGrid from "./components/FavoriteProductsGrid/FavoriteProductsGrid";
 
 const MyFavoritesPage = () => {
   const favorites = useFavoriteStore((state) => state.items);
@@ -34,7 +35,7 @@ const MyFavoritesPage = () => {
         </span>
 
         <Link
-          to="/products"
+          to={ROUTES.PRODUCTS_PAGE.build()}
           className="bg-orange hover:bg-orange-dark text-surface-primary rounded-lg px-6 py-3 font-semibold transition"
         >
           Continue Shopping
@@ -44,8 +45,8 @@ const MyFavoritesPage = () => {
   }
 
   return (
-    <div className="flex w-full flex-col">
-      <div className="top-0 mx-auto flex h-[70px] w-full max-w-[1480px] shrink-0 items-center px-3 md:px-10">
+    <div className="mx-auto flex w-full max-w-[1480px] flex-col">
+      <div className="top-0 flex h-[70px] w-full shrink-0 items-center px-3 md:px-10">
         <div className="relative w-full md:w-[330px]">
           <SearchIcon className="fill-orange absolute top-1/2 left-3 h-6 w-6 -translate-y-1/2" />
 
@@ -73,20 +74,8 @@ const MyFavoritesPage = () => {
 
       <div className="bg-gray-1 h-px w-full" />
 
-      <div className="mx-auto max-w-[1480px] flex-1 overflow-y-auto px-3 py-5 md:px-10">
-        {filteredFavoriteProducts.length === 0 ? (
-          <div className="flex h-[300px] items-center justify-center">
-            <span className="text-s14-l20 text-gray-8">
-              No matching products found
-            </span>
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 gap-3 md:gap-6 lg:grid-cols-3 xl:grid-cols-4">
-            {filteredFavoriteProducts.map((product) => (
-              <FavoriteProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        )}
+      <div className="flex-1 overflow-y-auto px-3 py-5 md:px-10">
+        <FavoriteProductsGrid favoriteProducts={filteredFavoriteProducts} />
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ import GenericCheckbox from "../../../shared/components/GenericCheckbox";
 import GenericFormInput from "../../../shared/components/GenericFormInput";
 import InputErrorLabel from "../../../shared/components/InputErrorLabel";
 import InputLabel from "../../../shared/components/InputLabel";
+import LoadingSpinner from "../../../shared/components/LoadingSpinner";
 import {
   BUTTON_PRIMARY,
   BUTTON_SIZE_X_LARGE,
@@ -39,9 +40,10 @@ const RegisterForm = ({
   const {
     control,
     handleSubmit,
-    formState: { isValid, errors },
+    formState: { errors },
   } = useForm<RegisterFormValues>({
-    mode: "onChange",
+    mode: "onSubmit",
+    reValidateMode: "onChange",
     defaultValues: {
       name: "",
       email: "",
@@ -66,10 +68,9 @@ const RegisterForm = ({
       onSubmit={handleSubmit(onSubmit)}
       className="relative flex flex-col gap-y-5"
     >
-      {/* TODO: loading spiiner */}
       {isPending && (
         <div className="bg-surface-primary/70 absolute inset-0 z-20 flex items-center justify-center rounded-lg">
-          <div className="border-t-orange border-gray-6 h-12 w-12 animate-spin rounded-full border-4" />
+          <LoadingSpinner size={48} borderWidth={4} />
         </div>
       )}
 
@@ -81,8 +82,9 @@ const RegisterForm = ({
             field="name"
             control={control}
             required
-            disabled={isPending}
             placeholder="Mahfuzul Nabil"
+            hasError={!!errors.name}
+            disabled={isPending}
           />
 
           <InputErrorLabel message={errors.name?.message} />
@@ -96,7 +98,6 @@ const RegisterForm = ({
             control={control}
             required
             type="email"
-            disabled={isPending}
             placeholder="example@gmail.com"
             rules={{
               pattern: {
@@ -104,12 +105,14 @@ const RegisterForm = ({
                 message: "Please enter a valid email address!",
               },
             }}
+            hasError={!!errors.email}
+            disabled={isPending}
           />
 
           <InputErrorLabel message={errors.email?.message} />
         </div>
 
-        <div className="relative flex flex-col">
+        <div className="relative flex flex-col pb-4 md:pb-0">
           <InputLabel label="Password" hasAsterisk />
 
           <GenericFormInput
@@ -117,7 +120,6 @@ const RegisterForm = ({
             control={control}
             required
             type="password"
-            disabled={isPending}
             placeholder="••••••••"
             rules={{
               pattern: {
@@ -126,9 +128,14 @@ const RegisterForm = ({
                   "Password must be at least 8 characters, with uppercase, lowercase, and a number.",
               },
             }}
+            hasError={!!errors.password}
+            disabled={isPending}
           />
 
-          <InputErrorLabel message={errors.password?.message} />
+          <InputErrorLabel
+            message={errors.password?.message}
+            className="top-[60px] md:top-auto"
+          />
         </div>
 
         <label className="flex cursor-pointer items-center gap-3">
@@ -144,7 +151,7 @@ const RegisterForm = ({
 
       <button
         type="submit"
-        disabled={!isValid || isPending}
+        disabled={isPending}
         className={customTwMerge(BUTTON_PRIMARY, BUTTON_SIZE_X_LARGE)}
       >
         Register

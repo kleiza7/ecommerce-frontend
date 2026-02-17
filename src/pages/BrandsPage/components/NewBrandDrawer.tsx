@@ -1,13 +1,11 @@
 import { useCallback } from "react";
 import { GenericDrawer } from "../../../shared/components/GenericDrawer";
-import OrderPaymentForm from "../../../shared/components/forms/OrderPaymentForm";
+import NewBrandForm from "../../../shared/components/forms/NewBrandForm";
 
-const OrderPaymentDrawer = ({
-  orderId,
+const NewBrandDrawer = ({
   open,
   setOpen,
 }: {
-  orderId: number;
   open: boolean;
   setOpen: (open: boolean) => void;
 }) => {
@@ -22,9 +20,9 @@ const OrderPaymentDrawer = ({
       side="bottom"
       className="h-svh p-6 md:h-auto md:rounded-t-xl"
     >
-      <OrderPaymentForm orderId={orderId} close={close} />
+      <NewBrandForm close={close} />
     </GenericDrawer>
   );
 };
 
-export default OrderPaymentDrawer;
+export default NewBrandDrawer;

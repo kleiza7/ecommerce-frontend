@@ -1,16 +1,31 @@
-import { useMemo } from "react";
+import { isAxiosError } from "axios";
+import { useEffect, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeftIcon } from "../assets/icons";
-import { useCurrenciesGetAll } from "../hooks/useCurrenciesGetAll";
-import { useOrdersGetById } from "../hooks/useOrdersGetById";
-import { ORDER_STATUS_TEXT_PAIRS } from "../shared/constants/Order.constants";
+import { ArrowLeftIcon } from "../../assets/icons";
+import { useCurrenciesGetAll } from "../../hooks/useCurrenciesGetAll";
+import { useOrdersGetById } from "../../hooks/useOrdersGetById";
+import {
+  BUTTON_PRIMARY,
+  BUTTON_SIZE_SMALL,
+} from "../../shared/constants/CommonTailwindClasses.constants";
+import { ORDER_STATUS_TEXT_PAIRS } from "../../shared/constants/Order.constants";
+import { ROUTES } from "../../shared/constants/Routes.constants";
+import { canCheckoutOrder } from "../../shared/utils/Order.util";
+import { customTwMerge } from "../../shared/utils/Tailwind.util";
+import OrderDetailPageSkeleton from "./components/OrderDetailPageSkeleton";
 
 const OrderDetailPage = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
-  const orderId = Number(id);
+  const { orderId } = useParams();
+  const parsedOrderId = Number(orderId);
 
-  const { data: order, isLoading } = useOrdersGetById(orderId);
+  const {
+    data: order,
+    isLoading,
+    isError,
+    error,
+  } = useOrdersGetById(parsedOrderId);
+
   const { data: currencies = [] } = useCurrenciesGetAll();
 
   const groupedBySeller = useMemo(() => {
@@ -34,30 +49,64 @@ const OrderDetailPage = () => {
 
   const currencyMap = useMemo(() => {
     const map = new Map<number, string>();
-
     for (const currency of currencies) {
       map.set(currency.id, currency.code);
     }
-
     return map;
   }, [currencies]);
 
-  // TODO: loading state
-  if (isLoading || !order) {
-    return <div>Loading...</div>;
+  useEffect(() => {
+    if (isNaN(parsedOrderId)) {
+      navigate(ROUTES.NOT_FOUND_PAGE.build(), { replace: true });
+    }
+  }, [parsedOrderId, navigate]);
+
+  useEffect(() => {
+    if (!isError || !isAxiosError(error)) return;
+
+    const status = error.response?.status;
+
+    switch (status) {
+      case 403: {
+        navigate(ROUTES.HOME_PAGE.build(), { replace: true });
+        break;
+      }
+
+      case 404: {
+        navigate(ROUTES.NOT_FOUND_PAGE.build(), { replace: true });
+        break;
+      }
+    }
+  }, [isError, error, navigate]);
+
+  if (isLoading) {
+    return <OrderDetailPageSkeleton />;
+  }
+
+  if (!order) {
+    return null;
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-3 p-3 md:gap-5 md:px-10 md:py-9">
-      <div className="flex items-center gap-x-2">
+    <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-3 p-3 md:gap-5 md:px-10 md:py-6">
+      <div className="flex items-center justify-between">
         <button
           type="button"
-          onClick={() => navigate("/my-orders")}
+          onClick={() => navigate(ROUTES.MY_ORDERS_PAGE.build())}
           className="flex cursor-pointer items-center gap-x-2"
         >
           <ArrowLeftIcon className="h-4 w-4" />
           <span className="text-s14-l20 text-text-primary">All Orders</span>
         </button>
+
+        {canCheckoutOrder(order.status) && (
+          <button
+            onClick={() => navigate(ROUTES.CHECKOUT_PAGE.build(order.id))}
+            className={customTwMerge(BUTTON_PRIMARY, BUTTON_SIZE_SMALL, "px-6")}
+          >
+            Pay Now
+          </button>
+        )}
       </div>
 
       <div className="border-gray-1 flex flex-col gap-y-2 rounded-md border px-5 py-4 md:flex-row md:items-center md:justify-between md:gap-y-0">

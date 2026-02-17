@@ -5,6 +5,8 @@ import {
   BUTTON_SIZE_SMALL,
 } from "../../../shared/constants/CommonTailwindClasses.constants";
 import { ORDER_STATUS_TEXT_PAIRS } from "../../../shared/constants/Order.constants";
+import { ROUTES } from "../../../shared/constants/Routes.constants";
+import { canCheckoutOrder } from "../../../shared/utils/Order.util";
 import { customTwMerge } from "../../../shared/utils/Tailwind.util";
 import { useUserStore } from "../../../stores/UserStore";
 
@@ -22,24 +24,24 @@ const OrderCard = ({
 
   return (
     <div className="border-gray-1 rounded-lg border">
-      <div className="border-gray-1 bg-gray-3 flex flex-col gap-3 border-b px-5 py-3 md:flex-row md:items-center md:gap-x-5">
-        <div className="text-text-primary flex flex-1 flex-wrap gap-y-3 md:flex-nowrap md:gap-x-5">
-          <div className="text-s14-l20 w-1/2 md:w-auto md:flex-1">
+      <div className="border-gray-1 bg-gray-3 flex flex-col gap-3 border-b px-5 py-3 lg:flex-row lg:items-center lg:gap-x-5">
+        <div className="text-text-primary flex flex-1 flex-wrap gap-y-3 lg:flex-nowrap lg:gap-x-5">
+          <div className="text-s14-l20 w-1/2 lg:w-auto lg:flex-1">
             <div className="font-medium">Order Date</div>
             {new Date(order.createdAt).toLocaleDateString()}
           </div>
 
-          <div className="text-s14-l20 w-1/2 md:w-auto md:flex-1">
+          <div className="text-s14-l20 w-1/2 lg:w-auto lg:flex-1">
             <div className="font-medium">Order Summary</div>
             {order.items.length} Items
           </div>
 
-          <div className="text-s14-l20 w-1/2 md:w-auto md:flex-1">
+          <div className="text-s14-l20 w-1/2 lg:w-auto lg:flex-1">
             <div className="font-medium">Recipient</div>
             {userName ?? ""}
           </div>
 
-          <div className="text-s14-l20 w-1/2 md:w-auto md:flex-1">
+          <div className="text-s14-l20 w-1/2 lg:w-auto lg:flex-1">
             <div className="font-medium">Total</div>
             <span className="text-orange">
               {order.totalPrice.toFixed(2)} {currencyCode}
@@ -47,21 +49,36 @@ const OrderCard = ({
           </div>
         </div>
 
-        <button
-          onClick={() => navigate(`/order-detail/${order.id}`)}
-          className={customTwMerge(
-            BUTTON_PRIMARY,
-            BUTTON_SIZE_SMALL,
-            "w-full px-6 md:w-auto",
+        <div className="flex w-full items-center gap-x-4 lg:w-[220px] lg:justify-end">
+          {canCheckoutOrder(order.status) && (
+            <button
+              onClick={() => navigate(ROUTES.CHECKOUT_PAGE.build(order.id))}
+              className={customTwMerge(
+                BUTTON_PRIMARY,
+                BUTTON_SIZE_SMALL,
+                "w-full px-6 lg:w-auto",
+              )}
+            >
+              Pay Now
+            </button>
           )}
-        >
-          Details
-        </button>
+
+          <button
+            onClick={() => navigate(ROUTES.ORDER_DETAIL_PAGE.build(order.id))}
+            className={customTwMerge(
+              BUTTON_PRIMARY,
+              BUTTON_SIZE_SMALL,
+              "w-full px-6 lg:w-auto",
+            )}
+          >
+            Details
+          </button>
+        </div>
       </div>
 
       <div className="p-5">
-        <div className="border-gray-1 flex flex-col gap-y-3 rounded-md border px-5 py-3 md:flex-row md:items-center md:gap-x-6 md:gap-y-0">
-          <div className="text-s14-l20 font-semibold md:w-[30%] md:shrink-0">
+        <div className="border-gray-1 flex flex-col gap-y-3 rounded-md border px-5 py-3 lg:flex-row lg:items-center lg:gap-x-6 lg:gap-y-0">
+          <div className="text-s14-l20 font-semibold lg:w-[30%] lg:shrink-0">
             {ORDER_STATUS_TEXT_PAIRS[order.status]}
           </div>
 
@@ -80,7 +97,9 @@ const OrderCard = ({
                     src={img.thumbUrl}
                     alt={item.product.name}
                     onClick={() =>
-                      navigate(`/product-detail/${item.product.id}`)
+                      navigate(
+                        ROUTES.PRODUCT_DETAIL_PAGE.build(item.product.id),
+                      )
                     }
                     className="h-20 w-20 cursor-pointer rounded object-cover"
                   />

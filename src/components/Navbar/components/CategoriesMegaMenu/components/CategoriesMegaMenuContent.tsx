@@ -36,7 +36,6 @@ const CategoriesMegaMenuContent = ({ close }: { close: () => void }) => {
 
   return (
     <div className="flex min-w-[900px]">
-      {/* LEFT */}
       <aside className="border-gray-2 w-56 border-r pr-4">
         <ul className="flex flex-col gap-1">
           {tree.map((parent) => {
@@ -65,7 +64,6 @@ const CategoriesMegaMenuContent = ({ close }: { close: () => void }) => {
         </ul>
       </aside>
 
-      {/* RIGHT */}
       <section className="flex-1 pl-6">
         <div className="grid grid-cols-3 gap-8">
           {activeParent.children.map((child) => {

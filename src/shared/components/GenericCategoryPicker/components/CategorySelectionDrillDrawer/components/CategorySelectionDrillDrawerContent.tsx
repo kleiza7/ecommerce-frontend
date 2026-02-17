@@ -73,7 +73,6 @@ const CategorySelectionDrillDrawerContent = ({
 
   return (
     <div className="flex h-full flex-col">
-      {/* HEADER */}
       <div className="border-gray-2 flex items-center gap-x-2 border-b px-4 py-3">
         {drillPath.length > 0 && (
           <button
@@ -98,7 +97,6 @@ const CategorySelectionDrillDrawerContent = ({
         </div>
       </div>
 
-      {/* LIST */}
       <ul className="flex flex-1 flex-col overflow-y-auto">
         {currentNodes.map((node) => {
           const isLeaf = node.children.length === 0;
@@ -137,7 +135,6 @@ const CategorySelectionDrillDrawerContent = ({
         })}
       </ul>
 
-      {/* ACTIONS */}
       <div className="border-gray-2 shrink-0 border-t px-4 py-3">
         <div className="flex justify-end gap-x-2">
           <button
