@@ -164,6 +164,8 @@ const ProductCard = ({
                   src={img.mediumUrl}
                   alt={product.name}
                   draggable={false}
+                  loading="lazy"
+                  decoding="async"
                   className="h-full w-full object-cover select-none"
                 />
               </div>
@@ -174,6 +176,8 @@ const ProductCard = ({
             <img
               src={activeImage}
               alt={product.name}
+              loading="lazy"
+              decoding="async"
               className="h-full w-full object-cover transition-all duration-300"
             />
 
