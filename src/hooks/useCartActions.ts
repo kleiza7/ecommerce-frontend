@@ -219,10 +219,7 @@ export const useCartActions = () => {
   const removeFromCart = ({
     id,
     productId,
-  }: {
-    id?: number;
-    productId: number;
-  }) => {
+  }: Pick<CartItemUI, "id" | "productId">) => {
     const snapshotItems = useCartStore.getState().items;
 
     removeItem(productId);
