@@ -116,17 +116,17 @@ const ProductsPage = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useProductsListInfinite(payload);
 
-  const [isProductsSortPortalOpen, setIsProductsSortPortalOpen] =
+  const [isProductsSortDrawerOpen, setIsProductsSortDrawerOpen] =
     useState(false);
-  const [isProductsFilterPortalOpen, setIsProductsFilterPortalOpen] =
+  const [isProductsFilterDrawerOpen, setIsProductsFilterDrawerOpen] =
     useState(false);
 
-  const openProductsSortPortal = useCallback(() => {
-    setIsProductsSortPortalOpen(true);
+  const openProductsSortDrawer = useCallback(() => {
+    setIsProductsSortDrawerOpen(true);
   }, []);
 
-  const openProductsFilterPortal = useCallback(() => {
-    setIsProductsFilterPortalOpen(true);
+  const openProductsFilterDrawer = useCallback(() => {
+    setIsProductsFilterDrawerOpen(true);
   }, []);
 
   const allProducts = data?.pages.flatMap((page) => page.items) ?? [];
@@ -153,8 +153,8 @@ const ProductsPage = () => {
             <ProductListHeader
               selectedCategoryName={selectedCategoryName}
               totalCount={totalCount}
-              openProductsSortPortal={openProductsSortPortal}
-              openProductsFilterPortal={openProductsFilterPortal}
+              openProductsSortDrawer={openProductsSortDrawer}
+              openProductsFilterDrawer={openProductsFilterDrawer}
             />
 
             <ProductsGrid
@@ -175,13 +175,13 @@ const ProductsPage = () => {
       />
 
       <ProductsSortDrawer
-        open={isProductsSortPortalOpen}
-        setOpen={setIsProductsSortPortalOpen}
+        open={isProductsSortDrawerOpen}
+        setOpen={setIsProductsSortDrawerOpen}
       />
 
       <ProductsFilterDrawer
-        open={isProductsFilterPortalOpen}
-        setOpen={setIsProductsFilterPortalOpen}
+        open={isProductsFilterDrawerOpen}
+        setOpen={setIsProductsFilterDrawerOpen}
         categories={categories}
         brands={brands}
         sellers={sellers}

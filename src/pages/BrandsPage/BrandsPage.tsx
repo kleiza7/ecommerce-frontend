@@ -4,24 +4,18 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import type { ReqBrandsGetAllResponse } from "../../api/responses/ReqBrandsGetAllResponse.model";
 import { EditNoteIcon } from "../../assets/icons";
 import { useBrandsGetAll } from "../../hooks/useBrandsGetAll";
-import { useMediaQuery } from "../../hooks/useMediaQuery";
 import GenericTooltip from "../../shared/components/GenericTooltip";
 import LoadingSpinner from "../../shared/components/LoadingSpinner";
 import { BUTTON_PRIMARY } from "../../shared/constants/CommonTailwindClasses.constants";
-import { MEDIA_QUERY } from "../../shared/constants/MediaQuery.constants";
 import { EVENT_TYPE } from "../../shared/enums/EventType.enum";
 import { registerAgGridModules } from "../../shared/utils/AgGrid.util";
 import { customTwMerge } from "../../shared/utils/Tailwind.util";
 import "../../styles/agGrid.css";
-import NewBrandDialog from "./components/NewBrandDialog";
-import NewBrandDrawer from "./components/NewBrandDrawer";
-import UpdateBrandDialog from "./components/UpdateBrandDialog";
-import UpdateBrandDrawer from "./components/UpdateBrandDrawer";
+import NewBrandPortal from "./components/NewBrandPortal/NewBrandPortal";
+import UpdateBrandPortal from "./components/UpdateBrandPortal/UpdateBrandPortal";
 
 const BrandsPage = () => {
   const { data: brands = [], isLoading, refetch } = useBrandsGetAll();
-
-  const isMobileOrTablet = useMediaQuery(MEDIA_QUERY.BELOW_LG);
 
   const [isNewBrandPortalOpen, setIsNewBrandPortalOpen] = useState(false);
   const [isUpdateBrandPortalOpen, setIsUpdateBrandPortalOpen] = useState(false);
@@ -132,32 +126,18 @@ const BrandsPage = () => {
         </div>
       </div>
 
-      {isMobileOrTablet ? (
-        <NewBrandDrawer
-          open={isNewBrandPortalOpen}
-          setOpen={setIsNewBrandPortalOpen}
-        />
-      ) : (
-        <NewBrandDialog
-          open={isNewBrandPortalOpen}
-          setOpen={setIsNewBrandPortalOpen}
+      <NewBrandPortal
+        open={isNewBrandPortalOpen}
+        setOpen={setIsNewBrandPortalOpen}
+      />
+
+      {selectedBrandId && (
+        <UpdateBrandPortal
+          open={isUpdateBrandPortalOpen}
+          setOpen={setIsUpdateBrandPortalOpen}
+          brandId={selectedBrandId}
         />
       )}
-
-      {selectedBrandId &&
-        (isMobileOrTablet ? (
-          <UpdateBrandDrawer
-            open={isUpdateBrandPortalOpen}
-            setOpen={setIsUpdateBrandPortalOpen}
-            brandId={selectedBrandId}
-          />
-        ) : (
-          <UpdateBrandDialog
-            open={isUpdateBrandPortalOpen}
-            setOpen={setIsUpdateBrandPortalOpen}
-            brandId={selectedBrandId}
-          />
-        ))}
     </>
   );
 };

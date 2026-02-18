@@ -2,12 +2,9 @@ import { useCallback, useMemo, useState } from "react";
 import { AddIcon, RemoveIcon, TrashIcon } from "../../../assets/icons";
 import { useCartActions } from "../../../hooks/useCartActions";
 import { useCurrenciesGetAll } from "../../../hooks/useCurrenciesGetAll";
-import { useMediaQuery } from "../../../hooks/useMediaQuery";
 import { useProductsNavigation } from "../../../hooks/useProductsNavigation";
-import GenericConfirmationDialog from "../../../shared/components/GenericConfirmationDialog";
-import GenericConfirmationDrawer from "../../../shared/components/GenericConfirmationDrawer";
+import GenericConfirmationPortal from "../../../shared/components/GenericConfirmationPortal/GenericConfirmationPortal";
 import GenericTooltip from "../../../shared/components/GenericTooltip";
-import { MEDIA_QUERY } from "../../../shared/constants/MediaQuery.constants";
 import type { CartItemUI } from "../../../shared/models/CartItemUI.model";
 import { useCartStore } from "../../../stores/CartStore";
 
@@ -16,7 +13,6 @@ const CartItemsList = () => {
   const cartItems = useCartStore((state) => state.items);
   const { updateCart, removeFromCart, isLoading } = useCartActions();
   const { data: currencies = [] } = useCurrenciesGetAll();
-  const isMobileOrTablet = useMediaQuery(MEDIA_QUERY.BELOW_LG);
 
   const [isConfirmationPortalOpen, setIsConfirmationPortalOpen] =
     useState(false);
@@ -223,24 +219,15 @@ const CartItemsList = () => {
         ))}
       </div>
 
-      {selectedCartItem &&
-        (isMobileOrTablet ? (
-          <GenericConfirmationDrawer
-            open={isConfirmationPortalOpen}
-            setOpen={setIsConfirmationPortalOpen}
-            title="Remove Item"
-            description="Are you sure you want to remove this item from your cart?"
-            onConfirm={handleConfirmRemove}
-          />
-        ) : (
-          <GenericConfirmationDialog
-            open={isConfirmationPortalOpen}
-            setOpen={setIsConfirmationPortalOpen}
-            title="Remove Item"
-            description="Are you sure you want to remove this item from your cart?"
-            onConfirm={handleConfirmRemove}
-          />
-        ))}
+      {selectedCartItem && (
+        <GenericConfirmationPortal
+          open={isConfirmationPortalOpen}
+          setOpen={setIsConfirmationPortalOpen}
+          title="Remove Item"
+          description="Are you sure you want to remove this item from your cart?"
+          onConfirm={handleConfirmRemove}
+        />
+      )}
     </>
   );
 };

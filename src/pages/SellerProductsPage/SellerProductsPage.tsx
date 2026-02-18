@@ -4,22 +4,18 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { PRODUCT_STATUS } from "../../api/enums/ProductStatus.enum";
 import type { ReqProductsGetProductsBySellerResponse } from "../../api/responses/ReqProductsGetProductsBySellerResponse.model";
 import { EditNoteIcon } from "../../assets/icons";
-import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { useProductsGetProductsBySeller } from "../../hooks/useProductsGetProductsBySeller";
 import GenericSelect from "../../shared/components/GenericSelect";
 import GenericTooltip from "../../shared/components/GenericTooltip";
 import LoadingSpinner from "../../shared/components/LoadingSpinner";
 import { BUTTON_PRIMARY } from "../../shared/constants/CommonTailwindClasses.constants";
-import { MEDIA_QUERY } from "../../shared/constants/MediaQuery.constants";
 import { PRODUCT_STATUS_TEXT_PAIRS } from "../../shared/constants/Product.constants";
 import { EVENT_TYPE } from "../../shared/enums/EventType.enum";
 import { registerAgGridModules } from "../../shared/utils/AgGrid.util";
 import { customTwMerge } from "../../shared/utils/Tailwind.util";
 import "../../styles/agGrid.css";
-import NewProductDialog from "./components/NewProductDialog";
-import NewProductDrawer from "./components/NewProductDrawer";
-import UpdateProductDialog from "./components/UpdateProductDialog";
-import UpdateProductDrawer from "./components/UpdateProductDrawer";
+import NewProductPortal from "./components/NewProductPortal/NewProductPortal";
+import UpdateProductPortal from "./components/UpdateProductPortal/UpdateProductPortal";
 
 type STATUS_FILTER = PRODUCT_STATUS | "ALL";
 
@@ -29,8 +25,6 @@ const SellerProductsPage = () => {
     isLoading,
     refetch,
   } = useProductsGetProductsBySeller();
-
-  const isMobileOrTablet = useMediaQuery(MEDIA_QUERY.BELOW_LG);
 
   const [isNewProductPortalOpen, setIsNewProductPortalOpen] = useState(false);
   const [isUpdateProductPortalOpen, setIsUpdateProductPortalOpen] =
@@ -256,32 +250,18 @@ const SellerProductsPage = () => {
         </div>
       </div>
 
-      {isMobileOrTablet ? (
-        <NewProductDrawer
-          open={isNewProductPortalOpen}
-          setOpen={setIsNewProductPortalOpen}
-        />
-      ) : (
-        <NewProductDialog
-          open={isNewProductPortalOpen}
-          setOpen={setIsNewProductPortalOpen}
+      <NewProductPortal
+        open={isNewProductPortalOpen}
+        setOpen={setIsNewProductPortalOpen}
+      />
+
+      {selectedProductId && (
+        <UpdateProductPortal
+          open={isUpdateProductPortalOpen}
+          setOpen={setIsUpdateProductPortalOpen}
+          productId={selectedProductId}
         />
       )}
-
-      {selectedProductId &&
-        (isMobileOrTablet ? (
-          <UpdateProductDrawer
-            open={isUpdateProductPortalOpen}
-            setOpen={setIsUpdateProductPortalOpen}
-            productId={selectedProductId}
-          />
-        ) : (
-          <UpdateProductDialog
-            open={isUpdateProductPortalOpen}
-            setOpen={setIsUpdateProductPortalOpen}
-            productId={selectedProductId}
-          />
-        ))}
     </>
   );
 };

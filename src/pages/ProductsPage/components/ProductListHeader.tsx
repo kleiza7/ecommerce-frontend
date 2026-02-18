@@ -39,13 +39,13 @@ const formatProductCount = (count: number): string => {
 const ProductListHeader = ({
   selectedCategoryName,
   totalCount,
-  openProductsSortPortal,
-  openProductsFilterPortal,
+  openProductsSortDrawer,
+  openProductsFilterDrawer,
 }: {
   selectedCategoryName?: string;
   totalCount: number;
-  openProductsSortPortal: () => void;
-  openProductsFilterPortal: () => void;
+  openProductsSortDrawer: () => void;
+  openProductsFilterDrawer: () => void;
 }) => {
   const { sortBy, goToProductsPage } = useProductsNavigation();
 
@@ -76,7 +76,7 @@ const ProductListHeader = ({
 
       <div className="border-gray-2 flex h-[42px] w-full items-center border-y md:hidden">
         <button
-          onClick={openProductsSortPortal}
+          onClick={openProductsSortDrawer}
           className="flex h-full flex-1 items-center justify-center gap-x-2"
         >
           <SwapVertIcon className="fill-orange h-5 w-5" />
@@ -88,7 +88,7 @@ const ProductListHeader = ({
         <div className="bg-gray-2 h-full w-px" />
 
         <button
-          onClick={openProductsFilterPortal}
+          onClick={openProductsFilterDrawer}
           className="flex h-full flex-1 items-center justify-center gap-x-2"
         >
           <TuneIcon className="fill-orange h-5 w-5" />

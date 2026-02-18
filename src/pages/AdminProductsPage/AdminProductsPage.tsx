@@ -3,16 +3,13 @@ import { AgGridReact } from "ag-grid-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { ReqProductsGetWaitingApprovalProductsResponse } from "../../api/responses/ReqProductsGetWaitingApprovalProductsResponse.model";
 import { OrderApproveIcon } from "../../assets/icons";
-import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { useProductsGetWaitingApprovalProducts } from "../../hooks/useProductsGetWaitingApprovalProducts";
 import GenericTooltip from "../../shared/components/GenericTooltip";
 import LoadingSpinner from "../../shared/components/LoadingSpinner";
-import { MEDIA_QUERY } from "../../shared/constants/MediaQuery.constants";
 import { EVENT_TYPE } from "../../shared/enums/EventType.enum";
 import { registerAgGridModules } from "../../shared/utils/AgGrid.util";
 import "../../styles/agGrid.css";
-import ProductApprovalDialog from "./components/ProductApprovalDialog";
-import ProductApprovalDrawer from "./components/ProductApprovalDrawer";
+import ProductApprovalPortal from "./components/ProductApprovalPortal/ProductApprovalPortal";
 
 const AdminProductsPage = () => {
   const {
@@ -20,8 +17,6 @@ const AdminProductsPage = () => {
     isLoading,
     refetch,
   } = useProductsGetWaitingApprovalProducts();
-
-  const isMobileOrTablet = useMediaQuery(MEDIA_QUERY.BELOW_LG);
 
   const [isProductApprovalPortalOpen, setIsProductApprovalPortalOpen] =
     useState(false);
@@ -188,20 +183,13 @@ const AdminProductsPage = () => {
         </div>
       </div>
 
-      {selectedProductId &&
-        (isMobileOrTablet ? (
-          <ProductApprovalDrawer
-            open={isProductApprovalPortalOpen}
-            setOpen={setIsProductApprovalPortalOpen}
-            productId={selectedProductId}
-          />
-        ) : (
-          <ProductApprovalDialog
-            open={isProductApprovalPortalOpen}
-            setOpen={setIsProductApprovalPortalOpen}
-            productId={selectedProductId}
-          />
-        ))}
+      {selectedProductId && (
+        <ProductApprovalPortal
+          open={isProductApprovalPortalOpen}
+          setOpen={setIsProductApprovalPortalOpen}
+          productId={selectedProductId}
+        />
+      )}
     </>
   );
 };
