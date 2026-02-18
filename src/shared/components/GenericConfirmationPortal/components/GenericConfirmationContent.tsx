@@ -5,7 +5,7 @@ import {
 import { customTwMerge } from "../../../utils/Tailwind.util";
 import { GenericDialogClose, GenericDialogTitle } from "../../GenericDialog";
 
-const GenericConfirmationDialogContent = ({
+const GenericConfirmationContent = ({
   title,
   description,
   close,
@@ -51,4 +51,4 @@ const GenericConfirmationDialogContent = ({
   );
 };
 
-export default GenericConfirmationDialogContent;
+export default GenericConfirmationContent;

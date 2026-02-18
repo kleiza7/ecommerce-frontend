@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { GenericDialog } from "../../GenericDialog";
-import GenericConfirmationDialogContent from "./GenericConfirmationDialogContent";
+import GenericConfirmationContent from "./GenericConfirmationContent";
 
 const GenericConfirmationDialog = ({
   open,
@@ -21,7 +21,7 @@ const GenericConfirmationDialog = ({
 
   return (
     <GenericDialog open={open} onOpenChange={setOpen}>
-      <GenericConfirmationDialogContent
+      <GenericConfirmationContent
         title={title}
         description={description}
         close={close}

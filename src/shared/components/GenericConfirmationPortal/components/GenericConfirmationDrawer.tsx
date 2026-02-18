@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { GenericDrawer } from "../../GenericDrawer";
-import GenericConfirmationDialogContent from "./GenericConfirmationDialogContent";
+import GenericConfirmationContent from "./GenericConfirmationContent";
 
 const GenericConfirmationDrawer = ({
   open,
@@ -26,7 +26,7 @@ const GenericConfirmationDrawer = ({
       side="bottom"
       className="rounded-t-xl p-6"
     >
-      <GenericConfirmationDialogContent
+      <GenericConfirmationContent
         title={title}
         description={description}
         close={close}
