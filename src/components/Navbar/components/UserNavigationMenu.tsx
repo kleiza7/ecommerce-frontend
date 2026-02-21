@@ -47,6 +47,7 @@ const UserNavigationMenu = () => {
       withOverlay={false}
       contentAlign="center"
       className="w-56 px-0 py-2"
+      contentOffsetY={16}
       trigger={
         <button
           type="button"
