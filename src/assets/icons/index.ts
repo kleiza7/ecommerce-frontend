@@ -12,6 +12,7 @@ import FavoriteFilledIcon from "./favorite_filled.svg?react";
 import KeyboardArrowUpIcon from "./keyboard_arrow_up.svg?react";
 import LockIcon from "./lock.svg?react";
 import LogoutIcon from "./logout.svg?react";
+import MailIcon from "./mail.svg?react";
 import MenuIcon from "./menu.svg?react";
 import NorthEastIcon from "./north_east.svg?react";
 import OrderApproveIcon from "./order_approve.svg?react";
@@ -30,6 +31,8 @@ import TrashSweepIcon from "./trash_sweep.svg?react";
 import TuneIcon from "./tune.svg?react";
 import UserIcon from "./user.svg?react";
 import UserFilledIcon from "./user_filled.svg?react";
+import VisibilityIcon from "./visibility.svg?react";
+import VisibilityOffIcon from "./visibility_off.svg?react";
 
 export {
   AddIcon,
@@ -46,6 +49,7 @@ export {
   KeyboardArrowUpIcon,
   LockIcon,
   LogoutIcon,
+  MailIcon,
   MenuIcon,
   NorthEastIcon,
   OrderApproveIcon,
@@ -64,4 +68,6 @@ export {
   TuneIcon,
   UserFilledIcon,
   UserIcon,
+  VisibilityIcon,
+  VisibilityOffIcon,
 };

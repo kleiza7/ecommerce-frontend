@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { useForm, useWatch, type SubmitHandler } from "react-hook-form";
+import {
+  LockIcon,
+  MailIcon,
+  VisibilityIcon,
+  VisibilityOffIcon,
+} from "../../../assets/icons";
 import { useAuthRegisterSeller } from "../../../hooks/useAuthRegisterSeller";
 import { useAuthRegisterUser } from "../../../hooks/useAuthRegisterUser";
 import GenericCheckbox from "../../../shared/components/GenericCheckbox";
@@ -22,6 +28,7 @@ type RegisterFormValues = {
   name: string;
   email: string;
   password: string;
+  confirmPassword: string;
 };
 
 const RegisterForm = ({
@@ -37,6 +44,8 @@ const RegisterForm = ({
   const { mutate: registerSeller, isPending: isSellerPending } =
     useAuthRegisterSeller();
 
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
   const {
     control,
     handleSubmit,
@@ -48,17 +57,30 @@ const RegisterForm = ({
       name: "",
       email: "",
       password: "",
+      confirmPassword: "",
     },
+  });
+
+  const passwordValue = useWatch({
+    control,
+    name: "password",
   });
 
   const onSubmit: SubmitHandler<RegisterFormValues> = (values) => {
     const mutate = isSeller ? registerSeller : registerUser;
 
-    mutate(values, {
-      onSuccess: () => {
-        changeMode(AUTH_PAGE_MODE.LOGIN);
+    mutate(
+      {
+        name: values.name,
+        email: values.email,
+        password: values.password,
       },
-    });
+      {
+        onSuccess: () => {
+          changeMode(AUTH_PAGE_MODE.LOGIN);
+        },
+      },
+    );
   };
 
   const isPending = isUserPending || isSellerPending;
@@ -66,7 +88,7 @@ const RegisterForm = ({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="relative flex flex-col gap-y-5"
+      className="relative flex w-xl flex-col gap-y-10 p-10"
     >
       {isPending && (
         <div className="bg-surface-primary/70 absolute inset-0 z-20 flex items-center justify-center rounded-lg">
@@ -74,15 +96,24 @@ const RegisterForm = ({
         </div>
       )}
 
+      <div className="flex flex-col items-center gap-y-2">
+        <span className="text-s32-l40 text-text-primary font-bold">
+          Create Your Account
+        </span>
+        <span className="text-s16-l24 text-text-muted">
+          Please enter your details to register
+        </span>
+      </div>
+
       <div className="flex flex-col gap-y-5">
-        <div className="relative flex flex-col">
+        <div className="relative flex flex-col gap-y-1">
           <InputLabel label="Name" hasAsterisk />
 
           <GenericFormInput
             field="name"
             control={control}
             required
-            placeholder="Mahfuzul Nabil"
+            placeholder="e.g. John Doe"
             hasError={!!errors.name}
             disabled={isPending}
           />
@@ -90,8 +121,10 @@ const RegisterForm = ({
           <InputErrorLabel message={errors.name?.message} />
         </div>
 
-        <div className="relative flex flex-col">
+        <div className="relative flex flex-col gap-y-1">
           <InputLabel label="Email" hasAsterisk />
+
+          <MailIcon className="fill-text-disabled absolute bottom-2.5 left-3 h-5 w-5" />
 
           <GenericFormInput
             field="email"
@@ -107,35 +140,95 @@ const RegisterForm = ({
             }}
             hasError={!!errors.email}
             disabled={isPending}
+            className="pl-10"
           />
 
           <InputErrorLabel message={errors.email?.message} />
         </div>
 
-        <div className="relative flex flex-col pb-4 md:pb-0">
-          <InputLabel label="Password" hasAsterisk />
+        <div className="flex gap-x-6">
+          <div className="relative flex flex-1 flex-col gap-y-1">
+            <InputLabel label="Password" hasAsterisk />
 
-          <GenericFormInput
-            field="password"
-            control={control}
-            required
-            type="password"
-            placeholder="••••••••"
-            rules={{
-              pattern: {
-                value: PASSWORD_REGEX,
-                message:
-                  "Password must be at least 8 characters, with uppercase, lowercase, and a number.",
-              },
-            }}
-            hasError={!!errors.password}
-            disabled={isPending}
-          />
+            <LockIcon className="fill-text-disabled absolute bottom-2.5 left-3 h-5 w-5" />
 
-          <InputErrorLabel
-            message={errors.password?.message}
-            className="top-[60px] md:top-auto"
-          />
+            <GenericFormInput
+              field="password"
+              control={control}
+              required
+              type={isPasswordVisible ? "text" : "password"}
+              placeholder="••••••••"
+              rules={{
+                pattern: {
+                  value: PASSWORD_REGEX,
+                  message:
+                    "Password must be at least 8 characters, with uppercase, lowercase, and a number.",
+                },
+              }}
+              hasError={!!errors.password}
+              disabled={isPending}
+              className="px-10"
+            />
+
+            <button
+              type="button"
+              onClick={() => setIsPasswordVisible((prev) => !prev)}
+              className="absolute right-3 bottom-2 flex cursor-pointer items-center justify-center"
+              tabIndex={-1}
+            >
+              {isPasswordVisible ? (
+                <VisibilityOffIcon className="fill-text-disabled" />
+              ) : (
+                <VisibilityIcon className="fill-text-disabled" />
+              )}
+            </button>
+
+            <InputErrorLabel
+              message={errors.password?.message}
+              className="top-[60px] md:top-auto"
+            />
+          </div>
+
+          <div className="relative flex flex-1 flex-col gap-y-1">
+            <InputLabel label="Confirm Password" hasAsterisk />
+
+            <LockIcon className="fill-text-disabled absolute bottom-2.5 left-3 h-5 w-5" />
+
+            <GenericFormInput
+              field="confirmPassword"
+              control={control}
+              required
+              type={isPasswordVisible ? "text" : "password"}
+              placeholder="••••••••"
+              rules={{
+                validate: (value) =>
+                  !passwordValue ||
+                  value === passwordValue ||
+                  "Passwords do not match",
+              }}
+              hasError={!!errors.confirmPassword}
+              disabled={isPending}
+              className="px-10"
+            />
+
+            <button
+              type="button"
+              onClick={() => setIsPasswordVisible((prev) => !prev)}
+              className="absolute right-3 bottom-2 flex cursor-pointer items-center justify-center"
+              tabIndex={-1}
+            >
+              {isPasswordVisible ? (
+                <VisibilityOffIcon className="fill-text-disabled" />
+              ) : (
+                <VisibilityIcon className="fill-text-disabled" />
+              )}
+            </button>
+
+            <InputErrorLabel
+              message={errors.confirmPassword?.message}
+              className="top-[60px] md:top-auto"
+            />
+          </div>
         </div>
 
         <label className="flex cursor-pointer items-center gap-3">
@@ -152,7 +245,7 @@ const RegisterForm = ({
       <button
         type="submit"
         disabled={isPending}
-        className={customTwMerge(BUTTON_PRIMARY, BUTTON_SIZE_X_LARGE)}
+        className={customTwMerge(BUTTON_PRIMARY, BUTTON_SIZE_X_LARGE, "h-14")}
       >
         Register
       </button>

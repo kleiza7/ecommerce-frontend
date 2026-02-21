@@ -1,6 +1,13 @@
+import { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { USER_ROLE } from "../../../api/enums/UserRole.enum";
+import {
+  LockIcon,
+  MailIcon,
+  VisibilityIcon,
+  VisibilityOffIcon,
+} from "../../../assets/icons";
 import { useAuthLogin } from "../../../hooks/useAuthLogin";
 import { useCartMerge } from "../../../hooks/useCartMerge";
 import { useFavoritesMerge } from "../../../hooks/useFavoritesMerge";
@@ -44,6 +51,8 @@ const LoginForm = () => {
   const { mutateAsync: login, isPending } = useAuthLogin();
   const { mutateAsync: mergeCart } = useCartMerge();
   const { mutateAsync: mergeFavorites } = useFavoritesMerge();
+
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const {
     control,
@@ -96,7 +105,7 @@ const LoginForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="relative flex flex-col gap-y-5"
+      className="relative flex w-md flex-col gap-y-10 p-10"
     >
       {isPending && (
         <div className="bg-surface-primary/70 absolute inset-0 z-20 flex items-center justify-center rounded-lg">
@@ -104,9 +113,20 @@ const LoginForm = () => {
         </div>
       )}
 
+      <div className="flex flex-col items-center gap-y-2">
+        <span className="text-s32-l40 text-text-primary font-bold">
+          Welcome
+        </span>
+        <span className="text-s16-l24 text-text-muted">
+          Please enter your details to login
+        </span>
+      </div>
+
       <div className="flex flex-col gap-y-5">
-        <div className="relative flex flex-col">
+        <div className="relative flex flex-col gap-y-1">
           <InputLabel label="Email" hasAsterisk />
+
+          <MailIcon className="fill-text-disabled absolute bottom-2.5 left-3 h-5 w-5" />
 
           <GenericFormInput
             field="email"
@@ -122,19 +142,22 @@ const LoginForm = () => {
             }}
             hasError={!!errors.email}
             disabled={isPending}
+            className="pl-10"
           />
 
           <InputErrorLabel message={errors.email?.message} />
         </div>
 
-        <div className="relative flex flex-col pb-4 md:pb-0">
+        <div className="relative flex flex-col gap-y-1 pb-4 md:pb-0">
           <InputLabel label="Password" hasAsterisk />
+
+          <LockIcon className="fill-text-disabled absolute bottom-2.5 left-3 h-5 w-5" />
 
           <GenericFormInput
             field="password"
             control={control}
             required
-            type="password"
+            type={isPasswordVisible ? "text" : "password"}
             placeholder="••••••••"
             rules={{
               pattern: {
@@ -145,7 +168,21 @@ const LoginForm = () => {
             }}
             hasError={!!errors.password}
             disabled={isPending}
+            className="px-10"
           />
+
+          <button
+            type="button"
+            onClick={() => setIsPasswordVisible((prev) => !prev)}
+            className="absolute right-3 bottom-2 flex cursor-pointer items-center justify-center"
+            tabIndex={-1}
+          >
+            {isPasswordVisible ? (
+              <VisibilityOffIcon className="fill-text-disabled" />
+            ) : (
+              <VisibilityIcon className="fill-text-disabled" />
+            )}
+          </button>
 
           <InputErrorLabel
             message={errors.password?.message}
@@ -157,7 +194,7 @@ const LoginForm = () => {
       <button
         type="submit"
         disabled={isPending}
-        className={customTwMerge(BUTTON_PRIMARY, BUTTON_SIZE_X_LARGE)}
+        className={customTwMerge(BUTTON_PRIMARY, BUTTON_SIZE_X_LARGE, "h-14")}
       >
         Log In
       </button>
