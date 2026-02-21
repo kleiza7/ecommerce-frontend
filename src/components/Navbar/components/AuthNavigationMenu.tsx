@@ -28,24 +28,26 @@ const AuthNavigationMenu = () => {
       setOpen={setOpen}
       withOverlay={false}
       contentAlign="center"
-      className="border-orange w-[182px] overflow-hidden border"
+      className="border-primary w-[182px] overflow-hidden border"
       trigger={
         <button
           type="button"
           className="group flex items-center gap-x-2 transition-colors duration-200"
         >
           {open ? (
-            <UserFilledIcon className="fill-orange h-6 w-6 transition-colors duration-200" />
+            <UserFilledIcon className="fill-primary h-6 w-6 transition-colors duration-200" />
           ) : (
             <>
               <UserIcon className="fill-text-primary h-6 w-6 transition-colors duration-200 group-hover:hidden" />
-              <UserFilledIcon className="fill-orange hidden h-6 w-6 transition-colors duration-200 group-hover:block" />
+              <UserFilledIcon className="fill-primary hidden h-6 w-6 transition-colors duration-200 group-hover:block" />
             </>
           )}
 
           <span
             className={`text-s14-l20 hidden font-semibold transition-colors duration-200 xl:inline ${
-              open ? "text-orange" : "text-text-primary group-hover:text-orange"
+              open
+                ? "text-primary"
+                : "text-text-primary group-hover:text-primary"
             }`}
           >
             Log In

@@ -10,7 +10,7 @@ const LoadingSpinner = ({
 }) => {
   return (
     <div
-      className={`border-orange animate-spin rounded-full border-t-transparent ${className} `}
+      className={`border-primary animate-spin rounded-full border-t-transparent ${className} `}
       style={{
         width: size,
         height: size,

@@ -31,7 +31,7 @@ const FavoriteRemoveButton = ({
         className,
       )}
     >
-      <CloseIcon className="fill-text-primary group-hover:fill-orange h-4 w-4 transition-colors" />
+      <CloseIcon className="fill-text-muted group-hover:fill-accent h-4 w-4 transition-colors" />
     </button>
   );
 };

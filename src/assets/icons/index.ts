@@ -1,22 +1,32 @@
 import AddIcon from "./add.svg?react";
 import ArrowLeftIcon from "./arrow_left.svg?react";
+import CalendarIcon from "./calendar.svg?react";
+import CancelIcon from "./cancel.svg?react";
 import CheckIcon from "./check.svg?react";
+import CheckCircleIcon from "./check_circle.svg?react";
 import CloseIcon from "./close.svg?react";
+import CreditCardIcon from "./credit_card.svg?react";
 import EditNoteIcon from "./edit_note.svg?react";
 import FavoriteIcon from "./favorite.svg?react";
 import FavoriteFilledIcon from "./favorite_filled.svg?react";
 import KeyboardArrowUpIcon from "./keyboard_arrow_up.svg?react";
+import LockIcon from "./lock.svg?react";
 import LogoutIcon from "./logout.svg?react";
 import MenuIcon from "./menu.svg?react";
+import NorthEastIcon from "./north_east.svg?react";
 import OrderApproveIcon from "./order_approve.svg?react";
 import PackageIcon from "./package.svg?react";
+import PaymentsIcon from "./payments.svg?react";
 import RemoveIcon from "./remove.svg?react";
+import ScheduleIcon from "./schedule.svg?react";
 import SearchIcon from "./search.svg?react";
 import ShoppingCartIcon from "./shopping_cart.svg?react";
 import ShoppingCartFilledIcon from "./shopping_cart_filled.svg?react";
+import StoreFrontIcon from "./store_front.svg?react";
 import SwapVertIcon from "./swap_vert.svg?react";
 import TimerArrowDownIcon from "./timer_arrow_down.svg?react";
 import TrashIcon from "./trash.svg?react";
+import TrashSweepIcon from "./trash_sweep.svg?react";
 import TuneIcon from "./tune.svg?react";
 import UserIcon from "./user.svg?react";
 import UserFilledIcon from "./user_filled.svg?react";
@@ -24,23 +34,33 @@ import UserFilledIcon from "./user_filled.svg?react";
 export {
   AddIcon,
   ArrowLeftIcon,
+  CalendarIcon,
+  CancelIcon,
+  CheckCircleIcon,
   CheckIcon,
   CloseIcon,
+  CreditCardIcon,
   EditNoteIcon,
   FavoriteFilledIcon,
   FavoriteIcon,
   KeyboardArrowUpIcon,
+  LockIcon,
   LogoutIcon,
   MenuIcon,
+  NorthEastIcon,
   OrderApproveIcon,
   PackageIcon,
+  PaymentsIcon,
   RemoveIcon,
+  ScheduleIcon,
   SearchIcon,
   ShoppingCartFilledIcon,
   ShoppingCartIcon,
+  StoreFrontIcon,
   SwapVertIcon,
   TimerArrowDownIcon,
   TrashIcon,
+  TrashSweepIcon,
   TuneIcon,
   UserFilledIcon,
   UserIcon,

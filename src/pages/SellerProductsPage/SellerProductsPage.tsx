@@ -1,25 +1,23 @@
-import type { ColDef, ICellRendererParams } from "ag-grid-community";
-import { AgGridReact } from "ag-grid-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { PRODUCT_STATUS } from "../../api/enums/ProductStatus.enum";
-import type { ReqProductsGetProductsBySellerResponse } from "../../api/responses/ReqProductsGetProductsBySellerResponse.model";
-import { EditNoteIcon } from "../../assets/icons";
+import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { useProductsGetProductsBySeller } from "../../hooks/useProductsGetProductsBySeller";
 import GenericSelect from "../../shared/components/GenericSelect";
-import GenericTooltip from "../../shared/components/GenericTooltip";
 import LoadingSpinner from "../../shared/components/LoadingSpinner";
 import { BUTTON_PRIMARY } from "../../shared/constants/CommonTailwindClasses.constants";
+import { MEDIA_QUERY } from "../../shared/constants/MediaQuery.constants";
 import { PRODUCT_STATUS_TEXT_PAIRS } from "../../shared/constants/Product.constants";
 import { EVENT_TYPE } from "../../shared/enums/EventType.enum";
-import { registerAgGridModules } from "../../shared/utils/AgGrid.util";
 import { customTwMerge } from "../../shared/utils/Tailwind.util";
-import "../../styles/agGrid.css";
 import NewProductPortal from "./components/NewProductPortal/NewProductPortal";
+import SellerProductsGrid from "./components/SellerProductsGrid";
+import SellerProductsList from "./components/SellerProductsList";
 import UpdateProductPortal from "./components/UpdateProductPortal/UpdateProductPortal";
 
 type STATUS_FILTER = PRODUCT_STATUS | "ALL";
 
 const SellerProductsPage = () => {
+  const isMobileOrTablet = useMediaQuery(MEDIA_QUERY.BELOW_LG);
   const {
     data: products = [],
     isLoading,
@@ -85,106 +83,6 @@ const SellerProductsPage = () => {
     setIsUpdateProductPortalOpen(true);
   }, []);
 
-  const columnDefs = useMemo<
-    ColDef<ReqProductsGetProductsBySellerResponse[number]>[]
-  >(
-    () => [
-      {
-        headerName: "Preview",
-        width: 100,
-        maxWidth: 100,
-        minWidth: 100,
-        sortable: false,
-        filter: false,
-        cellRenderer: (
-          params: ICellRendererParams<
-            ReqProductsGetProductsBySellerResponse[number]
-          >,
-        ) => {
-          const primaryImage = params.data?.images.find((img) => img.isPrimary);
-
-          if (!primaryImage?.mediumUrl) return null;
-
-          return (
-            <img
-              src={primaryImage.mediumUrl}
-              alt={params.data?.name}
-              className="h-9 w-9 rounded object-cover"
-            />
-          );
-        },
-      },
-      {
-        field: "name",
-        headerName: "Product Name",
-      },
-      {
-        headerName: "Brand",
-        valueGetter: (params) => params.data?.brand?.name ?? "-",
-      },
-      {
-        headerName: "Category",
-        valueGetter: (params) => params.data?.category?.name ?? "-",
-      },
-      {
-        headerName: "Price",
-        valueGetter: (params) => {
-          const price = params.data?.price;
-          const code = params.data?.currency?.code ?? "";
-
-          return price != null ? `${price.toFixed(2)} ${code}` : "-";
-        },
-      },
-      {
-        field: "stockCount",
-        headerName: "Stock",
-      },
-      {
-        headerName: "Status",
-        valueGetter: (params) =>
-          PRODUCT_STATUS_TEXT_PAIRS[params.data?.status as PRODUCT_STATUS] ??
-          params.data?.status,
-      },
-      {
-        colId: "rowActions",
-        pinned: "right",
-        width: 80,
-        minWidth: 80,
-        maxWidth: 80,
-        sortable: false,
-        filter: false,
-        resizable: false,
-        suppressMenu: true,
-        cellRenderer: (
-          params: ICellRendererParams<
-            ReqProductsGetProductsBySellerResponse[number]
-          >,
-        ) => {
-          if (!params.data?.id) return null;
-
-          return (
-            <div className="flex h-full items-center justify-center">
-              <GenericTooltip content="Update">
-                <button
-                  type="button"
-                  onClick={() => openUpdateProductPortal(params.data!.id)}
-                  className="flex h-8 w-8 cursor-pointer items-center justify-center"
-                >
-                  <EditNoteIcon className="fill-orange" />
-                </button>
-              </GenericTooltip>
-            </div>
-          );
-        },
-      },
-    ],
-    [openUpdateProductPortal],
-  );
-
-  useEffect(() => {
-    registerAgGridModules();
-  }, []);
-
   useEffect(() => {
     const onProductCreated = () => {
       refetch();
@@ -211,9 +109,14 @@ const SellerProductsPage = () => {
       <div className="flex flex-1 flex-col gap-5">
         <div className="flex items-end justify-between md:items-center">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-6">
-            <span className="text-s24-l32 xl:text-s28-l36 text-text-primary font-semibold">
-              My Products ({products.length})
-            </span>
+            <div className="flex items-end gap-x-1">
+              <span className="text-s24-l32 xl:text-s28-l36 text-text-primary leading-none font-semibold">
+                My Products
+              </span>
+              <span className="text-text-disabled text-s16-l24 xl:text-s20-l28">
+                ({products.length})
+              </span>
+            </div>
 
             <GenericSelect
               value={statusFilter}
@@ -232,22 +135,17 @@ const SellerProductsPage = () => {
           </button>
         </div>
 
-        <div className="ag-theme-alpine flex-1">
-          <AgGridReact<ReqProductsGetProductsBySellerResponse[number]>
-            theme="legacy"
-            rowData={filteredProducts}
-            columnDefs={columnDefs}
-            suppressCellFocus
-            animateRows
-            defaultColDef={{
-              flex: 1,
-              minWidth: 140,
-              resizable: true,
-              sortable: true,
-              filter: true,
-            }}
+        {isMobileOrTablet ? (
+          <SellerProductsList
+            products={filteredProducts}
+            openUpdateProductPortal={openUpdateProductPortal}
           />
-        </div>
+        ) : (
+          <SellerProductsGrid
+            products={filteredProducts}
+            openUpdateProductPortal={openUpdateProductPortal}
+          />
+        )}
       </div>
 
       <NewProductPortal

@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 import type { ReqSearchResponse } from "../../../api/responses/ReqSearchResponse.model";
-import { CloseIcon, SearchIcon } from "../../../assets/icons";
+import { CloseIcon, NorthEastIcon, SearchIcon } from "../../../assets/icons";
 import { useCategoriesGetAll } from "../../../hooks/useCategoriesGetAll";
 import { useDebouncedValue } from "../../../hooks/useDebouncedValue";
 import { useProductsNavigation } from "../../../hooks/useProductsNavigation";
@@ -370,7 +370,7 @@ const GlobalSearchInput = () => {
 
   return (
     <div ref={wrapperRef} className="relative flex flex-1">
-      <SearchIcon className="fill-orange absolute top-1/2 left-3 h-6 w-6 -translate-y-1/2" />
+      <SearchIcon className="fill-text-disabled absolute top-1/2 left-3 h-6 w-6 -translate-y-1/2" />
 
       <input
         ref={inputRef}
@@ -381,10 +381,10 @@ const GlobalSearchInput = () => {
         placeholder="Search product, category or brand"
         className={customTwMerge(
           INPUT_BASE,
-          "bg-gray-3 placeholder:text-gray-8 h-9 w-full px-10 xl:h-11",
+          "bg-surface-secondary h-9 w-full px-10 xl:h-11",
           isPortalOpen
-            ? "border-orange bg-surface-primary rounded-t-lg rounded-b-none border-2 shadow-lg"
-            : "border-gray-2 rounded-lg border",
+            ? "border-primary bg-surface-primary rounded-t-lg rounded-b-none border-2 shadow-lg"
+            : "rounded-lg border",
         )}
       />
 
@@ -394,44 +394,55 @@ const GlobalSearchInput = () => {
           onClick={() => setSearchText("")}
           className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer"
         >
-          <CloseIcon className="fill-text-primary h-4 w-4" />
+          <CloseIcon className="fill-text-muted h-4 w-4" />
         </button>
       )}
 
       {isPortalOpen && (
-        <div className="bg-surface-primary border-orange absolute top-full left-0 z-50 flex w-full flex-col gap-y-3 rounded-b-lg border-2 border-t-0 p-4 shadow-xl">
+        <div className="bg-surface-primary border-primary absolute top-full left-0 z-50 flex w-full flex-col rounded-b-lg border-2 border-t-0 shadow-xl">
           {showResults ? (
             <>
-              <div className="text-text-primary text-s14-l20 px-2 font-semibold">
-                Related Results
+              <div className="border-border-secondary flex h-[45px] items-center justify-between border-b px-5">
+                <span className="text-text-primary text-s14-l20 font-semibold">
+                  Related Results
+                </span>
               </div>
 
               {!isFetching ? (
                 items.length !== 0 ? (
                   <ul className="flex flex-col">
-                    {items.map((item, index) => (
-                      <Fragment key={getSearchItemKey(item)}>
-                        <li
-                          className="hover:bg-gray-1 flex h-10 cursor-pointer items-center justify-between rounded px-2"
-                          onClick={() => onClickSearchItem(item)}
-                        >
-                          <span className="text-s14-l20 text-text-primary">
-                            {getPrimaryLabel(item)}
-                          </span>
+                    {items.map((item, index) => {
+                      const secondaryLabel = getSecondaryLabel(item);
+                      return (
+                        <Fragment key={getSearchItemKey(item)}>
+                          <li
+                            className="hover:bg-primary/10 group flex h-[45px] cursor-pointer items-center justify-between rounded px-5"
+                            onClick={() => onClickSearchItem(item)}
+                          >
+                            <span className="text-s14-l20 text-text-primary group-hover:text-primary">
+                              {getPrimaryLabel(item)}
+                            </span>
 
-                          <span className="text-s12-l16 text-gray-7">
-                            {getSecondaryLabel(item)}
-                          </span>
-                        </li>
+                            {!!secondaryLabel && (
+                              <div className="bg-surface-secondary flex items-center rounded-sm px-2 py-0.5 group-hover:hidden">
+                                <span className="text-s12-l16 text-text-disabled">
+                                  {secondaryLabel}
+                                </span>
+                              </div>
+                            )}
 
-                        {index !== items.length - 1 && (
-                          <div className="bg-gray-1 h-px w-full" />
-                        )}
-                      </Fragment>
-                    ))}
+                            <NorthEastIcon className="fill-primary hidden h-4 w-4 group-hover:block" />
+                          </li>
+
+                          {index !== items.length - 1 && (
+                            <div className="bg-border-secondary h-px w-full" />
+                          )}
+                        </Fragment>
+                      );
+                    })}
                   </ul>
                 ) : (
-                  <div className="text-s14-l20 text-gray-7 text-center">
+                  <div className="text-s14-l20 text-text-disabled py-4 text-center">
                     No results found.
                   </div>
                 )
@@ -441,10 +452,10 @@ const GlobalSearchInput = () => {
             </>
           ) : (
             <>
-              <div className="flex items-center justify-between">
-                <div className="text-text-primary text-s14-l20 px-2 font-semibold">
+              <div className="border-border-secondary flex h-[45px] items-center justify-between border-b px-5">
+                <span className="text-text-primary text-s14-l20 font-semibold">
                   Recent Searches
-                </div>
+                </span>
                 {histories.length !== 0 && (
                   <button
                     className="text-s14-l20 text-text-primary cursor-pointer hover:underline"
@@ -457,29 +468,38 @@ const GlobalSearchInput = () => {
 
               {histories.length !== 0 ? (
                 <ul className="flex flex-col">
-                  {histories.map((item, index) => (
-                    <Fragment key={`HISTORY-${getSearchItemKey(item)}`}>
-                      <li
-                        className="hover:bg-gray-1 flex h-10 cursor-pointer items-center justify-between rounded px-2"
-                        onClick={() => onClickSearchItem(item)}
-                      >
-                        <span className="text-s14-l20 text-text-primary">
-                          {getPrimaryLabel(item)}
-                        </span>
+                  {histories.map((item, index) => {
+                    const secondaryLabel = getSecondaryLabel(item);
+                    return (
+                      <Fragment key={`HISTORY-${getSearchItemKey(item)}`}>
+                        <li
+                          className="hover:bg-primary/10 group flex h-[45px] cursor-pointer items-center justify-between rounded px-5"
+                          onClick={() => onClickSearchItem(item)}
+                        >
+                          <span className="text-s14-l20 text-text-primary group-hover:text-primary">
+                            {getPrimaryLabel(item)}
+                          </span>
 
-                        <span className="text-s12-l16 text-gray-7">
-                          {getSecondaryLabel(item)}
-                        </span>
-                      </li>
+                          {!!secondaryLabel && (
+                            <div className="bg-surface-secondary flex items-center rounded-sm px-2 py-0.5 group-hover:hidden">
+                              <span className="text-s12-l16 text-text-disabled">
+                                {secondaryLabel}
+                              </span>
+                            </div>
+                          )}
 
-                      {index !== histories.length - 1 && (
-                        <div className="bg-gray-1 h-px w-full" />
-                      )}
-                    </Fragment>
-                  ))}
+                          <NorthEastIcon className="fill-primary hidden h-4 w-4 group-hover:block" />
+                        </li>
+
+                        {index !== histories.length - 1 && (
+                          <div className="bg-border-secondary h-px w-full" />
+                        )}
+                      </Fragment>
+                    );
+                  })}
                 </ul>
               ) : (
-                <div className="text-s14-l20 text-gray-7 text-center">
+                <div className="text-s14-l20 text-text-disabled py-4 text-center">
                   No recent searches.
                 </div>
               )}

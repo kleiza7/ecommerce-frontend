@@ -63,13 +63,13 @@ const ProductListHeader = ({
     "Recommended";
 
   return (
-    <div className="flex flex-col items-center justify-center md:flex-row md:justify-between">
-      <div className="flex flex-col items-center gap-x-2 py-2 md:flex-row md:py-0">
-        <span className="text-s16-l24 md:text-s18-l28 text-text-primary font-medium">
+    <div className="flex flex-col items-end justify-center md:flex-row md:justify-between">
+      <div className="flex flex-col gap-x-2 py-2 md:py-0">
+        <span className="text-s16-l24 md:text-s24-l32 text-text-primary font-medium">
           {selectedCategoryName ?? "Products"}
         </span>
 
-        <span className="text-s12-l16 md:text-s14-l20 text-gray-8 font-medium md:font-normal">
+        <span className="text-s12-l16 md:text-s14-l20 text-text-muted font-medium md:font-normal">
           {formattedTotalCount} Products
         </span>
       </div>
@@ -102,8 +102,8 @@ const ProductListHeader = ({
         value={selectedValue}
         options={SORT_OPTIONS}
         onChange={handleSortChange}
-        className="hover:border-orange hidden h-8 w-[220px] rounded-full md:flex"
-        triggerIcon={<SwapVertIcon className="fill-orange h-5 w-5" />}
+        className="hover:border-primary hidden h-9 w-[200px] md:flex"
+        triggerIcon={<SwapVertIcon className="fill-primary h-5 w-5" />}
       />
     </div>
   );

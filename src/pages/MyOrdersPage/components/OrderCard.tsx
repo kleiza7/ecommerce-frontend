@@ -1,14 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import type { Order } from "../../../api/models/Order.model";
+import { BUTTON_PRIMARY } from "../../../shared/constants/CommonTailwindClasses.constants";
 import {
-  BUTTON_PRIMARY,
-  BUTTON_SIZE_SMALL,
-} from "../../../shared/constants/CommonTailwindClasses.constants";
-import { ORDER_STATUS_TEXT_PAIRS } from "../../../shared/constants/Order.constants";
+  ORDER_STATUS_COLOR_PAIRS,
+  ORDER_STATUS_ICON_PAIRS,
+  ORDER_STATUS_TEXT_PAIRS,
+} from "../../../shared/constants/Order.constants";
 import { ROUTES } from "../../../shared/constants/Routes.constants";
 import { canCheckoutOrder } from "../../../shared/utils/Order.util";
 import { customTwMerge } from "../../../shared/utils/Tailwind.util";
-import { useUserStore } from "../../../stores/UserStore";
 
 const OrderCard = ({
   order,
@@ -18,45 +18,102 @@ const OrderCard = ({
   // TODO: remove currencyCode
   currencyCode: string;
 }) => {
-  // TODO: remove it
-  const userName = useUserStore((state) => state.user?.name);
   const navigate = useNavigate();
 
+  const statusColors = ORDER_STATUS_COLOR_PAIRS[order.status];
+  const StatusIcon = ORDER_STATUS_ICON_PAIRS[order.status];
+
   return (
-    <div className="border-gray-1 rounded-lg border">
-      <div className="border-gray-1 bg-gray-3 flex flex-col gap-3 border-b px-5 py-3 lg:flex-row lg:items-center lg:gap-x-5">
-        <div className="text-text-primary flex flex-1 flex-wrap gap-y-3 lg:flex-nowrap lg:gap-x-5">
-          <div className="text-s14-l20 w-1/2 lg:w-auto lg:flex-1">
-            <div className="font-medium">Order Date</div>
-            {new Date(order.createdAt).toLocaleDateString()}
-          </div>
-
-          <div className="text-s14-l20 w-1/2 lg:w-auto lg:flex-1">
-            <div className="font-medium">Order Summary</div>
-            {order.items.length} Items
-          </div>
-
-          <div className="text-s14-l20 w-1/2 lg:w-auto lg:flex-1">
-            <div className="font-medium">Recipient</div>
-            {userName ?? ""}
-          </div>
-
-          <div className="text-s14-l20 w-1/2 lg:w-auto lg:flex-1">
-            <div className="font-medium">Total</div>
-            <span className="text-orange">
-              {order.totalPrice.toFixed(2)} {currencyCode}
-            </span>
-          </div>
+    <div className="border-border-secondary flex justify-between rounded-lg border p-6 shadow-md">
+      <div className="flex gap-x-5">
+        <div
+          className="flex h-14 w-14 items-center justify-center rounded-md border"
+          style={{
+            backgroundColor: statusColors.muted,
+            borderColor: statusColors.secondary,
+          }}
+        >
+          <StatusIcon
+            className="h-6 w-6"
+            style={{ fill: statusColors.primary }}
+          />
         </div>
 
-        <div className="flex w-full items-center gap-x-4 lg:w-[220px] lg:justify-end">
+        <div className="flex flex-col gap-y-5">
+          <div className="flex flex-col gap-y-1.5">
+            <div className="flex items-center gap-x-3">
+              <span className="text-s18-l28 text-text-primary font-bold">
+                Order #{order.id}
+              </span>
+
+              <div
+                className="flex items-center justify-center rounded-full border px-3 py-1"
+                style={{
+                  backgroundColor: statusColors.muted,
+                  borderColor: statusColors.secondary,
+                }}
+              >
+                <span
+                  className="text-s12-l16 font-medium"
+                  style={{ color: statusColors.primary }}
+                >
+                  {ORDER_STATUS_TEXT_PAIRS[order.status]}
+                </span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-x-3">
+              <span className="text-s14-l20 text-text-muted">
+                {new Date(order.createdAt).toLocaleDateString()}
+              </span>
+              <div className="bg-border-primary h-1 w-1 rounded-full" />
+              <span className="text-s14-l20 text-text-muted">
+                {order.items.length} {order.items.length > 1 ? "Items" : "Item"}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex min-w-max gap-x-5">
+            {order.items.map((item) => {
+              const img = item.product.images.find((img) => img.isPrimary);
+
+              if (!img) {
+                return null;
+              }
+
+              return (
+                <img
+                  key={item.id}
+                  src={img.thumbUrl}
+                  alt={item.product.name}
+                  onClick={() =>
+                    navigate(ROUTES.PRODUCT_DETAIL_PAGE.build(item.product.id))
+                  }
+                  className="h-8 w-8 cursor-pointer rounded object-cover"
+                />
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-x-8">
+        <div className="flex flex-col">
+          <span className="text-s14-l20 text-text-disabled font-semibold">
+            Total Price
+          </span>
+          <span className="text-s20-l28 text-accent font-bold">
+            {order.totalPrice.toFixed(2)} {currencyCode}
+          </span>
+        </div>
+
+        <div className="flex items-center gap-x-4">
           {canCheckoutOrder(order.status) && (
             <button
               onClick={() => navigate(ROUTES.CHECKOUT_PAGE.build(order.id))}
               className={customTwMerge(
                 BUTTON_PRIMARY,
-                BUTTON_SIZE_SMALL,
-                "w-full px-6 lg:w-auto",
+                "w-full rounded-full px-6 lg:w-auto",
               )}
             >
               Pay Now
@@ -67,46 +124,11 @@ const OrderCard = ({
             onClick={() => navigate(ROUTES.ORDER_DETAIL_PAGE.build(order.id))}
             className={customTwMerge(
               BUTTON_PRIMARY,
-              BUTTON_SIZE_SMALL,
-              "w-full px-6 lg:w-auto",
+              "w-full rounded-full px-6 lg:w-auto",
             )}
           >
-            Details
+            View Details
           </button>
-        </div>
-      </div>
-
-      <div className="p-5">
-        <div className="border-gray-1 flex flex-col gap-y-3 rounded-md border px-5 py-3 lg:flex-row lg:items-center lg:gap-x-6 lg:gap-y-0">
-          <div className="text-s14-l20 font-semibold lg:w-[30%] lg:shrink-0">
-            {ORDER_STATUS_TEXT_PAIRS[order.status]}
-          </div>
-
-          <div className="flex-1 overflow-x-auto">
-            <div className="flex min-w-max gap-x-5">
-              {order.items.map((item) => {
-                const img = item.product.images.find((img) => img.isPrimary);
-
-                if (!img) {
-                  return null;
-                }
-
-                return (
-                  <img
-                    key={item.id}
-                    src={img.thumbUrl}
-                    alt={item.product.name}
-                    onClick={() =>
-                      navigate(
-                        ROUTES.PRODUCT_DETAIL_PAGE.build(item.product.id),
-                      )
-                    }
-                    className="h-20 w-20 cursor-pointer rounded object-cover"
-                  />
-                );
-              })}
-            </div>
-          </div>
         </div>
       </div>
     </div>

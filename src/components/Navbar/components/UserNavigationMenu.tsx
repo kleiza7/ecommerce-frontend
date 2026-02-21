@@ -46,24 +46,26 @@ const UserNavigationMenu = () => {
       setOpen={setOpen}
       withOverlay={false}
       contentAlign="center"
-      className="border-orange w-[200px] overflow-hidden border p-0"
+      className="border-primary w-[200px] overflow-hidden border p-0"
       trigger={
         <button
           type="button"
           className="group flex cursor-pointer items-center gap-x-2 transition-colors"
         >
           {open ? (
-            <UserFilledIcon className="fill-orange h-6 w-6 transition-colors" />
+            <UserFilledIcon className="fill-primary h-6 w-6 transition-colors" />
           ) : (
             <>
               <UserIcon className="fill-text-primary h-6 w-6 transition-colors group-hover:hidden" />
-              <UserFilledIcon className="fill-orange hidden h-6 w-6 transition-colors group-hover:block" />
+              <UserFilledIcon className="fill-primary hidden h-6 w-6 transition-colors group-hover:block" />
             </>
           )}
 
           <span
             className={`text-s14-l20 hidden font-semibold transition-colors xl:inline ${
-              open ? "text-orange" : "text-text-primary group-hover:text-orange"
+              open
+                ? "text-primary"
+                : "text-text-primary group-hover:text-primary"
             }`}
           >
             My Account
@@ -73,7 +75,7 @@ const UserNavigationMenu = () => {
     >
       <div className="flex flex-col">
         <span
-          className="text-s14-l20 text-orange block max-w-full truncate px-4 pt-3 pb-1 font-semibold"
+          className="text-s14-l20 text-primary block max-w-full truncate px-4 pt-3 pb-1 font-semibold"
           title={user?.name}
         >
           {user?.name}
@@ -83,10 +85,10 @@ const UserNavigationMenu = () => {
           <button
             type="button"
             onClick={handleNavigateMyOrders}
-            className="hover:bg-orange/10 group flex cursor-pointer items-center gap-x-3 px-4 py-2.5 transition-colors"
+            className="hover:bg-primary/10 group flex cursor-pointer items-center gap-x-3 px-4 py-2.5 transition-colors"
           >
-            <PackageIcon className="fill-text-primary group-hover:fill-orange h-4 w-4" />
-            <span className="text-s12-l16 text-text-primary group-hover:text-orange">
+            <PackageIcon className="fill-text-primary group-hover:fill-primary h-4 w-4" />
+            <span className="text-s12-l16 text-text-primary group-hover:text-primary">
               My Orders
             </span>
           </button>
@@ -95,10 +97,10 @@ const UserNavigationMenu = () => {
         <button
           type="button"
           onClick={handleLogout}
-          className="hover:bg-orange/10 group flex cursor-pointer items-center gap-x-3 px-4 py-2.5 transition-colors"
+          className="hover:bg-primary/10 group flex cursor-pointer items-center gap-x-3 px-4 py-2.5 transition-colors"
         >
-          <LogoutIcon className="fill-text-primary group-hover:fill-orange h-4 w-4" />
-          <span className="text-s12-l16 text-text-primary group-hover:text-orange">
+          <LogoutIcon className="fill-text-primary group-hover:fill-primary h-4 w-4" />
+          <span className="text-s12-l16 text-text-primary group-hover:text-primary">
             Log Out
           </span>
         </button>

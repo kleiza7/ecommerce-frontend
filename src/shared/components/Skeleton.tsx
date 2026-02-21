@@ -10,7 +10,7 @@ const Skeleton = ({
   return (
     <div
       className={customTwMerge(
-        "bg-gray-5 rounded",
+        "bg-border-primary rounded",
         withShimmer ? "relative overflow-hidden" : "",
         className ?? "",
       )}

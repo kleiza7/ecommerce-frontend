@@ -1,20 +1,25 @@
 import { isAxiosError } from "axios";
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeftIcon } from "../../assets/icons";
+import { ArrowLeftIcon, StoreFrontIcon } from "../../assets/icons";
 import { useCurrenciesGetAll } from "../../hooks/useCurrenciesGetAll";
 import { useOrdersGetById } from "../../hooks/useOrdersGetById";
+import { useProductsNavigation } from "../../hooks/useProductsNavigation";
 import {
   BUTTON_PRIMARY,
-  BUTTON_SIZE_SMALL,
+  BUTTON_SIZE_LARGE,
 } from "../../shared/constants/CommonTailwindClasses.constants";
-import { ORDER_STATUS_TEXT_PAIRS } from "../../shared/constants/Order.constants";
+import {
+  ORDER_STATUS_COLOR_PAIRS,
+  ORDER_STATUS_TEXT_PAIRS,
+} from "../../shared/constants/Order.constants";
 import { ROUTES } from "../../shared/constants/Routes.constants";
 import { canCheckoutOrder } from "../../shared/utils/Order.util";
 import { customTwMerge } from "../../shared/utils/Tailwind.util";
 import OrderDetailPageSkeleton from "./components/OrderDetailPageSkeleton";
 
 const OrderDetailPage = () => {
+  const { goToProductsPage } = useProductsNavigation();
   const navigate = useNavigate();
   const { orderId } = useParams();
   const parsedOrderId = Number(orderId);
@@ -55,6 +60,16 @@ const OrderDetailPage = () => {
     return map;
   }, [currencies]);
 
+  const onSellerClick = useCallback(
+    (sellerId: number) => {
+      goToProductsPage({
+        sellerIds: [sellerId],
+        overrideParams: true,
+      });
+    },
+    [goToProductsPage],
+  );
+
   useEffect(() => {
     if (isNaN(parsedOrderId)) {
       navigate(ROUTES.NOT_FOUND_PAGE.build(), { replace: true });
@@ -88,64 +103,89 @@ const OrderDetailPage = () => {
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-3 p-3 md:gap-5 md:px-10 md:py-6">
-      <div className="flex items-center justify-between">
-        <button
-          type="button"
-          onClick={() => navigate(ROUTES.MY_ORDERS_PAGE.build())}
-          className="flex cursor-pointer items-center gap-x-2"
-        >
-          <ArrowLeftIcon className="h-4 w-4" />
-          <span className="text-s14-l20 text-text-primary">All Orders</span>
-        </button>
+    <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-3 p-3 md:gap-8 md:px-10 md:py-8">
+      <button
+        type="button"
+        onClick={() => navigate(ROUTES.MY_ORDERS_PAGE.build())}
+        className="flex cursor-pointer items-center gap-x-2"
+      >
+        <ArrowLeftIcon className="fill-text-primary h-4 w-4" />
+        <span className="text-s14-l20 text-text-primary font-medium">
+          All Orders
+        </span>
+      </button>
 
+      <div className="flex items-center gap-x-8">
+        <div className="border-border-secondary flex flex-1 flex-col gap-y-2 rounded-md border px-8 py-6 md:flex-row md:justify-between md:gap-x-6 md:gap-y-0">
+          <span className="text-s16-l24 text-text-primary flex-1 font-semibold">
+            Order Summary:
+          </span>
+
+          <div className="flex flex-1 flex-col">
+            <span className="text-s12-l16 text-text-muted font-medium">
+              Order Date
+            </span>
+            <span className="text-s14-l20 text-text-primary font-medium">
+              {new Date(order.createdAt).toLocaleDateString()}
+            </span>
+          </div>
+
+          <div className="flex flex-1 flex-col">
+            <span className="text-s12-l16 text-text-muted font-medium">
+              Order Summary
+            </span>
+            <span className="text-s14-l20 text-text-primary font-medium">
+              {order.items.length} {order.items.length > 1 ? "Items" : "Item"}
+            </span>
+          </div>
+
+          <div className="flex flex-1 flex-col">
+            <span className="text-s12-l16 text-text-muted font-medium">
+              Order Status
+            </span>
+            <span
+              className="text-s14-l20 font-bold"
+              style={{ color: ORDER_STATUS_COLOR_PAIRS[order.status].primary }}
+            >
+              {ORDER_STATUS_TEXT_PAIRS[order.status]}
+            </span>
+          </div>
+        </div>
         {canCheckoutOrder(order.status) && (
           <button
             onClick={() => navigate(ROUTES.CHECKOUT_PAGE.build(order.id))}
-            className={customTwMerge(BUTTON_PRIMARY, BUTTON_SIZE_SMALL, "px-6")}
+            className={customTwMerge(BUTTON_PRIMARY, BUTTON_SIZE_LARGE, "px-6")}
           >
             Pay Now
           </button>
         )}
       </div>
 
-      <div className="border-gray-1 flex flex-col gap-y-2 rounded-md border px-5 py-4 md:flex-row md:items-center md:justify-between md:gap-y-0">
-        <span className="text-s16-l24 font-semibold">Order Summary:</span>
-
-        <div className="flex justify-between md:justify-start md:gap-x-20">
-          <div className="flex flex-col">
-            <span className="text-s12-l16 font-medium">Order Date</span>
-            <span className="text-s12-l16">
-              {new Date(order.createdAt).toLocaleDateString()}
-            </span>
-          </div>
-
-          <div className="flex flex-col">
-            <span className="text-s12-l16 font-medium">Order Summary</span>
-            <span className="text-s12-l16">{order.items.length} items</span>
-          </div>
-
-          <div className="flex flex-col">
-            <span className="text-s12-l16 font-medium">Order Status</span>
-            <span className="text-s12-l16">
-              {ORDER_STATUS_TEXT_PAIRS[order.status]}
-            </span>
-          </div>
-        </div>
-      </div>
-
       {groupedBySeller.map(({ seller, items }) => (
         <div
           key={seller.id}
-          className="border-gray-1 flex flex-col gap-y-4 rounded-md border p-4"
+          className="border-border-primary flex flex-col overflow-hidden rounded-md border"
         >
-          <div className="text-s14-l20 bg-gray-3 flex items-center rounded-md px-4 py-1.5">
-            <span>Seller:&nbsp;</span>
-            <span className="font-medium">{seller.name}</span>
+          <div className="border-border-primary bg-surface-muted flex items-center gap-x-3 border-b px-5 py-3.5">
+            <StoreFrontIcon className="fill-text-disabled h-5 w-5" />
+
+            <div className="flex items-center gap-x-1">
+              <span className="text-s14-l20 text-text-primary font-medium">
+                SOLD BY
+              </span>
+
+              <button
+                type="button"
+                onClick={() => onSellerClick(seller.id)}
+                className="text-s14-l20 text-primary cursor-pointer font-medium hover:underline"
+              >
+                {seller.name}
+              </button>
+            </div>
           </div>
 
           <div className="overflow-x-auto">
-            <div className="flex min-w-max gap-x-3 md:gap-x-5">
+            <div className="flex min-w-max gap-x-3 p-6 md:gap-x-6">
               {items.map((item) => {
                 const img = item.product.images.find((img) => img.isPrimary);
                 if (!img) return null;
@@ -153,7 +193,7 @@ const OrderDetailPage = () => {
                 return (
                   <div
                     key={item.id}
-                    className="border-gray-1 flex w-[280px] shrink-0 gap-x-4 rounded-md border p-3 md:w-[360px] 2xl:w-[470px]"
+                    className="border-border-primary flex w-[280px] shrink-0 gap-x-4 rounded-md border p-4 md:w-[360px] 2xl:w-[470px]"
                   >
                     <img
                       src={img.thumbUrl}
@@ -162,19 +202,19 @@ const OrderDetailPage = () => {
                     />
 
                     <div className="flex min-w-0 flex-col py-2">
-                      <span className="text-s14-l20 text-text-primary truncate">
+                      <span className="text-s12-l16 text-text-muted truncate">
                         {item.product.brand.name}
                       </span>
 
-                      <span className="text-s14-l20 text-text-primary truncate">
+                      <span className="text-s14-l20 text-text-primary truncate font-bold">
                         {item.product.name}
                       </span>
 
-                      <span className="text-s14-l20 text-text-primary truncate">
+                      <span className="text-s12-l16 text-text-muted truncate">
                         Quantity: {item.quantity}
                       </span>
 
-                      <span className="text-s14-l20 text-orange mt-auto truncate font-medium">
+                      <span className="text-s20-l28 text-accent mt-auto truncate font-bold">
                         {item.priceSnapshot.toFixed(2)}{" "}
                         {currencyMap.get(item.currencyId) ?? ""}
                       </span>

@@ -128,7 +128,7 @@ const ProductCard = ({
   return (
     <div
       onClick={handleNavigate}
-      className="border-gray-2 bg-surface-primary relative flex h-[380px] w-full cursor-pointer flex-col overflow-hidden rounded-xl border hover:shadow-md md:h-[460px] 2xl:h-[500px]"
+      className="border-border-primary bg-surface-primary relative flex h-[380px] w-full cursor-pointer flex-col overflow-hidden rounded-xl border hover:shadow-md md:h-[460px] 2xl:h-[500px]"
     >
       <FavoriteButton
         product={{
@@ -143,7 +143,7 @@ const ProductCard = ({
       />
 
       <div
-        className="bg-gray-4 relative h-[260px] w-full shrink-0 overflow-hidden md:h-80 2xl:h-[360px]"
+        className="bg-surface-secondary relative h-[260px] w-full shrink-0 overflow-hidden md:h-80 2xl:h-[360px]"
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
@@ -191,7 +191,7 @@ const ProductCard = ({
               ))}
             </div>
 
-            <div className="bg-gray-6 absolute bottom-3 left-1/2 z-10 -translate-x-1/2 rounded-full p-1">
+            <div className="bg-border-primary absolute bottom-3 left-1/2 z-10 -translate-x-1/2 rounded-full p-1">
               <div className="flex items-center gap-1">
                 {Array.from({ length: zoneCount }).map((_, i) => (
                   <span
@@ -209,19 +209,20 @@ const ProductCard = ({
         )}
       </div>
 
-      <div className="flex flex-1 flex-col p-3">
-        <div className="flex flex-col gap-1">
-          <div className="text-text-primary text-s14-l20 flex flex-wrap gap-1">
-            <span className="font-semibold">{product.brand.name}</span>
-            <span>{product.name}</span>
-          </div>
+      <div className="border-border-primary flex flex-1 flex-col border-t p-4">
+        <div className="flex flex-col gap-2">
+          <span className="text-text-primary text-s16-l24">{product.name}</span>
 
-          <div className="text-text-primary text-s12-l16 line-clamp-2 truncate">
+          <span className="text-text-primary text-s14-l20 font-bold">
+            {product.brand.name}
+          </span>
+
+          <span className="text-text-muted text-s12-l16 line-clamp-2 truncate">
             {product.description}
-          </div>
+          </span>
         </div>
 
-        <div className="text-orange text-s16-l24 mt-auto font-bold">
+        <div className="text-accent text-s18-l28 mt-auto font-bold">
           {product.price.toFixed(2)} {product.currency.code}
         </div>
       </div>
