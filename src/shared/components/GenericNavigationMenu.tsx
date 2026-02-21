@@ -57,7 +57,7 @@ const GenericNavigationMenu = ({
           <NavigationMenu.Content
             style={{ marginTop: contentOffsetY }}
             className={customTwMerge(
-              "bg-surface-primary absolute top-full z-50 rounded-xl p-4 shadow-lg",
+              "bg-surface-primary border-border-primary absolute top-full z-50 rounded-xl border p-4 shadow-lg",
               alignClass,
               className,
             )}

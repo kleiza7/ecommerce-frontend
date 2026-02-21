@@ -46,7 +46,7 @@ const UserNavigationMenu = () => {
       setOpen={setOpen}
       withOverlay={false}
       contentAlign="center"
-      className="border-primary w-[200px] overflow-hidden border p-0"
+      className="w-56 px-0 py-2"
       trigger={
         <button
           type="button"
@@ -75,35 +75,42 @@ const UserNavigationMenu = () => {
     >
       <div className="flex flex-col">
         <span
-          className="text-s14-l20 text-primary block max-w-full truncate px-4 pt-3 pb-1 font-semibold"
+          className="text-s16-l24 text-primary block max-w-full truncate px-5 py-3 font-semibold"
           title={user?.name}
         >
           {user?.name}
         </span>
 
-        {isUser && (
+        <div className="bg-border-secondary h-px" />
+
+        <div className="flex flex-col px-2 py-1">
+          {isUser && (
+            <>
+              <button
+                type="button"
+                onClick={handleNavigateMyOrders}
+                className="hover:bg-surface-muted flex cursor-pointer items-center gap-x-3 rounded-md px-3 py-2.5 transition-colors"
+              >
+                <PackageIcon className="fill-text-secondary h-4 w-4" />
+                <span className="text-s12-l16 text-text-secondary">
+                  My Orders
+                </span>
+              </button>
+              <div className="px-3">
+                <div className="bg-border-secondary h-px" />
+              </div>
+            </>
+          )}
+
           <button
             type="button"
-            onClick={handleNavigateMyOrders}
-            className="hover:bg-primary/10 group flex cursor-pointer items-center gap-x-3 px-4 py-2.5 transition-colors"
+            onClick={handleLogout}
+            className="hover:bg-surface-muted flex cursor-pointer items-center gap-x-3 rounded-md px-3 py-2.5 transition-colors"
           >
-            <PackageIcon className="fill-text-primary group-hover:fill-primary h-4 w-4" />
-            <span className="text-s12-l16 text-text-primary group-hover:text-primary">
-              My Orders
-            </span>
+            <LogoutIcon className="fill-text-secondary h-4 w-4" />
+            <span className="text-s12-l16 text-text-secondary">Log Out</span>
           </button>
-        )}
-
-        <button
-          type="button"
-          onClick={handleLogout}
-          className="hover:bg-primary/10 group flex cursor-pointer items-center gap-x-3 px-4 py-2.5 transition-colors"
-        >
-          <LogoutIcon className="fill-text-primary group-hover:fill-primary h-4 w-4" />
-          <span className="text-s12-l16 text-text-primary group-hover:text-primary">
-            Log Out
-          </span>
-        </button>
+        </div>
       </div>
     </GenericNavigationMenu>
   );
