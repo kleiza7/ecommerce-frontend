@@ -5,13 +5,27 @@ import Lightbox from "yet-another-react-lightbox";
 import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
 import "yet-another-react-lightbox/styles.css";
-import { KeyboardArrowUpIcon, TimerArrowDownIcon } from "../../assets/icons";
+import {
+  AssignmentReturnIcon,
+  CancelIcon,
+  CheckCircleIcon,
+  ErrorIcon,
+  KeyboardArrowUpIcon,
+  LocalShippingIcon,
+  ShieldIcon,
+  ShoppingCartIcon,
+  StarFilledIcon,
+  StarHalfFilledIcon,
+  StarIcon,
+  VerifiedUserIcon,
+} from "../../assets/icons";
 import { useCartActions } from "../../hooks/useCartActions";
 import { useProductsGetById } from "../../hooks/useProductsGetById";
 import CategoryBreadcrumb from "../../shared/components/CategoryBreadcrumb";
 import FavoriteButton from "../../shared/components/FavoriteButton";
 import GenericTooltip from "../../shared/components/GenericTooltip";
 import {
+  BUTTON_ACCENT,
   BUTTON_PRIMARY,
   BUTTON_SIZE_X_LARGE,
 } from "../../shared/constants/CommonTailwindClasses.constants";
@@ -19,9 +33,14 @@ import { ROUTES } from "../../shared/constants/Routes.constants";
 import { customTwMerge } from "../../shared/utils/Tailwind.util";
 import { useCartStore } from "../../stores/CartStore";
 import ProductDetailPageSkeleton from "./components/ProductDetailPageSkeleton";
+import ProductDetailTabs from "./components/ProductDetailTabs/ProductDetailTabs";
 
 const DRAG_THRESHOLD = 60;
 const CLICK_CANCEL_THRESHOLD = 5;
+
+/* DUMMY RATING VALUES */
+const DUMMY_RATING_AVG = 4.35;
+const DUMMY_REVIEWS_COUNT = 1240;
 
 const ProductDetailPage = () => {
   const navigate = useNavigate();
@@ -155,14 +174,20 @@ const ProductDetailPage = () => {
     isDraggingRef.current = false;
   };
 
+  /* STAR CALCULATION LOGIC */
+  const fullStars = Math.floor(DUMMY_RATING_AVG);
+  const decimalPart = DUMMY_RATING_AVG - fullStars;
+  const hasHalfStar = decimalPart >= 0.25 && decimalPart < 0.75;
+  const roundedUpFullStars = decimalPart >= 0.75 ? fullStars + 1 : fullStars;
+
   return (
-    <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-y-5 pb-4 md:px-10 md:py-4">
+    <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-y-6 pb-4 md:px-10 md:py-8">
       <CategoryBreadcrumb selectedCategoryId={product.category.id} />
 
-      <div className="flex flex-col gap-4 md:flex-row md:gap-8">
-        <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-4 md:flex-row md:gap-14">
+        <div className="flex flex-col gap-4">
           <div
-            className="border-gray-2 relative h-[450px] w-full cursor-pointer overflow-hidden md:h-[500px] md:w-[400px] md:rounded-xl md:border"
+            className="border-border-primary relative h-[450px] w-full cursor-pointer overflow-hidden shadow-lg md:h-[500px] md:w-[700px] md:rounded-xl md:border"
             onClick={() => {
               if (hasDraggedRef.current) {
                 hasDraggedRef.current = false;
@@ -245,8 +270,10 @@ const ProductDetailPage = () => {
                   setIsAnimating(true);
                   setActiveIndex(index + 1);
                 }}
-                className={`h-20 w-20 cursor-pointer overflow-hidden rounded-lg border ${
-                  index === currentRealIndex ? "border-orange" : "border-gray-2"
+                className={`border-border-primary h-32 w-32 cursor-pointer overflow-hidden rounded-lg border-2 p-2 shadow-lg ${
+                  index === currentRealIndex
+                    ? "border-primary"
+                    : "border-border-primary"
                 }`}
               >
                 <img
@@ -259,55 +286,138 @@ const ProductDetailPage = () => {
           </div>
         </div>
 
-        <div className="flex flex-1 flex-col gap-2 px-4 md:gap-4 md:px-0">
-          <div className="text-text-primary text-s16-l24 md:text-s20-l28 flex flex-wrap gap-2">
-            <span className="font-bold">{product.brand.name}</span>
-            <span>{product.name}</span>
-          </div>
+        <div className="flex flex-1 flex-col gap-2 px-4 md:gap-8 md:px-0">
+          <div className="flex flex-col gap-y-4">
+            <div className="flex flex-col gap-y-1">
+              <span className="text-primary text-s20-l28 md:text-s24-l32 font-bold">
+                {product.brand.name}
+              </span>
+              <span className="text-text-primary text-s24-l32 md:text-s32-l40 font-bold">
+                {product.name}
+              </span>
+            </div>
 
-          <span className="text-text-primary text-s14-l20 md:text-s16-l24">
-            {product.description}
-          </span>
+            <div className="flex items-center gap-x-3">
+              <div className="flex items-center gap-x-0.5">
+                {Array.from({ length: 5 }).map((_, index) => {
+                  if (index < roundedUpFullStars && !hasHalfStar) {
+                    return (
+                      <StarFilledIcon
+                        key={index}
+                        className="fill-rating-primary h-5 w-5"
+                      />
+                    );
+                  }
 
-          <div className="text-text-primary text-s12-l16">
-            {product.stockCount > 0 ? (
-              <div className="flex flex-col gap-1">
-                <span>
-                  Only <span className="font-bold">{product.stockCount}</span>{" "}
-                  items are left in stock.
-                </span>
+                  if (index < fullStars) {
+                    return (
+                      <StarFilledIcon
+                        key={index}
+                        className="fill-rating-primary h-5 w-5"
+                      />
+                    );
+                  }
 
-                {product.stockCount < 5 && (
-                  <div className="flex items-center gap-1">
-                    <TimerArrowDownIcon
-                      className={`h-4 w-4 ${
-                        product.stockCount === 1
-                          ? "fill-error-primary"
-                          : "fill-warning-primary"
-                      }`}
+                  if (index === fullStars && hasHalfStar) {
+                    return (
+                      <StarHalfFilledIcon
+                        key={index}
+                        className="fill-rating-primary h-5 w-5"
+                      />
+                    );
+                  }
+
+                  return (
+                    <StarIcon
+                      key={index}
+                      className="fill-rating-primary h-5 w-5"
                     />
-                    <span
-                      className={
-                        product.stockCount === 1
-                          ? "text-error-primary"
-                          : "text-warning-primary"
-                      }
-                    >
-                      Hurry up, this product is running out.
+                  );
+                })}
+              </div>
+              <span className="text-s14-20 text-text-muted">
+                ({DUMMY_REVIEWS_COUNT} Reviews)
+              </span>
+            </div>
+
+            <div className="flex flex-col gap-y-6">
+              <div className="flex items-center gap-x-1">
+                {product.stockCount >= 1 ? (
+                  product.stockCount > 5 ? (
+                    <>
+                      <CheckCircleIcon className="fill-status-success-primary" />
+                      <span className="text-s14-l20 text-status-success-primary font-medium">
+                        In Stock
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <ErrorIcon className="fill-status-warning-primary" />
+                      <span className="text-s14-l20 text-status-warning-primary font-medium">
+                        Only {product.stockCount}{" "}
+                        {product.stockCount > 1 ? "items" : "item"} left in
+                        stock!
+                      </span>
+                    </>
+                  )
+                ) : (
+                  <>
+                    <CancelIcon className="fill-status-error-primary" />
+                    <span className="text-s14-l20 text-status-error-primary font-medium">
+                      Out of Stock
                     </span>
-                  </div>
+                  </>
                 )}
               </div>
-            ) : (
-              <span>This product is out of stock.</span>
-            )}
+
+              <div className="bg-surface-muted border-border-secondary rounded-lg border p-6">
+                <span className="text-accent text-s36-l44 hidden font-bold md:inline">
+                  {product.price.toFixed(2)} {product.currency.code}
+                </span>
+              </div>
+
+              <span className="text-text-muted text-s14-l20">
+                {product.description}
+              </span>
+            </div>
           </div>
 
-          <span className="text-orange text-s24-l32 hidden font-bold md:inline">
-            {product.price.toFixed(2)} {product.currency.code}
-          </span>
+          <div className="hidden flex-col gap-y-4 md:flex">
+            <div className="flex items-center gap-4">
+              <GenericTooltip
+                content={
+                  isOutOfStock
+                    ? "You have reached the maximum available stock for this product."
+                    : ""
+                }
+              >
+                <button
+                  disabled={isCartLoading || isOutOfStock}
+                  onClick={() =>
+                    addToCart({
+                      ...product,
+                      images: product.images.map((img) => ({
+                        thumbUrl: img.thumbUrl,
+                        isPrimary: img.isPrimary,
+                      })),
+                    })
+                  }
+                  className={customTwMerge(
+                    BUTTON_PRIMARY,
+                    BUTTON_SIZE_X_LARGE,
+                    "flex-1 shrink-0",
+                  )}
+                >
+                  <ShoppingCartIcon className="fill-surface-primary" />
+                  Add to Cart
+                </button>
+              </GenericTooltip>
 
-          <div className="hidden items-center gap-4 md:flex">
+              <FavoriteButton
+                product={product}
+                className="border-gray-2 hidden h-12 w-12 shrink-0 border shadow-none hover:shadow-md md:flex"
+              />
+            </div>
             <GenericTooltip
               content={
                 isOutOfStock
@@ -326,21 +436,49 @@ const ProductDetailPage = () => {
                     })),
                   })
                 }
-                className={customTwMerge(BUTTON_PRIMARY, BUTTON_SIZE_X_LARGE)}
+                className={customTwMerge(BUTTON_ACCENT, BUTTON_SIZE_X_LARGE)}
               >
-                Add to Cart
+                Buy Now
               </button>
             </GenericTooltip>
+          </div>
 
-            <FavoriteButton
-              product={product}
-              className="border-gray-2 hidden h-12 w-12 border shadow-none hover:shadow-md md:flex"
-            />
+          <div className="flex flex-col gap-y-6">
+            <div className="bg-border-secondary h-px" />
+            <div className="grid grid-cols-2 grid-rows-2 gap-4">
+              <div className="flex items-center gap-x-3">
+                <LocalShippingIcon className="fill-primary" />
+                <span className="text-s12-l16 text-text-primary font-bold">
+                  Free Shipping
+                </span>
+              </div>
+              <div className="flex items-center gap-x-3">
+                <VerifiedUserIcon className="fill-primary" />
+                <span className="text-s12-l16 text-text-primary font-bold">
+                  {/* TODO: warranty will be dynamic */}2 Year Warranty
+                </span>
+              </div>
+              <div className="flex items-center gap-x-3">
+                <AssignmentReturnIcon className="fill-primary" />
+                <span className="text-s12-l16 text-text-primary font-bold">
+                  30-Day Returns
+                </span>
+              </div>
+              <div className="flex items-center gap-x-3">
+                <ShieldIcon className="fill-primary" />
+                <span className="text-s12-l16 text-text-primary font-bold">
+                  Secure Payment
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="border-gray-2 bg-surface-primary fixed bottom-0 left-0 z-40 flex w-full items-end justify-between gap-3 border-t p-2.5 md:hidden">
+      <ProductDetailTabs description={product.description} />
+
+      {/* TODO: responsive unutma */}
+      {/* <div className="border-gray-2 bg-surface-primary fixed bottom-0 left-0 z-40 flex w-full items-end justify-between gap-3 border-t p-2.5 md:hidden">
         <span className="text-orange text-s16-l24 font-semibold">
           {product.price.toFixed(2)} {product.currency.code}
         </span>
@@ -368,7 +506,7 @@ const ProductDetailPage = () => {
             Add to Cart
           </button>
         </GenericTooltip>
-      </div>
+      </div> */}
 
       <Lightbox
         open={lightboxOpen}

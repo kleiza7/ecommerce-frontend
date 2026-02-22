@@ -134,6 +134,11 @@ body {
   --color-border-secondary: #f1f5f9;
   --color-border-muted: #f9fafb;
 
+  /* Completed / Success (Green) */
+  --color-status-success-primary: #059669;
+  --color-status-success-secondary: #d1fae5;
+  --color-status-success-muted: #ecfdf5;
+
   /* Pending / Info (Primary Blue) */
   --color-status-info-primary: #2563eb;
   --color-status-info-secondary: #dbeafe;
@@ -149,15 +154,15 @@ body {
   --color-status-error-secondary: #fecaca;
   --color-status-error-muted: #fef2f2;
 
-  /* Completed / Success (Green) */
-  --color-status-success-primary: #059669;
-  --color-status-success-secondary: #d1fae5;
-  --color-status-success-muted: #ecfdf5;
-
   /* Cancelled / Neutral (Gray) */
   --color-status-neutral-primary: #64748b;
   --color-status-neutral-secondary: #e2e8f0;
   --color-status-neutral-muted: #f1f5f9;
+
+  /* Rating (Amber) */
+  --color-rating-primary: #f59e0b;
+  --color-rating-secondary: #fef3c7;
+  --color-rating-muted: #fffbeb;
 
   /* NEW COLOR PALETTE */
 
