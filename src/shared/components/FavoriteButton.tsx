@@ -46,7 +46,7 @@ const FavoriteButton = ({
       {isFavorited ? (
         <FavoriteFilledIcon
           className={customTwMerge(
-            "fill-orange h-5 w-5",
+            "fill-accent h-5 w-5",
             shouldAnimate ? "animate-favorite-pop" : "",
           )}
           onAnimationEnd={() => {
@@ -56,7 +56,7 @@ const FavoriteButton = ({
           }}
         />
       ) : (
-        <FavoriteIcon className="fill-text-primary group-hover:fill-orange h-5 w-5 transition-colors" />
+        <FavoriteIcon className="fill-text-muted group-hover:fill-accent h-5 w-5 transition-colors" />
       )}
     </button>
   );

@@ -16,39 +16,45 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="mx-auto flex w-full max-w-[1480px] flex-col items-center gap-2 py-3 md:gap-6 md:px-10 md:py-9">
-      <div className="border-gray-2 bg-surface-primary flex w-full flex-col gap-y-3 px-5 py-2 md:w-[600px] md:gap-y-6 md:rounded-lg md:border md:px-10 md:py-6">
-        <div className="bg-gray-2 flex rounded-lg p-1">
-          <button
-            type="button"
-            onClick={() => changeMode(AUTH_PAGE_MODE.LOGIN)}
-            className={`text-s14-l20 h-9 flex-1 cursor-pointer rounded-md transition-colors ${
-              mode === AUTH_PAGE_MODE.LOGIN
-                ? "text-orange bg-surface-primary shadow"
-                : "text-text-primary"
-            }`}
-          >
-            Log In
-          </button>
-
-          <button
-            type="button"
-            onClick={() => changeMode(AUTH_PAGE_MODE.REGISTER)}
-            className={`text-s14-l20 h-9 flex-1 cursor-pointer rounded-md transition-colors ${
-              mode === AUTH_PAGE_MODE.REGISTER
-                ? "text-orange bg-surface-primary shadow"
-                : "text-text-primary"
-            }`}
-          >
-            Register
-          </button>
-        </div>
-
+    <div className="mx-auto flex w-full max-w-[1480px] flex-col items-center px-3 pt-16 md:px-10 md:pt-24 lg:pt-32">
+      <div className="border-border-primary bg-surface-primary flex flex-col overflow-hidden rounded-xl border shadow-lg">
         {mode === AUTH_PAGE_MODE.LOGIN ? (
           <LoginForm />
         ) : (
           <RegisterForm changeMode={changeMode} />
         )}
+
+        <div className="bg-surface-muted border-border-secondary border-t px-10 py-6">
+          {mode === AUTH_PAGE_MODE.LOGIN ? (
+            <div className="group flex items-center justify-center gap-x-1">
+              <span className="text-s14-l20 text-text-secondary">
+                Don't have an account?
+              </span>
+              <button
+                className="cursor-pointer"
+                onClick={() => changeMode(AUTH_PAGE_MODE.REGISTER)}
+              >
+                <span className="text-s14-l20 text-primary font-medium group-hover:underline">
+                  Register
+                </span>
+              </button>
+            </div>
+          ) : (
+            <div className="group flex items-center justify-center gap-x-1">
+              <span className="text-s14-l20 text-text-secondary">
+                Already have an account?
+              </span>
+              <button
+                className="cursor-pointer"
+                onClick={() => changeMode(AUTH_PAGE_MODE.LOGIN)}
+              >
+                <span className="text-s14-l20 text-primary font-medium group-hover:underline">
+                  Log In
+                </span>
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

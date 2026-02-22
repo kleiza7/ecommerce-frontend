@@ -12,6 +12,7 @@ const GenericNavigationMenu = ({
   contentAlign = "left",
   contentOffsetY = 8,
   delayDuration = 0,
+  showArrow = true,
 }: {
   trigger: ReactNode;
   children: ReactNode;
@@ -22,6 +23,7 @@ const GenericNavigationMenu = ({
   contentAlign?: "left" | "center" | "right";
   contentOffsetY?: number;
   delayDuration?: number;
+  showArrow?: boolean;
 }) => {
   const alignClass =
     contentAlign === "center"
@@ -29,6 +31,13 @@ const GenericNavigationMenu = ({
       : contentAlign === "right"
         ? "right-0"
         : "left-0";
+
+  const arrowAlignClass =
+    contentAlign === "center"
+      ? "left-1/2 -translate-x-1/2"
+      : contentAlign === "right"
+        ? "right-4"
+        : "left-4";
 
   return (
     <NavigationMenu.Root
@@ -57,11 +66,19 @@ const GenericNavigationMenu = ({
           <NavigationMenu.Content
             style={{ marginTop: contentOffsetY }}
             className={customTwMerge(
-              "bg-surface-primary absolute top-full z-50 rounded-xl p-4 shadow-lg",
+              "bg-surface-primary border-border-primary absolute top-full z-50 rounded-xl border p-4 shadow-lg",
               alignClass,
               className,
             )}
           >
+            {showArrow && (
+              <div
+                className={customTwMerge(
+                  "bg-surface-primary border-border-primary absolute -top-2 h-3 w-3 rotate-45 border-t border-l",
+                  arrowAlignClass,
+                )}
+              />
+            )}
             {children}
           </NavigationMenu.Content>
         </NavigationMenu.Item>

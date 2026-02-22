@@ -1,4 +1,5 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { CreditCardIcon } from "../../../assets/icons";
 import GenericFormInput from "../../../shared/components/GenericFormInput";
 import GenericFormTextArea from "../../../shared/components/GenericFormTextArea";
 import InputErrorLabel from "../../../shared/components/InputErrorLabel";
@@ -15,7 +16,7 @@ export type CheckoutFormType = {
   receiverAddress: string;
   cardHolderName: string;
   cardNumber: string;
-  cardExpiry: string;
+  cardExpiryDate: string;
   cardCvc: string;
 };
 
@@ -39,7 +40,7 @@ const CheckoutForm = ({
       receiverAddress: "",
       cardHolderName: "",
       cardNumber: "",
-      cardExpiry: "",
+      cardExpiryDate: "",
       cardCvc: "",
     },
   });
@@ -50,36 +51,40 @@ const CheckoutForm = ({
       onSubmit={handleSubmit(onSubmit)}
       className="relative flex flex-col gap-y-6"
     >
-      <div className="border-gray-2 flex flex-col rounded-md border">
-        <div className="border-gray-2 bg-gray-3 border-b px-5 py-3">
-          <span className="text-s18-l28 text-text-primary font-medium">
+      <div className="border-border-primary flex flex-col rounded-md border">
+        <div className="border-border-primary bg-surface-muted border-b px-6 py-4">
+          <span className="text-s16-l24 text-text-primary font-semibold">
             Receiver Information
           </span>
         </div>
 
-        <div className="flex flex-col gap-y-3 px-5 py-4">
-          <div className="relative flex flex-col">
-            <InputLabel label="Full Name" hasAsterisk />
-            <GenericFormInput
-              field="receiverFullName"
-              control={control}
-              required
-              hasError={!!errors.receiverFullName}
-              disabled={isPending}
-            />
-            <InputErrorLabel message={errors.receiverFullName?.message} />
-          </div>
+        <div className="flex flex-col gap-y-6 p-8">
+          <div className="flex gap-x-6">
+            <div className="relative flex flex-1 flex-col">
+              <InputLabel label="Full Name" hasAsterisk />
+              <GenericFormInput
+                field="receiverFullName"
+                control={control}
+                required
+                hasError={!!errors.receiverFullName}
+                disabled={isPending}
+                placeholder="Enter your full name"
+              />
+              <InputErrorLabel message={errors.receiverFullName?.message} />
+            </div>
 
-          <div className="relative flex flex-col">
-            <InputLabel label="Phone Number" hasAsterisk />
-            <GenericFormInput
-              field="receiverPhoneNumber"
-              control={control}
-              required
-              hasError={!!errors.receiverPhoneNumber}
-              disabled={isPending}
-            />
-            <InputErrorLabel message={errors.receiverPhoneNumber?.message} />
+            <div className="relative flex flex-1 flex-col">
+              <InputLabel label="Phone Number" hasAsterisk />
+              <GenericFormInput
+                field="receiverPhoneNumber"
+                control={control}
+                required
+                hasError={!!errors.receiverPhoneNumber}
+                disabled={isPending}
+                placeholder="e.g. +90 5xx xxx xx xx"
+              />
+              <InputErrorLabel message={errors.receiverPhoneNumber?.message} />
+            </div>
           </div>
 
           <div className="relative flex flex-col">
@@ -91,20 +96,21 @@ const CheckoutForm = ({
               rows={3}
               hasError={!!errors.receiverAddress}
               disabled={isPending}
+              placeholder="Enter your full delivery address"
             />
             <InputErrorLabel message={errors.receiverAddress?.message} />
           </div>
         </div>
       </div>
 
-      <div className="border-gray-2 flex flex-col rounded-md border">
-        <div className="border-gray-2 bg-gray-3 border-b px-5 py-3">
-          <span className="text-s18-l28 text-text-primary font-medium">
-            Card Information
+      <div className="border-border-primary flex flex-col rounded-md border">
+        <div className="border-border-primary bg-surface-muted border-b px-6 py-4">
+          <span className="text-s16-l24 text-text-primary font-semibold">
+            Payment Details
           </span>
         </div>
 
-        <div className="flex flex-col gap-y-3 px-5 py-4">
+        <div className="flex flex-col gap-y-6 p-8">
           <div className="relative flex flex-col">
             <InputLabel label="Card Holder Name" hasAsterisk />
             <GenericFormInput
@@ -113,6 +119,7 @@ const CheckoutForm = ({
               required
               hasError={!!errors.cardHolderName}
               disabled={isPending}
+              placeholder="Enter the name on your card"
             />
             <InputErrorLabel message={errors.cardHolderName?.message} />
           </div>
@@ -133,15 +140,18 @@ const CheckoutForm = ({
               }}
               hasError={!!errors.cardNumber}
               disabled={isPending}
+              placeholder="0000 0000 0000 0000"
             />
+            <CreditCardIcon className="fill-text-disabled absolute right-2 bottom-2" />
+
             <InputErrorLabel message={errors.cardNumber?.message} />
           </div>
 
-          <div className="flex gap-x-4">
+          <div className="flex gap-x-6">
             <div className="relative flex flex-1 flex-col">
-              <InputLabel label="Expiry (MM/YY)" hasAsterisk />
+              <InputLabel label="Expiry Date" hasAsterisk />
               <GenericFormInput
-                field="cardExpiry"
+                field="cardExpiryDate"
                 control={control}
                 required
                 minLength={4}
@@ -152,10 +162,11 @@ const CheckoutForm = ({
                     message: "Invalid expiry format",
                   },
                 }}
-                hasError={!!errors.cardExpiry}
+                hasError={!!errors.cardExpiryDate}
                 disabled={isPending}
+                placeholder="MM/YY"
               />
-              <InputErrorLabel message={errors.cardExpiry?.message} />
+              <InputErrorLabel message={errors.cardExpiryDate?.message} />
             </div>
 
             <div className="relative flex flex-1 flex-col">
@@ -174,6 +185,7 @@ const CheckoutForm = ({
                 }}
                 hasError={!!errors.cardCvc}
                 disabled={isPending}
+                placeholder="***"
               />
               <InputErrorLabel message={errors.cardCvc?.message} />
             </div>

@@ -14,6 +14,7 @@ const CategoriesMegaMenu = () => {
     <GenericNavigationMenu
       open={isNavigationMenuOpen}
       setOpen={setIsNavigationMenuOpen}
+      showArrow={false}
       trigger={
         <span className="flex shrink-0 items-center gap-2 font-semibold">
           <MenuIcon className="fill-text-primary" />

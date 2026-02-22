@@ -47,7 +47,7 @@ const GenericSelect = <T,>({
     >
       <Select.Trigger
         className={customTwMerge(
-          "text-s14-l20 text-text-primary disabled:bg-gray-3 border-gray-2 flex h-10 w-full cursor-pointer items-center justify-between rounded-md border px-3 outline-none disabled:cursor-not-allowed disabled:opacity-60",
+          "text-s14-l20 text-text-primary disabled:bg-gray-3 border-border-primary flex h-10 w-full cursor-pointer items-center justify-between rounded-md border px-3 outline-none disabled:cursor-not-allowed disabled:opacity-60",
           className,
         )}
       >
@@ -73,21 +73,21 @@ const GenericSelect = <T,>({
           position="popper"
           align="start"
           sideOffset={4}
-          className="bg-surface-primary border-gray-2 z-50 min-w-(--radix-select-trigger-width) rounded-md border shadow-md"
+          className="bg-surface-primary border-border-primary z-50 min-w-(--radix-select-trigger-width) rounded-md border shadow-md"
         >
           <Select.Viewport className="max-h-60 overflow-y-auto p-1">
             {options.map((option) => (
               <Select.Item
                 key={option.label}
                 value={option.label}
-                className="text-s14-l20 text-text-primary data-[state=checked]:bg-gray-3 hover:bg-gray-3 relative flex cursor-pointer items-center rounded p-2 outline-none select-none"
+                className="text-s14-l20 text-text-primary data-[state=checked]:bg-primary/10 data-[state=checked]:text-primary hover:bg-primary/10 hover:text-primary relative flex cursor-pointer items-center rounded p-2 outline-none select-none"
               >
                 <Select.ItemText className="truncate">
                   {option.label}
                 </Select.ItemText>
 
                 <Select.ItemIndicator className="absolute right-2 inline-flex items-center">
-                  <CheckIcon className="h-4 w-4" />
+                  <CheckIcon className="fill-primary h-4 w-4" />
                 </Select.ItemIndicator>
               </Select.Item>
             ))}

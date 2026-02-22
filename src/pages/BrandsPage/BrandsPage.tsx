@@ -33,6 +33,7 @@ const BrandsPage = () => {
         headerName: "Brand Name",
       },
       {
+        headerName: "Action",
         colId: "rowActions",
         pinned: "right",
         width: 80,
@@ -55,7 +56,7 @@ const BrandsPage = () => {
                   onClick={() => openUpdateBrandPortal(params.data!.id)}
                   className="flex h-8 w-8 cursor-pointer items-center justify-center"
                 >
-                  <EditNoteIcon className="fill-orange" />
+                  <EditNoteIcon className="fill-primary" />
                 </button>
               </GenericTooltip>
             </div>
@@ -95,9 +96,14 @@ const BrandsPage = () => {
     <>
       <div className="flex flex-1 flex-col gap-5">
         <div className="flex items-center justify-between">
-          <span className="text-s24-l32 xl:text-s28-l36 text-text-primary font-semibold">
-            Brands ({brands.length})
-          </span>
+          <div className="flex items-end gap-x-1">
+            <span className="text-s24-l32 xl:text-s28-l36 text-text-primary leading-none font-semibold">
+              Brands
+            </span>
+            <span className="text-text-disabled text-s16-l24 xl:text-s20-l28">
+              ({brands.length})
+            </span>
+          </div>
 
           <button
             type="button"

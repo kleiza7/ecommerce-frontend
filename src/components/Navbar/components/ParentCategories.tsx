@@ -33,13 +33,15 @@ const ParentCategories = () => {
                 });
               }}
               className={`text-s14-l20 relative flex h-8 shrink-0 items-center font-medium transition-colors ${
-                isActive ? "text-orange" : "hover:text-orange text-text-primary"
+                isActive
+                  ? "text-primary"
+                  : "hover:text-primary text-text-secondary cursor-pointer"
               }`}
             >
               {parent.label}
 
               {isActive && (
-                <div className="bg-orange absolute bottom-0 left-0 h-0.5 w-full rounded-full" />
+                <div className="bg-primary absolute bottom-0 left-0 h-0.5 w-full rounded-full" />
               )}
             </button>
           );

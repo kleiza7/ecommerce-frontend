@@ -98,21 +98,25 @@ const ProductsFilterSidebar = ({
   }, [sellers, sellerSearch]);
 
   return (
-    <aside className="text-text-primary text-s14-l20">
-      <FilterSection title="Category" defaultOpen>
-        <div className="flex flex-col gap-2 px-[5px]">
+    <aside className="flex flex-col gap-y-3">
+      <FilterSection title="CATEGORY">
+        <div className="flex flex-col gap-y-1">
           {visibleCategories.map((category) => (
             <button
               key={category.id}
               onClick={() => onSelectCategory(category.slug)}
-              className="group flex w-full cursor-pointer items-center justify-between"
+              className="group hover:bg-primary/10 relative flex h-7 w-full cursor-pointer items-center justify-between rounded-sm pl-3"
             >
+              {selectedCategorySlug === category.slug && (
+                <div className="bg-primary absolute top-0 left-0 h-full w-1" />
+              )}
+
               <span
                 className={customTwMerge(
                   "text-s14-l20 transition-colors",
                   selectedCategorySlug === category.slug
-                    ? "text-orange font-semibold"
-                    : "text-text-primary group-hover:text-orange",
+                    ? "text-primary font-semibold"
+                    : "text-text-primary group-hover:text-primary",
                 )}
               >
                 {category.name}
@@ -123,8 +127,8 @@ const ProductsFilterSidebar = ({
                   className={customTwMerge(
                     "h-4 w-4 rotate-90 transition-colors",
                     selectedCategorySlug === category.slug
-                      ? "fill-orange"
-                      : "fill-gray-7 group-hover:fill-orange",
+                      ? "fill-primary"
+                      : "fill-gray-7 group-hover:fill-primary",
                   )}
                 />
               )}
@@ -133,8 +137,8 @@ const ProductsFilterSidebar = ({
         </div>
       </FilterSection>
 
-      <FilterSection title="Brand" defaultOpen>
-        <div className="flex flex-col gap-2.5">
+      <FilterSection title="BRAND">
+        <div className="flex flex-col gap-2.5 pl-3">
           <input
             type="text"
             placeholder="Search Brand"
@@ -146,7 +150,7 @@ const ProductsFilterSidebar = ({
             )}
           />
 
-          <div className="flex max-h-64 flex-col gap-2 overflow-y-auto px-[5px] pr-1">
+          <div className="flex max-h-64 flex-col gap-2 overflow-y-auto pr-1">
             {filteredBrands.map((brand) => (
               <label
                 key={brand.id}
@@ -156,19 +160,23 @@ const ProductsFilterSidebar = ({
                   checked={selectedBrandSlugs.includes(brand.slug)}
                   onCheckedChange={() => toggleBrand(brand.slug)}
                 />
-                <span className="select-none">{brand.name}</span>
+                <span className="text-text-primary text-s14-l20 select-none">
+                  {brand.name}
+                </span>
               </label>
             ))}
 
             {filteredBrands.length === 0 && (
-              <div className="text-gray-7 text-s12-l16">No result found.</div>
+              <div className="text-text-disabled text-s12-l16">
+                No result found.
+              </div>
             )}
           </div>
         </div>
       </FilterSection>
 
-      <FilterSection title="Seller" defaultOpen>
-        <div className="flex flex-col gap-2.5">
+      <FilterSection title="SELLER">
+        <div className="flex flex-col gap-2.5 pl-3">
           <input
             type="text"
             placeholder="Search Seller"
@@ -180,7 +188,7 @@ const ProductsFilterSidebar = ({
             )}
           />
 
-          <div className="flex max-h-64 flex-col gap-2 overflow-y-auto px-[5px] pr-1">
+          <div className="flex max-h-64 flex-col gap-2 overflow-y-auto pr-1">
             {filteredSellers.map((seller) => (
               <label
                 key={seller.id}
@@ -190,12 +198,16 @@ const ProductsFilterSidebar = ({
                   checked={selectedSellerIds.includes(seller.id)}
                   onCheckedChange={() => toggleSeller(seller.id)}
                 />
-                <span className="select-none">{seller.name}</span>
+                <span className="text-text-primary text-s14-l20 select-none">
+                  {seller.name}
+                </span>
               </label>
             ))}
 
             {filteredSellers.length === 0 && (
-              <div className="text-gray-7 text-s12-l16">No result found.</div>
+              <div className="text-text-disabled text-s12-l16">
+                No result found.
+              </div>
             )}
           </div>
         </div>

@@ -53,7 +53,7 @@ const CategoryBreadcrumb = ({
         {breadcrumb.map((item, index) => (
           <li key={item.id} className="flex items-center gap-1">
             {index !== 0 && (
-              <KeyboardArrowUpIcon className="fill-orange h-4 w-4 rotate-90" />
+              <KeyboardArrowUpIcon className="fill-primary h-4 w-4 rotate-90" />
             )}
 
             <button
@@ -75,9 +75,9 @@ const CategoryBreadcrumb = ({
         <button
           type="button"
           onClick={clearCategoryFilters}
-          className="text-orange text-s12-l16 cursor-pointer font-semibold hover:underline"
+          className="text-primary text-s12-l16 cursor-pointer font-semibold hover:underline"
         >
-          Clear Filter
+          Reset Filters
         </button>
       )}
     </nav>

@@ -37,8 +37,8 @@ const ScrollToTopButton = () => {
       className={customTwMerge(
         "fixed right-5 bottom-5 z-40 cursor-pointer",
         "flex h-11 w-11 items-center justify-center rounded-full",
-        "bg-orange shadow-lg",
-        "hover:bg-orange-dark transition",
+        "bg-primary shadow-lg",
+        "hover:bg-primary-dark transition",
       )}
       aria-label="Scroll to top"
     >

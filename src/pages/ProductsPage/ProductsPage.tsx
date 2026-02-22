@@ -136,10 +136,8 @@ const ProductsPage = () => {
   const rangeStart = Math.max(1, rangeEnd - PAGE_LIMIT + 1);
 
   return (
-    <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-5 pb-4 md:px-10 md:py-4">
-      <CategoryBreadcrumb selectedCategoryId={selectedCategoryId} />
-
-      <div className="flex gap-6">
+    <div className="mx-auto flex w-full max-w-[1480px] flex-col pb-4 md:px-6 md:py-8">
+      <div className="flex gap-x-8">
         <aside className="hidden w-[200px] shrink-0 md:block">
           <ProductsFilterSidebar
             categories={categories}
@@ -149,7 +147,9 @@ const ProductsPage = () => {
         </aside>
 
         <main className="flex-1">
-          <div className="flex flex-col gap-3 md:gap-6">
+          <div className="flex flex-col gap-3 md:gap-4">
+            <CategoryBreadcrumb selectedCategoryId={selectedCategoryId} />
+
             <ProductListHeader
               selectedCategoryName={selectedCategoryName}
               totalCount={totalCount}

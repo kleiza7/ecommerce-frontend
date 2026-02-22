@@ -12,8 +12,8 @@ const BaseLeftMenu = ({ routes }: { routes: Route[] }) => {
             className={({ isActive }) =>
               [
                 "flex h-12 items-center rounded-md px-4 transition-colors",
-                "hover:bg-orange/10 hover:text-orange",
-                isActive ? "bg-orange/10 text-orange" : "text-text-secondary",
+                "hover:bg-primary/10 hover:text-primary",
+                isActive ? "bg-primary/10 text-primary" : "text-text-secondary",
               ].join(" ")
             }
           >

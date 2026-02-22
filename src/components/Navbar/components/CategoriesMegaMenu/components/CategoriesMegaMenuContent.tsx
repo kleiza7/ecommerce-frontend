@@ -45,10 +45,10 @@ const CategoriesMegaMenuContent = ({ close }: { close: () => void }) => {
               <li
                 key={parent.id}
                 onMouseEnter={() => setActiveParent(parent)}
-                className={`flex h-12 cursor-pointer items-center justify-between rounded-md px-3 transition-colors ${
+                className={`flex h-12 items-center justify-between rounded-md px-3 transition-colors ${
                   isActive
-                    ? "bg-orange/10 text-orange"
-                    : "text-text-primary hover:bg-orange/10 hover:text-orange"
+                    ? "bg-primary/10 text-primary"
+                    : "text-text-primary hover:bg-primary/10 hover:text-primary"
                 }`}
               >
                 <span className="text-s14-l20 font-semibold">
@@ -56,7 +56,7 @@ const CategoriesMegaMenuContent = ({ close }: { close: () => void }) => {
                 </span>
 
                 {isActive && (
-                  <KeyboardArrowUpIcon className="fill-orange h-4 w-4 rotate-90" />
+                  <KeyboardArrowUpIcon className="fill-primary h-4 w-4 rotate-90" />
                 )}
               </li>
             );
@@ -78,10 +78,10 @@ const CategoriesMegaMenuContent = ({ close }: { close: () => void }) => {
                     });
                     close();
                   }}
-                  className="text-s14-l20 text-orange flex items-center gap-x-1 font-medium hover:underline"
+                  className="text-s14-l20 text-primary flex cursor-pointer items-center gap-x-1 font-medium hover:underline"
                 >
                   <span>{child.name}</span>
-                  <KeyboardArrowUpIcon className="fill-orange h-4 w-4 rotate-90" />
+                  <KeyboardArrowUpIcon className="fill-primary h-4 w-4 rotate-90" />
                 </button>
 
                 {child.children.length > 0 && (
@@ -102,8 +102,8 @@ const CategoriesMegaMenuContent = ({ close }: { close: () => void }) => {
                             }}
                             className={`text-s14-l20 block transition-colors ${
                               isSubActive
-                                ? "text-orange underline"
-                                : "text-text-primary hover:text-orange hover:underline"
+                                ? "text-primary underline"
+                                : "text-text-primary hover:text-primary cursor-pointer hover:underline"
                             }`}
                           >
                             {sub.name}

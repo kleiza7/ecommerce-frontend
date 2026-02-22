@@ -2,7 +2,11 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { CloseIcon, FavoriteFilledIcon, SearchIcon } from "../../assets/icons";
-import { INPUT_BASE } from "../../shared/constants/CommonTailwindClasses.constants";
+import {
+  BUTTON_PRIMARY,
+  BUTTON_SIZE_X_LARGE,
+  INPUT_BASE,
+} from "../../shared/constants/CommonTailwindClasses.constants";
 import { ROUTES } from "../../shared/constants/Routes.constants";
 import { customTwMerge } from "../../shared/utils/Tailwind.util";
 import { useFavoriteStore } from "../../stores/FavoriteStore";
@@ -36,7 +40,7 @@ const MyFavoritesPage = () => {
 
         <Link
           to={ROUTES.PRODUCTS_PAGE.build()}
-          className="bg-orange hover:bg-orange-dark text-surface-primary rounded-lg px-6 py-3 font-semibold transition"
+          className={customTwMerge(BUTTON_PRIMARY, BUTTON_SIZE_X_LARGE)}
         >
           Continue Shopping
         </Link>

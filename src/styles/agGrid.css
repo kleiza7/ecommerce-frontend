@@ -1,2 +1,41 @@
 @import "ag-grid-community/styles/ag-grid.css";
 @import "ag-grid-community/styles/ag-theme-alpine.css";
+
+.ag-root-wrapper,
+.ag-header {
+  border-color: var(--color-border-secondary);
+}
+
+.ag-header-container,
+.ag-pinned-right-header {
+  background-color: var(--color-surface-muted);
+}
+
+.ag-header-cell-text {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--color-text-muted);
+}
+
+.ag-icon {
+  color: var(--color-text-muted);
+}
+
+.ag-row {
+  background-color: var(--color-surface-primary);
+  border-color: var(--color-border-secondary);
+}
+
+.ag-cell {
+  display: flex;
+  align-items: center;
+}
+
+.ag-pinned-right-header,
+.ag-cell {
+  border-left: 0px !important;
+}
+
+.ag-row-hover {
+  background-color: color-mix(in srgb, var(--color-primary) 5%, transparent);
+}

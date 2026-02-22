@@ -6,8 +6,8 @@ const CheckoutPageSkeleton = () => {
       <div className="flex flex-col gap-4 md:gap-6 lg:gap-8">
         <Skeleton withShimmer className="h-8 w-40" />
 
-        <div className="flex items-start gap-x-5">
-          <div className="flex min-w-0 flex-1 flex-col gap-4 md:gap-6 lg:gap-8">
+        <div className="flex items-start gap-x-8">
+          <div className="flex min-w-0 flex-1 flex-col gap-4 md:gap-6">
             <div className="border-gray-2 flex flex-col rounded-md border">
               <div className="border-gray-2 bg-gray-3 border-b px-5 py-3">
                 <Skeleton withShimmer className="h-6 w-56" />
@@ -74,7 +74,7 @@ const CheckoutPageSkeleton = () => {
             </div>
           </div>
 
-          <div className="bg-surface-primary border-gray-2 fixed inset-x-0 bottom-0 z-10 flex w-full shrink-0 flex-col gap-4 border-t p-6 lg:static lg:w-[350px] lg:rounded-lg lg:border">
+          <div className="bg-surface-primary border-gray-2 fixed inset-x-0 bottom-0 z-10 flex w-full shrink-0 flex-col gap-4 border-t p-6 lg:static lg:w-[440px] lg:rounded-lg lg:border lg:shadow-lg">
             <Skeleton withShimmer className="h-7 w-40" />
 
             <div className="flex justify-between">
@@ -89,7 +89,7 @@ const CheckoutPageSkeleton = () => {
               <Skeleton withShimmer className="h-6 w-24" />
             </div>
 
-            <Skeleton withShimmer className="h-[52px] w-full rounded" />
+            <Skeleton withShimmer className="h-[56px] w-full rounded-xl" />
           </div>
         </div>
       </div>

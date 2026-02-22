@@ -1,7 +1,12 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ORDER_STATUS } from "../../api/enums/OrderStatus.enum";
-import { CloseIcon, PackageIcon, SearchIcon } from "../../assets/icons";
+import {
+  CalendarIcon,
+  CloseIcon,
+  PackageIcon,
+  SearchIcon,
+} from "../../assets/icons";
 import { useCurrenciesGetAll } from "../../hooks/useCurrenciesGetAll";
 import { useOrdersGetOrdersListByUser } from "../../hooks/useOrdersGetOrdersListByUser";
 import GenericSelect from "../../shared/components/GenericSelect";
@@ -36,7 +41,7 @@ const STATUS_FILTER_OPTIONS: {
   label: string;
   value: ORDER_STATUS | "ALL";
 }[] = [
-  { label: "All", value: "ALL" },
+  { label: "All Orders", value: "ALL" },
   ...Object.values(ORDER_STATUS).map((status) => ({
     label: ORDER_STATUS_TEXT_PAIRS[status],
     value: status,
@@ -97,21 +102,20 @@ const MyOrdersPage = () => {
   }, [currencies]);
 
   return (
-    <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-3 p-3 lg:gap-5 lg:px-10 lg:py-6">
-      <div className="border-gray-1 flex flex-col gap-y-2 lg:flex-row lg:items-center lg:justify-between lg:gap-y-0 lg:rounded-md lg:border lg:px-5 lg:py-4">
-        <span className="text-s18-l28 text-text-primary">My Orders</span>
+    <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-3 p-3 lg:gap-8 lg:p-10">
+      <span className="text-s32-l40 text-text-primary font-semibold">
+        My Orders
+      </span>
 
-        <div className="relative w-full lg:w-[330px]">
-          <SearchIcon className="fill-orange absolute top-1/2 left-3 h-6 w-6 -translate-y-1/2" />
+      <div className="flex items-center justify-between gap-x-4">
+        <div className="relative w-full">
+          <SearchIcon className="fill-text-disabled absolute top-1/2 left-3 h-6 w-6 -translate-y-1/2" />
 
           <input
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
             placeholder="Search product name"
-            className={customTwMerge(
-              INPUT_BASE,
-              "bg-gray-3 placeholder:text-gray-6 w-full border-none px-10",
-            )}
+            className={customTwMerge(INPUT_BASE, "w-full px-10 shadow-sm")}
           />
 
           {searchText && (
@@ -120,63 +124,74 @@ const MyOrdersPage = () => {
               onClick={() => setSearchText("")}
               className="absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 cursor-pointer"
             >
-              <CloseIcon className="fill-text-primary h-4 w-4" />
+              <CloseIcon className="fill-text-muted h-4 w-4" />
             </button>
           )}
-        </div>
-      </div>
-
-      <div className="flex items-center justify-between gap-2">
-        <div className="hidden items-center gap-3 lg:flex">
-          <button
-            onClick={() => setSelectedStatus("ALL")}
-            className={`text-s14-l20 h-8 cursor-pointer rounded-full border px-4 ${
-              selectedStatus === "ALL"
-                ? "border-orange text-orange"
-                : "text-gray-9"
-            }`}
-          >
-            All
-          </button>
-
-          {Object.values(ORDER_STATUS).map((status) => (
-            <button
-              key={status}
-              onClick={() => setSelectedStatus(status)}
-              className={`text-s14-l20 h-8 cursor-pointer rounded-full border px-4 ${
-                selectedStatus === status
-                  ? "border-orange text-orange"
-                  : "text-gray-9"
-              }`}
-            >
-              {ORDER_STATUS_TEXT_PAIRS[status]}
-            </button>
-          ))}
         </div>
 
         <GenericSelect<ORDER_STATUS | "ALL">
           value={selectedStatus}
           options={STATUS_FILTER_OPTIONS}
           onChange={setSelectedStatus}
-          className="w-full lg:hidden"
+          className="w-full shadow-sm lg:hidden"
         />
 
         <GenericSelect<DATE_FILTER>
           value={dateFilter}
           options={DATE_FILTER_OPTIONS}
           onChange={setDateFilter}
-          className="w-full lg:w-[200px]"
+          className="w-full shadow-sm lg:w-[200px]"
+          triggerIcon={<CalendarIcon className="fill-text-disabled h-5 w-5" />}
         />
       </div>
 
+      <div className="border-border-secondary hidden items-center gap-6 border-b lg:flex">
+        {STATUS_FILTER_OPTIONS.map((option) => {
+          const count =
+            option.value === "ALL"
+              ? orders.length
+              : orders.filter((order) => order.status === option.value).length;
+
+          const isSelected = selectedStatus === option.value;
+
+          return (
+            <button
+              key={option.value}
+              onClick={() => setSelectedStatus(option.value)}
+              className={`text-s14-l20 flex cursor-pointer items-center gap-x-2 border-b-2 px-2 pt-3 pb-2 ${
+                isSelected
+                  ? "text-primary border-primary"
+                  : "text-text-muted border-transparent"
+              }`}
+            >
+              {option.label}
+
+              <div
+                className={`flex h-5 w-5 items-center justify-center rounded-full ${
+                  isSelected ? "bg-primary/10" : "bg-surface-secondary"
+                }`}
+              >
+                <span
+                  className={`text-s12-l16 font-medium ${
+                    isSelected ? "text-primary" : "text-text-muted"
+                  }`}
+                >
+                  {count}
+                </span>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+
       {isLoading ? (
-        <div className="flex min-h-0 flex-1 flex-col gap-y-3 overflow-y-auto lg:gap-y-5">
+        <div className="flex min-h-0 flex-1 flex-col gap-y-3 overflow-y-auto lg:gap-y-6">
           {Array.from({ length: 5 }).map((_, index) => (
             <OrderCardSkeleton key={index} />
           ))}
         </div>
       ) : filteredOrders.length > 0 ? (
-        <div className="flex min-h-0 flex-1 flex-col gap-y-3 overflow-y-auto lg:gap-y-5">
+        <div className="flex min-h-0 flex-1 flex-col gap-y-3 overflow-y-auto lg:gap-y-6">
           {filteredOrders.map((order) => (
             <OrderCard
               key={order.id}

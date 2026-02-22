@@ -6,7 +6,7 @@ import { ROUTES } from "../../shared/constants/Routes.constants";
 import { USER_DOMAIN } from "../../shared/enums/UserDomain.enum";
 import { useUserStore } from "../../stores/UserStore";
 import AdminNavigationDrawer from "./components/AdminNavigationDrawer";
-import AuthNavigationMenu from "./components/AuthNavigationMenu";
+import AuthPageLink from "./components/AuthPageLink";
 import CategoriesMegaMenu from "./components/CategoriesMegaMenu/CategoriesMegaMenu";
 import CategoriesNavigationDrawer from "./components/CategoriesNavigationDrawer/CategoriesNavigationDrawer";
 import GlobalSearchInput from "./components/GlobalSearchInput";
@@ -81,11 +81,7 @@ const Navbar = () => {
               )}
 
               <div className="flex shrink-0 gap-x-6">
-                {isAuthenticated ? (
-                  <UserNavigationMenu />
-                ) : (
-                  <AuthNavigationMenu />
-                )}
+                {isAuthenticated ? <UserNavigationMenu /> : <AuthPageLink />}
 
                 {isGuestOrUser && (
                   <>
