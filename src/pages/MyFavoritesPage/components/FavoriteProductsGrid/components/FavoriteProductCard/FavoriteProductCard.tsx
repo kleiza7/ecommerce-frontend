@@ -216,10 +216,6 @@ const FavoriteProductCard = ({
           <span className="text-text-primary text-s14-l20 font-bold">
             {product.brand.name}
           </span>
-
-          <span className="text-text-muted text-s12-l16 line-clamp-2 truncate">
-            {product.description}
-          </span>
         </div>
 
         <div className="text-accent text-s18-l28 mt-auto font-bold">

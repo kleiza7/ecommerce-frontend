@@ -1,5 +1,8 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ShoppingCartIcon, TrashSweepIcon } from "../../assets/icons";
+import { useCartActions } from "../../hooks/useCartActions";
+import GenericConfirmationPortal from "../../shared/components/GenericConfirmationPortal/GenericConfirmationPortal";
 import {
   BUTTON_PRIMARY,
   BUTTON_SIZE_X_LARGE,
@@ -12,6 +15,10 @@ import CartSummary from "./components/CartSummary";
 
 const CartPage = () => {
   const cartItems = useCartStore((state) => state.items);
+  const { clearCart } = useCartActions();
+
+  const [isConfirmationPortalOpen, setIsConfirmationPortalOpen] =
+    useState(false);
 
   return (
     <div className="mx-auto flex w-full max-w-[1380px] flex-col px-3 pt-3 pb-64 md:px-10 md:pt-6 lg:py-10">
@@ -30,8 +37,10 @@ const CartPage = () => {
                 </span>
               </div>
 
-              {/* // TODO: Implement remove all functionality */}
-              <button className="flex cursor-pointer items-center gap-x-1">
+              <button
+                onClick={() => setIsConfirmationPortalOpen(true)}
+                className="flex cursor-pointer items-center gap-x-1 disabled:opacity-40"
+              >
                 <TrashSweepIcon className="fill-text-muted h-5 w-5" />
                 <span className="text-s14-l20 text-text-muted font-medium">
                   Remove all
@@ -59,6 +68,16 @@ const CartPage = () => {
             Start Shopping
           </Link>
         </div>
+      )}
+
+      {cartItems.length !== 0 && (
+        <GenericConfirmationPortal
+          open={isConfirmationPortalOpen}
+          setOpen={setIsConfirmationPortalOpen}
+          title="Remove All Items"
+          description="Are you sure you want to remove all items from your cart?"
+          onConfirm={() => clearCart()}
+        />
       )}
     </div>
   );

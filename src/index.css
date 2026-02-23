@@ -150,8 +150,8 @@ body {
   --color-status-warning-muted: #fff7ed;
 
   /* Error / Failed (Red) */
-  --color-status-error-primary: #ef4444;
-  --color-status-error-secondary: #fecaca;
+  --color-status-error-primary: #dc2626;
+  --color-status-error-secondary: #fee2e2;
   --color-status-error-muted: #fef2f2;
 
   /* Cancelled / Neutral (Gray) */

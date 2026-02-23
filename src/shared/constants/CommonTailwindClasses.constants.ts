@@ -10,7 +10,7 @@ export const BUTTON_SIZE_LARGE =
 export const BUTTON_SIZE_X_LARGE =
   "h-12 px-6 gap-x-4 rounded-lg text-s16-l24 font-medium";
 
-export const BUTTON_BASE = `${BUTTON_SIZE_MEDIUM} flex items-center justify-center cursor-pointer transition-colors duration-200 disabled:cursor-not-allowed`;
+export const BUTTON_BASE = `${BUTTON_SIZE_MEDIUM} flex items-center justify-center cursor-pointer transition-colors duration-200 disabled:cursor-not-allowed fill-current`;
 
 export const BUTTON_PRIMARY = `${BUTTON_BASE} bg-primary text-surface-primary hover:bg-primary-dark disabled:bg-primary/40`;
 

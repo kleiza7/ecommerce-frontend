@@ -6,26 +6,19 @@ import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
 import "yet-another-react-lightbox/styles.css";
 import {
-  AssignmentReturnIcon,
   CancelIcon,
   CheckCircleIcon,
   ErrorIcon,
   KeyboardArrowUpIcon,
-  LocalShippingIcon,
-  ShieldIcon,
   ShoppingCartIcon,
-  StarFilledIcon,
-  StarHalfFilledIcon,
-  StarIcon,
-  VerifiedUserIcon,
 } from "../../assets/icons";
 import { useCartActions } from "../../hooks/useCartActions";
 import { useProductsGetById } from "../../hooks/useProductsGetById";
 import CategoryBreadcrumb from "../../shared/components/CategoryBreadcrumb";
 import FavoriteButton from "../../shared/components/FavoriteButton";
 import GenericTooltip from "../../shared/components/GenericTooltip";
+import ProductRatingSummary from "../../shared/components/ProductRatingSummary";
 import {
-  BUTTON_ACCENT,
   BUTTON_PRIMARY,
   BUTTON_SIZE_X_LARGE,
 } from "../../shared/constants/CommonTailwindClasses.constants";
@@ -34,13 +27,10 @@ import { customTwMerge } from "../../shared/utils/Tailwind.util";
 import { useCartStore } from "../../stores/CartStore";
 import ProductDetailPageSkeleton from "./components/ProductDetailPageSkeleton";
 import ProductDetailTabs from "./components/ProductDetailTabs/ProductDetailTabs";
+import ProductTrustBadges from "./components/ProductTrustBadges";
 
 const DRAG_THRESHOLD = 60;
 const CLICK_CANCEL_THRESHOLD = 5;
-
-/* DUMMY RATING VALUES */
-const DUMMY_RATING_AVG = 4.35;
-const DUMMY_REVIEWS_COUNT = 1240;
 
 const ProductDetailPage = () => {
   const navigate = useNavigate();
@@ -174,12 +164,6 @@ const ProductDetailPage = () => {
     isDraggingRef.current = false;
   };
 
-  /* STAR CALCULATION LOGIC */
-  const fullStars = Math.floor(DUMMY_RATING_AVG);
-  const decimalPart = DUMMY_RATING_AVG - fullStars;
-  const hasHalfStar = decimalPart >= 0.25 && decimalPart < 0.75;
-  const roundedUpFullStars = decimalPart >= 0.75 ? fullStars + 1 : fullStars;
-
   return (
     <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-y-6 pb-4 md:px-10 md:py-8">
       <CategoryBreadcrumb selectedCategoryId={product.category.id} />
@@ -297,48 +281,10 @@ const ProductDetailPage = () => {
               </span>
             </div>
 
-            <div className="flex items-center gap-x-3">
-              <div className="flex items-center gap-x-0.5">
-                {Array.from({ length: 5 }).map((_, index) => {
-                  if (index < roundedUpFullStars && !hasHalfStar) {
-                    return (
-                      <StarFilledIcon
-                        key={index}
-                        className="fill-rating-primary h-5 w-5"
-                      />
-                    );
-                  }
-
-                  if (index < fullStars) {
-                    return (
-                      <StarFilledIcon
-                        key={index}
-                        className="fill-rating-primary h-5 w-5"
-                      />
-                    );
-                  }
-
-                  if (index === fullStars && hasHalfStar) {
-                    return (
-                      <StarHalfFilledIcon
-                        key={index}
-                        className="fill-rating-primary h-5 w-5"
-                      />
-                    );
-                  }
-
-                  return (
-                    <StarIcon
-                      key={index}
-                      className="fill-rating-primary h-5 w-5"
-                    />
-                  );
-                })}
-              </div>
-              <span className="text-s14-20 text-text-muted">
-                ({DUMMY_REVIEWS_COUNT} Reviews)
-              </span>
-            </div>
+            <ProductRatingSummary
+              avgRating={product.avgRating}
+              reviewCount={product.reviewCount}
+            />
 
             <div className="flex flex-col gap-y-6">
               <div className="flex items-center gap-x-1">
@@ -382,42 +328,7 @@ const ProductDetailPage = () => {
             </div>
           </div>
 
-          <div className="hidden flex-col gap-y-4 md:flex">
-            <div className="flex items-center gap-4">
-              <GenericTooltip
-                content={
-                  isOutOfStock
-                    ? "You have reached the maximum available stock for this product."
-                    : ""
-                }
-              >
-                <button
-                  disabled={isCartLoading || isOutOfStock}
-                  onClick={() =>
-                    addToCart({
-                      ...product,
-                      images: product.images.map((img) => ({
-                        thumbUrl: img.thumbUrl,
-                        isPrimary: img.isPrimary,
-                      })),
-                    })
-                  }
-                  className={customTwMerge(
-                    BUTTON_PRIMARY,
-                    BUTTON_SIZE_X_LARGE,
-                    "flex-1 shrink-0",
-                  )}
-                >
-                  <ShoppingCartIcon className="fill-surface-primary" />
-                  Add to Cart
-                </button>
-              </GenericTooltip>
-
-              <FavoriteButton
-                product={product}
-                className="border-gray-2 hidden h-12 w-12 shrink-0 border shadow-none hover:shadow-md md:flex"
-              />
-            </div>
+          <div className="hidden items-center gap-x-4 md:flex">
             <GenericTooltip
               content={
                 isOutOfStock
@@ -436,46 +347,34 @@ const ProductDetailPage = () => {
                     })),
                   })
                 }
-                className={customTwMerge(BUTTON_ACCENT, BUTTON_SIZE_X_LARGE)}
+                className={customTwMerge(
+                  BUTTON_PRIMARY,
+                  BUTTON_SIZE_X_LARGE,
+                  "flex-1 shrink-0",
+                )}
               >
-                Buy Now
+                <ShoppingCartIcon className="fill-surface-primary" />
+                Add to Cart
               </button>
             </GenericTooltip>
+
+            <FavoriteButton
+              product={product}
+              className="border-gray-2 hidden h-12 w-12 shrink-0 border shadow-none hover:shadow-md md:flex"
+            />
           </div>
 
           <div className="flex flex-col gap-y-6">
             <div className="bg-border-secondary h-px" />
-            <div className="grid grid-cols-2 grid-rows-2 gap-4">
-              <div className="flex items-center gap-x-3">
-                <LocalShippingIcon className="fill-primary" />
-                <span className="text-s12-l16 text-text-primary font-bold">
-                  Free Shipping
-                </span>
-              </div>
-              <div className="flex items-center gap-x-3">
-                <VerifiedUserIcon className="fill-primary" />
-                <span className="text-s12-l16 text-text-primary font-bold">
-                  {/* TODO: warranty will be dynamic */}2 Year Warranty
-                </span>
-              </div>
-              <div className="flex items-center gap-x-3">
-                <AssignmentReturnIcon className="fill-primary" />
-                <span className="text-s12-l16 text-text-primary font-bold">
-                  30-Day Returns
-                </span>
-              </div>
-              <div className="flex items-center gap-x-3">
-                <ShieldIcon className="fill-primary" />
-                <span className="text-s12-l16 text-text-primary font-bold">
-                  Secure Payment
-                </span>
-              </div>
-            </div>
+            <ProductTrustBadges />
           </div>
         </div>
       </div>
 
-      <ProductDetailTabs description={product.description} />
+      <ProductDetailTabs
+        reviewCount={product.reviewCount}
+        seller={product.seller}
+      />
 
       {/* TODO: responsive unutma */}
       {/* <div className="border-gray-2 bg-surface-primary fixed bottom-0 left-0 z-40 flex w-full items-end justify-between gap-3 border-t p-2.5 md:hidden">

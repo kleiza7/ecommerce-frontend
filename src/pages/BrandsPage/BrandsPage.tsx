@@ -2,7 +2,7 @@ import type { ColDef, ICellRendererParams } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { ReqBrandsGetAllResponse } from "../../api/responses/ReqBrandsGetAllResponse.model";
-import { EditNoteIcon } from "../../assets/icons";
+import { AddIcon, EditNoteIcon } from "../../assets/icons";
 import { useBrandsGetAll } from "../../hooks/useBrandsGetAll";
 import GenericTooltip from "../../shared/components/GenericTooltip";
 import LoadingSpinner from "../../shared/components/LoadingSpinner";
@@ -110,6 +110,7 @@ const BrandsPage = () => {
             onClick={() => setIsNewBrandPortalOpen(true)}
             className={customTwMerge(BUTTON_PRIMARY, "shrink-0 px-6")}
           >
+            <AddIcon />
             New Brand
           </button>
         </div>
