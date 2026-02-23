@@ -7,7 +7,7 @@ const ProductDetailPageSkeleton = () => {
 
       <div className="flex flex-col gap-4 md:flex-row md:gap-8">
         <div className="flex flex-col gap-6">
-          <div className="border-gray-2 bg-surface-primary h-[450px] w-full overflow-hidden md:h-[500px] md:w-[400px] md:rounded-xl md:border">
+          <div className="border-border-primary bg-surface-primary h-[450px] w-full overflow-hidden md:h-[500px] md:w-[400px] md:rounded-xl md:border">
             <Skeleton withShimmer className="h-full w-full rounded-none" />
           </div>
 
@@ -15,7 +15,7 @@ const ProductDetailPageSkeleton = () => {
             {Array.from({ length: 4 }).map((_, index) => (
               <div
                 key={index}
-                className="border-gray-2 bg-surface-primary h-20 w-20 overflow-hidden rounded-lg border"
+                className="border-border-primary bg-surface-primary h-20 w-20 overflow-hidden rounded-lg border"
               >
                 <Skeleton withShimmer className="h-full w-full rounded-none" />
               </div>
@@ -45,7 +45,7 @@ const ProductDetailPageSkeleton = () => {
         </div>
       </div>
 
-      <div className="border-gray-2 bg-surface-primary fixed bottom-0 left-0 z-40 flex w-full items-center justify-between gap-3 border-t p-2.5 md:hidden">
+      <div className="border-border-primary bg-surface-primary fixed bottom-0 left-0 z-40 flex w-full items-center justify-between gap-3 border-t p-2.5 md:hidden">
         <Skeleton withShimmer className="h-6 w-24" />
         <Skeleton withShimmer className="h-12 w-40 rounded-lg" />
       </div>

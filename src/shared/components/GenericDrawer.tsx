@@ -54,7 +54,7 @@ export const GenericDrawer = ({
               <button
                 type="button"
                 aria-label="Close"
-                className="hover:bg-gray-4 absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-md"
+                className="hover:bg-surface-secondary absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-md"
               >
                 <CloseIcon className="fill-text-primary" />
               </button>

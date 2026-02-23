@@ -10,9 +10,9 @@ const NotFoundPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-gray-1 flex min-h-screen items-center justify-center px-4">
+    <div className="bg-surface-secondary flex min-h-screen items-center justify-center px-4">
       <div className="flex flex-col items-center gap-6 text-center">
-        <span className="text-orange text-[120px] leading-none font-bold">
+        <span className="text-primary text-[120px] leading-none font-bold">
           404
         </span>
 

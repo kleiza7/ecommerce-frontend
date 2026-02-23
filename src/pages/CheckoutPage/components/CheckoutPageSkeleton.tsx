@@ -8,8 +8,8 @@ const CheckoutPageSkeleton = () => {
 
         <div className="flex items-start gap-x-8">
           <div className="flex min-w-0 flex-1 flex-col gap-4 md:gap-6">
-            <div className="border-gray-2 flex flex-col rounded-md border">
-              <div className="border-gray-2 bg-gray-3 border-b px-5 py-3">
+            <div className="border-border-primary flex flex-col rounded-md border">
+              <div className="border-border-primary bg-surface-secondary border-b px-5 py-3">
                 <Skeleton withShimmer className="h-6 w-56" />
               </div>
 
@@ -28,8 +28,8 @@ const CheckoutPageSkeleton = () => {
               </div>
             </div>
 
-            <div className="border-gray-2 flex flex-col rounded-md border">
-              <div className="border-gray-2 bg-gray-3 border-b px-5 py-3">
+            <div className="border-border-primary flex flex-col rounded-md border">
+              <div className="border-border-primary bg-surface-secondary border-b px-5 py-3">
                 <Skeleton withShimmer className="h-6 w-48" />
               </div>
 
@@ -43,8 +43,8 @@ const CheckoutPageSkeleton = () => {
               </div>
             </div>
 
-            <div className="border-gray-2 flex flex-col rounded-md border">
-              <div className="border-gray-2 bg-gray-3 border-b px-5 py-3">
+            <div className="border-border-primary flex flex-col rounded-md border">
+              <div className="border-border-primary bg-surface-secondary border-b px-5 py-3">
                 <Skeleton withShimmer className="h-6 w-44" />
               </div>
 
@@ -74,7 +74,7 @@ const CheckoutPageSkeleton = () => {
             </div>
           </div>
 
-          <div className="bg-surface-primary border-gray-2 fixed inset-x-0 bottom-0 z-10 flex w-full shrink-0 flex-col gap-4 border-t p-6 lg:static lg:w-[440px] lg:rounded-lg lg:border lg:shadow-lg">
+          <div className="bg-surface-primary border-border-primary fixed inset-x-0 bottom-0 z-10 flex w-full shrink-0 flex-col gap-4 border-t p-6 lg:static lg:w-[440px] lg:rounded-lg lg:border lg:shadow-lg">
             <Skeleton withShimmer className="h-7 w-40" />
 
             <div className="flex justify-between">
@@ -82,14 +82,14 @@ const CheckoutPageSkeleton = () => {
               <Skeleton withShimmer className="h-5 w-24" />
             </div>
 
-            <div className="bg-gray-5 h-px" />
+            <div className="bg-surface-secondary h-px" />
 
             <div className="flex justify-between font-medium">
               <Skeleton withShimmer className="h-6 w-16" />
               <Skeleton withShimmer className="h-6 w-24" />
             </div>
 
-            <Skeleton withShimmer className="h-[56px] w-full rounded-xl" />
+            <Skeleton withShimmer className="h-14 w-full rounded-xl" />
           </div>
         </div>
       </div>

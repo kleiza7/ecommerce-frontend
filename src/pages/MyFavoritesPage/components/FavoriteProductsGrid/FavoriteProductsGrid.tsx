@@ -8,7 +8,7 @@ const FavoriteProductsGrid = ({
 }) => {
   return favoriteProducts.length === 0 ? (
     <div className="flex h-[300px] items-center justify-center">
-      <span className="text-s14-l20 text-gray-8">
+      <span className="text-s14-l20 text-text-muted">
         No favorite products found
       </span>
     </div>

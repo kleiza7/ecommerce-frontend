@@ -237,7 +237,7 @@ const ProductDetailPage = () => {
                   <span
                     key={i}
                     className={`h-2 w-2 rounded-full transition ${
-                      i === activeIndex ? "bg-orange" : "bg-[#999999]"
+                      i === activeIndex ? "bg-primary" : "bg-text-disabled"
                     }`}
                   />
                 ))}
@@ -360,7 +360,7 @@ const ProductDetailPage = () => {
 
             <FavoriteButton
               product={product}
-              className="border-gray-2 hidden h-12 w-12 shrink-0 border shadow-none hover:shadow-md md:flex"
+              className="border-border-primary hidden h-12 w-12 shrink-0 border shadow-none hover:shadow-md md:flex"
             />
           </div>
 
@@ -377,8 +377,8 @@ const ProductDetailPage = () => {
       />
 
       {/* TODO: responsive unutma */}
-      {/* <div className="border-gray-2 bg-surface-primary fixed bottom-0 left-0 z-40 flex w-full items-end justify-between gap-3 border-t p-2.5 md:hidden">
-        <span className="text-orange text-s16-l24 font-semibold">
+      {/* <div className="border-border-primary bg-surface-primary fixed bottom-0 left-0 z-40 flex w-full items-end justify-between gap-3 border-t p-2.5 md:hidden">
+        <span className="text-accent text-s16-l24 font-semibold">
           {product.price.toFixed(2)} {product.currency.code}
         </span>
 

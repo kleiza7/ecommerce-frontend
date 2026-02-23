@@ -43,7 +43,7 @@ const ProductsSortDrawer = ({
       side="bottom"
       className="rounded-t-xl"
     >
-      <div className="border-gray-2 flex items-center justify-between border-b px-5 py-4">
+      <div className="border-border-primary flex items-center justify-between border-b px-5 py-4">
         <span className="text-s16-l24 text-text-primary font-semibold">
           Sort
         </span>
@@ -67,7 +67,7 @@ const ProductsSortDrawer = ({
                 {option.label}
               </span>
 
-              {isActive && <CheckIcon className="fill-orange h-5 w-5" />}
+              {isActive && <CheckIcon className="fill-primary h-5 w-5" />}
             </button>
           );
         })}

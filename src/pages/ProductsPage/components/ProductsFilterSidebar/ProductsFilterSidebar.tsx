@@ -128,7 +128,7 @@ const ProductsFilterSidebar = ({
                     "h-4 w-4 rotate-90 transition-colors",
                     selectedCategorySlug === category.slug
                       ? "fill-primary"
-                      : "fill-gray-7 group-hover:fill-primary",
+                      : "fill-text-disabled group-hover:fill-primary",
                   )}
                 />
               )}

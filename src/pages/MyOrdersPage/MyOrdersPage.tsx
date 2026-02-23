@@ -202,9 +202,9 @@ const MyOrdersPage = () => {
         </div>
       ) : (
         <div className="flex flex-1 flex-col items-center justify-center gap-4">
-          <PackageIcon className="fill-gray-2 h-16 w-16" />
+          <PackageIcon className="fill-text-disabled h-16 w-16" />
 
-          <div className="text-gray-2 text-s16-l24 font-semibold">
+          <div className="text-text-disabled text-s16-l24 font-semibold">
             No orders found
           </div>
 

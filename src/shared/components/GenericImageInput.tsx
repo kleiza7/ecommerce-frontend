@@ -80,7 +80,7 @@ const GenericImageInput = <TFieldValues extends FieldValues>({
               {files.map((file, index) => (
                 <div
                   key={`${file.name}-${file.size}-${file.lastModified}-${index}`}
-                  className="border-gray-2 relative h-full w-12 overflow-hidden rounded border"
+                  className="border-border-primary relative h-full w-12 overflow-hidden rounded border"
                 >
                   <img
                     src={URL.createObjectURL(file)}
@@ -114,9 +114,9 @@ const GenericImageInput = <TFieldValues extends FieldValues>({
                     onClick={() => {
                       fileInputRef.current?.click();
                     }}
-                    className="border-gray-2 hover:bg-gray-12 flex h-full w-12 cursor-pointer items-center justify-center rounded border"
+                    className="border-border-primary hover:bg-surface-muted flex h-full w-12 cursor-pointer items-center justify-center rounded border"
                   >
-                    <AddIcon className="fill-gray-2" />
+                    <AddIcon className="fill-text-disabled" />
                   </button>
                 )}
             </div>
