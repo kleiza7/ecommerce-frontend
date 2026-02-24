@@ -191,12 +191,12 @@ const ProductsFilterDrawer = ({
                   <button
                     key={`${filter.key}-${filter.value}`}
                     onClick={() => removeAppliedFilter(filter)}
-                    className="border-primary flex items-center gap-1 rounded-full border px-3 py-1"
+                    className="border-status-info-secondary bg-status-info-muted flex items-center gap-1 rounded-full border px-3 py-1"
                   >
-                    <span className="text-text-primary text-s12-l16">
+                    <span className="text-status-info-primary text-s12-l16">
                       {filter.label}
                     </span>
-                    <CloseIcon className="fill-primary h-4 w-4" />
+                    <CloseIcon className="fill-text-muted h-4 w-4" />
                   </button>
                 ))}
               </div>
