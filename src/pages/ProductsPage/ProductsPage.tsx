@@ -148,7 +148,9 @@ const ProductsPage = () => {
 
         <main className="flex-1">
           <div className="flex flex-col gap-3 md:gap-4">
-            <CategoryBreadcrumb selectedCategoryId={selectedCategoryId} />
+            {!!selectedCategoryId && (
+              <CategoryBreadcrumb selectedCategoryId={selectedCategoryId} />
+            )}
 
             <ProductListHeader
               selectedCategoryName={selectedCategoryName}

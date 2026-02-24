@@ -159,7 +159,6 @@ const ProductsFilterDrawer = ({
       categorySlug: filters.category?.slug ?? null,
       brandSlugs: filters.brands.map((brand) => brand.slug),
       sellerIds: filters.sellers.map((seller) => seller.id),
-      overrideParams: true,
     });
 
     setOpen(false);

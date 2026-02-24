@@ -7,16 +7,14 @@ import { buildCategoryPath } from "../utils/CategoryTree.util";
 
 const CategoryBreadcrumb = ({
   selectedCategoryId,
-  hasClearFilterButton = true,
 }: {
-  selectedCategoryId?: number;
-  hasClearFilterButton?: boolean;
+  selectedCategoryId: number;
 }) => {
   const { data: categories = [], isLoading } = useCategoriesGetAll();
   const { goToProductsPage } = useProductsNavigation();
 
   const breadcrumb: CategoryNode[] = useMemo(() => {
-    if (!selectedCategoryId || categories.length === 0) {
+    if (categories.length === 0) {
       return [];
     }
 
@@ -35,13 +33,6 @@ const CategoryBreadcrumb = ({
     },
     [goToProductsPage],
   );
-
-  const clearCategoryFilters = useCallback(() => {
-    goToProductsPage({
-      categorySlug: null,
-      overrideParams: true,
-    });
-  }, [goToProductsPage]);
 
   if (isLoading || breadcrumb.length === 0) {
     return null;
@@ -70,16 +61,6 @@ const CategoryBreadcrumb = ({
           </li>
         ))}
       </ol>
-
-      {hasClearFilterButton && (
-        <button
-          type="button"
-          onClick={clearCategoryFilters}
-          className="text-primary text-s12-l16 cursor-pointer font-semibold hover:underline"
-        >
-          Reset Filters
-        </button>
-      )}
     </nav>
   );
 };

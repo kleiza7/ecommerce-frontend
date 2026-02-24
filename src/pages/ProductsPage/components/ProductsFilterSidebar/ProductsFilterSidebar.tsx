@@ -2,7 +2,10 @@ import { useMemo, useState } from "react";
 import type { ReqAuthGetAllSellersResponse } from "../../../../api/responses/ReqAuthGetAllSellersResponse.model";
 import type { ReqBrandsGetAllResponse } from "../../../../api/responses/ReqBrandsGetAllResponse.model";
 import type { ReqCategoriesGetAllResponse } from "../../../../api/responses/ReqCategoriesGetAllResponse.model";
-import { KeyboardArrowUpIcon } from "../../../../assets/icons";
+import {
+  FilterOutlinedIcon,
+  KeyboardArrowUpIcon,
+} from "../../../../assets/icons";
 import { useProductsNavigation } from "../../../../hooks/useProductsNavigation";
 import GenericCheckbox from "../../../../shared/components/GenericCheckbox";
 import { INPUT_BASE } from "../../../../shared/constants/CommonTailwindClasses.constants";
@@ -32,6 +35,14 @@ const ProductsFilterSidebar = ({
 
   const [brandSearch, setBrandSearch] = useState("");
   const [sellerSearch, setSellerSearch] = useState("");
+
+  const hasAnyActiveFilter = useMemo(() => {
+    return (
+      Boolean(selectedCategorySlug) ||
+      selectedBrandSlugs.length > 0 ||
+      selectedSellerIds.length > 0
+    );
+  }, [selectedCategorySlug, selectedBrandSlugs, selectedSellerIds]);
 
   const { tree } = useMemo(
     () => buildCategoryTreeWithMap(categories),
@@ -97,8 +108,35 @@ const ProductsFilterSidebar = ({
     );
   }, [sellers, sellerSearch]);
 
+  const clearAllFilters = () => {
+    goToProductsPage({
+      categorySlug: null,
+      brandSlugs: [],
+      sellerIds: [],
+    });
+  };
+
   return (
     <aside className="flex flex-col gap-y-3">
+      <div className="flex items-center justify-between pl-1.5">
+        <div className="flex items-center gap-x-0.5">
+          <FilterOutlinedIcon className="fill-text-primary h-6 w-6" />
+          <span className="text-s20-l28 text-text-primary font-semibold">
+            Filters
+          </span>
+        </div>
+
+        {hasAnyActiveFilter && (
+          <button
+            type="button"
+            onClick={clearAllFilters}
+            className="text-s12-l16 text-primary cursor-pointer font-medium hover:underline"
+          >
+            Clear all
+          </button>
+        )}
+      </div>
+
       <FilterSection title="CATEGORY">
         <div className="flex flex-col gap-y-1">
           {visibleCategories.map((category) => (
