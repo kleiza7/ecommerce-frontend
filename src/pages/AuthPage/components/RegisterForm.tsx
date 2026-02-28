@@ -185,7 +185,7 @@ const RegisterForm = ({
 
             <InputErrorLabel
               message={errors.password?.message}
-              className="top-[60px] md:top-auto"
+              className="top-16"
             />
           </div>
 
@@ -226,12 +226,12 @@ const RegisterForm = ({
 
             <InputErrorLabel
               message={errors.confirmPassword?.message}
-              className="top-[60px] md:top-auto"
+              className="top-16"
             />
           </div>
         </div>
 
-        <label className="flex cursor-pointer items-center gap-3">
+        <label className="mt-6 flex cursor-pointer items-center gap-3">
           <GenericCheckbox
             checked={isSeller}
             onCheckedChange={() => setIsSeller((prev) => !prev)}

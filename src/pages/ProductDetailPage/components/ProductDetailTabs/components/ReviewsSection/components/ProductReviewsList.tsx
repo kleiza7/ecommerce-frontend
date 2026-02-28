@@ -81,7 +81,7 @@ const ProductReviewsList = ({
           </div>
         </div>
 
-        <div className="flex h-[340px] flex-col gap-y-8 overflow-y-auto pr-1">
+        <div className="flex h-[380px] flex-col gap-y-8 overflow-y-auto pr-1">
           {sortedProductReviews.length === 0 ? (
             <div className="flex min-h-[200px] items-center justify-center">
               <span className="text-s14-l20 text-text-muted text-center">

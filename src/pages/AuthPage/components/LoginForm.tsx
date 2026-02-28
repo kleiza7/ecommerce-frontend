@@ -148,7 +148,7 @@ const LoginForm = () => {
           <InputErrorLabel message={errors.email?.message} />
         </div>
 
-        <div className="relative flex flex-col gap-y-1 pb-4 md:pb-0">
+        <div className="relative flex flex-col gap-y-1">
           <InputLabel label="Password" hasAsterisk />
 
           <LockIcon className="fill-text-disabled absolute bottom-2.5 left-3 h-5 w-5" />
@@ -186,7 +186,7 @@ const LoginForm = () => {
 
           <InputErrorLabel
             message={errors.password?.message}
-            className="top-[60px] md:top-auto"
+            className="top-16"
           />
         </div>
       </div>
