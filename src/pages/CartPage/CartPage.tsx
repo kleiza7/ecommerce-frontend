@@ -24,7 +24,7 @@ const CartPage = () => {
     <div className="mx-auto flex w-full max-w-[1380px] flex-col px-3 pt-3 pb-64 md:px-10 md:pt-6 lg:py-10">
       {cartItems.length !== 0 ? (
         <div className="flex items-start gap-x-20">
-          <div className="flex flex-1 flex-col gap-4 md:gap-6 lg:gap-10">
+          <div className="flex min-w-0 flex-1 flex-col gap-4 md:gap-6 lg:gap-10">
             <div className="flex items-end justify-between">
               <div className="flex items-end gap-x-2">
                 <span className="text-s32-l40 text-text-primary leading-none font-semibold">
