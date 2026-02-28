@@ -36,7 +36,7 @@ const OrderCardSkeleton = () => {
           <Skeleton withShimmer className="h-6 w-28" />
         </div>
 
-        <div className="flex items-center gap-x-4">
+        <div className="flex min-w-[250px] items-center justify-end gap-x-4">
           <Skeleton withShimmer className="h-10 w-28 rounded-full" />
           <Skeleton withShimmer className="h-10 w-32 rounded-full" />
         </div>

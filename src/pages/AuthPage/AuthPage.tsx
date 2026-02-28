@@ -16,7 +16,7 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="mx-auto flex w-full max-w-[1480px] flex-col items-center px-3 pt-16 md:px-10 md:pt-24 lg:pt-32">
+    <div className="mx-auto flex w-full max-w-[1480px] flex-col items-center justify-center px-3 md:px-10">
       <div className="border-border-primary bg-surface-primary flex flex-col overflow-hidden rounded-xl border shadow-lg">
         {mode === AUTH_PAGE_MODE.LOGIN ? (
           <LoginForm />

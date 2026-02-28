@@ -107,7 +107,7 @@ const OrderCard = ({
           </span>
         </div>
 
-        <div className="flex items-center gap-x-4">
+        <div className="flex min-w-[250px] items-center justify-end gap-x-4">
           {canCheckoutOrder(order.status) && (
             <button
               onClick={() => navigate(ROUTES.CHECKOUT_PAGE.build(order.id))}

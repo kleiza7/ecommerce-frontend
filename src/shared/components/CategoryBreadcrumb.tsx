@@ -39,7 +39,7 @@ const CategoryBreadcrumb = ({
   }
 
   return (
-    <nav className="text-s14-l20 text-text-primary hidden items-center gap-x-4 md:flex">
+    <nav className="hidden items-center gap-x-4 md:flex">
       <ol className="flex flex-wrap items-center gap-1">
         {breadcrumb.map((item, index) => (
           <li key={item.id} className="flex items-center gap-1">
@@ -50,10 +50,10 @@ const CategoryBreadcrumb = ({
             <button
               type="button"
               onClick={() => handleNavigate(item.slug)}
-              className={`cursor-pointer ${
+              className={`text-s14-l20 ${
                 index === breadcrumb.length - 1
-                  ? "font-medium"
-                  : "font-normal hover:underline"
+                  ? "text-primary font-medium"
+                  : "text-text-primary cursor-pointer hover:underline"
               }`}
             >
               {item.name}

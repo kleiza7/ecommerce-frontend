@@ -100,16 +100,10 @@ const CartItemsList = () => {
                     </div>
 
                     <div className="flex min-w-0 flex-1 gap-x-9">
-                      <div className="flex flex-col justify-between">
-                        <div className="flex min-w-0 flex-1 flex-col items-center gap-1 md:items-start">
-                          <span className="text-s20-l28 text-text-primary font-semibold">
-                            {cartItem.product.name}
-                          </span>
-
-                          <span className="text-s14-l20 text-text-muted">
-                            {cartItem.product.description}
-                          </span>
-                        </div>
+                      <div className="flex flex-1 flex-col justify-between">
+                        <span className="text-s20-l28 text-text-primary font-semibold">
+                          {cartItem.product.name}
+                        </span>
 
                         <div className="flex items-center gap-x-6">
                           <div className="border-border-primary flex h-8 w-fit shrink-0 items-center rounded-md border">

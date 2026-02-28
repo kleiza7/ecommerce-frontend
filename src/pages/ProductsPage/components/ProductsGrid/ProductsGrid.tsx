@@ -37,7 +37,9 @@ const ProductsGrid = ({
     </div>
   ) : allProducts.length === 0 ? (
     <div className="flex h-[300px] items-center justify-center">
-      <span className="text-s14-l20 text-text-disabled">No products found</span>
+      <span className="text-s14-l20 text-text-disabled">
+        No products found.
+      </span>
     </div>
   ) : (
     <>
