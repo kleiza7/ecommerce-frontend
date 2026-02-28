@@ -47,7 +47,7 @@ const SellerProductsGrid = ({
       {
         field: "name",
         headerName: "Product Name",
-        minWidth: 300,
+        minWidth: 350,
         cellRenderer: (
           params: ICellRendererParams<
             ReqProductsGetProductsBySellerResponse[number]
@@ -91,6 +91,9 @@ const SellerProductsGrid = ({
       {
         field: "stockCount",
         headerName: "Stock",
+        width: 120,
+        maxWidth: 120,
+        minWidth: 120,
         cellRenderer: (
           params: ICellRendererParams<
             ReqProductsGetProductsBySellerResponse[number]

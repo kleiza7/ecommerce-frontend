@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { PRODUCT_STATUS } from "../../api/enums/ProductStatus.enum";
-import { AddIcon } from "../../assets/icons";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { useProductsGetProductsBySeller } from "../../hooks/useProductsGetProductsBySeller";
 import GenericSelect from "../../shared/components/GenericSelect";
@@ -132,7 +131,6 @@ const SellerProductsPage = () => {
             onClick={() => setIsNewProductPortalOpen(true)}
             className={customTwMerge(BUTTON_PRIMARY, "shrink-0 px-6")}
           >
-            <AddIcon />
             New Product
           </button>
         </div>
