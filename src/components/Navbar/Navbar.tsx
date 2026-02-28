@@ -55,7 +55,7 @@ const Navbar = () => {
     <>
       <header className="border-border-primary border-b pt-4 shadow-sm md:pt-5">
         <div className="mx-auto w-full max-w-[1800px] px-3 lg:px-10">
-          <div className="flex flex-col gap-y-4 pb-4 lg:gap-y-0 lg:pb-0">
+          <div className="flex flex-col gap-y-4 pb-2 lg:gap-y-0 lg:pb-0">
             <div className="flex items-center justify-between gap-x-16 lg:h-[72px]">
               <div className="flex shrink-0 items-center gap-x-1 select-none">
                 <button
@@ -102,7 +102,7 @@ const Navbar = () => {
 
         {isGuestOrUser && (
           <div className="flex justify-center">
-            <div className="border-border-secondary w-full max-w-[1800px] border-t">
+            <div className="border-border-secondary w-full max-w-[1800px] lg:border-t">
               <div className="mx-auto w-full px-3 lg:px-10">
                 <div className="flex h-12 items-center gap-x-8 overflow-hidden lg:overflow-visible">
                   <div className="hidden shrink-0 items-center gap-x-8 lg:flex">

@@ -112,7 +112,7 @@ const CategorySelectionDrawerContent = ({
                 setDrillPath((prev) => [...prev, node]);
               }}
               className={customTwMerge(
-                "border-border-primary flex w-full items-center justify-between border-b px-4 py-4 text-left",
+                "border-border-primary flex w-full items-center justify-between border-b p-4 text-left",
                 isSelected ? "text-primary font-medium" : "text-text-primary",
               )}
             >

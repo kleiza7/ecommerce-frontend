@@ -63,7 +63,7 @@ const SellersSelectionDrawerContent = ({
         {sellers.map((seller) => (
           <label
             key={seller.id}
-            className="border-border-primary flex cursor-pointer items-center gap-3 border-b px-4 py-4"
+            className="border-border-primary flex cursor-pointer items-center gap-3 border-b p-4"
           >
             <GenericCheckbox
               checked={selectedSellers.some((s) => s.id === seller.id)}

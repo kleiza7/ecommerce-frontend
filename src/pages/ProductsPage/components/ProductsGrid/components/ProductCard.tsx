@@ -210,9 +210,11 @@ const ProductCard = ({
         )}
       </div>
 
-      <div className="border-border-primary flex flex-1 flex-col border-t p-4">
+      <div className="border-border-primary flex flex-1 flex-col border-t p-2 md:p-4">
         <div className="flex flex-col gap-1">
-          <span className="text-text-primary text-s16-l24">{product.name}</span>
+          <span className="text-text-primary text-s14-l20 md:text-s16-l24">
+            {product.name}
+          </span>
 
           <span className="text-text-primary text-s14-l20 font-bold">
             {product.brand.name}
@@ -220,7 +222,7 @@ const ProductCard = ({
         </div>
 
         <div className="mt-auto flex items-center justify-between">
-          <div className="text-accent text-s18-l28 font-bold">
+          <div className="text-accent text-s16-l24 md:text-s18-l28 font-bold">
             {product.price.toFixed(2)} {product.currency.code}
           </div>
 

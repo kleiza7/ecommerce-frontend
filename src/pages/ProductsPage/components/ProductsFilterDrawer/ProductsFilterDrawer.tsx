@@ -206,7 +206,7 @@ const ProductsFilterDrawer = ({
             <button
               type="button"
               onClick={() => setIsCategorySelectionDrawerOpen(true)}
-              className="bg-surface-primary flex w-full items-center justify-between px-4 py-4"
+              className="bg-surface-primary flex w-full items-center justify-between p-4"
             >
               <span className="text-s14-l20 text-text-primary">Category</span>
               <KeyboardArrowUpIcon className="fill-primary h-6 w-6 rotate-90" />
@@ -217,7 +217,7 @@ const ProductsFilterDrawer = ({
             <button
               type="button"
               onClick={() => setIsBrandsSelectionDrawerOpen(true)}
-              className="bg-surface-primary flex w-full items-center justify-between px-4 py-4"
+              className="bg-surface-primary flex w-full items-center justify-between p-4"
             >
               <span className="text-s14-l20 text-text-primary">Brand</span>
               <KeyboardArrowUpIcon className="fill-primary h-6 w-6 rotate-90" />
@@ -228,7 +228,7 @@ const ProductsFilterDrawer = ({
             <button
               type="button"
               onClick={() => setIsSellersSelectionDrawerOpen(true)}
-              className="bg-surface-primary flex w-full items-center justify-between px-4 py-4"
+              className="bg-surface-primary flex w-full items-center justify-between p-4"
             >
               <span className="text-s14-l20 text-text-primary">Seller</span>
               <KeyboardArrowUpIcon className="fill-primary h-6 w-6 rotate-90" />

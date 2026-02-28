@@ -78,7 +78,7 @@ const CategoriesNavigationDrawerContent = ({
                 setDrillPath((prev) => [...prev, node]);
               }}
               className={customTwMerge(
-                "border-border-primary text-text-primary flex w-full items-center justify-between border-b px-4 py-4 text-left",
+                "border-border-primary text-text-primary flex w-full items-center justify-between border-b p-4 text-left",
               )}
             >
               <span className="text-s14-l20">{node.name}</span>

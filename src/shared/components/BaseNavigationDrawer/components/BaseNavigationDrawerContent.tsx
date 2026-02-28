@@ -34,7 +34,7 @@ const BaseNavigationDrawerContent = ({
             onClick={close}
             className={({ isActive }) =>
               customTwMerge(
-                "border-border-primary text-text-primary flex w-full items-center border-b px-4 py-4 text-left transition-colors",
+                "border-border-primary text-text-primary flex w-full items-center border-b p-4 text-left transition-colors",
                 "hover:bg-primary/10 hover:text-primary",
                 isActive && "bg-primary/10 text-primary",
               )
