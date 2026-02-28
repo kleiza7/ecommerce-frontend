@@ -105,7 +105,7 @@ const LoginForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="relative flex w-md flex-col gap-y-10 p-10"
+      className="relative flex w-full flex-col gap-y-6 p-6 md:w-md 2xl:gap-y-10 2xl:p-10"
     >
       {isPending && (
         <div className="bg-surface-primary/70 absolute inset-0 z-20 flex items-center justify-center rounded-lg">

@@ -88,7 +88,7 @@ const RegisterForm = ({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="relative flex w-xl flex-col gap-y-10 p-10"
+      className="relative flex w-full flex-col gap-y-6 p-6 md:w-xl 2xl:gap-y-10 2xl:p-10"
     >
       {isPending && (
         <div className="bg-surface-primary/70 absolute inset-0 z-20 flex items-center justify-center rounded-lg">
@@ -146,7 +146,7 @@ const RegisterForm = ({
           <InputErrorLabel message={errors.email?.message} />
         </div>
 
-        <div className="flex gap-x-6">
+        <div className="flex flex-col gap-8 md:flex-row md:gap-6">
           <div className="relative flex flex-1 flex-col gap-y-1">
             <InputLabel label="Password" hasAsterisk />
 
