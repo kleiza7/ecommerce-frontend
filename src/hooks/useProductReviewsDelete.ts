@@ -1,4 +1,3 @@
-// useProductReviewsDelete.ts
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { reqProductReviewsDelete } from "../api/controllers/ProductReviews.controller";
 import type { ReqProductReviewsDeleteResponse } from "../api/responses/ReqProductReviewsDeleteResponse.model";

@@ -1,4 +1,3 @@
-// useProductReviewsCreate.ts
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { reqProductReviewsCreate } from "../api/controllers/ProductReviews.controller";

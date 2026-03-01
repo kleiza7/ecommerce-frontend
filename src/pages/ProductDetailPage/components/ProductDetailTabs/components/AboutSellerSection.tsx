@@ -82,7 +82,6 @@ const AboutSellerSection = ({
 
   return (
     <div className="border-border-primary flex flex-col rounded-xl border">
-      {/* Header */}
       <div className="border-border-primary flex items-center justify-between border-b p-8">
         <div className="flex items-center gap-x-4">
           <StoreFrontIcon className="fill-primary h-8 w-8" />
@@ -99,7 +98,6 @@ const AboutSellerSection = ({
         </button>
       </div>
 
-      {/* Content */}
       <div className="flex flex-col gap-y-6 p-8">
         <div className="flex items-center justify-between">
           <span className="text-s18-l28 text-text-primary font-bold">
@@ -154,7 +152,6 @@ const AboutSellerSection = ({
                   className="border-border-primary bg-surface-primary flex flex-none cursor-pointer flex-col overflow-hidden rounded-xl border transition hover:shadow-lg"
                   style={{ width: CARD_WIDTH }}
                 >
-                  {/* Image */}
                   <div className="bg-surface-secondary h-64 w-full overflow-hidden">
                     <img
                       src={imageUrl}
@@ -165,7 +162,6 @@ const AboutSellerSection = ({
                     />
                   </div>
 
-                  {/* Info */}
                   <div className="flex h-24 flex-col items-start justify-between p-4 text-left">
                     <span className="text-s14-l20 text-text-primary line-clamp-2 font-medium">
                       {product.name}
