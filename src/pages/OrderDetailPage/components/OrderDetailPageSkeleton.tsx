@@ -9,22 +9,24 @@ const OrderDetailPageSkeleton = () => {
       </div>
 
       <div className="flex items-center gap-x-8">
-        <div className="border-border-secondary flex flex-1 flex-col gap-y-2 rounded-md border px-8 py-6 md:flex-row md:justify-between md:gap-x-6 md:gap-y-0">
+        <div className="border-border-secondary flex w-full items-start justify-between rounded-md border px-8 py-6">
           <Skeleton withShimmer className="h-6 w-32" />
 
-          <div className="flex flex-1 flex-col gap-y-1">
-            <Skeleton withShimmer className="h-3 w-20" />
-            <Skeleton withShimmer className="h-4 w-24" />
-          </div>
+          <div className="flex flex-col gap-y-4 md:flex-row md:items-start md:gap-x-16 md:gap-y-0">
+            <div className="flex flex-col gap-y-1">
+              <Skeleton withShimmer className="h-3 w-20" />
+              <Skeleton withShimmer className="h-4 w-24" />
+            </div>
 
-          <div className="flex flex-1 flex-col gap-y-1">
-            <Skeleton withShimmer className="h-3 w-24" />
-            <Skeleton withShimmer className="h-4 w-20" />
-          </div>
+            <div className="flex flex-col gap-y-1">
+              <Skeleton withShimmer className="h-3 w-24" />
+              <Skeleton withShimmer className="h-4 w-20" />
+            </div>
 
-          <div className="flex flex-1 flex-col gap-y-1">
-            <Skeleton withShimmer className="h-3 w-24" />
-            <Skeleton withShimmer className="h-4 w-28" />
+            <div className="flex flex-col gap-y-1">
+              <Skeleton withShimmer className="h-3 w-24" />
+              <Skeleton withShimmer className="h-4 w-28" />
+            </div>
           </div>
         </div>
       </div>

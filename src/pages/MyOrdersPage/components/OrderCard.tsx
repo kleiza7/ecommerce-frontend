@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import type { Order } from "../../../api/models/Order.model";
+import OrderStatusLabel from "../../../shared/components/OrderStatusLabel";
 import { BUTTON_PRIMARY } from "../../../shared/constants/CommonTailwindClasses.constants";
 import {
   ORDER_STATUS_COLOR_PAIRS,
   ORDER_STATUS_ICON_PAIRS,
-  ORDER_STATUS_TEXT_PAIRS,
 } from "../../../shared/constants/Order.constants";
 import { ROUTES } from "../../../shared/constants/Routes.constants";
 import { canCheckoutOrder } from "../../../shared/utils/Order.util";
@@ -47,20 +47,7 @@ const OrderCard = ({
                   Order #{order.id}
                 </span>
 
-                <div
-                  className="flex items-center justify-center rounded-full border px-3 py-1"
-                  style={{
-                    backgroundColor: statusColors.muted,
-                    borderColor: statusColors.secondary,
-                  }}
-                >
-                  <span
-                    className="text-s12-l16 font-medium"
-                    style={{ color: statusColors.primary }}
-                  >
-                    {ORDER_STATUS_TEXT_PAIRS[order.status]}
-                  </span>
-                </div>
+                <OrderStatusLabel status={order.status} />
               </div>
 
               <div className="flex items-center gap-x-3">
