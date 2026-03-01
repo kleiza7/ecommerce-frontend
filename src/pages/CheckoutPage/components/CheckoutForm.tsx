@@ -59,7 +59,7 @@ const CheckoutForm = ({
         </div>
 
         <div className="flex flex-col gap-y-6 p-8">
-          <div className="flex gap-x-6">
+          <div className="flex flex-col gap-6 md:flex-row">
             <div className="relative flex flex-1 flex-col">
               <InputLabel label="Full Name" hasAsterisk />
               <GenericFormInput
@@ -147,7 +147,7 @@ const CheckoutForm = ({
             <InputErrorLabel message={errors.cardNumber?.message} />
           </div>
 
-          <div className="flex gap-x-6">
+          <div className="flex flex-col gap-6 md:flex-row">
             <div className="relative flex flex-1 flex-col">
               <InputLabel label="Expiry Date" hasAsterisk />
               <GenericFormInput
