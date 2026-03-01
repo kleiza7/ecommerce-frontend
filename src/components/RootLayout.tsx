@@ -1,4 +1,5 @@
 import { Outlet } from "react-router-dom";
+import Footer from "./Footer";
 import Navbar from "./Navbar/Navbar";
 
 const RootLayout = () => {
@@ -9,6 +10,8 @@ const RootLayout = () => {
       <main className="flex flex-1">
         <Outlet />
       </main>
+
+      <Footer />
     </div>
   );
 };
