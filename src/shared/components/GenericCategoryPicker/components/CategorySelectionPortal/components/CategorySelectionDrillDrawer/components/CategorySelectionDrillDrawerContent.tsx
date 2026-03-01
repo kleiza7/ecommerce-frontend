@@ -73,7 +73,7 @@ const CategorySelectionDrillDrawerContent = ({
 
   return (
     <div className="flex h-full flex-col">
-      <div className="border-gray-2 flex items-center gap-x-2 border-b px-4 py-3">
+      <div className="border-border-primary flex items-center gap-x-2 border-b px-4 py-3">
         {drillPath.length > 0 && (
           <button
             type="button"
@@ -81,7 +81,7 @@ const CategorySelectionDrillDrawerContent = ({
               setSelectedLeafId(null);
               setDrillPath((prev) => prev.slice(0, prev.length - 1));
             }}
-            className="hover:bg-gray-1 flex h-8 w-8 items-center justify-center rounded-md"
+            className="hover:bg-surface-secondary flex h-8 w-8 items-center justify-center rounded-md"
           >
             <ArrowLeftIcon className="h-6 w-6 fill-current" />
           </button>
@@ -91,7 +91,7 @@ const CategorySelectionDrillDrawerContent = ({
           <span className="text-s18-l28 text-text-primary font-semibold">
             Select Category
           </span>
-          <span className="text-s14-l20 text-gray-8">
+          <span className="text-s14-l20 text-text-muted">
             Choose a category for this product.
           </span>
         </div>
@@ -117,25 +117,25 @@ const CategorySelectionDrillDrawerContent = ({
               className={customTwMerge(
                 "flex h-12 cursor-pointer items-center justify-between px-4 transition-colors",
                 isSelected
-                  ? "bg-orange/10 text-orange"
-                  : "text-text-primary hover:bg-orange/10 hover:text-orange",
+                  ? "bg-primary/10 text-primary"
+                  : "text-text-primary hover:bg-primary/10 hover:text-primary",
               )}
             >
               <span className="text-s14-l20 font-medium">{node.name}</span>
 
               {isLeaf ? (
                 isSelected ? (
-                  <CheckIcon className="text-orange h-4 w-4 fill-current" />
+                  <CheckIcon className="text-primary h-6 w-6 fill-current" />
                 ) : null
               ) : (
-                <KeyboardArrowUpIcon className="text-gray-8 h-5 w-5 rotate-90 fill-current" />
+                <KeyboardArrowUpIcon className="text-text-muted h-5 w-5 rotate-90 fill-current" />
               )}
             </li>
           );
         })}
       </ul>
 
-      <div className="border-gray-2 shrink-0 border-t px-4 py-3">
+      <div className="border-border-primary shrink-0 border-t px-4 py-3">
         <div className="flex justify-end gap-x-2">
           <button
             type="button"

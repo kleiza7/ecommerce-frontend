@@ -16,7 +16,7 @@ const ParentCategories = () => {
 
   return (
     <div className="relative min-w-0 flex-1">
-      <div className="no-scrollbar flex h-8 items-center gap-x-6 overflow-x-auto pr-10 whitespace-nowrap">
+      <div className="no-scrollbar flex h-12 items-center gap-x-8 overflow-x-auto pr-10 whitespace-nowrap">
         {parentCategories.map((parent) => {
           const isActive =
             selectedCategorySlug === parent.slug ||
@@ -32,7 +32,7 @@ const ParentCategories = () => {
                   overrideParams: true,
                 });
               }}
-              className={`text-s14-l20 relative flex h-8 shrink-0 items-center font-medium transition-colors ${
+              className={`text-s14-l20 relative flex h-12 shrink-0 items-center font-medium transition-colors ${
                 isActive
                   ? "text-primary"
                   : "hover:text-primary text-text-secondary cursor-pointer"

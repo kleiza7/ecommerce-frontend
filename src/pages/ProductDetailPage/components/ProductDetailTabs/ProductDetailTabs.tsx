@@ -1,13 +1,10 @@
 import { useState } from "react";
+import type { ReqProductsGetByIdResponse } from "../../../../api/responses/ReqProductsGetByIdResponse.model";
 import AboutSellerSection from "./components/AboutSellerSection";
-import ProductDescriptionSection from "./components/ProductDescriptionSection";
-import ReviewsSection from "./components/ReviewsSection";
-import TechnicalSpecificationsSection from "./components/TechnicalSpecificationsSection";
+import ProductReviewsSection from "./components/ReviewsSection/ProductReviewsSection";
 
 const PRODUCT_DETAIL_SECTION = {
-  PRODUCT_DESCRIPTION: "PRODUCT_DESCRIPTION",
-  TECHNICAL_SPECIFICATIONS: "TECHNICAL_SPECIFICATIONS",
-  REVIEWS: "REVIEWS",
+  PRODUCT_REVIEWS: "PRODUCT_REVIEWS",
   ABOUT_SELLER: "ABOUT_SELLER",
 } as const;
 
@@ -19,16 +16,8 @@ const TABS: {
   section: PRODUCT_DETAIL_SECTION;
 }[] = [
   {
-    label: "Product Description",
-    section: PRODUCT_DETAIL_SECTION.PRODUCT_DESCRIPTION,
-  },
-  {
-    label: "Technical Specifications",
-    section: PRODUCT_DETAIL_SECTION.TECHNICAL_SPECIFICATIONS,
-  },
-  {
-    label: "Reviews (1,240)",
-    section: PRODUCT_DETAIL_SECTION.REVIEWS,
+    label: "Reviews",
+    section: PRODUCT_DETAIL_SECTION.PRODUCT_REVIEWS,
   },
   {
     label: "About the Seller",
@@ -36,24 +25,24 @@ const TABS: {
   },
 ];
 
-const ProductDetailTabs = ({ description }: { description: string }) => {
+const ProductDetailTabs = ({
+  reviewCount,
+  seller,
+}: {
+  reviewCount: number;
+  seller: ReqProductsGetByIdResponse["seller"];
+}) => {
   const [activeSection, setActiveSection] = useState<PRODUCT_DETAIL_SECTION>(
-    PRODUCT_DETAIL_SECTION.PRODUCT_DESCRIPTION,
+    PRODUCT_DETAIL_SECTION.PRODUCT_REVIEWS,
   );
 
   const getActiveSection = () => {
     switch (activeSection) {
-      case PRODUCT_DETAIL_SECTION.PRODUCT_DESCRIPTION: {
-        return <ProductDescriptionSection description={description} />;
-      }
-      case PRODUCT_DETAIL_SECTION.TECHNICAL_SPECIFICATIONS: {
-        return <TechnicalSpecificationsSection />;
-      }
-      case PRODUCT_DETAIL_SECTION.REVIEWS: {
-        return <ReviewsSection />;
+      case PRODUCT_DETAIL_SECTION.PRODUCT_REVIEWS: {
+        return <ProductReviewsSection />;
       }
       case PRODUCT_DETAIL_SECTION.ABOUT_SELLER: {
-        return <AboutSellerSection />;
+        return <AboutSellerSection seller={seller} />;
       }
       default: {
         return null;
@@ -62,7 +51,7 @@ const ProductDetailTabs = ({ description }: { description: string }) => {
   };
 
   return (
-    <div className="flex flex-col gap-y-12">
+    <div className="flex flex-col px-4 md:px-0">
       <div className="border-border-primary border-b">
         <div className="relative min-w-0 flex-1">
           <div className="no-scrollbar flex items-center gap-x-8 overflow-x-auto pr-10 whitespace-nowrap">
@@ -81,6 +70,9 @@ const ProductDetailTabs = ({ description }: { description: string }) => {
                   }`}
                 >
                   {tab.label}
+                  {tab.section === PRODUCT_DETAIL_SECTION.PRODUCT_REVIEWS && (
+                    <span className="ml-1">({reviewCount})</span>
+                  )}
 
                   {isActive && (
                     <div className="bg-primary absolute bottom-0 left-0 h-0.5 w-full rounded-full" />
@@ -94,7 +86,7 @@ const ProductDetailTabs = ({ description }: { description: string }) => {
         </div>
       </div>
 
-      {getActiveSection()}
+      <div className="py-4 md:py-8 lg:py-12">{getActiveSection()}</div>
     </div>
   );
 };

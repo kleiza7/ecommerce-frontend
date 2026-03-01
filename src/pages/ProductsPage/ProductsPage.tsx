@@ -116,17 +116,17 @@ const ProductsPage = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useProductsListInfinite(payload);
 
-  const [isProductsSortDrawerOpen, setIsProductsSortDrawerOpen] =
-    useState(false);
   const [isProductsFilterDrawerOpen, setIsProductsFilterDrawerOpen] =
     useState(false);
-
-  const openProductsSortDrawer = useCallback(() => {
-    setIsProductsSortDrawerOpen(true);
-  }, []);
+  const [isProductsSortDrawerOpen, setIsProductsSortDrawerOpen] =
+    useState(false);
 
   const openProductsFilterDrawer = useCallback(() => {
     setIsProductsFilterDrawerOpen(true);
+  }, []);
+
+  const openProductsSortDrawer = useCallback(() => {
+    setIsProductsSortDrawerOpen(true);
   }, []);
 
   const allProducts = data?.pages.flatMap((page) => page.items) ?? [];
@@ -148,13 +148,15 @@ const ProductsPage = () => {
 
         <main className="flex-1">
           <div className="flex flex-col gap-3 md:gap-4">
-            <CategoryBreadcrumb selectedCategoryId={selectedCategoryId} />
+            {!!selectedCategoryId && (
+              <CategoryBreadcrumb selectedCategoryId={selectedCategoryId} />
+            )}
 
             <ProductListHeader
               selectedCategoryName={selectedCategoryName}
               totalCount={totalCount}
-              openProductsSortDrawer={openProductsSortDrawer}
               openProductsFilterDrawer={openProductsFilterDrawer}
+              openProductsSortDrawer={openProductsSortDrawer}
             />
 
             <ProductsGrid
@@ -174,17 +176,17 @@ const ProductsPage = () => {
         totalCount={totalCount}
       />
 
-      <ProductsSortDrawer
-        open={isProductsSortDrawerOpen}
-        setOpen={setIsProductsSortDrawerOpen}
-      />
-
       <ProductsFilterDrawer
         open={isProductsFilterDrawerOpen}
         setOpen={setIsProductsFilterDrawerOpen}
         categories={categories}
         brands={brands}
         sellers={sellers}
+      />
+
+      <ProductsSortDrawer
+        open={isProductsSortDrawerOpen}
+        setOpen={setIsProductsSortDrawerOpen}
       />
     </div>
   );

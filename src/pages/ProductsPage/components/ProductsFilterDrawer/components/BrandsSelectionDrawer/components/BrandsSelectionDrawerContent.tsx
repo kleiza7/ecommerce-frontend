@@ -42,9 +42,9 @@ const BrandsSelectionDrawerContent = ({
 
   return (
     <div className="bg-surface-primary flex h-full flex-col">
-      <div className="border-gray-2 flex items-center justify-between gap-3 border-b px-4 py-3">
+      <div className="border-border-primary flex items-center justify-between gap-3 border-b px-4 py-3">
         <button type="button" onClick={close} className="flex items-center">
-          <KeyboardArrowUpIcon className="fill-orange h-8 w-8 -rotate-90" />
+          <KeyboardArrowUpIcon className="fill-primary h-8 w-8 -rotate-90" />
         </button>
 
         <span className="text-s16-l24 text-text-primary font-medium">
@@ -54,7 +54,7 @@ const BrandsSelectionDrawerContent = ({
         <button
           type="button"
           onClick={clearBrands}
-          className="text-orange text-s14-l20 font-medium"
+          className="text-primary text-s14-l20 font-medium"
         >
           Clear
         </button>
@@ -64,7 +64,7 @@ const BrandsSelectionDrawerContent = ({
         {brands.map((brand) => (
           <label
             key={brand.id}
-            className="border-gray-2 flex cursor-pointer items-center gap-3 border-b px-4 py-4"
+            className="border-border-primary flex cursor-pointer items-center gap-3 border-b p-4"
           >
             <GenericCheckbox
               checked={selectedBrands.some((b) => b.id === brand.id)}
@@ -77,7 +77,7 @@ const BrandsSelectionDrawerContent = ({
         ))}
       </div>
 
-      <div className="border-gray-2 border-t p-3">
+      <div className="border-border-primary border-t p-3">
         <button
           type="button"
           onClick={() => {

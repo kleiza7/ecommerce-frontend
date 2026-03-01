@@ -70,7 +70,7 @@ const CategorySelectionColumnDrawerContent = ({
         <span className="text-s18-l28 text-text-primary font-semibold">
           Select Category
         </span>
-        <span className="text-s14-l20 text-gray-8">
+        <span className="text-s14-l20 text-text-muted">
           Choose a category for this product.
         </span>
       </div>
@@ -96,8 +96,8 @@ const CategorySelectionColumnDrawerContent = ({
                         onClick={() => handleSelect(node, level)}
                         className={`flex h-12 cursor-pointer items-center justify-between rounded-md px-3 transition-colors ${
                           isSelected
-                            ? "bg-orange/10 text-orange"
-                            : "text-text-primary hover:bg-orange/10 hover:text-orange"
+                            ? "bg-primary/10 text-primary"
+                            : "text-text-primary hover:bg-primary/10 hover:text-primary"
                         }`}
                       >
                         <span className="text-s14-l20 font-semibold">
@@ -106,7 +106,7 @@ const CategorySelectionColumnDrawerContent = ({
 
                         {isLeaf ? (
                           isSelected ? (
-                            <CheckIcon className="text-orange h-4 w-4 fill-current" />
+                            <CheckIcon className="text-primary h-6 w-6 fill-current" />
                           ) : null
                         ) : (
                           <KeyboardArrowUpIcon className="h-4 w-4 rotate-90 fill-current" />
@@ -118,7 +118,7 @@ const CategorySelectionColumnDrawerContent = ({
               </div>
 
               {level < columns.length - 1 && (
-                <div className="bg-gray-2 h-full w-px" />
+                <div className="bg-surface-secondary h-full w-px" />
               )}
             </div>
           );

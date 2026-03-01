@@ -5,14 +5,11 @@ import { ArrowLeftIcon, StoreFrontIcon } from "../../assets/icons";
 import { useCurrenciesGetAll } from "../../hooks/useCurrenciesGetAll";
 import { useOrdersGetById } from "../../hooks/useOrdersGetById";
 import { useProductsNavigation } from "../../hooks/useProductsNavigation";
+import OrderStatusLabel from "../../shared/components/OrderStatusLabel";
 import {
   BUTTON_PRIMARY,
   BUTTON_SIZE_LARGE,
 } from "../../shared/constants/CommonTailwindClasses.constants";
-import {
-  ORDER_STATUS_COLOR_PAIRS,
-  ORDER_STATUS_TEXT_PAIRS,
-} from "../../shared/constants/Order.constants";
 import { ROUTES } from "../../shared/constants/Routes.constants";
 import { canCheckoutOrder } from "../../shared/utils/Order.util";
 import { customTwMerge } from "../../shared/utils/Tailwind.util";
@@ -104,53 +101,18 @@ const OrderDetailPage = () => {
 
   return (
     <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-3 p-3 md:gap-8 md:px-10 md:py-8">
-      <button
-        type="button"
-        onClick={() => navigate(ROUTES.MY_ORDERS_PAGE.build())}
-        className="flex cursor-pointer items-center gap-x-2"
-      >
-        <ArrowLeftIcon className="fill-text-primary h-4 w-4" />
-        <span className="text-s14-l20 text-text-primary font-medium">
-          All Orders
-        </span>
-      </button>
-
-      <div className="flex items-center gap-x-8">
-        <div className="border-border-secondary flex flex-1 flex-col gap-y-2 rounded-md border px-8 py-6 md:flex-row md:justify-between md:gap-x-6 md:gap-y-0">
-          <span className="text-s16-l24 text-text-primary flex-1 font-semibold">
-            Order Summary:
+      <div className="flex items-center justify-between">
+        <button
+          type="button"
+          onClick={() => navigate(ROUTES.MY_ORDERS_PAGE.build())}
+          className="flex cursor-pointer items-center gap-x-2"
+        >
+          <ArrowLeftIcon className="fill-text-primary h-4 w-4" />
+          <span className="text-s14-l20 text-text-primary font-medium">
+            All Orders
           </span>
+        </button>
 
-          <div className="flex flex-1 flex-col">
-            <span className="text-s12-l16 text-text-muted font-medium">
-              Order Date
-            </span>
-            <span className="text-s14-l20 text-text-primary font-medium">
-              {new Date(order.createdAt).toLocaleDateString()}
-            </span>
-          </div>
-
-          <div className="flex flex-1 flex-col">
-            <span className="text-s12-l16 text-text-muted font-medium">
-              Order Summary
-            </span>
-            <span className="text-s14-l20 text-text-primary font-medium">
-              {order.items.length} {order.items.length > 1 ? "Items" : "Item"}
-            </span>
-          </div>
-
-          <div className="flex flex-1 flex-col">
-            <span className="text-s12-l16 text-text-muted font-medium">
-              Order Status
-            </span>
-            <span
-              className="text-s14-l20 font-bold"
-              style={{ color: ORDER_STATUS_COLOR_PAIRS[order.status].primary }}
-            >
-              {ORDER_STATUS_TEXT_PAIRS[order.status]}
-            </span>
-          </div>
-        </div>
         {canCheckoutOrder(order.status) && (
           <button
             onClick={() => navigate(ROUTES.CHECKOUT_PAGE.build(order.id))}
@@ -159,6 +121,42 @@ const OrderDetailPage = () => {
             Pay Now
           </button>
         )}
+      </div>
+
+      <div className="flex items-center gap-x-8">
+        <div className="border-border-secondary flex w-full items-start justify-between rounded-md border px-8 py-6">
+          <span className="text-s16-l24 text-text-primary font-semibold">
+            Order Summary:
+          </span>
+
+          <div className="flex flex-col gap-y-4 md:flex-row md:items-start md:gap-x-16 md:gap-y-0">
+            <div className="flex flex-col gap-y-1">
+              <span className="text-s12-l16 text-text-muted font-medium">
+                Order Date
+              </span>
+              <span className="text-s14-l20 text-text-primary font-medium">
+                {new Date(order.createdAt).toLocaleDateString()}
+              </span>
+            </div>
+
+            <div className="flex flex-col gap-y-1">
+              <span className="text-s12-l16 text-text-muted font-medium">
+                Order Summary
+              </span>
+              <span className="text-s14-l20 text-text-primary font-medium">
+                {order.items.length} {order.items.length > 1 ? "Items" : "Item"}
+              </span>
+            </div>
+
+            <div className="flex flex-col items-start gap-y-1">
+              <span className="text-s12-l16 text-text-muted font-medium">
+                Order Status
+              </span>
+
+              <OrderStatusLabel status={order.status} />
+            </div>
+          </div>
+        </div>
       </div>
 
       {groupedBySeller.map(({ seller, items }) => (
@@ -206,7 +204,7 @@ const OrderDetailPage = () => {
                         {item.product.brand.name}
                       </span>
 
-                      <span className="text-s14-l20 text-text-primary truncate font-bold">
+                      <span className="text-s14-l20 text-text-primary font-bold whitespace-normal">
                         {item.product.name}
                       </span>
 

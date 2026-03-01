@@ -30,11 +30,11 @@ const MyFavoritesPage = () => {
   if (favorites.length === 0) {
     return (
       <div className="mx-auto flex w-full max-w-[1480px] flex-col items-center justify-center gap-6 text-center">
-        <div className="bg-orange/10 flex h-18 w-18 items-center justify-center rounded-full">
-          <FavoriteFilledIcon className="fill-orange h-9 w-9" />
+        <div className="bg-primary/10 flex h-18 w-18 items-center justify-center rounded-full">
+          <FavoriteFilledIcon className="fill-primary h-9 w-9" />
         </div>
 
-        <span className="text-s18-l28 text-orange font-medium">
+        <span className="text-s18-l28 text-primary font-medium">
           No Products Found in Your Favorites
         </span>
 
@@ -52,7 +52,7 @@ const MyFavoritesPage = () => {
     <div className="mx-auto flex w-full max-w-[1480px] flex-col">
       <div className="top-0 flex h-[70px] w-full shrink-0 items-center px-3 md:px-10">
         <div className="relative w-full md:w-[330px]">
-          <SearchIcon className="fill-orange absolute top-1/2 left-3 h-6 w-6 -translate-y-1/2" />
+          <SearchIcon className="fill-text-disabled absolute top-1/2 left-3 h-6 w-6 -translate-y-1/2" />
 
           <input
             value={searchText}
@@ -60,7 +60,7 @@ const MyFavoritesPage = () => {
             placeholder="Search product name"
             className={customTwMerge(
               INPUT_BASE,
-              "bg-gray-3 placeholder:text-gray-6 w-full border-none px-10",
+              "bg-surface-secondary w-full border-none px-10",
             )}
           />
 
@@ -70,13 +70,13 @@ const MyFavoritesPage = () => {
               onClick={() => setSearchText("")}
               className="absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 cursor-pointer"
             >
-              <CloseIcon className="fill-text-primary h-4 w-4" />
+              <CloseIcon className="fill-text-muted h-4 w-4" />
             </button>
           )}
         </div>
       </div>
 
-      <div className="bg-gray-1 h-px w-full" />
+      <div className="bg-surface-secondary h-px w-full" />
 
       <div className="flex-1 overflow-y-auto px-3 py-5 md:px-10">
         <FavoriteProductsGrid favoriteProducts={filteredFavoriteProducts} />

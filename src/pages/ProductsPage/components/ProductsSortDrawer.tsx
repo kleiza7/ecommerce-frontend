@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { Fragment, useCallback } from "react";
 import { CheckIcon } from "../../../assets/icons";
 import { useProductsNavigation } from "../../../hooks/useProductsNavigation";
 import { GenericDrawer } from "../../../shared/components/GenericDrawer";
@@ -43,32 +43,36 @@ const ProductsSortDrawer = ({
       side="bottom"
       className="rounded-t-xl"
     >
-      <div className="border-gray-2 flex items-center justify-between border-b px-5 py-4">
+      <div className="border-border-primary bg-surface-primary flex items-center justify-between border-b px-4 py-3">
         <span className="text-s16-l24 text-text-primary font-semibold">
           Sort
         </span>
       </div>
 
-      <div className="flex flex-col px-5 py-2">
-        {SORT_OPTIONS.map((option) => {
+      <div className="flex flex-col">
+        {SORT_OPTIONS.map((option, index) => {
           const isActive = selectedValue === option.value;
 
           return (
-            <button
-              key={option.value}
-              onClick={() => handleSelect(option.value)}
-              className="flex items-center justify-between py-1.5"
-            >
-              <span
-                className={`text-s14-l20 text-text-primary ${
-                  isActive ? "font-semibold" : ""
-                }`}
+            <Fragment key={option.value}>
+              <button
+                onClick={() => handleSelect(option.value)}
+                className="flex items-center justify-between p-4"
               >
-                {option.label}
-              </span>
+                <span
+                  className={`text-s14-l20 text-text-primary ${
+                    isActive ? "font-semibold" : ""
+                  }`}
+                >
+                  {option.label}
+                </span>
 
-              {isActive && <CheckIcon className="fill-orange h-5 w-5" />}
-            </button>
+                {isActive && <CheckIcon className="fill-primary h-6 w-6" />}
+              </button>
+              {index !== SORT_OPTIONS.length - 1 && (
+                <div className="bg-surface-secondary h-px" />
+              )}
+            </Fragment>
           );
         })}
       </div>

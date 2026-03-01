@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { ReqProductsListResponse } from "../../../../../api/responses/ReqProductsListResponse.model";
+import { StarIcon } from "../../../../../assets/icons";
 import { useMediaQuery } from "../../../../../hooks/useMediaQuery";
 import FavoriteButton from "../../../../../shared/components/FavoriteButton";
 import { MEDIA_QUERY } from "../../../../../shared/constants/MediaQuery.constants";
@@ -209,21 +210,29 @@ const ProductCard = ({
         )}
       </div>
 
-      <div className="border-border-primary flex flex-1 flex-col border-t p-4">
-        <div className="flex flex-col gap-2">
-          <span className="text-text-primary text-s16-l24">{product.name}</span>
+      <div className="border-border-primary flex flex-1 flex-col border-t p-2 md:p-4">
+        <div className="flex flex-col gap-1">
+          <span className="text-text-primary text-s14-l20 md:text-s16-l24">
+            {product.name}
+          </span>
 
           <span className="text-text-primary text-s14-l20 font-bold">
             {product.brand.name}
           </span>
-
-          <span className="text-text-muted text-s12-l16 line-clamp-2 truncate">
-            {product.description}
-          </span>
         </div>
 
-        <div className="text-accent text-s18-l28 mt-auto font-bold">
-          {product.price.toFixed(2)} {product.currency.code}
+        <div className="mt-auto flex items-center justify-between">
+          <div className="text-accent text-s16-l24 md:text-s18-l28 font-bold">
+            {product.price.toFixed(2)} {product.currency.code}
+          </div>
+
+          <div className="flex items-center gap-x-1">
+            <StarIcon className="fill-rating-primary h-5 w-5" />
+
+            <span className="text-s14-l20 text-text-primary">
+              {product.avgRating.toFixed(1)}
+            </span>
+          </div>
         </div>
       </div>
     </div>

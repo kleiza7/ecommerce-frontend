@@ -159,7 +159,6 @@ const ProductsFilterDrawer = ({
       categorySlug: filters.category?.slug ?? null,
       brandSlugs: filters.brands.map((brand) => brand.slug),
       sellerIds: filters.sellers.map((seller) => seller.id),
-      overrideParams: true,
     });
 
     setOpen(false);
@@ -173,15 +172,15 @@ const ProductsFilterDrawer = ({
         side="bottom"
         className="h-svh"
       >
-        <div className="bg-gray-3 flex h-full flex-col gap-y-3">
-          <div className="border-gray-2 bg-surface-primary flex items-center justify-between border-b px-4 py-3">
+        <div className="bg-surface-secondary flex h-full flex-col gap-y-3">
+          <div className="border-border-primary bg-surface-primary flex items-center justify-between border-b px-4 py-3">
             <span className="text-s16-l24 text-text-primary font-medium">
               Filter
             </span>
           </div>
 
           {appliedFilters.length > 0 && (
-            <div className="bg-surface-primary border-gray-2 flex flex-col gap-2 border-y p-4">
+            <div className="bg-surface-primary border-border-primary flex flex-col gap-2 border-y p-4">
               <span className="text-s14-l20 text-text-primary font-medium">
                 Applied Filters
               </span>
@@ -191,52 +190,52 @@ const ProductsFilterDrawer = ({
                   <button
                     key={`${filter.key}-${filter.value}`}
                     onClick={() => removeAppliedFilter(filter)}
-                    className="border-orange flex items-center gap-1 rounded-full border px-3 py-1"
+                    className="border-status-info-secondary bg-status-info-muted flex items-center gap-1 rounded-full border px-3 py-1"
                   >
-                    <span className="text-text-primary text-s12-l16">
+                    <span className="text-status-info-primary text-s12-l16">
                       {filter.label}
                     </span>
-                    <CloseIcon className="fill-orange h-4 w-4" />
+                    <CloseIcon className="fill-text-muted h-4 w-4" />
                   </button>
                 ))}
               </div>
             </div>
           )}
 
-          <div className="border-gray-2 border-y">
+          <div className="border-border-primary border-y">
             <button
               type="button"
               onClick={() => setIsCategorySelectionDrawerOpen(true)}
-              className="bg-surface-primary flex w-full items-center justify-between px-4 py-4"
+              className="bg-surface-primary flex w-full items-center justify-between p-4"
             >
               <span className="text-s14-l20 text-text-primary">Category</span>
-              <KeyboardArrowUpIcon className="fill-orange h-6 w-6 rotate-90" />
+              <KeyboardArrowUpIcon className="fill-primary h-6 w-6 rotate-90" />
             </button>
 
-            <div className="bg-gray-2 h-px" />
+            <div className="bg-surface-secondary h-px" />
 
             <button
               type="button"
               onClick={() => setIsBrandsSelectionDrawerOpen(true)}
-              className="bg-surface-primary flex w-full items-center justify-between px-4 py-4"
+              className="bg-surface-primary flex w-full items-center justify-between p-4"
             >
               <span className="text-s14-l20 text-text-primary">Brand</span>
-              <KeyboardArrowUpIcon className="fill-orange h-6 w-6 rotate-90" />
+              <KeyboardArrowUpIcon className="fill-primary h-6 w-6 rotate-90" />
             </button>
 
-            <div className="bg-gray-2 h-px" />
+            <div className="bg-surface-secondary h-px" />
 
             <button
               type="button"
               onClick={() => setIsSellersSelectionDrawerOpen(true)}
-              className="bg-surface-primary flex w-full items-center justify-between px-4 py-4"
+              className="bg-surface-primary flex w-full items-center justify-between p-4"
             >
               <span className="text-s14-l20 text-text-primary">Seller</span>
-              <KeyboardArrowUpIcon className="fill-orange h-6 w-6 rotate-90" />
+              <KeyboardArrowUpIcon className="fill-primary h-6 w-6 rotate-90" />
             </button>
           </div>
 
-          <div className="border-gray-2 mt-auto border-t p-2.5">
+          <div className="border-border-primary mt-auto border-t p-2.5">
             <button
               type="button"
               onClick={applyFiltersToParams}

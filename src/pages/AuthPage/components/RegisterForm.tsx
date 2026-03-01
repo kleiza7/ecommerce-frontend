@@ -88,7 +88,7 @@ const RegisterForm = ({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="relative flex w-xl flex-col gap-y-10 p-10"
+      className="relative flex w-full flex-col gap-y-6 p-6 md:w-xl 2xl:gap-y-10 2xl:p-10"
     >
       {isPending && (
         <div className="bg-surface-primary/70 absolute inset-0 z-20 flex items-center justify-center rounded-lg">
@@ -146,7 +146,7 @@ const RegisterForm = ({
           <InputErrorLabel message={errors.email?.message} />
         </div>
 
-        <div className="flex gap-x-6">
+        <div className="flex flex-col gap-8 md:flex-row md:gap-6">
           <div className="relative flex flex-1 flex-col gap-y-1">
             <InputLabel label="Password" hasAsterisk />
 
@@ -185,7 +185,7 @@ const RegisterForm = ({
 
             <InputErrorLabel
               message={errors.password?.message}
-              className="top-[60px] md:top-auto"
+              className="top-16"
             />
           </div>
 
@@ -226,12 +226,12 @@ const RegisterForm = ({
 
             <InputErrorLabel
               message={errors.confirmPassword?.message}
-              className="top-[60px] md:top-auto"
+              className="top-16"
             />
           </div>
         </div>
 
-        <label className="flex cursor-pointer items-center gap-3">
+        <label className="mt-6 flex cursor-pointer items-center gap-3">
           <GenericCheckbox
             checked={isSeller}
             onCheckedChange={() => setIsSeller((prev) => !prev)}

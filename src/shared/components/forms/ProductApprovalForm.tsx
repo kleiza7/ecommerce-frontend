@@ -110,7 +110,7 @@ const ProductApprovalForm = ({
     <form className="relative flex h-full flex-col gap-y-6">
       <div className="flex shrink-0 flex-col gap-y-1">
         <GenericDialogTitle>Product Approval</GenericDialogTitle>
-        <span className="text-s14-l20 text-gray-8">
+        <span className="text-s14-l20 text-text-muted">
           Review the product details.
         </span>
       </div>

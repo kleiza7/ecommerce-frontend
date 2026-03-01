@@ -36,7 +36,7 @@ const CategoriesMegaMenuContent = ({ close }: { close: () => void }) => {
 
   return (
     <div className="flex min-w-[900px]">
-      <aside className="border-gray-2 w-56 border-r pr-4">
+      <aside className="border-border-primary w-56 border-r pr-4">
         <ul className="flex flex-col gap-1">
           {tree.map((parent) => {
             const isActive = activeParent.id === parent.id;

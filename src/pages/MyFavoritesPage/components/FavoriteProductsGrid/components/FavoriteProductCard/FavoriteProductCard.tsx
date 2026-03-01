@@ -209,20 +209,18 @@ const FavoriteProductCard = ({
         )}
       </div>
 
-      <div className="border-border-primary flex flex-1 flex-col border-t p-4">
-        <div className="flex flex-col gap-2">
-          <span className="text-text-primary text-s16-l24">{product.name}</span>
+      <div className="border-border-primary flex flex-1 flex-col border-t p-2 md:p-4">
+        <div className="flex flex-col gap-1">
+          <span className="text-text-primary text-s14-l20 md:text-s16-l24">
+            {product.name}
+          </span>
 
           <span className="text-text-primary text-s14-l20 font-bold">
             {product.brand.name}
           </span>
-
-          <span className="text-text-muted text-s12-l16 line-clamp-2 truncate">
-            {product.description}
-          </span>
         </div>
 
-        <div className="text-accent text-s18-l28 mt-auto font-bold">
+        <div className="text-accent text-s16-l24 md:text-s18-l28 mt-auto font-bold">
           {product.price.toFixed(2)} {product.currency.code}
         </div>
       </div>

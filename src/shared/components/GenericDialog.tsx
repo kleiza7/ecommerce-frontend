@@ -41,7 +41,7 @@ export const GenericDialog = ({
             <button
               type="button"
               aria-label="Close"
-              className="hover:bg-gray-4 text-gray-7 hover:text-gray-9 absolute top-4 right-4 flex h-8 w-8 cursor-pointer items-center justify-center rounded-md"
+              className="hover:bg-surface-secondary text-text-disabled hover:text-text-secondary absolute top-4 right-4 flex h-8 w-8 cursor-pointer items-center justify-center rounded-md"
             >
               <CloseIcon className="fill-text-primary" />
             </button>

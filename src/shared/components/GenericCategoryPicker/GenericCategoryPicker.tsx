@@ -28,7 +28,7 @@ const GenericCategoryPicker = ({
         <button
           type="button"
           onClick={() => setIsCategorySelectionPortalOpen(true)}
-          className="border-gray-2 text-s14-l20 text-gray-7 hover:bg-gray-12 flex h-10 w-full cursor-pointer items-center justify-center rounded-lg border px-2"
+          className="border-border-primary text-s14-l20 text-text-disabled hover:bg-surface-muted flex h-10 w-full cursor-pointer items-center justify-center rounded-lg border px-2"
         >
           Select Category
         </button>
@@ -41,7 +41,7 @@ const GenericCategoryPicker = ({
           <button
             type="button"
             onClick={() => setIsCategorySelectionPortalOpen(true)}
-            className="border-gray-2 text-s14-l20 text-gray-7 hover:bg-gray-12 flex h-10 flex-1 cursor-pointer items-center justify-center rounded-lg border px-2"
+            className="border-border-primary text-s14-l20 text-text-disabled hover:bg-surface-muted flex h-10 flex-1 cursor-pointer items-center justify-center rounded-lg border px-2"
           >
             Change Category
           </button>

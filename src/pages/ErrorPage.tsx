@@ -12,9 +12,9 @@ const ErrorPage = ({
   onReset: () => void;
 }) => {
   return (
-    <div className="bg-gray-1 flex min-h-screen items-center justify-center px-4">
+    <div className="bg-surface-secondary flex min-h-screen items-center justify-center px-4">
       <div className="flex max-w-xl flex-col items-center gap-6 text-center">
-        <span className="text-orange text-[96px] leading-none font-bold">
+        <span className="text-primary text-[96px] leading-none font-bold">
           Oops!
         </span>
 
@@ -28,7 +28,7 @@ const ErrorPage = ({
         </p>
 
         {error?.message && (
-          <pre className="text-s12-l16 text-error-primary max-w-full overflow-x-auto rounded px-4 py-2">
+          <pre className="text-s12-l16 text-status-error-primary max-w-full overflow-x-auto rounded px-4 py-2">
             {error.message}
           </pre>
         )}

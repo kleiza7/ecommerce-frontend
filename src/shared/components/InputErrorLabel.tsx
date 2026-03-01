@@ -12,7 +12,7 @@ const InputErrorLabel = ({
   return (
     <span
       className={customTwMerge(
-        "text-s12-l16 text-error-primary absolute -bottom-4 left-0",
+        "text-s12-l16 text-status-error-primary absolute -bottom-4 left-0",
         className,
       )}
     >

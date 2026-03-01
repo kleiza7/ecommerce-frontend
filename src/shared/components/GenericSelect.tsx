@@ -47,7 +47,7 @@ const GenericSelect = <T,>({
     >
       <Select.Trigger
         className={customTwMerge(
-          "text-s14-l20 text-text-primary disabled:bg-gray-3 border-border-primary flex h-10 w-full cursor-pointer items-center justify-between rounded-md border px-3 outline-none disabled:cursor-not-allowed disabled:opacity-60",
+          "text-s14-l20 text-text-primary disabled:bg-surface-secondary border-border-primary flex h-10 w-full cursor-pointer items-center justify-between rounded-md border px-3 outline-none disabled:cursor-not-allowed disabled:opacity-60",
           className,
         )}
       >
@@ -62,7 +62,7 @@ const GenericSelect = <T,>({
         {!disabled && (
           <Select.Icon>
             {triggerIcon ?? (
-              <KeyboardArrowUpIcon className="text-gray-8 h-4 w-4 rotate-180" />
+              <KeyboardArrowUpIcon className="text-text-muted h-4 w-4 rotate-180" />
             )}
           </Select.Icon>
         )}

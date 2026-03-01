@@ -41,13 +41,13 @@ const CategoriesNavigationDrawerContent = ({
 
   return (
     <div className="bg-surface-primary flex h-full flex-col">
-      <div className="border-gray-2 flex items-center justify-between gap-3 border-b px-4 py-3">
+      <div className="border-border-primary flex items-center justify-between gap-3 border-b px-4 py-3">
         <button
           type="button"
           onClick={handleBack}
           className="flex items-center justify-center"
         >
-          <KeyboardArrowUpIcon className="fill-orange h-8 w-8 -rotate-90" />
+          <KeyboardArrowUpIcon className="fill-primary h-8 w-8 -rotate-90" />
         </button>
 
         <span className="text-s16-l24 text-text-primary font-medium">
@@ -78,13 +78,13 @@ const CategoriesNavigationDrawerContent = ({
                 setDrillPath((prev) => [...prev, node]);
               }}
               className={customTwMerge(
-                "border-gray-2 text-text-primary flex w-full items-center justify-between border-b px-4 py-4 text-left",
+                "border-border-primary text-text-primary flex w-full items-center justify-between border-b p-4 text-left",
               )}
             >
               <span className="text-s14-l20">{node.name}</span>
 
               {!isLeaf && (
-                <KeyboardArrowUpIcon className="fill-orange h-4 w-4 rotate-90" />
+                <KeyboardArrowUpIcon className="fill-primary h-6 w-6 rotate-90" />
               )}
             </button>
           );

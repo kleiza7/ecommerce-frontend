@@ -1,6 +1,5 @@
 import type { ReqProductsGetWaitingApprovalProductsResponse } from "../../../api/responses/ReqProductsGetWaitingApprovalProductsResponse.model";
 import { OrderApproveIcon } from "../../../assets/icons";
-import GenericTooltip from "../../../shared/components/GenericTooltip";
 
 const AdminProductsList = ({
   products,
@@ -19,18 +18,6 @@ const AdminProductsList = ({
             key={product.id}
             className="border-border-primary bg-surface-primary relative flex items-start gap-x-4 rounded-xl border p-3"
           >
-            <div className="absolute top-3 right-3">
-              <GenericTooltip content="Approve / Reject">
-                <button
-                  type="button"
-                  onClick={() => openProductApprovalPortal(product.id)}
-                  className="flex h-8 w-8 items-center justify-center"
-                >
-                  <OrderApproveIcon className="fill-primary" />
-                </button>
-              </GenericTooltip>
-            </div>
-
             {primaryImage?.mediumUrl && (
               <img
                 src={primaryImage.mediumUrl}
@@ -58,6 +45,14 @@ const AdminProductsList = ({
                 {product.price.toFixed(2)} {product.currency.code}
               </span>
             </div>
+
+            <button
+              type="button"
+              onClick={() => openProductApprovalPortal(product.id)}
+              className="flex h-8 w-8 items-center justify-center"
+            >
+              <OrderApproveIcon className="fill-primary" />
+            </button>
           </div>
         );
       })}

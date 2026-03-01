@@ -11,6 +11,7 @@ import EditNoteIcon from "./edit_note.svg?react";
 import ErrorIcon from "./error.svg?react";
 import FavoriteIcon from "./favorite.svg?react";
 import FavoriteFilledIcon from "./favorite_filled.svg?react";
+import FilterOutlinedIcon from "./filter_outlined.svg?react";
 import KeyboardArrowUpIcon from "./keyboard_arrow_up.svg?react";
 import LocalShippingIcon from "./local_shipping.svg?react";
 import LockIcon from "./lock.svg?react";
@@ -55,6 +56,7 @@ export {
   ErrorIcon,
   FavoriteFilledIcon,
   FavoriteIcon,
+  FilterOutlinedIcon,
   KeyboardArrowUpIcon,
   LocalShippingIcon,
   LockIcon,

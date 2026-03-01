@@ -39,13 +39,13 @@ const formatProductCount = (count: number): string => {
 const ProductListHeader = ({
   selectedCategoryName,
   totalCount,
-  openProductsSortDrawer,
   openProductsFilterDrawer,
+  openProductsSortDrawer,
 }: {
   selectedCategoryName?: string;
   totalCount: number;
-  openProductsSortDrawer: () => void;
   openProductsFilterDrawer: () => void;
+  openProductsSortDrawer: () => void;
 }) => {
   const { sortBy, goToProductsPage } = useProductsNavigation();
 
@@ -63,8 +63,8 @@ const ProductListHeader = ({
     "Recommended";
 
   return (
-    <div className="flex flex-col items-end justify-center md:flex-row md:justify-between">
-      <div className="flex flex-col gap-x-2 py-2 md:py-0">
+    <div className="flex flex-col items-center md:flex-row md:items-end md:justify-between">
+      <div className="flex flex-col items-center gap-x-2 py-2 md:items-start md:py-0">
         <span className="text-s16-l24 md:text-s24-l32 text-text-primary font-medium">
           {selectedCategoryName ?? "Products"}
         </span>
@@ -74,26 +74,26 @@ const ProductListHeader = ({
         </span>
       </div>
 
-      <div className="border-gray-2 flex h-[42px] w-full items-center border-y md:hidden">
-        <button
-          onClick={openProductsSortDrawer}
-          className="flex h-full flex-1 items-center justify-center gap-x-2"
-        >
-          <SwapVertIcon className="fill-orange h-5 w-5" />
-          <span className="text-s14-l20 text-text-primary font-medium">
-            {selectedSortLabel}
-          </span>
-        </button>
-
-        <div className="bg-gray-2 h-full w-px" />
-
+      <div className="border-border-primary flex h-[42px] w-full items-center border-y md:hidden">
         <button
           onClick={openProductsFilterDrawer}
           className="flex h-full flex-1 items-center justify-center gap-x-2"
         >
-          <TuneIcon className="fill-orange h-5 w-5" />
+          <TuneIcon className="fill-primary h-5 w-5" />
           <span className="text-s14-l20 text-text-primary font-medium">
             Filter
+          </span>
+        </button>
+
+        <div className="bg-surface-secondary h-full w-px" />
+
+        <button
+          onClick={openProductsSortDrawer}
+          className="flex h-full flex-1 items-center justify-center gap-x-2"
+        >
+          <SwapVertIcon className="fill-primary h-5 w-5" />
+          <span className="text-s14-l20 text-text-primary font-medium">
+            {selectedSortLabel}
           </span>
         </button>
       </div>

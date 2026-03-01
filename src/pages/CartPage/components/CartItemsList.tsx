@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 import {
   AddIcon,
   RemoveIcon,
@@ -8,9 +8,7 @@ import {
 import { useCartActions } from "../../../hooks/useCartActions";
 import { useCurrenciesGetAll } from "../../../hooks/useCurrenciesGetAll";
 import { useProductsNavigation } from "../../../hooks/useProductsNavigation";
-import GenericConfirmationPortal from "../../../shared/components/GenericConfirmationPortal/GenericConfirmationPortal";
 import GenericTooltip from "../../../shared/components/GenericTooltip";
-import type { CartItemUI } from "../../../shared/models/CartItemUI.model";
 import { useCartStore } from "../../../stores/CartStore";
 
 const CartItemsList = () => {
@@ -18,34 +16,6 @@ const CartItemsList = () => {
   const cartItems = useCartStore((state) => state.items);
   const { updateCart, removeFromCart, isLoading } = useCartActions();
   const { data: currencies = [] } = useCurrenciesGetAll();
-
-  const [isConfirmationPortalOpen, setIsConfirmationPortalOpen] =
-    useState(false);
-  const [selectedCartItem, setSelectedCartItem] = useState<Pick<
-    CartItemUI,
-    "id" | "productId"
-  > | null>(null);
-
-  const openConfirmationPortal = useCallback(
-    (cartItem: Pick<CartItemUI, "id" | "productId">) => {
-      setSelectedCartItem(cartItem);
-      setIsConfirmationPortalOpen(true);
-    },
-    [],
-  );
-
-  const handleConfirmRemove = useCallback(() => {
-    if (!selectedCartItem) {
-      return;
-    }
-
-    removeFromCart({
-      id: selectedCartItem.id,
-      productId: selectedCartItem.productId,
-    });
-
-    setSelectedCartItem(null);
-  }, [removeFromCart, selectedCartItem]);
 
   const currencyMap = useMemo(() => {
     const map = new Map<number, string>();
@@ -83,166 +53,161 @@ const CartItemsList = () => {
   );
 
   return (
-    <>
-      <div className="flex min-w-0 flex-1 flex-col gap-4 lg:gap-6">
-        {groupedBySeller.map(({ seller, items }) => (
-          <div
-            key={seller.id}
-            className="bg-surface-primary flex flex-col gap-y-2"
-          >
-            <div className="border-border-secondary bg-surface-muted flex items-center gap-x-3 rounded-lg border px-5 py-3.5">
-              <StoreFrontIcon className="fill-text-disabled h-5 w-5" />
+    <div className="flex min-w-0 flex-1 flex-col gap-3 md:gap-4 lg:gap-6">
+      {groupedBySeller.map(({ seller, items }) => (
+        <div
+          key={seller.id}
+          className="bg-surface-primary flex flex-col gap-y-2"
+        >
+          <div className="border-border-secondary bg-surface-muted flex items-center gap-x-2 rounded-lg border px-4 py-2.5 md:gap-x-3 md:px-5 md:py-3.5">
+            <StoreFrontIcon className="fill-text-disabled h-4 w-4 md:h-5 md:w-5" />
 
-              <div className="flex items-center gap-x-1">
-                <span className="text-s14-l20 text-text-primary font-medium">
-                  SOLD BY
-                </span>
+            <div className="flex items-center gap-x-1">
+              <span className="text-s12-l16 md:text-s14-l20 text-text-primary font-medium">
+                SOLD BY
+              </span>
 
-                <button
-                  type="button"
-                  onClick={() => onSellerClick(seller.id)}
-                  className="text-s14-l20 text-primary cursor-pointer font-medium hover:underline"
-                >
-                  {seller.name}
-                </button>
-              </div>
+              <button
+                type="button"
+                onClick={() => onSellerClick(seller.id)}
+                className="text-s12-l16 md:text-s14-l20 text-primary cursor-pointer font-medium hover:underline"
+              >
+                {seller.name}
+              </button>
             </div>
+          </div>
 
-            <div className="flex flex-col gap-y-2">
-              {items.map((cartItem, index) => {
-                const thumb =
-                  cartItem.product.images.find((img) => img.isPrimary)
-                    ?.thumbUrl || cartItem.product.images[0]?.thumbUrl;
+          <div className="flex flex-col gap-y-2">
+            {items.map((cartItem, index) => {
+              const thumb =
+                cartItem.product.images.find((img) => img.isPrimary)
+                  ?.thumbUrl || cartItem.product.images[0]?.thumbUrl;
 
-                const isMin = cartItem.quantity <= 1;
-                const isMax = cartItem.quantity >= cartItem.product.stockCount;
+              const isMin = cartItem.quantity <= 1;
+              const isMax = cartItem.quantity >= cartItem.product.stockCount;
 
-                return (
-                  <>
-                    <div key={cartItem.productId} className="flex gap-x-8 p-4">
-                      <div className="border-border-secondary h-[180px] w-[180px] shrink-0 overflow-hidden rounded border p-2">
-                        {thumb && (
-                          <img
-                            src={thumb}
-                            alt={cartItem.product.name}
-                            className="h-full w-full object-cover"
-                          />
-                        )}
-                      </div>
+              return (
+                <>
+                  <div
+                    key={cartItem.productId}
+                    className="flex gap-x-3 p-3 md:gap-x-4 md:p-4 xl:gap-x-8"
+                  >
+                    {/* IMAGE */}
+                    <div className="border-border-secondary h-[100px] w-[100px] shrink-0 overflow-hidden rounded border p-1.5 md:h-[140px] md:w-[140px] md:p-2 xl:h-[180px] xl:w-[180px]">
+                      {thumb && (
+                        <img
+                          src={thumb}
+                          alt={cartItem.product.name}
+                          className="h-full w-full object-cover"
+                        />
+                      )}
+                    </div>
 
-                      <div className="flex min-w-0 flex-1 gap-x-9">
-                        <div className="flex flex-col justify-between">
-                          <div className="flex min-w-0 flex-1 flex-col items-center gap-1 md:items-start">
-                            <span className="text-s20-l28 text-text-primary font-semibold">
-                              {cartItem.product.name}
-                            </span>
+                    <div className="flex min-w-0 flex-1 gap-x-3 md:gap-x-4 xl:gap-x-9">
+                      <div className="flex min-w-0 flex-1 flex-col justify-between">
+                        <span className="text-s16-l24 md:text-s20-l28 text-text-primary font-semibold wrap-break-word">
+                          {cartItem.product.name}
+                        </span>
 
-                            <span className="text-s14-l20 text-text-muted">
-                              {cartItem.product.description}
-                            </span>
-                          </div>
-
-                          <div className="flex items-center gap-x-6">
-                            <div className="border-border-primary flex h-8 w-fit shrink-0 items-center rounded-md border">
-                              <GenericTooltip
-                                content={isMin ? "Minimum quantity is 1" : ""}
-                              >
-                                <button
-                                  disabled={isLoading || isMin}
-                                  onClick={() =>
-                                    updateCart({
-                                      id: cartItem.id,
-                                      productId: cartItem.productId,
-                                      newQuantity: cartItem.quantity - 1,
-                                    })
-                                  }
-                                  className="group flex h-full w-10 cursor-pointer items-center justify-center"
-                                >
-                                  <RemoveIcon className="fill-text-secondary group-disabled:fill-text-disabled h-4 w-4" />
-                                </button>
-                              </GenericTooltip>
-
-                              <div className="flex h-full w-10 items-center justify-center">
-                                <span className="text-s14-l20 text-text-primary font-medium">
-                                  {cartItem.quantity}
-                                </span>
-                              </div>
-
-                              <GenericTooltip
-                                content={
-                                  isMax
-                                    ? "You have reached the maximum available stock"
-                                    : ""
-                                }
-                              >
-                                <button
-                                  disabled={isLoading || isMax}
-                                  onClick={() =>
-                                    updateCart({
-                                      id: cartItem.id,
-                                      productId: cartItem.productId,
-                                      newQuantity: cartItem.quantity + 1,
-                                    })
-                                  }
-                                  className="group flex h-full w-10 cursor-pointer items-center justify-center"
-                                >
-                                  <AddIcon className="fill-text-secondary group-disabled:fill-text-disabled h-4 w-4" />
-                                </button>
-                              </GenericTooltip>
-                            </div>
-
-                            <div className="bg-border-primary h-6 w-px" />
-
-                            <GenericTooltip content="Remove item from cart">
-                              <button
-                                disabled={isLoading}
-                                onClick={() =>
-                                  openConfirmationPortal({
-                                    id: cartItem.id,
-                                    productId: cartItem.productId,
-                                  })
-                                }
-                                className="flex cursor-pointer items-center gap-x-1 disabled:opacity-40"
-                              >
-                                <TrashIcon className="fill-text-muted h-4 w-4" />
-                                <span className="text-s14-l20 text-text-muted font-medium">
-                                  Remove
-                                </span>
-                              </button>
-                            </GenericTooltip>
-                          </div>
-                        </div>
-
-                        <span className="text-accent text-s20-l28 shrink-0 font-semibold">
+                        {/* PRICE - mobile altında */}
+                        <span className="text-accent text-s16-l24 font-semibold md:hidden">
                           {(cartItem.priceSnapshot * cartItem.quantity).toFixed(
                             2,
                           )}{" "}
                           {currencyMap.get(cartItem.currencyId) ?? ""}
                         </span>
+
+                        <div className="flex items-center gap-x-3 md:gap-x-4 xl:gap-x-6">
+                          <div className="border-border-primary flex h-8 w-fit shrink-0 items-center rounded-md border">
+                            <GenericTooltip
+                              content={isMin ? "Minimum quantity is 1" : ""}
+                            >
+                              <button
+                                disabled={isLoading || isMin}
+                                onClick={() =>
+                                  updateCart({
+                                    id: cartItem.id,
+                                    productId: cartItem.productId,
+                                    newQuantity: cartItem.quantity - 1,
+                                  })
+                                }
+                                className="group flex h-full w-8 cursor-pointer items-center justify-center md:w-10"
+                              >
+                                <RemoveIcon className="fill-text-secondary group-disabled:fill-text-disabled h-4 w-4" />
+                              </button>
+                            </GenericTooltip>
+
+                            <div className="flex h-full w-8 items-center justify-center md:w-10">
+                              <span className="text-s12-l16 md:text-s14-l20 text-text-primary font-medium">
+                                {cartItem.quantity}
+                              </span>
+                            </div>
+
+                            <GenericTooltip
+                              content={
+                                isMax
+                                  ? "You have reached the maximum available stock"
+                                  : ""
+                              }
+                            >
+                              <button
+                                disabled={isLoading || isMax}
+                                onClick={() =>
+                                  updateCart({
+                                    id: cartItem.id,
+                                    productId: cartItem.productId,
+                                    newQuantity: cartItem.quantity + 1,
+                                  })
+                                }
+                                className="group flex h-full w-8 cursor-pointer items-center justify-center md:w-10"
+                              >
+                                <AddIcon className="fill-text-secondary group-disabled:fill-text-disabled h-4 w-4" />
+                              </button>
+                            </GenericTooltip>
+                          </div>
+
+                          <div className="bg-border-primary h-5 w-px md:h-6" />
+
+                          <GenericTooltip content="Remove item from cart">
+                            <button
+                              disabled={isLoading}
+                              onClick={() =>
+                                removeFromCart({
+                                  id: cartItem.id,
+                                  productId: cartItem.productId,
+                                })
+                              }
+                              className="flex cursor-pointer items-center gap-x-1 disabled:opacity-40"
+                            >
+                              <TrashIcon className="fill-text-muted h-4 w-4" />
+                              <span className="text-s14-l20 text-text-muted hidden font-medium md:inline">
+                                Remove
+                              </span>
+                            </button>
+                          </GenericTooltip>
+                        </div>
                       </div>
+
+                      {/* PRICE - desktop sağda */}
+                      <span className="text-accent text-s20-l28 hidden font-semibold md:block">
+                        {(cartItem.priceSnapshot * cartItem.quantity).toFixed(
+                          2,
+                        )}{" "}
+                        {currencyMap.get(cartItem.currencyId) ?? ""}
+                      </span>
                     </div>
+                  </div>
 
-                    {index !== items.length - 1 && (
-                      <div className="border-border-secondary border-b" />
-                    )}
-                  </>
-                );
-              })}
-            </div>
+                  {index !== items.length - 1 && (
+                    <div className="border-border-secondary border-b" />
+                  )}
+                </>
+              );
+            })}
           </div>
-        ))}
-      </div>
-
-      {selectedCartItem && (
-        <GenericConfirmationPortal
-          open={isConfirmationPortalOpen}
-          setOpen={setIsConfirmationPortalOpen}
-          title="Remove Item"
-          description="Are you sure you want to remove this item from your cart?"
-          onConfirm={handleConfirmRemove}
-        />
-      )}
-    </>
+        </div>
+      ))}
+    </div>
   );
 };
 

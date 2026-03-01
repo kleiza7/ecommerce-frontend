@@ -1,6 +1,5 @@
 import type { ReqProductsGetProductsBySellerResponse } from "../../../api/responses/ReqProductsGetProductsBySellerResponse.model";
 import { EditNoteIcon } from "../../../assets/icons";
-import GenericTooltip from "../../../shared/components/GenericTooltip";
 import ProductStatusLabel from "../../../shared/components/ProductStatusLabel";
 
 const SellerProductsList = ({
@@ -20,18 +19,6 @@ const SellerProductsList = ({
             key={product.id}
             className="border-border-primary bg-surface-primary relative flex items-start gap-x-4 rounded-xl border p-3"
           >
-            <div className="absolute top-3 right-3">
-              <GenericTooltip content="Update">
-                <button
-                  type="button"
-                  onClick={() => openUpdateProductPortal(product.id)}
-                  className="flex h-8 w-8 items-center justify-center"
-                >
-                  <EditNoteIcon className="fill-primary" />
-                </button>
-              </GenericTooltip>
-            </div>
-
             {primaryImage?.mediumUrl && (
               <img
                 src={primaryImage.mediumUrl}
@@ -63,6 +50,14 @@ const SellerProductsList = ({
                 className="self-start"
               />
             </div>
+
+            <button
+              type="button"
+              onClick={() => openUpdateProductPortal(product.id)}
+              className="flex h-8 w-8 items-center justify-center"
+            >
+              <EditNoteIcon className="fill-primary" />
+            </button>
           </div>
         );
       })}
