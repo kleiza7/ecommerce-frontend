@@ -168,10 +168,10 @@ const ProductDetailPage = () => {
     <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-y-6 pb-4 md:px-10 md:py-8">
       <CategoryBreadcrumb selectedCategoryId={product.category.id} />
 
-      <div className="flex flex-col gap-4 md:flex-row md:gap-14">
+      <div className="flex flex-col gap-10 lg:flex-row xl:gap-14">
         <div className="flex flex-col gap-4">
           <div
-            className="border-border-primary relative h-[450px] w-full cursor-pointer overflow-hidden shadow-lg md:h-[500px] md:w-[700px] md:rounded-xl md:border"
+            className="border-border-primary relative h-[450px] w-full cursor-pointer overflow-hidden shadow-lg md:rounded-xl md:border lg:h-[337px] lg:w-[472px] xl:h-[430px] xl:w-[600px] 2xl:h-[500px] 2xl:w-[700px]"
             onClick={() => {
               if (hasDraggedRef.current) {
                 hasDraggedRef.current = false;
@@ -254,7 +254,7 @@ const ProductDetailPage = () => {
                   setIsAnimating(true);
                   setActiveIndex(index + 1);
                 }}
-                className={`border-border-primary h-32 w-32 cursor-pointer overflow-hidden rounded-lg border-2 p-2 shadow-lg ${
+                className={`border-border-primary h-32 w-32 cursor-pointer overflow-hidden rounded-lg border-2 p-2 shadow-lg lg:h-24 lg:w-24 xl:h-32 xl:w-32 ${
                   index === currentRealIndex
                     ? "border-primary"
                     : "border-border-primary"
@@ -377,7 +377,7 @@ const ProductDetailPage = () => {
       />
 
       {/* TODO: responsive unutma */}
-      {/* <div className="border-border-primary bg-surface-primary fixed bottom-0 left-0 z-40 flex w-full items-end justify-between gap-3 border-t p-2.5 md:hidden">
+      <div className="border-border-primary bg-surface-primary fixed bottom-0 left-0 z-40 flex w-full items-end justify-between gap-3 border-t p-2.5 md:hidden">
         <span className="text-accent text-s16-l24 font-semibold">
           {product.price.toFixed(2)} {product.currency.code}
         </span>
@@ -405,7 +405,7 @@ const ProductDetailPage = () => {
             Add to Cart
           </button>
         </GenericTooltip>
-      </div> */}
+      </div>
 
       <Lightbox
         open={lightboxOpen}
