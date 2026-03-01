@@ -1,13 +1,13 @@
-# 🎨 E-Commerce Frontend (Phase-1)
+# 🎨 ShopLand Frontend (Phase-1)
 
 **Production App:**  
-https://ecommerce-frontend-seven-orpin.vercel.app
+https://shopland-frontend-seven-orpin.vercel.app
 
 Modern, scalable **React + TypeScript** frontend built for a real-world E-Commerce platform.  
 Designed to work seamlessly with the backend API and evolve into a full-featured shopping experience.
 
 Backend repository:  
-➡️ https://github.com/kleiza7/ecommerce-backend
+➡️ https://github.com/kleiza7/shopland-backend
 
 ---
 
@@ -138,7 +138,7 @@ The structure is intentionally **simple but scalable**.
 Create a `.env` file:
 
 ```ini
-VITE_API_URL=https://ecommerce-backend-z39w.onrender.com/api
+VITE_API_URL=https://shopland-backend-z39w.onrender.com/api
 ```
 
 Local example:
