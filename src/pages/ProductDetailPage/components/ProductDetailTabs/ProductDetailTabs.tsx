@@ -51,7 +51,7 @@ const ProductDetailTabs = ({
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col px-4 md:px-0">
       <div className="border-border-primary border-b">
         <div className="relative min-w-0 flex-1">
           <div className="no-scrollbar flex items-center gap-x-8 overflow-x-auto pr-10 whitespace-nowrap">
@@ -86,7 +86,7 @@ const ProductDetailTabs = ({
         </div>
       </div>
 
-      <div className="py-12">{getActiveSection()}</div>
+      <div className="py-4 md:py-8 lg:py-12">{getActiveSection()}</div>
     </div>
   );
 };

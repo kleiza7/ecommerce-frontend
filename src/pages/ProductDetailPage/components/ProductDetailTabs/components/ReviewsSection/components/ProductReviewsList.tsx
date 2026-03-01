@@ -64,7 +64,7 @@ const ProductReviewsList = ({
   return (
     <>
       <div className="flex flex-col gap-y-8">
-        <div className="border-border-secondary flex items-center justify-between border-b pb-4">
+        <div className="border-border-secondary flex flex-col justify-between gap-4 border-b pb-4 md:flex-row md:items-center md:gap-0">
           <span className="text-s20-l28 text-text-primary font-bold">
             Customer Reviews ({sortedProductReviews.length})
           </span>

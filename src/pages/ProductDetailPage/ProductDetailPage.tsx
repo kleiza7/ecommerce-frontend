@@ -165,7 +165,7 @@ const ProductDetailPage = () => {
   };
 
   return (
-    <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-y-6 pb-4 md:px-10 md:py-8">
+    <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-y-6 pb-20 md:px-10 md:pt-8 lg:pb-8">
       <CategoryBreadcrumb selectedCategoryId={product.category.id} />
 
       <div className="flex flex-col gap-10 lg:flex-row xl:gap-14">
@@ -186,7 +186,7 @@ const ProductDetailPage = () => {
           >
             <FavoriteButton
               product={product}
-              className="absolute top-3 right-3 z-10 md:hidden"
+              className="absolute top-3 right-3 z-10 lg:hidden"
             />
 
             <div className="h-full w-full overflow-hidden">
@@ -204,7 +204,7 @@ const ProductDetailPage = () => {
                       src={img.largeUrl}
                       alt={product.name}
                       draggable={false}
-                      className="h-full w-full object-cover select-none"
+                      className="h-full w-full object-contain select-none"
                     />
                   </div>
                 ))}
@@ -231,7 +231,7 @@ const ProductDetailPage = () => {
               <KeyboardArrowUpIcon className="fill-text-primary h-8 w-8 rotate-90" />
             </button>
 
-            <div className="bg-surface-primary/80 absolute bottom-3 left-1/2 z-10 -translate-x-1/2 rounded-full p-[5px] md:hidden">
+            <div className="bg-surface-primary/80 absolute bottom-3 left-1/2 z-10 -translate-x-1/2 rounded-full p-[5px] lg:hidden">
               <div className="flex items-center gap-3">
                 {Array.from({ length: images.length }).map((_, i) => (
                   <span
@@ -316,8 +316,8 @@ const ProductDetailPage = () => {
                 )}
               </div>
 
-              <div className="bg-surface-muted border-border-secondary rounded-lg border p-6">
-                <span className="text-accent text-s36-l44 hidden font-bold md:inline">
+              <div className="bg-surface-muted border-border-secondary hidden rounded-lg border p-6 lg:block">
+                <span className="text-accent text-s36-l44 font-bold">
                   {product.price.toFixed(2)} {product.currency.code}
                 </span>
               </div>
@@ -328,7 +328,7 @@ const ProductDetailPage = () => {
             </div>
           </div>
 
-          <div className="hidden items-center gap-x-4 md:flex">
+          <div className="hidden items-center gap-x-4 lg:flex">
             <GenericTooltip
               content={
                 isOutOfStock
@@ -360,7 +360,7 @@ const ProductDetailPage = () => {
 
             <FavoriteButton
               product={product}
-              className="border-border-primary hidden h-12 w-12 shrink-0 border shadow-none hover:shadow-md md:flex"
+              className="border-border-primary h-12 w-12 shrink-0 border shadow-none hover:shadow-md"
             />
           </div>
 
@@ -376,9 +376,8 @@ const ProductDetailPage = () => {
         seller={product.seller}
       />
 
-      {/* TODO: responsive unutma */}
-      <div className="border-border-primary bg-surface-primary fixed bottom-0 left-0 z-40 flex w-full items-end justify-between gap-3 border-t p-2.5 md:hidden">
-        <span className="text-accent text-s16-l24 font-semibold">
+      <div className="border-border-primary bg-surface-primary fixed bottom-0 left-0 z-40 flex w-full items-end justify-between gap-3 border-t p-2.5 lg:hidden">
+        <span className="text-accent text-s20-l28 md:text-s28-l36 font-bold">
           {product.price.toFixed(2)} {product.currency.code}
         </span>
 
