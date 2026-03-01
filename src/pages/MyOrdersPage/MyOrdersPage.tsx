@@ -37,17 +37,6 @@ const DATE_FILTER_OPTIONS: { label: string; value: DATE_FILTER }[] = [
   { label: "Last 1 Year", value: DATE_FILTER.LAST_1_YEAR },
 ];
 
-const STATUS_FILTER_OPTIONS: {
-  label: string;
-  value: ORDER_STATUS | "ALL";
-}[] = [
-  { label: "All Orders", value: "ALL" },
-  ...Object.values(ORDER_STATUS).map((status) => ({
-    label: ORDER_STATUS_TEXT_PAIRS[status],
-    value: status,
-  })),
-];
-
 const MyOrdersPage = () => {
   const navigate = useNavigate();
   const { data: orders = [], isLoading } = useOrdersGetOrdersListByUser();
@@ -91,6 +80,29 @@ const MyOrdersPage = () => {
     return result;
   }, [orders, searchText, selectedStatus, dateFilter]);
 
+  const statusOptions = useMemo(() => {
+    const baseOptions: { label: string; value: ORDER_STATUS | "ALL" }[] = [
+      { label: "All Orders", value: "ALL" },
+      ...Object.values(ORDER_STATUS).map((status) => ({
+        label: ORDER_STATUS_TEXT_PAIRS[status],
+        value: status,
+      })),
+    ];
+
+    return baseOptions.map((option) => {
+      const count =
+        option.value === "ALL"
+          ? orders.length
+          : orders.filter((order) => order.status === option.value).length;
+
+      return {
+        label: option.label,
+        value: option.value,
+        count,
+      };
+    });
+  }, [orders]);
+
   const currencyMap = useMemo(() => {
     const map = new Map<number, string>();
 
@@ -107,7 +119,7 @@ const MyOrdersPage = () => {
         My Orders
       </span>
 
-      <div className="flex items-center justify-between gap-x-4">
+      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between md:gap-x-4">
         <div className="relative w-full">
           <SearchIcon className="fill-text-disabled absolute top-1/2 left-3 h-6 w-6 -translate-y-1/2" />
 
@@ -129,29 +141,31 @@ const MyOrdersPage = () => {
           )}
         </div>
 
-        <GenericSelect<ORDER_STATUS | "ALL">
-          value={selectedStatus}
-          options={STATUS_FILTER_OPTIONS}
-          onChange={setSelectedStatus}
-          className="w-full shadow-sm lg:hidden"
-        />
+        <div className="flex w-full gap-3 lg:w-auto">
+          <GenericSelect<ORDER_STATUS | "ALL">
+            value={selectedStatus}
+            options={statusOptions.map((opt) => ({
+              label: `${opt.label} (${opt.count})`,
+              value: opt.value,
+            }))}
+            onChange={setSelectedStatus}
+            className="w-1/2 shadow-sm lg:hidden"
+          />
 
-        <GenericSelect<DATE_FILTER>
-          value={dateFilter}
-          options={DATE_FILTER_OPTIONS}
-          onChange={setDateFilter}
-          className="w-full shadow-sm lg:w-[200px]"
-          triggerIcon={<CalendarIcon className="fill-text-disabled h-5 w-5" />}
-        />
+          <GenericSelect<DATE_FILTER>
+            value={dateFilter}
+            options={DATE_FILTER_OPTIONS}
+            onChange={setDateFilter}
+            className="w-1/2 shadow-sm lg:w-[200px]"
+            triggerIcon={
+              <CalendarIcon className="fill-text-disabled h-5 w-5" />
+            }
+          />
+        </div>
       </div>
 
       <div className="border-border-secondary hidden items-center gap-6 border-b lg:flex">
-        {STATUS_FILTER_OPTIONS.map((option) => {
-          const count =
-            option.value === "ALL"
-              ? orders.length
-              : orders.filter((order) => order.status === option.value).length;
-
+        {statusOptions.map((option) => {
           const isSelected = selectedStatus === option.value;
 
           return (
@@ -176,7 +190,7 @@ const MyOrdersPage = () => {
                     isSelected ? "text-primary" : "text-text-muted"
                   }`}
                 >
-                  {count}
+                  {option.count}
                 </span>
               </div>
             </button>
