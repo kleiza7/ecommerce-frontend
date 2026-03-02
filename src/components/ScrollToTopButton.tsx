@@ -35,7 +35,7 @@ const ScrollToTopButton = () => {
         })
       }
       className={customTwMerge(
-        "fixed right-5 bottom-5 z-40 cursor-pointer",
+        "fixed right-5 bottom-20 z-40 cursor-pointer lg:bottom-5",
         "flex h-11 w-11 items-center justify-center rounded-full",
         "bg-primary shadow-lg",
         "hover:bg-primary-dark transition",
