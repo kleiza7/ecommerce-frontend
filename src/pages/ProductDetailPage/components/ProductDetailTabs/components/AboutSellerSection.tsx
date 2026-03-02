@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import type { ReqProductsGetByIdResponse } from "../../../../../api/responses/ReqProductsGetByIdResponse.model";
 import {
   KeyboardArrowUpIcon,
+  StarFilledIcon,
   StoreFrontIcon,
 } from "../../../../../assets/icons";
 import { useProductsList } from "../../../../../hooks/useProductsList";
@@ -84,24 +85,52 @@ const AboutSellerSection = ({
     <div className="border-border-primary flex flex-col rounded-xl border">
       <div className="border-border-primary flex items-center justify-between border-b p-8">
         <div className="flex items-center gap-x-4">
-          <StoreFrontIcon className="fill-primary h-8 w-8" />
-          <span className="text-s20-l28 text-primary font-bold">
-            {seller.name}
-          </span>
+          <div className="bg-status-info-muted border-status-info-secondary flex h-20 w-20 items-center justify-center rounded-full border">
+            <StoreFrontIcon className="fill-status-info-primary h-14 w-14" />
+          </div>
+
+          <div className="flex flex-col">
+            <span className="text-s20-l28 text-text-primary font-bold">
+              {seller.name}
+            </span>
+
+            <div className="flex items-center gap-x-2">
+              <div className="flex items-center gap-x-1">
+                <span className="text-s14-l20 text-text-primary">
+                  {seller.avgRating.toFixed(1)}
+                </span>
+
+                <StarFilledIcon className="fill-rating-primary h-5 w-5" />
+              </div>
+
+              <span className="text-s14-l20 text-text-muted">
+                {`(${seller.totalProductCount} Products)`}
+              </span>
+
+              <span className="text-s14-l20 text-text-muted">
+                {seller.totalReviewCount}{" "}
+                {seller.totalReviewCount === 1 ? "Review" : "Reviews"}
+              </span>
+            </div>
+          </div>
         </div>
 
         <button
           onClick={onSellerClick}
-          className={customTwMerge(BUTTON_PRIMARY, BUTTON_SIZE_LARGE)}
+          className={customTwMerge(
+            BUTTON_PRIMARY,
+            BUTTON_SIZE_LARGE,
+            "text-s14-l20",
+          )}
         >
-          View all products from this seller
+          View Seller’s Products
         </button>
       </div>
 
       <div className="flex flex-col gap-y-6 p-8">
         <div className="flex items-center justify-between">
-          <span className="text-s18-l28 text-text-primary font-bold">
-            Other products from this seller
+          <span className="text-s16-l24 text-text-primary font-bold">
+            More products from this seller
           </span>
 
           <div className="flex items-center gap-x-2">

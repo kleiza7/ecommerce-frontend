@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { ReqProductsListResponse } from "../../../../../api/responses/ReqProductsListResponse.model";
-import { StarIcon } from "../../../../../assets/icons";
+import { StarFilledIcon } from "../../../../../assets/icons";
 import { useMediaQuery } from "../../../../../hooks/useMediaQuery";
 import FavoriteButton from "../../../../../shared/components/FavoriteButton";
 import { MEDIA_QUERY } from "../../../../../shared/constants/MediaQuery.constants";
@@ -227,11 +227,11 @@ const ProductCard = ({
           </div>
 
           <div className="flex items-center gap-x-1">
-            <StarIcon className="fill-rating-primary h-5 w-5" />
-
             <span className="text-s14-l20 text-text-primary">
               {product.avgRating.toFixed(1)}
             </span>
+
+            <StarFilledIcon className="fill-rating-primary h-5 w-5" />
           </div>
         </div>
       </div>
