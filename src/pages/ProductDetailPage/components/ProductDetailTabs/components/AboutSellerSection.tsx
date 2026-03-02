@@ -83,9 +83,9 @@ const AboutSellerSection = ({
 
   return (
     <div className="border-border-primary flex flex-col rounded-xl border">
-      <div className="border-border-primary flex items-center justify-between border-b p-8">
+      <div className="border-border-primary flex flex-col gap-y-4 border-b p-8 sm:flex-row sm:items-center sm:justify-between sm:gap-y-0">
         <div className="flex items-center gap-x-4">
-          <div className="bg-status-info-muted border-status-info-secondary flex h-20 w-20 items-center justify-center rounded-full border">
+          <div className="bg-status-info-muted border-status-info-secondary flex h-20 w-20 shrink-0 items-center justify-center rounded-full border">
             <StoreFrontIcon className="fill-status-info-primary h-14 w-14" />
           </div>
 

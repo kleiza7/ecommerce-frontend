@@ -20,9 +20,9 @@ const SellerCard = ({
   }, [goToProductsPage, seller.id]);
 
   return (
-    <div className="bg-surface-primary border-border-primary flex items-center justify-between rounded-lg border p-5">
+    <div className="bg-surface-primary border-border-primary flex flex-col gap-y-4 rounded-lg border p-5 sm:flex-row sm:items-center sm:justify-between sm:gap-y-0">
       <div className="flex items-center gap-x-4">
-        <div className="bg-status-info-muted border-status-info-secondary flex h-12 w-12 items-center justify-center rounded-full border">
+        <div className="bg-status-info-muted border-status-info-secondary flex h-12 w-12 shrink-0 items-center justify-center rounded-full border">
           <StoreFrontIcon className="fill-status-info-primary h-8 w-8" />
         </div>
 
