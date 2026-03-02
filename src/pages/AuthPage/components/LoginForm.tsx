@@ -105,7 +105,7 @@ const LoginForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="relative flex w-full flex-col gap-y-6 p-6 md:w-md 2xl:gap-y-10 2xl:p-10"
+      className="relative flex w-full flex-col gap-y-10 p-6 md:w-md 2xl:p-10 2xl:pb-20"
     >
       {isPending && (
         <div className="bg-surface-primary/70 absolute inset-0 z-20 flex items-center justify-center rounded-lg">
@@ -113,7 +113,7 @@ const LoginForm = () => {
         </div>
       )}
 
-      <div className="flex flex-col items-center gap-y-2">
+      <div className="flex flex-col items-center gap-y-1">
         <span className="text-s32-l40 text-text-primary font-bold">
           Welcome
         </span>
@@ -194,7 +194,7 @@ const LoginForm = () => {
       <button
         type="submit"
         disabled={isPending}
-        className={customTwMerge(BUTTON_PRIMARY, BUTTON_SIZE_X_LARGE, "h-14")}
+        className={customTwMerge(BUTTON_PRIMARY, BUTTON_SIZE_X_LARGE)}
       >
         Log In
       </button>

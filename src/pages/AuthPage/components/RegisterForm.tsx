@@ -88,7 +88,7 @@ const RegisterForm = ({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="relative flex w-full flex-col gap-y-6 p-6 md:w-xl 2xl:gap-y-10 2xl:p-10"
+      className="relative flex w-full flex-col gap-y-4 px-6 py-3 md:w-xl md:gap-y-6 md:py-6 2xl:gap-y-10 2xl:p-8"
     >
       {isPending && (
         <div className="bg-surface-primary/70 absolute inset-0 z-20 flex items-center justify-center rounded-lg">
@@ -96,54 +96,56 @@ const RegisterForm = ({
         </div>
       )}
 
-      <div className="flex flex-col items-center gap-y-2">
-        <span className="text-s32-l40 text-text-primary font-bold">
+      <div className="flex flex-col items-center gap-y-1">
+        <span className="text-s24-l32 md:text-s32-l40 text-text-primary font-bold">
           Create Your Account
         </span>
-        <span className="text-s16-l24 text-text-muted">
+        <span className="text-s16-l24 text-text-muted hidden md:inline">
           Please enter your details to register
         </span>
       </div>
 
       <div className="flex flex-col gap-y-5">
-        <div className="relative flex flex-col gap-y-1">
-          <InputLabel label="Name" hasAsterisk />
+        <div className="flex flex-col gap-5 md:flex-row md:gap-6">
+          <div className="relative flex flex-1 flex-col gap-y-1">
+            <InputLabel label="Name" hasAsterisk />
 
-          <GenericFormInput
-            field="name"
-            control={control}
-            required
-            placeholder="e.g. John Doe"
-            hasError={!!errors.name}
-            disabled={isPending}
-          />
+            <GenericFormInput
+              field="name"
+              control={control}
+              required
+              placeholder="e.g. John Doe"
+              hasError={!!errors.name}
+              disabled={isPending}
+            />
 
-          <InputErrorLabel message={errors.name?.message} />
-        </div>
+            <InputErrorLabel message={errors.name?.message} />
+          </div>
 
-        <div className="relative flex flex-col gap-y-1">
-          <InputLabel label="Email" hasAsterisk />
+          <div className="relative flex flex-1 flex-col gap-y-1">
+            <InputLabel label="Email" hasAsterisk />
 
-          <MailIcon className="fill-text-disabled absolute bottom-2.5 left-3 h-5 w-5" />
+            <MailIcon className="fill-text-disabled absolute bottom-2.5 left-3 h-5 w-5" />
 
-          <GenericFormInput
-            field="email"
-            control={control}
-            required
-            type="email"
-            placeholder="example@gmail.com"
-            rules={{
-              pattern: {
-                value: EMAIL_REGEX,
-                message: "Please enter a valid email address!",
-              },
-            }}
-            hasError={!!errors.email}
-            disabled={isPending}
-            className="pl-10"
-          />
+            <GenericFormInput
+              field="email"
+              control={control}
+              required
+              type="email"
+              placeholder="example@gmail.com"
+              rules={{
+                pattern: {
+                  value: EMAIL_REGEX,
+                  message: "Please enter a valid email address!",
+                },
+              }}
+              hasError={!!errors.email}
+              disabled={isPending}
+              className="pl-10"
+            />
 
-          <InputErrorLabel message={errors.email?.message} />
+            <InputErrorLabel message={errors.email?.message} />
+          </div>
         </div>
 
         <div className="flex flex-col gap-8 md:flex-row md:gap-6">
@@ -231,7 +233,7 @@ const RegisterForm = ({
           </div>
         </div>
 
-        <label className="mt-6 flex cursor-pointer items-center gap-3">
+        <label className="flex cursor-pointer items-center gap-3 md:mt-5">
           <GenericCheckbox
             checked={isSeller}
             onCheckedChange={() => setIsSeller((prev) => !prev)}
@@ -245,7 +247,7 @@ const RegisterForm = ({
       <button
         type="submit"
         disabled={isPending}
-        className={customTwMerge(BUTTON_PRIMARY, BUTTON_SIZE_X_LARGE, "h-14")}
+        className={customTwMerge(BUTTON_PRIMARY, BUTTON_SIZE_X_LARGE)}
       >
         Register
       </button>
