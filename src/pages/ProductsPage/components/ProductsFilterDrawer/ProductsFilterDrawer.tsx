@@ -53,7 +53,7 @@ const ProductsFilterDrawer = ({
   const [isSellersSelectionDrawerOpen, setIsSellersSelectionDrawerOpen] =
     useState(false);
 
-  const initialFilters: FiltersState = useMemo(() => {
+  const [filters, setFilters] = useState<FiltersState>(() => {
     let selectedCategory: FiltersState["category"] = null;
 
     if (selectedCategorySlug) {
@@ -75,16 +75,7 @@ const ProductsFilterDrawer = ({
       brands: selectedBrands,
       sellers: selectedSellers,
     };
-  }, [
-    selectedCategorySlug,
-    selectedBrandSlugs,
-    selectedSellerIds,
-    categories,
-    brands,
-    sellers,
-  ]);
-
-  const [filters, setFilters] = useState<FiltersState>(initialFilters);
+  });
 
   const onCategorySelected = (
     category: ReqCategoriesGetAllResponse[number],
