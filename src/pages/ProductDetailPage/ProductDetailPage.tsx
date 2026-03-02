@@ -28,6 +28,7 @@ import { useCartStore } from "../../stores/CartStore";
 import ProductDetailPageSkeleton from "./components/ProductDetailPageSkeleton";
 import ProductDetailTabs from "./components/ProductDetailTabs/ProductDetailTabs";
 import ProductTrustBadges from "./components/ProductTrustBadges";
+import SellerCard from "./components/SellerCard";
 
 const DRAG_THRESHOLD = 60;
 const CLICK_CANCEL_THRESHOLD = 5;
@@ -366,6 +367,11 @@ const ProductDetailPage = () => {
 
           <div className="flex flex-col gap-y-6">
             <div className="bg-border-secondary h-px" />
+
+            <SellerCard seller={product.seller} />
+
+            <div className="bg-border-secondary h-px" />
+
             <ProductTrustBadges />
           </div>
         </div>

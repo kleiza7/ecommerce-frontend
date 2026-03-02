@@ -8,7 +8,6 @@ const CheckoutPageSkeleton = () => {
 
         <div className="flex items-start gap-x-8">
           <div className="flex min-w-0 flex-1 flex-col gap-4 md:gap-6">
-            {/* ITEMS */}
             <div className="border-border-primary flex flex-col rounded-md border">
               <div className="border-border-primary bg-surface-secondary border-b px-6 py-4">
                 <Skeleton withShimmer className="h-6 w-56" />
@@ -29,14 +28,12 @@ const CheckoutPageSkeleton = () => {
               </div>
             </div>
 
-            {/* RECEIVER INFORMATION */}
             <div className="border-border-primary flex flex-col rounded-md border">
               <div className="border-border-primary bg-surface-secondary border-b px-6 py-4">
                 <Skeleton withShimmer className="h-6 w-48" />
               </div>
 
               <div className="flex flex-col gap-y-6 p-8">
-                {/* Full Name & Phone */}
                 <div className="flex flex-col gap-6 md:flex-row">
                   <div className="flex flex-1 flex-col gap-1">
                     <Skeleton withShimmer className="h-4 w-28" />
@@ -49,7 +46,6 @@ const CheckoutPageSkeleton = () => {
                   </div>
                 </div>
 
-                {/* Address */}
                 <div className="flex flex-col gap-1">
                   <Skeleton withShimmer className="h-4 w-28" />
                   <Skeleton withShimmer className="h-24 w-full rounded" />
@@ -57,26 +53,22 @@ const CheckoutPageSkeleton = () => {
               </div>
             </div>
 
-            {/* PAYMENT DETAILS */}
             <div className="border-border-primary flex flex-col rounded-md border">
               <div className="border-border-primary bg-surface-secondary border-b px-6 py-4">
                 <Skeleton withShimmer className="h-6 w-44" />
               </div>
 
               <div className="flex flex-col gap-y-6 p-8">
-                {/* Card Holder */}
                 <div className="flex flex-col gap-1">
                   <Skeleton withShimmer className="h-4 w-40" />
                   <Skeleton withShimmer className="h-11 w-full rounded" />
                 </div>
 
-                {/* Card Number */}
                 <div className="flex flex-col gap-1">
                   <Skeleton withShimmer className="h-4 w-32" />
                   <Skeleton withShimmer className="h-11 w-full rounded" />
                 </div>
 
-                {/* Expiry & CVC */}
                 <div className="flex flex-col gap-6 md:flex-row">
                   <div className="flex flex-1 flex-col gap-1">
                     <Skeleton withShimmer className="h-4 w-28" />
@@ -92,7 +84,6 @@ const CheckoutPageSkeleton = () => {
             </div>
           </div>
 
-          {/* SUMMARY */}
           <div className="bg-surface-primary border-border-primary fixed inset-x-0 bottom-0 z-10 flex w-full shrink-0 flex-col gap-4 border-t p-4 lg:static lg:w-[340px] lg:gap-6 lg:rounded-lg lg:border lg:p-6 lg:shadow-lg xl:w-[440px] xl:gap-8 xl:p-8">
             <Skeleton withShimmer className="h-7 w-40" />
 

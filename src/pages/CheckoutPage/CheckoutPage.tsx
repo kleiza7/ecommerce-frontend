@@ -1,5 +1,5 @@
 import { isAxiosError } from "axios";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCurrenciesGetAll } from "../../hooks/useCurrenciesGetAll";
@@ -16,6 +16,8 @@ import OrderItemsList from "./components/OrderItemsList";
 import OrderSummary from "./components/OrderSummary";
 
 const CheckoutPage = () => {
+  const hasSubmittedRef = useRef(false);
+
   const navigate = useNavigate();
   const { orderId } = useParams();
   const parsedOrderId = Number(orderId);
@@ -39,6 +41,8 @@ const CheckoutPage = () => {
   }, [currencies]);
 
   const onSubmit: SubmitHandler<CheckoutFormType> = () => {
+    hasSubmittedRef.current = true;
+
     completePayment(parsedOrderId, {
       onSuccess: () => {
         navigate(ROUTES.ORDER_DETAIL_PAGE.build(parsedOrderId), {
@@ -73,7 +77,8 @@ const CheckoutPage = () => {
   }, [isError, error, navigate]);
 
   useEffect(() => {
-    if (!order || canCheckoutOrder(order.status)) return;
+    if (!order || canCheckoutOrder(order.status) || hasSubmittedRef.current)
+      return;
 
     showToast({
       title: "Invalid Checkout",

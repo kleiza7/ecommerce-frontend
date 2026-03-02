@@ -177,6 +177,7 @@ const ProductsPage = () => {
       />
 
       <ProductsFilterDrawer
+        key={isProductsFilterDrawerOpen ? "filter-open" : "filter-closed"}
         open={isProductsFilterDrawerOpen}
         setOpen={setIsProductsFilterDrawerOpen}
         categories={categories}

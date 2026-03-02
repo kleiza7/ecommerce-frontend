@@ -20,13 +20,13 @@ export const useProductsNavigation = () => {
   }, [searchParams]);
 
   const query = useMemo(() => {
-    const value = searchParams.get("q")?.trim();
-    return value && value.length > 0 ? value : undefined;
+    const value = searchParams.get("q");
+    return value && value.trim().length > 0 ? value.trim() : undefined;
   }, [searchParams]);
 
   const sortBy = useMemo(() => {
-    const value = searchParams.get("sortBy")?.trim();
-    return value && value.length > 0 ? value : undefined;
+    const value = searchParams.get("sortBy");
+    return value && value.trim().length > 0 ? value.trim() : undefined;
   }, [searchParams]);
 
   const goToProductsPage = useCallback(
@@ -74,18 +74,17 @@ export const useProductsNavigation = () => {
       }
 
       if (q !== undefined) {
-        const value = q.trim();
-        if (value.length > 0) {
-          params.set("q", value);
+        if (q && q.trim().length > 0) {
+          params.set("q", q.trim());
         } else {
           params.delete("q");
         }
       }
 
+      // 🔥 FIXED SORT LOGIC
       if (sortBy !== undefined) {
-        const value = sortBy.trim();
-        if (value.length > 0) {
-          params.set("sortBy", value);
+        if (sortBy && sortBy.length > 0) {
+          params.set("sortBy", sortBy);
         } else {
           params.delete("sortBy");
         }

@@ -53,7 +53,7 @@ const ProductsFilterDrawer = ({
   const [isSellersSelectionDrawerOpen, setIsSellersSelectionDrawerOpen] =
     useState(false);
 
-  const initialFilters: FiltersState = useMemo(() => {
+  const [filters, setFilters] = useState<FiltersState>(() => {
     let selectedCategory: FiltersState["category"] = null;
 
     if (selectedCategorySlug) {
@@ -75,16 +75,7 @@ const ProductsFilterDrawer = ({
       brands: selectedBrands,
       sellers: selectedSellers,
     };
-  }, [
-    selectedCategorySlug,
-    selectedBrandSlugs,
-    selectedSellerIds,
-    categories,
-    brands,
-    sellers,
-  ]);
-
-  const [filters, setFilters] = useState<FiltersState>(initialFilters);
+  });
 
   const onCategorySelected = (
     category: ReqCategoriesGetAllResponse[number],
@@ -154,6 +145,14 @@ const ProductsFilterDrawer = ({
     });
   };
 
+  const clearAllFilters = () => {
+    setFilters({
+      category: null,
+      brands: [],
+      sellers: [],
+    });
+  };
+
   const applyFiltersToParams = () => {
     goToProductsPage({
       categorySlug: filters.category?.slug ?? null,
@@ -181,9 +180,19 @@ const ProductsFilterDrawer = ({
 
           {appliedFilters.length > 0 && (
             <div className="bg-surface-primary border-border-primary flex flex-col gap-2 border-y p-4">
-              <span className="text-s14-l20 text-text-primary font-medium">
-                Applied Filters
-              </span>
+              <div className="flex items-center justify-between">
+                <span className="text-s14-l20 text-text-primary font-medium">
+                  Applied Filters
+                </span>
+
+                <button
+                  type="button"
+                  onClick={clearAllFilters}
+                  className="text-s12-l16 text-primary cursor-pointer font-medium"
+                >
+                  Clear all
+                </button>
+              </div>
 
               <div className="flex flex-wrap gap-2">
                 {appliedFilters.map((filter) => (

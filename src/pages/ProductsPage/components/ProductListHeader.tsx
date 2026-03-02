@@ -51,7 +51,7 @@ const ProductListHeader = ({
 
   const handleSortChange = (value: string) => {
     goToProductsPage({
-      sortBy: value === "recommended" ? undefined : value,
+      sortBy: value === "recommended" ? "" : value,
     });
   };
 

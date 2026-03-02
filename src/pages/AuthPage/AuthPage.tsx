@@ -24,7 +24,7 @@ const AuthPage = () => {
           <RegisterForm changeMode={changeMode} />
         )}
 
-        <div className="bg-surface-primary md:bg-surface-muted border-border-secondary px-10 py-6 md:border-t">
+        <div className="bg-surface-primary md:bg-surface-muted border-border-secondary px-10 py-5 md:border-t">
           {mode === AUTH_PAGE_MODE.LOGIN ? (
             <div className="group flex items-center justify-center gap-x-1">
               <span className="text-s14-l20 text-text-secondary">

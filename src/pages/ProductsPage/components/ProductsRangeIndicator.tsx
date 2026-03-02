@@ -51,7 +51,7 @@ const ProductsRangeIndicator = ({
 
   return (
     <div
-      className={`bg-surface-primary fixed right-18 bottom-[30px] z-40 rounded-sm px-2 shadow-xl transition-opacity duration-300 ${
+      className={`bg-surface-primary fixed right-18 bottom-[90px] z-40 rounded-sm px-2 shadow-xl transition-opacity duration-300 lg:bottom-[30px] ${
         visible ? "opacity-100" : "opacity-0"
       }`}
     >

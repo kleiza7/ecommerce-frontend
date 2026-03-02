@@ -1,4 +1,3 @@
-// useProductReviewsUpdate.ts
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { reqProductReviewsUpdate } from "../api/controllers/ProductReviews.controller";
 import type { ReqProductReviewsUpdatePayload } from "../api/payloads/ReqProductReviewsUpdatePayload.model";

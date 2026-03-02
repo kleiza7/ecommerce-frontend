@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { Fragment, useCallback, useMemo } from "react";
 import {
   AddIcon,
   RemoveIcon,
@@ -87,12 +87,8 @@ const CartItemsList = () => {
               const isMax = cartItem.quantity >= cartItem.product.stockCount;
 
               return (
-                <>
-                  <div
-                    key={cartItem.productId}
-                    className="flex gap-x-3 p-3 md:gap-x-4 md:p-4 xl:gap-x-8"
-                  >
-                    {/* IMAGE */}
+                <Fragment key={cartItem.productId}>
+                  <div className="flex gap-x-3 p-3 md:gap-x-4 md:p-4 xl:gap-x-8">
                     <div className="border-border-secondary h-[100px] w-[100px] shrink-0 overflow-hidden rounded border p-1.5 md:h-[140px] md:w-[140px] md:p-2 xl:h-[180px] xl:w-[180px]">
                       {thumb && (
                         <img
@@ -109,7 +105,6 @@ const CartItemsList = () => {
                           {cartItem.product.name}
                         </span>
 
-                        {/* PRICE - mobile altında */}
                         <span className="text-accent text-s16-l24 font-semibold md:hidden">
                           {(cartItem.priceSnapshot * cartItem.quantity).toFixed(
                             2,
@@ -188,7 +183,6 @@ const CartItemsList = () => {
                         </div>
                       </div>
 
-                      {/* PRICE - desktop sağda */}
                       <span className="text-accent text-s20-l28 hidden font-semibold md:block">
                         {(cartItem.priceSnapshot * cartItem.quantity).toFixed(
                           2,
@@ -201,7 +195,7 @@ const CartItemsList = () => {
                   {index !== items.length - 1 && (
                     <div className="border-border-secondary border-b" />
                   )}
-                </>
+                </Fragment>
               );
             })}
           </div>
