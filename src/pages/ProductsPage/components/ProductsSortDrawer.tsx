@@ -28,7 +28,7 @@ const ProductsSortDrawer = ({
   const handleSelect = useCallback(
     (value: string) => {
       goToProductsPage({
-        sortBy: value === "recommended" ? undefined : value,
+        sortBy: value === "recommended" ? "" : value,
       });
 
       close();
@@ -69,6 +69,7 @@ const ProductsSortDrawer = ({
 
                 {isActive && <CheckIcon className="fill-primary h-6 w-6" />}
               </button>
+
               {index !== SORT_OPTIONS.length - 1 && (
                 <div className="bg-surface-secondary h-px" />
               )}
