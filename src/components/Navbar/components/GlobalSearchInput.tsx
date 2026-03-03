@@ -381,7 +381,7 @@ const GlobalSearchInput = () => {
         placeholder="Search product, category or brand"
         className={customTwMerge(
           INPUT_BASE,
-          "bg-surface-secondary h-9 w-full px-10 xl:h-11",
+          "bg-surface-secondary h-9 w-full px-10 lg:h-11",
           isPortalOpen
             ? "border-primary bg-surface-primary rounded-t-lg rounded-b-none border-2 shadow-lg"
             : "rounded-lg border",
