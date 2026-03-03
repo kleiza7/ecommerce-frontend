@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { MenuIcon } from "../../assets/icons";
+import ShopLandLogo from "../../assets/logos/shopland_logo.png";
 import { useUserDomain } from "../../hooks/useUserDomain";
 import { ROUTES } from "../../shared/constants/Routes.constants";
 import { USER_DOMAIN } from "../../shared/enums/UserDomain.enum";
@@ -56,8 +57,8 @@ const Navbar = () => {
       <header className="border-border-primary border-b pt-4 shadow-sm md:pt-5">
         <div className="mx-auto w-full max-w-[1800px] px-3 lg:px-10">
           <div className="flex flex-col gap-y-4 pb-2 lg:gap-y-0 lg:pb-0">
-            <div className="flex items-center justify-between gap-x-16 lg:h-[72px]">
-              <div className="flex shrink-0 items-center gap-x-1 select-none">
+            <div className="flex items-center justify-between gap-x-10">
+              <div className="flex shrink-0 items-center gap-x-2 select-none">
                 <button
                   type="button"
                   onClick={handleMenuClick}
@@ -68,14 +69,18 @@ const Navbar = () => {
 
                 <NavLink
                   to={ROUTES.HOME_PAGE.build()}
-                  className="text-s20-l28 md:text-s28-l36 xl:text-s48-l56 text-text-primary"
+                  className="flex items-center"
                 >
-                  ShopLand
+                  <img
+                    src={ShopLandLogo}
+                    alt="ShopLand"
+                    className="h-12 w-auto lg:h-18"
+                  />
                 </NavLink>
               </div>
 
               {isGuestOrUser && (
-                <div className="hidden flex-1 lg:flex">
+                <div className="hidden max-w-[700px] flex-1 lg:flex">
                   <GlobalSearchInput />
                 </div>
               )}
