@@ -81,7 +81,6 @@ export const useProductsNavigation = () => {
         }
       }
 
-      // 🔥 FIXED SORT LOGIC
       if (sortBy !== undefined) {
         if (sortBy && sortBy.length > 0) {
           params.set("sortBy", sortBy);
